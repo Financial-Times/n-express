@@ -20,15 +20,7 @@ var app = express({
 	name: "ft-next-xian"
 });
 
-app.get("/", function(req, res) {
-	res.send("Hello world");
-});
-
-app.get("/__flags.json", function(req, res) {
-	res.send(res.locals.flags);
-});
-
-app.get('/templated', function(req, res, next) {
+app.get('/', function(req, res, next) {
 	res.render('main', {
 		title: "FT",
 		image: "https://avatars0.githubusercontent.com/u/3502508?v=3"
@@ -51,8 +43,12 @@ app.listen(process.env.PORT, function() {
 </head>
 <body>
 	<h1>{{title}}</h1>
-	<h2>Resize test</h2>
+	<h2>An image resized to 150px wide</h2>
 	<img src="{{#resize 150}}{{image}}{{/resize}}" />
+
+	{{#flags.myFlag.isSwitchedOn}}
+	The 'myFlag' flag is switched on
+	{{/flags.myFlag.isSwitchedOn}}
 </body>
 </html>
 ```
