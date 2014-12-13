@@ -1,0 +1,16 @@
+{
+  "name": "ft-next-express",
+  "main": "main.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "express": "^4.10.5",
+    "express-errors-handler": "^1.0.0",
+    "next-feature-flags-client": "https://github.com/Financial-Times/next-feature-flags-client/archive/v2.3.3.tar.gz"
+  },
+  "devDependencies": {
+    "mocha": "^2.0.1",
+    "supertest": "^0.15.0"
+  }
+}
