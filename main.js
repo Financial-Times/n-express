@@ -5,6 +5,7 @@ var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
 var resize = require('./src/resize');
+var robots = require('./src/robots');
 
 var flagsPromise = flags.init();
 
@@ -35,13 +36,7 @@ module.exports = function(options) {
 	app._listen = app.listen;
 	app.listen = function() {
 		var args = arguments;
-		app.get('/robots.txt', function(req, res) {
-			res.set({
-				'Content-Type': 'text/plain',
-				'Cache-Control': 'max-age:3600, public'
-			});
-			res.send("User-agent: *\nDisallow: /");
-		});
+		app.get('/robots.txt', robots);
 		app.use(errorsHandler.middleware);
 
 		flagsPromise.then(function() {
