@@ -1,5 +1,8 @@
 "use strict";
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
