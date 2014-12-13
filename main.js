@@ -20,8 +20,9 @@ module.exports = function(options) {
 	app.use('/' + name, express.static(directory + '/public', {
 		maxAge: 120000 // 2 minutes
 	}));
-	app.set('views', directory + '/views');
+	app.get('/robots.txt', robots);
 
+	app.set('views', directory + '/views');
 	app.engine('.html', expressHandlebars({
 		extname: '.html',
 		helpers: { 'resize': resize },
@@ -31,12 +32,12 @@ module.exports = function(options) {
 		]
 	}));
 	app.set('view engine', '.html');
+
 	app.use(flags.middleware);
 
 	app._listen = app.listen;
 	app.listen = function() {
 		var args = arguments;
-		app.get('/robots.txt', robots);
 		app.use(errorsHandler.middleware);
 
 		flagsPromise.then(function() {
