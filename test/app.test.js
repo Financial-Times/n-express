@@ -40,4 +40,10 @@ describe('simple app', function() {
 			.expect(200, /End of dep 2 partial/, done);
 	});
 
+	it('should support app-specific helpers', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /HELLO/, done);
+	});
+
 });

@@ -2,10 +2,12 @@
 
 var port = process.env.PORT || 3000;
 var express = require('../../../main');
+var yell = require('./src/yell');
 
 var app = module.exports = express({
 	name: "demo-app",
-	directory: __dirname
+	directory: __dirname,
+	helpers: { yell: yell }
 });
 
 app.get("/", function(req, res) {
