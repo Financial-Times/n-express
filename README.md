@@ -17,7 +17,12 @@ Comes with:-
 var express = require('next-express');
 
 var app = express({
-	name: "xian"
+	name: "xian",
+	helpers: {
+		uppercase: function(options) {
+			return options.fn(this).toUpperCase();
+		}
+	}
 });
 
 app.get('/', function(req, res, next) {
@@ -43,6 +48,7 @@ app.listen(process.env.PORT, function() {
 </head>
 <body>
 	<h1>{{title}}</h1>
+	{{#uppercase}}this text will be uppercase{{/uppercase}}
 	<h2>An image resized to 150px wide</h2>
 	<img src="{{#resize 150}}{{image}}{{/resize}}" />
 
