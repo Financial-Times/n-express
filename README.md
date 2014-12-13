@@ -8,7 +8,7 @@ Comes with:-
 - Origami Image Service integration
 - Sensible error handling (configurable via environment variables)
 - Full Next Flags integration
-- Anti-search engine robots.txt (possibly might need to change in the future)
+- Anti-search engine `/robots.txt` (possibly might need to change in the future)
 
 ## Example app
 
