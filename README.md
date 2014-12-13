@@ -9,6 +9,7 @@ Comes with:-
 - Sensible error handling (configurable via environment variables)
 - Full Next Flags integration
 - Anti-search engine `/robots.txt` (possibly might need to change in the future)
+- Promise & (Isomorphic) Fetch polyfills
 
 ## Example app
 
