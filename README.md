@@ -17,7 +17,7 @@ Comes with:-
 var express = require('next-express');
 
 var app = express({
-	name: "ft-next-xian"
+	name: "xian"
 });
 
 app.get('/', function(req, res, next) {
