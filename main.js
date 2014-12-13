@@ -19,6 +19,7 @@ module.exports = function(options) {
 	app.use('/' + name, express.static(directory + '/public', {
 		maxAge: 120000 // 2 minutes
 	}));
+	app.set('views', directory + '/views');
 
 	app.engine('.html', expressHandlebars({
 		extname: '.html',

@@ -8,8 +8,6 @@ var app = module.exports = express({
 	directory: __dirname
 });
 
-app.set('views', __dirname + '/views');
-
 app.get("/", function(req, res) {
 	res.send("Hello world");
 });
