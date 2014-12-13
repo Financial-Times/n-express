@@ -18,7 +18,7 @@ module.exports = function(options) {
 	var helpers = options.helpers || {}
 	if (!name) {
 		try {
-			var packageJson = require(options.directory + '/package.json');
+			var packageJson = require(directory + '/package.json');
 			name = packageJson.name;
 		} catch(e) {
 			// Safely ignorable error
