@@ -3,8 +3,10 @@ var express = require('../../../main');
 
 var app = module.exports = express({
 	name: "demo-app",
-	public: __dirname+'/public'  	
+	directory: __dirname
 });
+
+app.set('views', __dirname + '/views');
 
 app.get("/", function(req, res) {
 	res.send("Hello world");
@@ -16,4 +18,11 @@ app.get("/__flags.json", function(req, res) {
 
 app.listen(port, function() {
 	console.log("Listening on " + port);
+});
+
+app.get('/templated', function(req, res, next) {
+	res.render('main', {
+		title: "FT",
+		image: "https://avatars0.githubusercontent.com/u/3502508?v=3"
+	});
 });

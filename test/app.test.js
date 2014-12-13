@@ -22,4 +22,22 @@ describe('simple app', function() {
 			.expect(200, 'Static file\n', done);
 	});
 
+	it('should do something templating', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /FT/, done);
+	});
+
+	it('should do integrate with the image service', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /\/\/image.webservices.ft.com\/v1\/images\/raw\//, done);
+	});
+
+	it('should do support loading partials via bower', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /End of dep 2 partial/, done);
+	});
+
 });

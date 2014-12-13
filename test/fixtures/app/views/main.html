@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{{title}}</title>
+</head>
+<body>
+	<h1>{{title}}</h1>
+	<h2>Resize test</h2>
+	<img src="{{#resize 150}}{{image}}{{/resize}}" />
+	<h2>Partials test:-</h2>
+	<div style="background: yellow">
+		{{> dep-1/templates/partial }}
+	</div>
+</body>
+</html>
