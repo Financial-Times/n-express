@@ -4,7 +4,7 @@ next-express
 Slightly enhanced Express.
 
 Comes with:-
-- Handlebars (supports loading partials from bower_components)
+- Handlebars (supports loading partials from `bower_components`)
 - Origami Image Service integration
 - Sensible error handling (configurable via environment variables)
 - Full Next Flags integration
