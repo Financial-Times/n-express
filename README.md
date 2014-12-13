@@ -4,11 +4,11 @@ next-express
 Slightly enhanced Express.
 
 Comes with:-
-- Handlebars
+- Handlebars (supports loading partials from bower_components)
 - Origami Image Service integration
-- Load paths for templates installed via bower.
 - Sensible error handling (configurable via environment variables)
 - Full Next Flags integration
+- Anti-search engine robots.txt (possibly might need to change in the future)
 
 ## Example app
 
