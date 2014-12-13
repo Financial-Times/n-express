@@ -17,7 +17,7 @@ Comes with:-
 var express = require('next-express');
 
 var app = express({
-	name: "xian",
+	name: "xian", // If this is not provided, Next-Express will try to infer it from package.json
 	helpers: {
 		uppercase: function(options) {
 			return options.fn(this).toUpperCase();
