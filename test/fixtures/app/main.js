@@ -16,13 +16,13 @@ app.get("/__flags.json", function(req, res) {
 	res.send(res.locals.flags);
 });
 
-app.listen(port, function() {
-	console.log("Listening on " + port);
-});
-
 app.get('/templated', function(req, res, next) {
 	res.render('main', {
 		title: "FT",
 		image: "https://avatars0.githubusercontent.com/u/3502508?v=3"
 	});
+});
+
+app.listen(port, function() {
+	console.log("Listening on " + port);
 });
