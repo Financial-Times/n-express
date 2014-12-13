@@ -1,0 +1,18 @@
+var normalize = require('../src/normalize-name');
+var assert = require('assert');
+
+describe('normalize', function() {
+
+	it('should normalize ft-next-engels to engels', function() {
+		assert.equal(normalize('ft-next-engels'), 'engels');
+	});
+
+	it('should normalize next-engels to engels', function() {
+		assert.equal(normalize('next-engels'), 'engels');
+	});
+
+	it('should normalize engels to engels', function() {
+		assert.equal(normalize('engels'), 'engels');
+	});
+
+});
