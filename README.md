@@ -52,7 +52,7 @@ app.listen(process.env.PORT, function() {
 <head>
 	<meta charset="utf-8">
 	<title>{{title}}</title>
-	<!-- this will be output as <link rel="stylesheet" href="/xian/main.css">-->
+	<!-- this will be output as <link rel="stylesheet" href="/xian/main.css"> -->
 	<link rel="stylesheet" href="/{{__name}}/main.css">
 </head>
 <body>
