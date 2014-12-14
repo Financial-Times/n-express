@@ -8,7 +8,7 @@ Comes with:-
 - Origami Image Service integration
 - Sensible error handling (configurable via environment variables)
 - Full Next Flags integration
-- Anti-search engine `/robots.txt` (possibly might need to change in the future)
+- Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
 - Promise & (Isomorphic) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
