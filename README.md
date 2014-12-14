@@ -10,6 +10,7 @@ Comes with:-
 - Full Next Flags integration
 - Anti-search engine `/robots.txt` (possibly might need to change in the future)
 - Promise & (Isomorphic) Fetch polyfills
+- Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
 
 ## Example app
@@ -51,6 +52,8 @@ app.listen(process.env.PORT, function() {
 <head>
 	<meta charset="utf-8">
 	<title>{{title}}</title>
+	<!-- this will be output as <link rel="stylesheet" href="/xian/main.css">-->
+	<link rel="stylesheet" href="/{{__name}}/main.css">
 </head>
 <body>
 	<h1>{{title}}</h1>
