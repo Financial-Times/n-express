@@ -10,6 +10,7 @@ Comes with:-
 - Full Next Flags integration
 - Anti-search engine `/robots.txt` (possibly might need to change in the future)
 - Promise & (Isomorphic) Fetch polyfills
+- Exposes app name via `__name` to templates
 
 ## Example app
 
