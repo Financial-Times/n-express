@@ -44,7 +44,8 @@ var app = express({
 app.get('/', function(req, res, next) {
 	res.render('main', {
 		title: "FT",
-		image: "https://avatars0.githubusercontent.com/u/3502508?v=3"
+		image: "https://avatars0.githubusercontent.com/u/3502508?v=3",
+		date: (new Date()).toGMTString()
 	});
 });
 
