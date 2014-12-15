@@ -12,6 +12,7 @@ Comes with:-
 - Promise & (Isomorphic) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
+- Provides `NODE_ENV` to templates via `__environment`
 
 ## Installation
 
