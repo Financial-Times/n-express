@@ -10,6 +10,7 @@ Comes with:-
 - Full Next Flags integration
 - Anti-search engine `/robots.txt` (possibly might need to change in the future)
 - Promise & (Isomorphic) Fetch polyfills
+- Provides `NODE_ENV` to templates via `__environment`
 
 ## Example app
 
