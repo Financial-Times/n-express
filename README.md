@@ -13,11 +13,17 @@ Comes with:-
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
 
+## Installation
+
+```sh
+npm install --save express
+```
+
 ## Example app
 
 ### `main.js`
 ```js
-var express = require('next-express');
+var express = require('ft-next-express');
 
 var app = express({
 
