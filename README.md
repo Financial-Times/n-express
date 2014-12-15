@@ -14,6 +14,7 @@ Comes with:-
 - Exposes app name via `__name` to templates
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
+- Provides a date formatter that outputs in an `o-date` compatible way (but can be overridden to any format)
 
 ## Installation
 
@@ -72,6 +73,8 @@ app.listen(process.env.PORT, function() {
 	{{#flags.myFlag.isSwitchedOn}}
 	The 'myFlag' flag is switched on
 	{{/flags.myFlag.isSwitchedOn}}
+
+	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}</time>
 </body>
 </html>
 ```
