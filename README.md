@@ -16,7 +16,7 @@ Comes with:-
 ## Installation
 
 ```sh
-npm install --save express
+npm install --save ft-next-express
 ```
 
 ## Example app
