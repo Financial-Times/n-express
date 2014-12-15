@@ -13,5 +13,11 @@
 	<div style="background: yellow">
 		{{> dep-1/templates/partial }}
 	</div>
+	<h2>Dates test:-</h2>
+	<ul>
+		<li>Full date: {{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}</li>
+		<li>Custom date: {{#dateformat "dd/mm/yy"}}{{date}}{{/dateformat}}</li>
+		<li>ISO date: {{#dateformat}}{{date}}{{/dateformat}}</li>
+	</ul>
 </body>
 </html>

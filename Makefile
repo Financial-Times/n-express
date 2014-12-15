@@ -6,5 +6,5 @@ install:
 test:
 	mocha
 
-demo:
+run:
 	node test/fixtures/app/main.js

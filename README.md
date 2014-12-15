@@ -14,6 +14,7 @@ Comes with:-
 - Exposes app name via `__name` to templates
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
+- Provides a [date formatter](https://github.com/felixge/node-dateformat) that outputs in an `o-date` compatible way (but can be overridden to any format)
 
 ## Installation
 
@@ -43,7 +44,8 @@ var app = express({
 app.get('/', function(req, res, next) {
 	res.render('main', {
 		title: "FT",
-		image: "https://avatars0.githubusercontent.com/u/3502508?v=3"
+		image: "https://avatars0.githubusercontent.com/u/3502508?v=3",
+		date: new Date()
 	});
 });
 
@@ -72,6 +74,8 @@ app.listen(process.env.PORT, function() {
 	{{#flags.myFlag.isSwitchedOn}}
 	The 'myFlag' flag is switched on
 	{{/flags.myFlag.isSwitchedOn}}
+
+	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}</time>
 </body>
 </html>
 ```

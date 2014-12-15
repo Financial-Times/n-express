@@ -3,6 +3,7 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
+var dateformat = require('./src/dateformat');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
@@ -32,6 +33,7 @@ module.exports = function(options) {
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	helpers.resize = resize;
+	helpers.dateformat = dateformat;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		maxAge: 120000 // 2 minutes
