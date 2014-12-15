@@ -13,6 +13,7 @@ Comes with:-
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
 - Provides `NODE_ENV` to templates via `__environment`
+- `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 
 ## Installation
 

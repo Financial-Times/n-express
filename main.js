@@ -29,7 +29,8 @@ module.exports = function(options) {
 	}
 	if (!name) throw new Error("Please specify an application name");
 	app.locals.__name = name = normalizeName(name);
-	app.locals.__environment = process.env.NODE_ENV;
+	app.locals.__environment = process.env.NODE_ENV || '';
+	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	helpers.resize = resize;
 
 	app.use('/' + name, express.static(directory + '/public', {
