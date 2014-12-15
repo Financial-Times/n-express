@@ -75,7 +75,9 @@ app.listen(process.env.PORT, function() {
 	The 'myFlag' flag is switched on
 	{{/flags.myFlag.isSwitchedOn}}
 
-	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}</time>
+	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">
+		{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}
+	</time>
 </body>
 </html>
 ```
