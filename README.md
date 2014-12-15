@@ -14,7 +14,7 @@ Comes with:-
 - Exposes app name via `__name` to templates
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
-- Provides a date formatter that outputs in an `o-date` compatible way (but can be overridden to any format)
+- Provides a [date formatter](https://github.com/felixge/node-dateformat) that outputs in an `o-date` compatible way (but can be overridden to any format)
 
 ## Installation
 
