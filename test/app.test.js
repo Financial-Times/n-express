@@ -61,6 +61,6 @@ describe('simple app', function() {
 	it('should provide a nice date helper that lets you easily output the date in an o-date compatible format', function(done) {
 		request(app)
 			.get('/templated')
-			.expect(200, /ISO date: 2014-08-01T01:00:00\+0100/, done);
+			.expect(200, /ISO date: 2014-08-01T00:00:00\+0000/, done);
 	});
 });

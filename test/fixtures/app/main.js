@@ -21,7 +21,7 @@ app.get('/templated', function(req, res, next) {
 	res.render('main', {
 		title: "FT",
 		image: "https://avatars0.githubusercontent.com/u/3502508?v=3",
-		date: (new Date('Fri Aug 01 2014 00:00:00 GMT')).toGMTString()
+		date: new Date('Fri Aug 01 2014 00:00:00 GMT')
 	});
 });
 
