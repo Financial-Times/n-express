@@ -4,7 +4,7 @@ next-express
 Slightly enhanced Express.
 
 Comes with:-
-- [Handlebars](http://handlebarsjs.com/) (supports loading partials from `bower_components`)
+- [Handlebars](http://handlebarsjs.com/) (with added support for loading partials from `bower_components`)
 - [Origami Image Service](http://image.webservices.ft.com/) integration
 - [Sensible error handling](https://github.com/Financial-Times/express-errors-handler) (configurable via environment variables)
 - Full [Next Flags](https://github.com/Financial-Times/next-feature-flags-client) integration
