@@ -1,3 +1,4 @@
+/*jshint node:true*/
 'use strict';
 
 var port = process.env.PORT || 3000;

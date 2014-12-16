@@ -1,3 +1,6 @@
+/*global it, describe*/
+'use strict';
+
 var normalize = require('../src/normalize-name');
 var assert = require('assert');
 

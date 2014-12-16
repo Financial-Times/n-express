@@ -1,3 +1,4 @@
+/*jshint node:true*/
 "use strict";
 
 require('es6-promise').polyfill();
@@ -17,9 +18,9 @@ var flagsPromise = flags.init();
 module.exports = function(options) {
 	options = options || {};
 	var app = express();
-	var name = options.name
+	var name = options.name;
 	var directory = options.directory || process.cwd();
-	var helpers = options.helpers || {}
+	var helpers = options.helpers || {};
 	if (!name) {
 		try {
 			var packageJson = require(directory + '/package.json');

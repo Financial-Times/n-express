@@ -1,3 +1,6 @@
+/*global it, describe*/
+"use strict";
+
 var request = require('supertest');
 var app = require('./fixtures/app/main');
 

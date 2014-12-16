@@ -1,3 +1,5 @@
+'use strict';
+
 var dateFormat = require('dateformat');
 
 module.exports = function(format, options) {

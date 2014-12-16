@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = function(req, res) {
 	res.set({
 		'Content-Type': 'text/plain',
