@@ -36,7 +36,7 @@ module.exports = function(options) {
 	helpers.resize = resize;
 	helpers.dateformat = dateformat;
 
-	app.use('/' + name, express.static(directory+'/public', {
+	app.use('/' + name, express.static(directory +'/public', {
 		setHeaders: function(res) {
 			res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
 		}
