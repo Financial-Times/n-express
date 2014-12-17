@@ -12,7 +12,6 @@ var expressHandlebars = require('express-handlebars');
 var resize = require('./src/resize');
 var robots = require('./src/robots');
 var normalizeName = require('./src/normalize-name');
-var staticMiddleware = require('./src/static');
 
 var flagsPromise = flags.init();
 
@@ -37,7 +36,11 @@ module.exports = function(options) {
 	helpers.resize = resize;
 	helpers.dateformat = dateformat;
 
-	app.use('/' + name, staticMiddleware);
+	app.use('/' + name, express.static(directory+'/public', {
+		setHeaders: function(res) {
+			res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
+		}
+	}));
 	app.get('/robots.txt', robots);
 
 	app.set('views', directory + '/views');
