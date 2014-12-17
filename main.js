@@ -38,6 +38,7 @@ module.exports = function(options) {
 
 	app.use('/' + name, express.static(directory +'/public', {
 		setHeaders: function(res) {
+			// TODO:MA Once we are generating new paths on every deploy (git hash?) then up the max-age to 'a long time'
 			res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
 		}
 	}));
