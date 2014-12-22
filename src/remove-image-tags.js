@@ -1,5 +1,6 @@
 "use strict";
 
 module.exports = function(options) {
-	return options.fn(this).replace(/<img[^>]+>/g, '')
+	console.log(options.fn(this));
+	return options.fn(this).replace(/<img[^>]+>/g, '');
 };
