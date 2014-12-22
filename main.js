@@ -11,6 +11,7 @@ var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
 var resize = require('./src/resize');
 var robots = require('./src/robots');
+var paragraphs = require('./src/paragraphs');
 var normalizeName = require('./src/normalize-name');
 
 var flagsPromise = flags.init();
@@ -35,6 +36,7 @@ module.exports = function(options) {
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	helpers.resize = resize;
 	helpers.dateformat = dateformat;
+	helpers.paragraphs = paragraphs;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
