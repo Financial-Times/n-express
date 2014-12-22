@@ -60,7 +60,7 @@ describe('simple app', function() {
 	it('should provide a nice paragraphs helper', function(done) {
 		request(app)
 			.get('/templated')
-			.expect(200, /<p>Paragraph 2<\/p>/, done);
+			.expect(200, /Start Paragraphs\n\t<p>Paragraph 2<\/p>End Paragraphs/, done);
 	});
 
 
