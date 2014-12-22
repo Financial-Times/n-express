@@ -57,6 +57,13 @@ describe('simple app', function() {
 			.expect(200, /on app demo-app!/, done);
 	});
 
+	it('should provide a nice paragraphs helper', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /<p>Paragraph 2<\/p>/, done);
+	});
+
+
 	it('should provide a nice date helper', function(done) {
 		request(app)
 			.get('/templated')
