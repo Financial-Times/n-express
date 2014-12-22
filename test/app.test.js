@@ -63,6 +63,11 @@ describe('simple app', function() {
 			.expect(200, /Start Paragraphs\n\t<p>Paragraph 2<\/p>End Paragraphs/, done);
 	});
 
+	it('should provide a nice image stripping helper', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /ImageEndImage/, done);
+	});
 
 	it('should provide a nice date helper', function(done) {
 		request(app)
