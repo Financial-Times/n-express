@@ -15,6 +15,8 @@ Comes with:-
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a [date formatter](https://github.com/felixge/node-dateformat) that outputs in an `o-date` compatible way (but can be overridden to any format)
+- Provides a handlebars helper to take a subsection of paragraphs (\<p>\</p>) from a HTML blob
+- Provides a handlebars helper to strip image tags from a HTML blob
 
 ## Installation
 
@@ -78,6 +80,16 @@ app.listen(process.env.PORT, function() {
 	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">
 		{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}
 	</time>
+	
+	{{#paragraphs 1 2}}
+	<p>This wont be shown</p>
+	<p>This will be shown</p>
+	<p>This wont be shown</p>
+	{{/paragraphs}}
+	
+	{{#removeImageTags}}
+	Image<img src="someimage.jpg" alt="This wont be shown"/>EndImage
+	{{/removeImageTags}}
 </body>
 </html>
 ```
