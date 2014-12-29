@@ -30,5 +30,12 @@
 	Image<img src="someimage.jpg"/>EndImage
 	{{/removeImageTags}}
 
+	<undefinedflag-on>{{#flags.undefinedFlag.isSwitchedOn}}
+	Should not appear
+	{{/flags.undefinedFlag.isSwitchedOn}}</undefinedflag-on>
+
+	<undefinedflag-off>{{#flags.undefinedFlag.isSwitchedOff}}
+	Should appear
+	{{/flags.undefinedFlag.isSwitchedOff}}</undefinedflag-off>
 </body>
 </html>

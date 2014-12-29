@@ -80,4 +80,14 @@ describe('simple app', function() {
 			.get('/templated')
 			.expect(200, /ISO date: 2014-08-01T00:00:00\+0000/, done);
 	});
+
+	it('should treat undefined flags as offy (like falsey)', function(done) {
+		request(app)
+			.get('/templated')
+			// Currently fails - suggest we just ditch this feature, as per
+			// https://github.com/Financial-Times/next-feature-flags-client/issues/26
+			//.expect(/<undefinedflag-off>Should appear<\/undefinedflag-off>/)
+			.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done)
+
+	});
 });
