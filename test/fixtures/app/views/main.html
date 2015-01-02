@@ -20,11 +20,7 @@
 		<li>ISO date: {{#dateformat}}{{date}}{{/dateformat}}</li>
 	</ul>
 
-	Start Paragraphs{{#paragraphs 1 2}}
-	<p>Paragraph 1</p>
-	<p>Paragraph 2</p>
-	<p>Paragraph 3</p>
-	{{/paragraphs}}End Paragraphs
+	Start Paragraphs{{{paragraphs text start=1 end=2}}}End Paragraphs
 
 	{{#removeImageTags}}
 	Image<img src="someimage.jpg"/>EndImage
