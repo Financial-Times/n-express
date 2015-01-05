@@ -66,7 +66,7 @@ module.exports = function(options) {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
-		flagsPromise.then(function() {
+		return flagsPromise.then(function() {
 			app._listen.apply(app, args);
 		});
 	};
