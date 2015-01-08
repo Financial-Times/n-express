@@ -74,13 +74,13 @@ module.exports = function(options) {
 
 	app.use(flags.middleware);
 
-	app._listen = app.listen;
+	var actualAppListen = app.listen;
 	app.listen = function() {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
 		flagsPromise.then(function() {
-			app._listen.apply(app, args);
+			actualAppListen.apply(app, args);
 		});
 	};
 
