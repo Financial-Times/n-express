@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 	var actualExpressHandlebarsPrivateGetDir = expressHandlebars.ExpressHandlebars.prototype._getDir;
 	expressHandlebars.ExpressHandlebars.prototype._getDir = function() {
 		var actualExtname = this.extname;
-		this.extname = "*/*" + this.extname;
+		this.extname = "*/*" + actualExtname;
 		var output = actualExpressHandlebarsPrivateGetDir.apply(this, arguments);
 		this.extname = actualExtname;
 		return output;
