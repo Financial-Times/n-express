@@ -17,6 +17,7 @@ Comes with:-
 - Provides a [date formatter](https://github.com/felixge/node-dateformat) that outputs in an `o-date` compatible way (but can be overridden to any format)
 - Provides a handlebars helper to take a subsection of paragraphs (\<p>\</p>) from a HTML blob
 - Provides a handlebars helper to strip image tags from a HTML blob
+- Provides an 'ifEquals' handlebars helper
 
 ## Installation
 
