@@ -9,7 +9,7 @@ describe('simple app', function() {
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
-			.expect('Vary', 'X-Flags')
+			.expect('Vary', /X-Flags/)
 			.expect(200, 'Hello world', done);
 	});
 
@@ -25,6 +25,15 @@ describe('simple app', function() {
 			.expect('Cache-Control', /stale-if-error/)
 			.expect('Cache-Control', /stale-while-revalidate/)
 			.expect(200, 'Static file\n', done);
+	});
+	
+	it('should gzip any text resources above 1kb', function(done) {
+		request(app)
+			.get('/demo-app/large.txt')
+			.set('Accept-Encoding', 'gzip, deflate, sdch')
+			.expect('Content-Encoding', /gzip|deflate|sdch/)
+			.expect('Vary', /Accept-Encoding/)
+			.expect(200, done);
 	});
 
 	it('should do something templating', function(done) {

@@ -15,6 +15,7 @@ var paragraphs = require('./src/paragraphs');
 var removeImageTags = require('./src/remove-image-tags');
 var normalizeName = require('./src/normalize-name');
 var ifEquals = require('./src/if-equals');
+var compression = require('compression');
 
 var flagsPromise = flags.init();
 
@@ -55,6 +56,9 @@ module.exports = function(options) {
 	helpers.removeImageTags = removeImageTags;
 	helpers.ifEquals = ifEquals;
 
+	// Note: compression does sensible filtering by content type 
+	// for us using https://github.com/jshttp/compressible
+	app.use(compression());
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
 			// TODO:MA Once we are generating new paths on every deploy (git hash?) then up the max-age to 'a long time'
