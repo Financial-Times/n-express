@@ -10,5 +10,6 @@ deploy:
   api_key:
     secure: HKBkwMuL34GNKLvvpg9SNMznAvBLBtck/EaYkPjuJ3GpXG3eqy6aXyaxgLx3QcWuxpTC40dIh8kUxtgJRD8H6qgsdjSRsH+i/oTljd0LqrSiDpbrfXYblpWyXed2WYDYFwczYxmp919GTrEGoa9uqAmK5Ug14ZpLtujFHkhUzJ8=
   on:
+    all_branches: true
     tags: true
     repo: Financial-Times/next-express
