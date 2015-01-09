@@ -14,6 +14,7 @@ var robots = require('./src/robots');
 var paragraphs = require('./src/paragraphs');
 var removeImageTags = require('./src/remove-image-tags');
 var normalizeName = require('./src/normalize-name');
+var ifEquals = require('./src/if-equals');
 
 var flagsPromise = flags.init();
 
@@ -52,6 +53,7 @@ module.exports = function(options) {
 	helpers.dateformat = dateformat;
 	helpers.paragraphs = paragraphs;
 	helpers.removeImageTags = removeImageTags;
+	helpers.ifEquals = ifEquals;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
@@ -79,7 +81,7 @@ module.exports = function(options) {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
-		flagsPromise.then(function() {
+		return flagsPromise.then(function() {
 			actualAppListen.apply(app, args);
 		});
 	};

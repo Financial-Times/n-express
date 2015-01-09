@@ -60,7 +60,7 @@ describe('simple app', function() {
 	it('should provide a nice paragraphs helper', function(done) {
 		request(app)
 			.get('/templated')
-			.expect(200, /Start Paragraphs\n\t<p>Paragraph 2<\/p>End Paragraphs/, done);
+			.expect(200, /Start Paragraphs<p>Paragraph 2<\/p>End Paragraphs/, done);
 	});
 
 	it('should provide a nice image stripping helper', function(done) {
@@ -79,5 +79,15 @@ describe('simple app', function() {
 		request(app)
 			.get('/templated')
 			.expect(200, /ISO date: 2014-08-01T00:00:00\+0000/, done);
+	});
+
+	it('should treat undefined flags as offy (like falsey)', function(done) {
+		request(app)
+			.get('/templated')
+			// Currently fails - suggest we just ditch this feature, as per
+			// https://github.com/Financial-Times/next-feature-flags-client/issues/26
+			//.expect(/<undefinedflag-off>Should appear<\/undefinedflag-off>/)
+			.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done)
+
 	});
 });
