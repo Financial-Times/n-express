@@ -1,0 +1,15 @@
+language: node_js
+script: npm test
+node_js:
+- '0.10'
+- '0.11'
+before_deploy:
+- npm-prepublish --verbose
+deploy:
+  provider: npm
+  email: matt@mattandre.ws
+  api_key:
+    secure: HKBkwMuL34GNKLvvpg9SNMznAvBLBtck/EaYkPjuJ3GpXG3eqy6aXyaxgLx3QcWuxpTC40dIh8kUxtgJRD8H6qgsdjSRsH+i/oTljd0LqrSiDpbrfXYblpWyXed2WYDYFwczYxmp919GTrEGoa9uqAmK5Ug14ZpLtujFHkhUzJ8=
+  on:
+    tags: true
+    repo: Financial-Times/next-express
