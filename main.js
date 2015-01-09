@@ -18,6 +18,19 @@ var ifEquals = require('./src/if-equals');
 
 var flagsPromise = flags.init();
 
+// MA: Disgraceful hack to trick symlinks partials to work in not production as this relies on
+// knowledge of implementation details that ft-next-express should not be privy to.
+if (process.env.NODE_ENV !== 'production') {
+	var actualExpressHandlebarsPrivateGetDir = expressHandlebars.ExpressHandlebars.prototype._getDir;
+	expressHandlebars.ExpressHandlebars.prototype._getDir = function() {
+		var actualExtname = this.extname;
+		this.extname = "*/*" + actualExtname;
+		var output = actualExpressHandlebarsPrivateGetDir.apply(this, arguments);
+		this.extname = actualExtname;
+		return output;
+	};
+}
+
 module.exports = function(options) {
 	options = options || {};
 	var app = express();
@@ -63,13 +76,13 @@ module.exports = function(options) {
 
 	app.use(flags.middleware);
 
-	app._listen = app.listen;
+	var actualAppListen = app.listen;
 	app.listen = function() {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
 		return flagsPromise.then(function() {
-			app._listen.apply(app, args);
+			actualAppListen.apply(app, args);
 		});
 	};
 
