@@ -2,7 +2,8 @@
   "name": "ft-next-express",
   "main": "main.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "release": "./bin/npm-prepublish.js --verbose && npm publish && git checkout package.json"
   },
   "dependencies": {
     "dateformat": "^1.0.11",
