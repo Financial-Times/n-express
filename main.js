@@ -4,17 +4,18 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
-var dateformat = require('./src/dateformat');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
-var resize = require('./src/resize');
-var robots = require('./src/robots');
-var paragraphs = require('./src/paragraphs');
-var removeImageTags = require('./src/remove-image-tags');
+var robots = require('./src/express/robots');
+var paragraphs = require('./src/handlebars/paragraphs');
+var removeImageTags = require('./src/handlebars/remove-image-tags');
 var normalizeName = require('./src/normalize-name');
-var ifEquals = require('./src/if-equals');
+var ifEquals = require('./src/handlebars/if-equals');
+var ifAll = require('./src/handlebars/if-all');
+var dateformat = require('./src/handlebars/dateformat');
+var resize = require('./src/handlebars/resize');
 
 var flagsPromise = flags.init();
 
@@ -54,6 +55,7 @@ module.exports = function(options) {
 	helpers.paragraphs = paragraphs;
 	helpers.removeImageTags = removeImageTags;
 	helpers.ifEquals = ifEquals;
+	helpers.ifAll = ifAll;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
