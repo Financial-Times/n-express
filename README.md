@@ -18,6 +18,7 @@ Comes with:-
 - Provides a handlebars helper to take a subsection of paragraphs (\<p>\</p>) from a HTML blob
 - Provides a handlebars helper to strip image tags from a HTML blob
 - Provides an 'ifEquals' handlebars helper
+- Provides an 'ifAll' handlebars helper
 
 ## Installation
 
@@ -82,9 +83,9 @@ app.listen(process.env.PORT, function() {
 	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">
 		{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}
 	</time>
-	
+
 	{{paragraphs text start=1 end=2}}
-	
+
 	{{#removeImageTags}}
 	Image<img src="someimage.jpg" alt="This wont be shown"/>EndImage
 	{{/removeImageTags}}
