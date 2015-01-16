@@ -16,6 +16,7 @@ var ifEquals = require('./src/handlebars/if-equals');
 var ifAll = require('./src/handlebars/if-all');
 var dateformat = require('./src/handlebars/dateformat');
 var resize = require('./src/handlebars/resize');
+var encode = require('./src/handlebars/encode');
 
 var flagsPromise = flags.init();
 
@@ -56,6 +57,7 @@ module.exports = function(options) {
 	helpers.removeImageTags = removeImageTags;
 	helpers.ifEquals = ifEquals;
 	helpers.ifAll = ifAll;
+	helpers.encode = encode;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
