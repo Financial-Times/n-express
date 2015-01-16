@@ -14,11 +14,8 @@ Comes with:-
 - Exposes app name via `__name` to templates
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
-- Provides a [date formatter](https://github.com/felixge/node-dateformat) that outputs in an `o-date` compatible way (but can be overridden to any format)
-- Provides a handlebars helper to take a subsection of paragraphs (\<p>\</p>) from a HTML blob
-- Provides a handlebars helper to strip image tags from a HTML blob
-- Provides an 'ifEquals' handlebars helper
-- Provides an 'ifAll' handlebars helper
+- Provides a range of [handlebars helpers](#handlebars-helpers)
+
 
 ## Installation
 
@@ -92,3 +89,33 @@ app.listen(process.env.PORT, function() {
 </body>
 </html>
 ```
+
+<a name="handlebars-helpers">
+
+## Handlebars helpers
+
+### dateformat
+Outputting date objects as strings
+- `{{#dateformat}}{{ a date object }}{{/dateformat}}` outputs an isoString
+- `{{#dateformat "dddd, d mmmm, yyyy"}}{{ a date object }}{{/dateformat}}` outputs the date formatted as 'Tuesday, 3 February, 2014'
+
+### encode
+Encoding strings to be output safely in html
+- `{{encode q mode='uriComponent'}}` outputs the result of `encodeURIComponent(q)` (`{{encode q }}` will also do this)
+- `{{encode q mode='uri'}}` outputs the result of `encodeURI(q)`
+
+### paragraphs
+Outputting some paragraphs from a larger chunk of html, zero indexed
+- `{{{paragraphs body start=0 end=1}}}` will output the first paragraph of `body`. *Note the triple mustaches*
+
+### removeImageTags
+Strips all image tags from a chunk of html
+- `{{{removeImageTags body}}}` *Note the triple mustaches*
+
+### ifEquals
+Outputs contents if a thing is equal to a value
+- `{{#ifEquals thing 'value'}} some content {{else}} some fallback content {{/ifEquals}}`
+
+### ifAll
+Outputs contents if a number of things are truthy *Note that handlebars has a [slightly odd understanding of truthiness](http://stackoverflow.com/questions/21444525/what-is-truthy-or-falsy-in-mustache-and-handlebars)*
+- `{{#ifAll thing1 thing2 thing3}} some content {{else}} some fallback content {{/ifAll}}`
