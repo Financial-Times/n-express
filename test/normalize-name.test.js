@@ -22,4 +22,8 @@ describe('normalize', function() {
 		assert.equal(normalize('ft-engels'), 'engels');
 	});
 
+	it('should normalize ft-engels-v002 to engels', function() {
+		assert.equal(normalize('ft-engels-v002'), 'engels');
+	});
+
 });

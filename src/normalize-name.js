@@ -1,7 +1,8 @@
 "use strict";
 
 module.exports = function(name) {
-	var matches = name.match(/^(?:ft-)?(?:next-)?(.*)/);
+	var matches = name.match(/^(?:ft-)?(?:next-)?(.*)(?:-v[0-9]{3,})$/);
+	matches = matches || name.match(/^(?:ft-)?(?:next-)?(.*)/);
 	if (matches) {
 		return matches[1];
 	}
