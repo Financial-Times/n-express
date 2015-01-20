@@ -5,9 +5,10 @@ var dateFormat = require('dateformat');
 module.exports = function(format, options) {
 	if (typeof format !== 'string') {
 		options = format;
-		format = 'isoDateTime';
+		format = 'isoUtcDateTime';
 	}
-	if (format === 'isoDateTime') {
+	if (format === 'isoDateTime' || format === 'isoUtcDateTime') {
+		format = 'isoUtcDateTime';
 		return dateFormat(options.fn(this), format, true);
 	}
 	return dateFormat(options.fn(this), format);
