@@ -14,6 +14,7 @@ var removeImageTags = require('./src/handlebars/remove-image-tags');
 var normalizeName = require('./src/normalize-name');
 var ifEquals = require('./src/handlebars/if-equals');
 var ifAll = require('./src/handlebars/if-all');
+var topicUrl = require('./src/handlebars/topic-url');
 var dateformat = require('./src/handlebars/dateformat');
 var resize = require('./src/handlebars/resize');
 var encode = require('./src/handlebars/encode');
@@ -61,6 +62,7 @@ module.exports = function(options) {
 	helpers.ifAll = ifAll;
 	helpers.encode = encode;
 	helpers.hashedAsset = hashedAsset;
+	helpers.topicUrl = topicUrl;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
