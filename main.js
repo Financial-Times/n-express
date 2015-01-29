@@ -8,6 +8,8 @@ var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
+var barriers = require('next-barrier-component')(flags);
+
 var robots = require('./src/express/robots');
 var paragraphs = require('./src/handlebars/paragraphs');
 var removeImageTags = require('./src/handlebars/remove-image-tags');
@@ -18,6 +20,7 @@ var topicUrl = require('./src/handlebars/topic-url');
 var dateformat = require('./src/handlebars/dateformat');
 var resize = require('./src/handlebars/resize');
 var encode = require('./src/handlebars/encode');
+
 
 var flagsPromise = flags.init();
 
@@ -67,6 +70,10 @@ module.exports = function(options) {
 			res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
 		}
 	}));
+
+	var handlebarsInstance =
+
+
 	app.get('/robots.txt', robots);
 
 	app.set('views', directory + '/views');
@@ -75,11 +82,13 @@ module.exports = function(options) {
 		helpers: helpers,
 		partialsDir: [
 			directory + '/views/partials',
-			directory + '/bower_components'
+			directory + '/bower_components',
+			barriers.partialsDirectory
 		]
 	}));
-	app.set('view engine', '.html');
 
+	app.set('view engine', '.html');
+	app.use(barriers.middleware);
 	app.use(flags.middleware);
 
 	var actualAppListen = app.listen;
