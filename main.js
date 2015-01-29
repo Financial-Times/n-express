@@ -71,8 +71,6 @@ module.exports = function(options) {
 		}
 	}));
 
-	var handlebarsInstance =
-
 
 	app.get('/robots.txt', robots);
 
