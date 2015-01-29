@@ -17,6 +17,7 @@ var ifAll = require('./src/handlebars/if-all');
 var dateformat = require('./src/handlebars/dateformat');
 var resize = require('./src/handlebars/resize');
 var encode = require('./src/handlebars/encode');
+var hashedAsset = require('./src/handlebars/hashed-asset');
 
 var flagsPromise = flags.init();
 
@@ -51,6 +52,7 @@ module.exports = function(options) {
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
+	app.locals.__rootDirectory = directory;
 	helpers.resize = resize;
 	helpers.dateformat = dateformat;
 	helpers.paragraphs = paragraphs;
@@ -58,6 +60,7 @@ module.exports = function(options) {
 	helpers.ifEquals = ifEquals;
 	helpers.ifAll = ifAll;
 	helpers.encode = encode;
+	helpers.hashedAsset = hashedAsset;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
