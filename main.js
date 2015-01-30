@@ -8,7 +8,7 @@ var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
-var barriers = require('next-barrier-component')(flags);
+var barriers = require('next-barrier-component');
 
 var robots = require('./src/express/robots');
 var paragraphs = require('./src/handlebars/paragraphs');
