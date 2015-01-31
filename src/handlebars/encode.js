@@ -7,9 +7,9 @@ module.exports = function (str, opts) {
     // if (opts.mode === 'html') {
     //     return str.replace()
     // } else
-    if (opts.mode = 'uriComponent') {
+    if (opts.hash.mode === 'uriComponent') {
         return encodeURIComponent(str);
-    } else if (opts.mode = 'uri') {
+    } else if (opts.hash.mode === 'uri') {
         return encodeURI(str);
     } else {
         return encodeURIComponent(str);
