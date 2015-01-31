@@ -7,6 +7,7 @@ require('isomorphic-fetch');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
+var handlebars = require('handlebars');
 var expressHandlebars = require('express-handlebars');
 var robots = require('./src/express/robots');
 var paragraphs = require('./src/handlebars/paragraphs');
@@ -19,6 +20,8 @@ var dateformat = require('./src/handlebars/dateformat');
 var resize = require('./src/handlebars/resize');
 var encode = require('./src/handlebars/encode');
 var hashedAsset = require('./src/handlebars/hashed-asset');
+var defineBlock = require('./src/handlebars/define-block');
+var outputBlock = require('./src/handlebars/output-block');
 
 var flagsPromise = flags.init();
 
@@ -63,6 +66,8 @@ module.exports = function(options) {
 	helpers.encode = encode;
 	helpers.hashedAsset = hashedAsset;
 	helpers.topicUrl = topicUrl;
+	helpers.defineBlock = defineBlock;
+	helpers.outputBlock = outputBlock;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
@@ -76,6 +81,7 @@ module.exports = function(options) {
 	app.engine('.html', expressHandlebars({
 		extname: '.html',
 		helpers: helpers,
+		handlebars: handlebars,
 		partialsDir: [
 			directory + '/views/partials',
 			directory + '/bower_components'
@@ -97,3 +103,10 @@ module.exports = function(options) {
 
 	return app;
 };
+
+
+
+
+
+
+

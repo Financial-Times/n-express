@@ -14,7 +14,7 @@ Comes with:-
 - Exposes app name via `__name` to templates
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
-- Provides a range of [handlebars helpers](#handlebars-helpers)
+- Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
 
 
 ## Installation
@@ -91,8 +91,24 @@ app.listen(process.env.PORT, function() {
 ```
 
 <a name="handlebars-helpers">
+## Handlebars inheritance
+This is achieved by means of two helpers: 
 
-## Handlebars helpers
+- `outputBlock` used in the parent template to indicate where content should be output. Can also define default content
+- `defineBlock` used in the child template to define the desired output to insert into the block
+
+```mustache
+// parent.html
+{{#outputBlock 'my-block'}}default content{{/outputBlock}}
+
+// child.html
+{{#defineBlock 'my-block'}}
+	Mustaches to process: {{someVar}}
+{{/defineBlock}}
+{{> parent}}
+```
+
+## Other handlebars helpers
 
 ### dateformat
 Outputting date objects as strings
