@@ -26,7 +26,7 @@ npm install --save ft-next-express
 When using the default layout there is also a hard dependency on some bower components. To install them (and add to your app's bower.json) run the following on your local machine. It's assumed you will have bower installed globally.
 
 ```sh
-	/path/to/ft-next-express/bower-install.sh
+chmod +x path/to/ft-next-express/bower-install.sh
 ```
 
 ## Example app
