@@ -19,6 +19,8 @@ var dateformat = require('./src/handlebars/dateformat');
 var resize = require('./src/handlebars/resize');
 var encode = require('./src/handlebars/encode');
 var hashedAsset = require('./src/handlebars/hashed-asset');
+var defineBlock = require('./src/handlebars/define-block');
+var outputBlock = require('./src/handlebars/output-block');
 
 var flagsPromise = flags.init();
 
@@ -63,6 +65,8 @@ module.exports = function(options) {
 	helpers.encode = encode;
 	helpers.hashedAsset = hashedAsset;
 	helpers.topicUrl = topicUrl;
+	helpers.defineBlock = defineBlock;
+	helpers.outputBlock = outputBlock;
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
@@ -76,6 +80,8 @@ module.exports = function(options) {
 	app.engine('.html', expressHandlebars({
 		extname: '.html',
 		helpers: helpers,
+		defaultLayout: 'default',
+		layoutsDir: __dirname + '/layouts',
 		partialsDir: [
 			directory + '/views/partials',
 			directory + '/bower_components'

@@ -12,15 +12,21 @@ Comes with:-
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
+- Default layout, which includes all the scripts and styles you'd expect (cuts the mustard, main.css, main.js). Also adds header and footer markup (a vanilla layout without header and footer is also available)
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
-- Provides a range of [handlebars helpers](#handlebars-helpers)
+- Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
 
 
 ## Installation
 
 ```sh
 npm install --save ft-next-express
+```
+When using the default layout there is also a hard dependency on some bower components. To install them (and add to your app's bower.json) run the following on your local machine. It's assumed you will have bower installed globally.
+
+```sh
+chmod +x path/to/ft-next-express/bower-install.sh
 ```
 
 ## Example app
@@ -91,8 +97,24 @@ app.listen(process.env.PORT, function() {
 ```
 
 <a name="handlebars-helpers">
+## Handlebars inheritance
+This is achieved by means of two helpers: 
 
-## Handlebars helpers
+- `outputBlock` used in the parent template to indicate where content should be output. Can also define default content
+- `defineBlock` used in the child template to define the desired output to insert into the block
+
+```mustache
+// parent.html
+{{#outputBlock 'my-block'}}default content{{/outputBlock}}
+
+// child.html
+{{#defineBlock 'my-block'}}
+	Mustaches to process: {{someVar}}
+{{/defineBlock}}
+{{> parent}}
+```
+
+## Other handlebars helpers
 
 ### dateformat
 Outputting date objects as strings

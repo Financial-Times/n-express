@@ -33,13 +33,19 @@ describe('simple app', function() {
 			.expect(200, /FT/, done);
 	});
 
+	it('should inherit from the default layout', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<\/html>/, done);
+	});
+
 	it('should do integrate with the image service', function(done) {
 		request(app)
 			.get('/templated')
 			.expect(200, /\/\/image.webservices.ft.com\/v1\/images\/raw\//, done);
 	});
 
-	it('should do support loading partials via bower', function(done) {
+	it('should support loading partials via bower', function(done) {
 		request(app)
 			.get('/templated')
 			.expect(200, /End of dep 2 partial/, done);
@@ -54,7 +60,13 @@ describe('simple app', function() {
 	it('should expose app name to views', function(done) {
 		request(app)
 			.get('/templated')
-			.expect(200, /on app demo-app!/, done);
+			.expect(200, /on app demo-app/, done);
+	});
+
+	it('should provide inheritance helpers', function(done) {
+		request(app)
+			.get('/templated')
+			.expect(200, /block1default block2override/, done);
 	});
 
 	it('should provide a nice paragraphs helper', function(done) {

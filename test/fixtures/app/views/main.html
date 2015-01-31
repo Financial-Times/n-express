@@ -1,42 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>{{title}} - on app {{__name}}!</title>
-</head>
-<body>
-	<h1>{{title}}</h1>
-	{{#yell}}Hello{{/yell}}
-	<h2>Resize test</h2>
-	<img src="{{#resize 150}}{{image}}{{/resize}}" />
-	<h2>Partials test:-</h2>
-	<div style="background: yellow">
-		{{> dep-1/templates/partial }}
-	</div>
+<h1>{{title}} - on app {{__name}}</h1>
+{{#yell}}Hello{{/yell}}
+<h2>Resize test</h2>
+<img src="{{#resize 150}}{{image}}{{/resize}}" />
+<h2>Partials test:-</h2>
+<div style="background: yellow">
+	{{> dep-1/templates/partial }}
+</div>
 
-	<h2>Symlinked Partials test:-</h2>
-	<div style="background: yellow">
-		{{> linked-dep-1/templates/partial }}
-	</div>
-	<h2>Dates test:-</h2>
-	<ul>
-		<li>Full date: {{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}</li>
-		<li>Custom date: {{#dateformat "dd/mm/yy"}}{{date}}{{/dateformat}}</li>
-		<li>ISO date: {{#dateformat}}{{date}}{{/dateformat}}</li>
-	</ul>
+<h2>Symlinked Partials test:-</h2>
+<div style="background: yellow">
+	{{> linked-dep-1/templates/partial }}
+</div>
+<h2>Dates test:-</h2>
+<ul>
+	<li>Full date: {{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}</li>
+	<li>Custom date: {{#dateformat "dd/mm/yy"}}{{date}}{{/dateformat}}</li>
+	<li>ISO date: {{#dateformat}}{{date}}{{/dateformat}}</li>
+</ul>
 
-	Start Paragraphs{{{paragraphs text start=1 end=2}}}End Paragraphs
+Start Paragraphs{{{paragraphs text start=1 end=2}}}End Paragraphs
 
-	{{#removeImageTags}}
-	Image<img src="someimage.jpg"/>EndImage
-	{{/removeImageTags}}
+{{#defineBlock 'block2'}}{{block2override}}{{/defineBlock}}
+{{>inheritanceTest}}
+{{#removeImageTags}}
+Image<img src="someimage.jpg"/>EndImage
+{{/removeImageTags}}
 
-	<undefinedflag-on>{{#flags.undefinedFlag.isSwitchedOn}}
-	Should not appear
-	{{/flags.undefinedFlag.isSwitchedOn}}</undefinedflag-on>
+<undefinedflag-on>{{#flags.undefinedFlag.isSwitchedOn}}
+Should not appear
+{{/flags.undefinedFlag.isSwitchedOn}}</undefinedflag-on>
 
-	<undefinedflag-off>{{#flags.undefinedFlag.isSwitchedOff}}
-	Should appear
-	{{/flags.undefinedFlag.isSwitchedOff}}</undefinedflag-off>
-</body>
-</html>
+<undefinedflag-off>{{#flags.undefinedFlag.isSwitchedOff}}
+Should appear
+{{/flags.undefinedFlag.isSwitchedOff}}</undefinedflag-off>
