@@ -155,3 +155,8 @@ Outputs contents if a number of things are truthy *Note that handlebars has a [s
 ### ifSome
 Outputs contents if at least one of a number of things is truthy *Note that handlebars has a [slightly odd understanding of truthiness](http://stackoverflow.com/questions/21444525/what-is-truthy-or-falsy-in-mustache-and-handlebars)*
 - `{{#ifSome thing1 thing2 thing3}} some content {{else}} some fallback content {{/ifSome}}`
+
+### ifBlock
+Outputs contents if a block has content assigned to it. If a block has default content specified within `{{#outputBlock}}` `ifBlock` will not be aware of this, but a flag can be set to inform it of the existence of default content
+- `{{#ifBlock 'my-block'}} some content {{else}} some fallback content {{/ifBlock}}`
+- `{{#ifBlock 'my-prepopulated-block' hasDefault=true}} some content {{else}} some fallback content {{/ifBlock}}`
