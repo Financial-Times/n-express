@@ -38,6 +38,11 @@ Should appear
 ifEquals:{{#ifEquals thing1 "thing1"}}first{{else}}not first{{/ifEquals}} {{#ifEquals thing1 "thing2"}}second{{else}}not second{{/ifEquals}}
 ifAll:{{#ifAll thing1 thing2 thing3}}first{{else}}not first{{/ifAll}} {{#ifAll thing1 thing2 nothing}}second{{else}}not second{{/ifAll}}
 ifSome:{{#ifSome thing1 nothing}}first{{else}}not first{{/ifSome}} {{#ifSome nothing stillNothing}}second{{else}}not second{{/ifSome}}
+{{#defineBlock 'filledblock'}}filled{{/defineBlock}}
+
+ifBlock:{{#ifBlock 'defaultblock' hasDefault=true}}defaultblock{{else}}not defaultblock{{/ifBlock}} {{#ifBlock 'emptyblock'}}emptyblock{{else}}not emptyblock{{/ifBlock}} {{#ifBlock 'filledblock'}}filledblock{{else}}not filledblock{{/ifBlock}}
+
+{{>ifBlockTest}}
 
 {{encode "http://domain.com?q=this / that" mode='uri'}} {{encode "http://domain.com?q=this / that"}}
 {{topicUrl "page:\"read it\""}} {{topicUrl "section:\"segment it\""}}
