@@ -26,7 +26,10 @@ app.get('/templated', function(req, res, next) {
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>",
 		block1default: 'block1default',
 		block2default: 'block2default',
-		block2override: 'block2override'
+		block2override: 'block2override',
+		thing1: 'thing1',
+		thing2: 'thing2',
+		thing3: 'thing3'
 	});
 });
 

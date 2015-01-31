@@ -114,7 +114,7 @@ This is achieved by means of two helpers:
 {{> parent}}
 ```
 
-## Other handlebars helpers
+## Content helpers
 
 ### dateformat
 Outputting date objects as strings
@@ -138,6 +138,12 @@ Outputting some paragraphs from a larger chunk of html, zero indexed
 Strips all image tags from a chunk of html
 - `{{{removeImageTags body}}}` *Note the triple mustaches*
 
+### resize
+Replaces an image url with an image service url, serving an appropriately resized image
+- `{{#resize 200}}http://images.com/pic.jpg{{/resize}}`
+
+## Logic helpers
+
 ### ifEquals
 Outputs contents if a thing is equal to a value
 - `{{#ifEquals thing 'value'}} some content {{else}} some fallback content {{/ifEquals}}`
@@ -145,3 +151,7 @@ Outputs contents if a thing is equal to a value
 ### ifAll
 Outputs contents if a number of things are truthy *Note that handlebars has a [slightly odd understanding of truthiness](http://stackoverflow.com/questions/21444525/what-is-truthy-or-falsy-in-mustache-and-handlebars)*
 - `{{#ifAll thing1 thing2 thing3}} some content {{else}} some fallback content {{/ifAll}}`
+
+### ifSome
+Outputs contents if at least one of a number of things is truthy *Note that handlebars has a [slightly odd understanding of truthiness](http://stackoverflow.com/questions/21444525/what-is-truthy-or-falsy-in-mustache-and-handlebars)*
+- `{{#ifSome thing1 thing2 thing3}} some content {{else}} some fallback content {{/ifSome}}`

@@ -15,5 +15,5 @@ module.exports = function(id, options) {
 
     // currently don't understand any other kinds of id e.g. capi2 id... to be fleshed out later
     // just return noop url for now, with something we can track
-    return '#" data-track-invalid-url-' + id;
+    return '#" data-tracking="invalid-url';
 };
