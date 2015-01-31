@@ -36,8 +36,7 @@ describe('simple app', function() {
 	it('should inherit from the default layout', function(done) {
 		request(app)
 			.get('/templated')
-			// .expect(200, /^<!DOCTYPE html>.*<\/html>/, done); why does this regex not work???
-			.expect(200, /^<!DOCTYPE html>/, done);
+			.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<\/html>/, done);
 	});
 
 	it('should do integrate with the image service', function(done) {
