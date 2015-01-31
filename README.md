@@ -12,7 +12,7 @@ Comes with:-
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
-- Default layout, which includes all the scripts and styles you'd expect (cuts the mustard, main.css, main.js). Also adds header and footer markup.
+- Default layout, which includes all the scripts and styles you'd expect (cuts the mustard, main.css, main.js). Also adds header and footer markup (a vanilla layout without header and footer is also available)
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
