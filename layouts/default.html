@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<link rel="stylesheet" href="//build.origami.ft.com/bundles/css?modules=o-fonts@^1.4.1,o-grid@^2.1.5">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="theme-color" content="#fff1e0"/>
+		<meta name="dfp_site" content="test.next.ft" />
+		<link rel="stylesheet" href="/{{__name}}/main.css"/>
+		<title>{{#title}}{{this}} &mdash; {{/title}}Financial Times</title>
+		{{>next-mustard/check}}
+	</head>
+	<body>
+		{{>ft-next-wrapper/templates/tracking}}
+		{{>next-header/templates/main}}
+
+		{{{body}}}
+
+		{{>ft-next-wrapper/templates/survey}}
+		{{>ft-next-wrapper/templates/addscripts}}
+
+	</body>
+</html>

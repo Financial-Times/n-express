@@ -7,7 +7,6 @@ require('isomorphic-fetch');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
-var handlebars = require('handlebars');
 var expressHandlebars = require('express-handlebars');
 var robots = require('./src/express/robots');
 var paragraphs = require('./src/handlebars/paragraphs');
@@ -81,7 +80,8 @@ module.exports = function(options) {
 	app.engine('.html', expressHandlebars({
 		extname: '.html',
 		helpers: helpers,
-		handlebars: handlebars,
+		defaultLayout: 'default',
+		layoutsDir: __dirname + '/layouts',
 		partialsDir: [
 			directory + '/views/partials',
 			directory + '/bower_components'
