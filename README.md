@@ -5,7 +5,7 @@ Slightly enhanced Express.
 
 Comes with:-
 - [Handlebars](http://handlebarsjs.com/) (with added support for loading partials from `bower_components`)
-- [Origami Image Service](http://image.webservices.ft.com/) integration
+- [Origami Image Service](https://imageservice.glb.ft.com/) integration
 - [Sensible error handling](https://github.com/Financial-Times/express-errors-handler) (configurable via environment variables)
 - Full [Next Flags](https://github.com/Financial-Times/next-feature-flags-client) integration
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
