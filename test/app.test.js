@@ -36,7 +36,7 @@ describe('simple app', function() {
 	it('should do integrate with the image service', function(done) {
 		request(app)
 			.get('/templated')
-			.expect(200, /\/\/image.webservices.ft.com\/v1\/images\/raw\//, done);
+			.expect(200, /\/\/imageservice\.glb\.ft\.com\/v1\/images\/raw\//, done);
 	});
 
 	it('should do support loading partials via bower', function(done) {
