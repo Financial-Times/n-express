@@ -9,7 +9,7 @@ describe('simple app', function() {
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
-			.expect('Vary', 'X-Flags')
+			.expect('Vary', /X-Flags/)
 			.expect(200, 'Hello world', done);
 	});
 
