@@ -14,7 +14,7 @@
     "express-handlebars": "^1.1.0",
     "isomorphic-fetch": "^1.0.0",
     "next-feature-flags-client": "https://github.com/Financial-Times/next-feature-flags-client/archive/v2.3.3.tar.gz",
-    "next-barrier-component" : "Financial-Times/next-barrier-component#master"
+    "next-barrier-component" : "Financial-Times/next-barrier-component#v1"
   },
   "devDependencies": {
     "mocha": "^2.0.1",
