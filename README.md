@@ -12,12 +12,12 @@ Comes with:-
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
-- Provides 3 layouts:
-	 - noop.html - (default) Outputs unaltered the result of rendering an application's template
+- By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts):
 	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard
 	 - wrapper.html - All the above but also including the next header and footer
 
 For vanilla and wrapper layouts scripts and styles must still be manually required/imported into your application's sass and js
+
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
