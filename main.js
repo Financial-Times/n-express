@@ -87,7 +87,7 @@ module.exports = function(options) {
 	app.engine('.html', expressHandlebars({
 		extname: '.html',
 		helpers: helpers,
-		defaultLayout: 'noop',
+		defaultLayout: false,
 		layoutsDir: __dirname + '/layouts',
 		partialsDir: [
 			directory + '/views/partials',
