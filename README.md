@@ -12,7 +12,12 @@ Comes with:-
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
-- Default layout, which includes all the scripts and styles you'd expect (cuts the mustard, main.css, main.js). Also adds header and footer markup (a vanilla layout without header and footer is also available)
+- Provides 3 layouts:
+	 - noop.html - (default) Outputs unaltered the result of rendering an application's template
+	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard
+	 - wrapper.html - All the above but also including the next header and footer
+
+For vanilla and wrapper layouts scripts and styles must still be manually required/imported into your application's sass and js
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
@@ -98,7 +103,7 @@ app.listen(process.env.PORT, function() {
 
 <a name="handlebars-helpers">
 ## Handlebars inheritance
-This is achieved by means of two helpers: 
+This is achieved by means of two helpers:
 
 - `outputBlock` used in the parent template to indicate where content should be output. Can also define default content
 - `defineBlock` used in the child template to define the desired output to insert into the block
