@@ -33,6 +33,20 @@ app.get('/templated', function(req, res, next) {
 	});
 });
 
+app.get('/wrapped', function(req, res, next) {
+	res.render('main', {
+		layout: 'wrapper',
+		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
+	});
+});
+
+app.get('/vanilla', function(req, res, next) {
+	res.render('main', {
+		layout: 'vanilla',
+		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
+	});
+});
+
 app.listen(port, function() {
 	console.log("Listening on " + port);
 });

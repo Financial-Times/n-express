@@ -33,10 +33,24 @@ describe('simple app', function() {
 				.expect(200, /FT/, done);
 		});
 
-		it('should inherit from the default layout', function(done) {
+		it('should not inherit any markup by default', function(done) {
 			request(app)
 				.get('/templated')
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<\/html>/, done);
+				.expect(200, /^<h1>FT - on/, done);
+		});
+
+		it('should be possible to inherit a wrapper (inc header & footer) layout', function(done) {
+			request(app)
+				.get('/wrapped')
+				// doctype ... header ... script loader ... end page
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
+		});
+
+		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
+			request(app)
+				.get('/vanilla')
+				// doctype ... no header ... script loader ... end page
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*<h1>(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
 		});
 
 		it('should do integrate with the image service', function(done) {
