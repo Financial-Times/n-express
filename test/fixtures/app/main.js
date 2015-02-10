@@ -29,13 +29,16 @@ app.get('/templated', function(req, res, next) {
 		block2override: 'block2override',
 		thing1: 'thing1',
 		thing2: 'thing2',
-		thing3: 'thing3'
+		thing3: 'thing3',
+		items: [1,2,3,4,5]
 	});
 });
 
 app.get('/wrapped', function(req, res, next) {
 	res.render('main', {
 		layout: 'wrapper',
+				items: [1,2,3,4,5],
+
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
 	});
 });
@@ -43,6 +46,8 @@ app.get('/wrapped', function(req, res, next) {
 app.get('/vanilla', function(req, res, next) {
 	res.render('main', {
 		layout: 'vanilla',
+				items: [1,2,3,4,5],
+
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
 	});
 });
