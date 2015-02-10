@@ -89,7 +89,7 @@ app.listen(process.env.PORT, function() {
 	{{/flags.myFlag.isSwitchedOn}}
 
 	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">
-		{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{/dateformat}}
+		{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}
 	</time>
 
 	{{paragraphs text start=1 end=2}}
