@@ -92,6 +92,14 @@ describe('simple app', function() {
 				.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done)
 		});
 
+		describe('iteration helpers', function () {
+			it('should provide an slice helper', function(done) {
+				request(app)
+					.get('/templated')
+					.expect(200, /slice\:34\:end/, done);
+			});
+		});
+
 		describe('logic helpers', function () {
 			it('should provide an if equals helper', function(done) {
 				request(app)
