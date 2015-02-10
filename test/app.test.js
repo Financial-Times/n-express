@@ -110,6 +110,13 @@ describe('simple app', function() {
 					.get('/templated')
 					.expect(200, /ifSome\:first not second/, done);
 			});
+
+			it('should provide an if block helper', function(done) {
+				request(app)
+					.get('/templated')
+					.expect(200, /ifBlock\:defaultblock not emptyblock filledblock/, done);
+			});
+
 		});
 
 		describe('content helpers', function () {
