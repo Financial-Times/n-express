@@ -160,3 +160,10 @@ Outputs contents if a number of things are truthy *Note that handlebars has a [s
 ### ifSome
 Outputs contents if at least one of a number of things is truthy *Note that handlebars has a [slightly odd understanding of truthiness](http://stackoverflow.com/questions/21444525/what-is-truthy-or-falsy-in-mustache-and-handlebars)*
 - `{{#ifSome thing1 thing2 thing3}} some content {{else}} some fallback content {{/ifSome}}`
+
+## Iteration helpers
+
+### slice
+Loop through a subset of items
+- `{{#slice items limit="2" offset="4"}} some content {{/slice}}
+
