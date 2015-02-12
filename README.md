@@ -171,12 +171,16 @@ Loop through a subset of items
 
 If you’re using flags and testing with mocha, you’ll need to expose listen in your app:
 
-`module.exports.listen = app.listen(port);`
+```
+module.exports.listen = app.listen(port);
+```
 
 And in your tests, add this:
 
-`before(function() {
+```
+before(function() {
 	return app.listen;
-});`
+});
+```
 
 This’ll make sure your tests wait for flags to be ready.
