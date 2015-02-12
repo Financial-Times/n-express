@@ -167,3 +167,20 @@ Outputs contents if at least one of a number of things is truthy *Note that hand
 Loop through a subset of items
 - `{{#slice items limit="2" offset="4"}} some content {{/slice}}
 
+## Testing flags
+
+If you’re using flags and testing with mocha, you’ll need to expose listen in your app:
+
+```
+module.exports.listen = app.listen(port);
+```
+
+And in your tests, add this:
+
+```
+before(function() {
+	return app.listen;
+});
+```
+
+This’ll make sure your tests wait for flags to be ready.
