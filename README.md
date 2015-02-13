@@ -13,7 +13,7 @@ Comes with:-
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
 - Exposes app name via `__name` to templates
 - By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts):
-	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard
+	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard and tracking
 	 - wrapper.html - All the above but also including the next header and footer
 
 For vanilla and wrapper layouts scripts and styles must still be manually required/imported into your application's sass and js

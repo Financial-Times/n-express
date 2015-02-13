@@ -50,7 +50,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/vanilla')
 				// doctype ... no header ... script loader ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*<h1>(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*tracking([^a-z])*<h1>(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
 		});
 
 		it('should do integrate with the image service', function(done) {

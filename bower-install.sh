@@ -1,3 +1,4 @@
-bower install -S Financial-Times/next-mustard#^2.0.0 \
+bower install -S Financial-Times/next-mustard \
  Financial-Times/next-footer \
- Financial-Times/next-header
+ Financial-Times/next-header \
+ Financial-Times/next-ui-setup
