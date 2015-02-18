@@ -30,7 +30,8 @@ app.get('/templated', function(req, res, next) {
 		thing1: 'thing1',
 		thing2: 'thing2',
 		thing3: 'thing3',
-		items: [1,2,3,4,5]
+		items: [1,2,3,4,5],
+		obj: {prop: 'val'}
 	});
 });
 

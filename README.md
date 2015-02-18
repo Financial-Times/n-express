@@ -147,6 +147,11 @@ Strips all image tags from a chunk of html
 Replaces an image url with an image service url, serving an appropriately resized image
 - `{{#resize 200}}http://images.com/pic.jpg{{/resize}}`
 
+### json
+Outputs an object as json.
+- `{{json obj}}` - for use within data attributes and elsewhere in html (will convert '"' to '&quot;' etc..)
+- `{{{json obj}}}` - for outputting the json unencoded
+
 ## Logic helpers
 
 ### ifEquals

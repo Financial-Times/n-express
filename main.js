@@ -11,20 +11,8 @@ var expressHandlebars = require('express-handlebars');
 var barriers = require('next-barrier-component');
 
 var robots = require('./src/express/robots');
-var paragraphs = require('./src/handlebars/paragraphs');
-var removeImageTags = require('./src/handlebars/remove-image-tags');
 var normalizeName = require('./src/normalize-name');
-var ifEquals = require('./src/handlebars/if-equals');
-var ifAll = require('./src/handlebars/if-all');
-var ifSome = require('./src/handlebars/if-some');
-var topicUrl = require('./src/handlebars/topic-url');
-var dateformat = require('./src/handlebars/dateformat');
-var resize = require('./src/handlebars/resize');
-var encode = require('./src/handlebars/encode');
-var hashedAsset = require('./src/handlebars/hashed-asset');
-var defineBlock = require('./src/handlebars/define-block');
-var outputBlock = require('./src/handlebars/output-block');
-var slice = require('./src/handlebars/slice');
+
 
 
 var flagsPromise = flags.init();
@@ -61,19 +49,21 @@ module.exports = function(options) {
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
-	helpers.resize = resize;
-	helpers.dateformat = dateformat;
-	helpers.paragraphs = paragraphs;
-	helpers.removeImageTags = removeImageTags;
-	helpers.ifEquals = ifEquals;
-	helpers.ifAll = ifAll;
-	helpers.ifSome = ifSome;
-	helpers.encode = encode;
-	helpers.hashedAsset = hashedAsset;
-	helpers.topicUrl = topicUrl;
-	helpers.defineBlock = defineBlock;
-	helpers.outputBlock = outputBlock;
-	helpers.slice = slice;
+
+	helpers.paragraphs = require('./src/handlebars/paragraphs');
+	helpers.removeImageTags = require('./src/handlebars/remove-image-tags');
+	helpers.ifEquals = require('./src/handlebars/if-equals');
+	helpers.ifAll = require('./src/handlebars/if-all');
+	helpers.ifSome = require('./src/handlebars/if-some');
+	helpers.topicUrl = require('./src/handlebars/topic-url');
+	helpers.dateformat = require('./src/handlebars/dateformat');
+	helpers.resize = require('./src/handlebars/resize');
+	helpers.encode = require('./src/handlebars/encode');
+	helpers.hashedAsset = require('./src/handlebars/hashed-asset');
+	helpers.defineBlock = require('./src/handlebars/define-block');
+	helpers.outputBlock = require('./src/handlebars/output-block');
+	helpers.slice = require('./src/handlebars/slice');
+	helpers.json = require('./src/handlebars/json');
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
