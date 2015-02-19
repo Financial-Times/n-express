@@ -11,7 +11,7 @@
     "es6-promise": "^2.0.1",
     "express": "^4.10.5",
     "express-errors-handler": "^1.0.0",
-    "express-handlebars": "^1.1.0",
+    "express-handlebars": "^1.2.1",
     "isomorphic-fetch": "^2.0.0",
     "next-feature-flags-client": "https://github.com/Financial-Times/next-feature-flags-client/archive/v3.0.0.tar.gz",
     "next-barrier-component" : "Financial-Times/next-barrier-component#v1"
