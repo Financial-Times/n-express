@@ -152,6 +152,10 @@ Outputs an object as json.
 - `{{json obj}}` - for use within data attributes and elsewhere in html (will convert '"' to '&quot;' etc..)
 - `{{{json obj}}}` - for outputting the json unencoded
 
+### usePartial
+Allows a partial to be selected based on the value of a variable
+- `{{usePartial 'path/to/partial'}}` *Note* a '>' is not required in the path
+
 ## Logic helpers
 
 ### ifEquals

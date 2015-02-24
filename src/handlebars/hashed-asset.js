@@ -1,4 +1,6 @@
-"use strict";
+/*jshint node:true*/
+'use strict';
+
 module.exports = function(options) {
 	var assetHash;
 	var file = options.fn(this);
