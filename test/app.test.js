@@ -173,7 +173,8 @@ describe('simple app', function() {
 			it('should provide a dynamic partials helper', function(done) {
 				request(app)
 					.get('/templated')
-					.expect(200, /dynamic-partial/, done);
+					.expect(200, /dynamic-partial/, done)
+					.expect(200, /dynamicroot-iamroot/, done);
 			});
 
 		});
