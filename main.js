@@ -8,12 +8,11 @@ var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
+var handlebars = require('handlebars');
 var barriers = require('next-barrier-component');
 
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
-
-
 
 var flagsPromise = flags.init();
 
@@ -51,6 +50,7 @@ module.exports = function(options) {
 	helpers.outputBlock = require('./src/handlebars/output-block');
 	helpers.slice = require('./src/handlebars/slice');
 	helpers.json = require('./src/handlebars/json');
+	helpers.usePartial = require('./src/handlebars/use-partial');
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
@@ -63,7 +63,10 @@ module.exports = function(options) {
 	app.get('/robots.txt', robots);
 
 	app.set('views', directory + '/views');
-	app.engine('.html', expressHandlebars({
+
+	var expressHandlebarsInstance = new expressHandlebars.ExpressHandlebars({
+		// use a handlebars instance we have direct access to so we can expose partials
+		handlebars: handlebars,
 		extname: '.html',
 		helpers: helpers,
 		defaultLayout: false,
@@ -73,7 +76,14 @@ module.exports = function(options) {
 			directory + '/bower_components',
 			barriers.partialsDirectory
 		]
-	}));
+	});
+
+	// makes the usePartial helper possible
+	var exposePartials = expressHandlebarsInstance.getPartials().then(function (partials) {
+		handlebars.partials = partials;
+	});
+
+	app.engine('.html', expressHandlebarsInstance.engine);
 
 	app.set('view engine', '.html');
 	app.use(barriers.middleware);
@@ -84,7 +94,7 @@ module.exports = function(options) {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
-		return flagsPromise.then(function() {
+		return Promise.all([flagsPromise, exposePartials]).then(function() {
 			actualAppListen.apply(app, args);
 		});
 	};

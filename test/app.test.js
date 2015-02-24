@@ -53,7 +53,7 @@ describe('simple app', function() {
 				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*tracking([^a-z])*<h1>(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
 		});
 
-		it('should do integrate with the image service', function(done) {
+		it('should integrate with the image service', function(done) {
 			request(app)
 				.get('/templated')
 				.expect(200, /\/\/image.webservices.ft.com\/v1\/images\/raw\//, done);
@@ -89,7 +89,7 @@ describe('simple app', function() {
 				// Currently fails - suggest we just ditch this feature, as per
 				// https://github.com/Financial-Times/next-feature-flags-client/issues/26
 				//.expect(/<undefinedflag-off>Should appear<\/undefinedflag-off>/)
-				.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done)
+				.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done);
 		});
 
 		describe('iteration helpers', function () {
@@ -168,6 +168,12 @@ describe('simple app', function() {
 				request(app)
 					.get('/templated')
 					.expect(200, /\{&quot;prop&quot;:&quot;val&quot;\}/, done);
+			});
+
+			it('should provide a dynamic partials helper', function(done) {
+				request(app)
+					.get('/templated')
+					.expect(200, /dynamic-partial/, done);
 			});
 
 		});

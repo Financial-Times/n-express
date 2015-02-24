@@ -44,4 +44,5 @@ slice:{{#slice items limit="2" offset="2"}}{{this}}{{/slice}}:end
 {{encode "http://domain.com?q=this / that" mode='uri'}} {{encode "http://domain.com?q=this / that"}}
 {{topicUrl "page:\"read it\""}} {{topicUrl "section:\"segment it\""}}
 {{#resize 200}}http://image.jpg{{/resize}}
+{{usePartial 'dynamic-partial/test'}}
 <div data-it="{{json obj}}"></div>
