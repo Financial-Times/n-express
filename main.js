@@ -59,7 +59,6 @@ module.exports = function(options) {
 		}
 	}));
 
-
 	app.get('/robots.txt', robots);
 
 	app.set('views', directory + '/views');
@@ -81,6 +80,8 @@ module.exports = function(options) {
 	// makes the usePartial helper possible
 	var exposePartials = expressHandlebarsInstance.getPartials().then(function (partials) {
 		handlebars.partials = partials;
+		// express handlebars does a poor job of making the helpers available everywhere, so we do it manually
+		handlebars.registerHelper(helpers);
 	});
 
 	app.engine('.html', expressHandlebarsInstance.engine);

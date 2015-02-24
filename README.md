@@ -154,7 +154,7 @@ Outputs an object as json.
 
 ### usePartial
 Allows a partial to be selected based on the value of a variable
-- `{{usePartial 'path/to/partial'}}` *Note* a '>' is not required in the path
+- `{{{usePartial 'path/to/partial'}}}` *Note* a '>' is not required in the path and you will normally need triple mustaches
 
 ## Logic helpers
 

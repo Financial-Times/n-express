@@ -1,1 +1,2 @@
-dynamic-{{partial}}
+{{!ifSome is here to test if helpers are available in this dynamically loaded partial}}
+{{#ifSome 'a' 'b' }}dynamic-{{partial}}{{/ifSome}}
