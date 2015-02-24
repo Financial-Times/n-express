@@ -1,2 +1,4 @@
 {{!ifSome is here to test if helpers are available in this dynamically loaded partial}}
-{{#ifSome 'a' 'b' }}dynamic-{{partial}}{{/ifSome}}
+{{#ifSome 'a' 'b' }}dynamic-{{this}}{{/ifSome}}
+
+dynamicroot-{{@root.rootVar}}
