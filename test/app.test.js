@@ -49,8 +49,8 @@ describe('simple app', function() {
 		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
 			request(app)
 				.get('/vanilla')
-				// doctype ... no header ... script loader ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*tracking([^a-z])*<h1>(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
+				// doctype ... no header ... script loader ... tracking ... end page
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*<h1>(.|[\r\n])*addscripts([\t]+)tracking*/, done);
 		});
 
 		it('should integrate with the image service', function(done) {
