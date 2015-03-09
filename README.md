@@ -11,7 +11,7 @@ Comes with:-
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`
-- Exposes app name via `__name` to templates
+- Exposes app name via `__name` to templates and in a `data-next-app` attribute on the html tag in templates
 - By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts):
 	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard and tracking
 	 - wrapper.html - All the above but also including the next header and footer

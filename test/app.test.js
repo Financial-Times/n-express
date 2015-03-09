@@ -46,11 +46,23 @@ describe('simple app', function() {
 				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*addscripts(.|[\r\n])*<\/html>/, done);
 		});
 
+		it('wrapper should expose app name to client side code', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /<html.*data-next-app="demo-app"/, done);
+		});
+
 		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
 			request(app)
 				.get('/vanilla')
 				// doctype ... no header ... script loader ... tracking ... end page
 				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*<h1>(.|[\r\n])*addscripts([\t]+)tracking*/, done);
+		});
+
+		it('vanilla should expose app name to client side code', function(done) {
+			request(app)
+				.get('/vanilla')
+				.expect(200, /<html.*data-next-app="demo-app"/, done);
 		});
 
 		it('should integrate with the image service', function(done) {
@@ -76,6 +88,8 @@ describe('simple app', function() {
 				.get('/templated')
 				.expect(200, /on app demo-app/, done);
 		});
+
+
 
 		it('should provide inheritance helpers', function(done) {
 			request(app)
