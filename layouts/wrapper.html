@@ -16,6 +16,11 @@
 
 		{{>next-footer/main}}
 		{{>access_barrier this}}
+		{{#if @root.flags.javascript.isSwitchedOn }}
+		<script>
+		window.nextFeatureFlags = {{{json @root.flags}}};
+		</script>
+		{{/if}}
 		{{>next-mustard/addscripts}}
 		{{>next-js-setup/templates/tracking}}
 	</body>
