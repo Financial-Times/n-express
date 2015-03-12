@@ -175,7 +175,7 @@ describe('simple app', function() {
 			it('should provide an image resizing helper', function(done) {
 				request(app)
 					.get('/templated')
-					.expect(200, /\/\/image\.webservices.ft.com\/v1\/images\/raw\/http%3A%2F%2Fimage\.jpg\?width=200&source=docs&fit=scale-down/, done);
+					.expect(200, /\/\/image\.webservices.ft.com\/v1\/images\/raw\/http%3A%2F%2Fimage\.jpg\?width=200&source=next&fit=scale-down/, done);
 			});
 
 			it('should provide a json helper', function(done) {
