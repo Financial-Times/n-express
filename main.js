@@ -108,6 +108,7 @@ module.exports = function(options) {
 		app.use(errorsHandler.middleware);
 
 		return Promise.all([flagsPromise, exposePartials]).then(function() {
+			if (options.metrics) metrics.count('express.start');
 			actualAppListen.apply(app, args);
 		});
 	};
