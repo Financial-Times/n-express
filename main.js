@@ -11,11 +11,10 @@ var expressHandlebars = require('express-handlebars');
 var handlebars = require('handlebars');
 var barriers = require('next-barrier-component');
 var metrics = require('next-metrics');
+var fetchMetrics = require('./src/express/fetch-metrics');
 
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
-
-var flagsPromise = flags.init();
 
 module.exports = function(options) {
 	options = options || {};
@@ -23,6 +22,7 @@ module.exports = function(options) {
 	var name = options.name;
 	var directory = options.directory || process.cwd();
 	var helpers = options.helpers || {};
+
 	if (!name) {
 		try {
 			var packageJson = require(directory + '/package.json');
@@ -88,10 +88,8 @@ module.exports = function(options) {
 	app.engine('.html', expressHandlebarsInstance.engine);
 
 	app.set('view engine', '.html');
-	app.use(barriers.middleware);
-	app.use(flags.middleware);
 
-	// NOTE: When working on the ‘next’ version of ‘ft-next-express’
+	// NOTE: When working on the next major release of ‘ft-next-express’
 	// please make this the default (not opt-in)
 	if (options.metrics) {
 		metrics.init({ app: name, flushEvery: 40000 });
@@ -100,7 +98,15 @@ module.exports = function(options) {
 			metrics.instrument(res, { as: 'express.http.res' });
 			next();
 		});
+		fetchMetrics.init();
 	}
+
+	app.use(barriers.middleware);
+
+	var flagsPromise = flags.init();
+	app.use(flags.middleware);
+
+
 
 	var actualAppListen = app.listen;
 	app.listen = function() {
