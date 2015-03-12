@@ -10,6 +10,7 @@ var flags = require('next-feature-flags-client');
 var expressHandlebars = require('express-handlebars');
 var handlebars = require('handlebars');
 var barriers = require('next-barrier-component');
+var Metrics = require('next-metrics');
 
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
@@ -89,6 +90,11 @@ module.exports = function(options) {
 	app.set('view engine', '.html');
 	app.use(barriers.middleware);
 	app.use(flags.middleware);
+	app.use(function(req, res, next) {
+		Metrics.instrument(req, { as: 'express.http.req' });
+		Metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
 
 	var actualAppListen = app.listen;
 	app.listen = function() {
