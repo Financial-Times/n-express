@@ -95,7 +95,7 @@ module.exports = function(options) {
 	// please make this the default (not opt-in)
 	if (options.metrics) {
 		metrics.init({ app: name, flushEvery: 40000 });
-		app.use(function(req, res, next) {
+		app.use(/\/(?!__).*/, function(req, res, next) {
 			metrics.instrument(req, { as: 'express.http.req' });
 			metrics.instrument(res, { as: 'express.http.res' });
 			next();
