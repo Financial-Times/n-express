@@ -35,6 +35,12 @@ function fetchReporter() {
 		obj['fetch.' + service + '.response.status_2xx.count'] = counters['fetch_' + service + '_status_2xx'].count;
 		counters['fetch_' + service + '_status_2xx'].clear();
 
+
+		obj['fetch.' + service + '.response.status_3xx.response_time.mean'] = counters['fetch_' + service + '_status_3xx_response_time'].mean();
+		obj['fetch.' + service + '.response.status_3xx.response_time.min'] = counters['fetch_' + service + '_status_3xx_response_time'].min;
+		obj['fetch.' + service + '.response.status_3xx.response_time.max'] = counters['fetch_' + service + '_status_3xx_response_time'].max;
+		counters['fetch_' + service + '_status_3xx_response_time'].clear();
+
 		obj['fetch.' + service + '.response.status_3xx.count'] = counters['fetch_' + service + '_status_3xx'].count;
 		counters['fetch_' + service + '_status_3xx'].clear();
 
