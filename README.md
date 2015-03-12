@@ -8,6 +8,7 @@ Comes with:-
 - [Origami Image Service](http://image.webservices.ft.com/) integration
 - [Sensible error handling](https://github.com/Financial-Times/express-errors-handler) (configurable via environment variables)
 - Full [Next Flags](https://github.com/Financial-Times/next-feature-flags-client) integration
+- Optional basic [Next Metrics](https://github.com/Financial-Times/next-metrics) integration
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}`

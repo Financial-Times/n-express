@@ -7,7 +7,8 @@ var yell = require('./src/yell');
 
 var app = module.exports = express({
 	directory: __dirname,
-	helpers: { yell: yell }
+	helpers: { yell: yell },
+	metrics: true
 });
 
 app.get("/", function(req, res) {

@@ -4,7 +4,7 @@ install:
 	npm install
 
 test:
-	mocha
+	export HOSTEDGRAPHITE_APIKEY=123; mocha
 
 run:
-	node test/fixtures/app/main.js
+	export HOSTEDGRAPHITE_APIKEY=123; node test/fixtures/app/main.js
