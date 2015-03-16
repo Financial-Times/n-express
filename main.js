@@ -52,6 +52,7 @@ module.exports = function(options) {
 	helpers.slice = require('./src/handlebars/slice');
 	helpers.json = require('./src/handlebars/json');
 	helpers.usePartial = require('./src/handlebars/use-partial');
+	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
