@@ -11,10 +11,20 @@ var expressHandlebars = require('express-handlebars');
 var handlebars = require('handlebars');
 var barriers = require('next-barrier-component');
 var metrics = require('next-metrics');
-var fetchMetrics = require('./src/express/fetch-metrics');
 
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
+
+var serviceMatchers = {
+	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
+	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
+	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
+	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
+	'elastic-mget': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
+	// 'elastic-search':
+	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
+	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/
+};
 
 module.exports = function(options) {
 	options = options || {};
@@ -89,8 +99,6 @@ module.exports = function(options) {
 
 	app.set('view engine', '.html');
 
-	// NOTE: When working on the next major release of ‘ft-next-express’
-	// please make this the default (not opt-in)
 	if (options.metrics) {
 		metrics.init({ app: name, flushEvery: 40000 });
 		app.use(function(req, res, next) {
@@ -98,7 +106,17 @@ module.exports = function(options) {
 			metrics.instrument(res, { as: 'express.http.res' });
 			next();
 		});
-		fetchMetrics.init();
+		if (options.serviceDependencies) {
+			Object.keys(options.serviceDependencies).forEach(function (serv) {
+				serviceMatchers[serv] = options.serviceDependencies[serv];
+			});
+		}
+		metrics.fetch.instrument({
+			services: serviceMatchers,
+			onUninstrumented: function (url, opts) {
+				errorsHandler.captureMessage('Service ' + url + ' called but no metrics set up. See next-express README for details')
+			}
+		});
 	}
 
 	app.use(barriers.middleware);

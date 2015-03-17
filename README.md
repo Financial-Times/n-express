@@ -22,7 +22,19 @@ For vanilla and wrapper layouts scripts and styles must still be manually requir
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
+- instruments `fetch` to send data about server-to-server requests to graphite. By default capi1, capi2, sapi and elastic search are instrumented. To add more services pass in a 'serviceDependencies' option (see examples below)
 
+
+var serviceMatchers = {
+	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
+	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
+	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
+	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
+	'elastic-mget': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
+	// 'elastic-search':
+	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
+	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/
+};
 
 ## Installation
 
@@ -51,6 +63,12 @@ var app = express({
 		uppercase: function(options) {
 			return options.fn(this).toUpperCase();
 		}
+	},
+	serviceDependencies: {
+		// service dependencies should be listed with a regex that matches urls for that service.
+		// regexes can be whatever you like so it's possible to treat paths within a given service
+		// as seperate services
+		'youtube': /https?:\/\/youtube\.com/
 	}
 });
 
