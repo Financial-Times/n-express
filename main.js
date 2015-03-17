@@ -20,7 +20,7 @@ var serviceMatchers = {
 	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
-	'elastic-mget': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
+	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
 	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/
@@ -99,32 +99,28 @@ module.exports = function(options) {
 
 	app.set('view engine', '.html');
 
-	if (options.metrics) {
-		metrics.init({ app: name, flushEvery: 40000 });
-		app.use(function(req, res, next) {
-			metrics.instrument(req, { as: 'express.http.req' });
-			metrics.instrument(res, { as: 'express.http.res' });
-			next();
-		});
-		if (options.serviceDependencies) {
-			Object.keys(options.serviceDependencies).forEach(function (serv) {
-				serviceMatchers[serv] = options.serviceDependencies[serv];
-			});
-		}
-		metrics.fetch.instrument({
-			services: serviceMatchers,
-			onUninstrumented: function (url, opts) {
-				errorsHandler.captureMessage('Service ' + url + ' called but no metrics set up. See next-express README for details')
-			}
+	metrics.init({ app: name, flushEvery: 40000 });
+	app.use(function(req, res, next) {
+		metrics.instrument(req, { as: 'express.http.req' });
+		metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
+	if (options.serviceDependencies) {
+		Object.keys(options.serviceDependencies).forEach(function (serv) {
+			serviceMatchers[serv] = options.serviceDependencies[serv];
 		});
 	}
+	metrics.fetch.instrument({
+		serviceMatchers: serviceMatchers,
+		onUninstrumented: function (url, opts) {
+			errorsHandler.captureMessage('Service ' + url + ' called but no metrics set up. See next-express README for details');
+		}
+	});
 
 	app.use(barriers.middleware);
 
 	var flagsPromise = flags.init();
 	app.use(flags.middleware);
-
-
 
 	var actualAppListen = app.listen;
 	app.listen = function() {
@@ -132,7 +128,7 @@ module.exports = function(options) {
 		app.use(errorsHandler.middleware);
 
 		return Promise.all([flagsPromise, exposePartials]).then(function() {
-			if (options.metrics) metrics.count('express.start');
+			metrics.count('express.start');
 			actualAppListen.apply(app, args);
 		});
 	};

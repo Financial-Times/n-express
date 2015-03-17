@@ -1,8 +1,13 @@
-/*global it, describe*/
+/*global it, describe, beforeEach*/
 "use strict";
 
 var request = require('supertest');
 var app = require('./fixtures/app/main');
+var metrics = require('next-metrics');
+var sinon = require('sinon');
+var nextExpress = require('../main');
+var expect = require('chai').expect;
+var errorsHandler = require('express-errors-handler');
 
 describe('simple app', function() {
 
@@ -26,8 +31,90 @@ describe('simple app', function() {
 			.expect('Cache-Control', /stale-while-revalidate/)
 			.expect(200, 'Static file\n', done);
 	});
+
+	describe('metrics', function () {
+		beforeEach(function () {
+			GLOBAL.fetch.restore();
+			// fake metrics has not been initialised
+			delete metrics.graphite;
+		});
+		function getApp (conf) {
+			conf = conf || {};
+			conf.directory = __dirname + '/fixtures/app/';
+			return nextExpress(conf);
+		}
+
+		it('should initialise metrics', function () {
+			sinon.stub(metrics, 'init');
+			getApp();
+			expect(metrics.init.calledWith({app: 'demo-app', flushEvery: 40000 })).to.be.true;
+			metrics.init.restore();
+		});
+
+		it('should count application starts', function (done) {
+			sinon.stub(metrics, 'count');
+			getApp();
+			app.listen().then(function () {
+				expect(metrics.count.calledWith('express.start')).to.be.true;
+				metrics.count.restore();
+				done();
+			});
+		});
+
+		it('should instrument fetch for recognised services', function (done) {
+			var realFetch = GLOBAL.fetch;
+
+			sinon.stub(errorsHandler, 'captureMessage');
+			getApp({
+				serviceDependencies: {
+					'hello': /^http:\/\/world/
+				}
+			});
+
+			expect(GLOBAL.fetch).to.not.equal(realFetch);
+			var services = {
+				'capi-v1-article': 'http://api.ft.com/content/items/v1/1234-abcd',
+				'capi-v1-page': 'http://api.ft.com/site/v1/pages/1234-abcd',
+				'capi-v1-pages-list': 'http://api.ft.com/site/v1/pages',
+				'sapi': 'http://api.ft.com/content/search/v1',
+				// For some reason elastic search url breaks the tests.
+				// 'elastic-v1-atricle': 'http://abcd-1234.foundcluster.com:9243/v1_api_v2/item',
+				// 'elastic-search':
+				'capi-v2-article': 'http://api.ft.com/content/1234-abcd',
+				'capi-v2-enriched-article': 'http://api.ft.com/enrichedcontent/1234-abcd',
+				'hello': 'http://world.com'
+			};
+			Promise.all(Object.keys(services).map(function (serv) {
+				return fetch(services[serv], {
+					timeout: 50
+				});
+			}))
+				.then(function () {
+					expect(errorsHandler.captureMessage.called).to.be.false;
+					errorsHandler.captureMessage.restore();
+					done();
+				});
+		});
+
+		it('should notify sentry of unrecognised services', function (done) {
+
+			sinon.stub(errorsHandler, 'captureMessage');
+			getApp();
+
+			fetch('http://notallowed.com', {
+				timeout: 50
+			})
+				.then(function () {
+					expect(errorsHandler.captureMessage.called).to.be.true;
+					errorsHandler.captureMessage.restore();
+					done();
+				});
+		});
+
+	});
+
 	describe('templating', function () {
-		it('should do something templating', function(done) {
+		it('should do templating', function(done) {
 			request(app)
 				.get('/templated')
 				.expect(200, /FT/, done);

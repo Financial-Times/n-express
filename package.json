@@ -19,8 +19,10 @@
     "next-metrics": "https://github.com/Financial-Times/next-metrics/archive/v1.3.0.tar.gz"
   },
   "devDependencies": {
+    "chai": "^2.1.2",
     "mocha": "^2.0.1",
     "npm-prepublish": "^1.0.2",
+    "sinon": "^1.14.1",
     "supertest": "^0.15.0"
   }
 }

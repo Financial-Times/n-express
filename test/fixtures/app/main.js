@@ -7,8 +7,7 @@ var yell = require('./src/yell');
 
 var app = module.exports = express({
 	directory: __dirname,
-	helpers: { yell: yell },
-	metrics: true
+	helpers: { yell: yell }
 });
 
 app.get("/", function(req, res) {
@@ -41,8 +40,7 @@ app.get('/templated', function(req, res, next) {
 app.get('/wrapped', function(req, res, next) {
 	res.render('main', {
 		layout: 'wrapper',
-				items: [1,2,3,4,5],
-
+		items: [1,2,3,4,5],
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
 	});
 });
@@ -50,8 +48,7 @@ app.get('/wrapped', function(req, res, next) {
 app.get('/vanilla', function(req, res, next) {
 	res.render('main', {
 		layout: 'vanilla',
-				items: [1,2,3,4,5],
-
+		items: [1,2,3,4,5],
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
 	});
 });
