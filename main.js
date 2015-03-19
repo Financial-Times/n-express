@@ -15,8 +15,18 @@ var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
 
-flags.setUrl('http://next.ft.com/__flags.json');
-var flagsPromise = flags.init();
+var serviceMatchers = {
+	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
+	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
+	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
+	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
+	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
+	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
+	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/production/,
+	// 'elastic-search':
+	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
+	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/
+};
 
 module.exports = function(options) {
 	options = options || {};
@@ -24,6 +34,7 @@ module.exports = function(options) {
 	var name = options.name;
 	var directory = options.directory || process.cwd();
 	var helpers = options.helpers || {};
+
 	if (!name) {
 		try {
 			var packageJson = require(directory + '/package.json');
@@ -90,29 +101,38 @@ module.exports = function(options) {
 	app.engine('.html', expressHandlebarsInstance.engine);
 
 	app.set('view engine', '.html');
-	app.use(barriers.middleware);
-	app.use(flags.middleware);
 
-	// NOTE: When working on the ‘next’ version of ‘ft-next-express’
-	// please make this the default (not opt-in)
-	if (options.metrics) {
-		metrics.init({ app: name, flushEvery: 40000 });
-
-		// Matches any reader facing routes, i.e. not those starting with ‘__’
-		app.use(/\/(?!__).*/, function(req, res, next) {
-			metrics.instrument(req, { as: 'express.http.req' });
-			metrics.instrument(res, { as: 'express.http.res' });
-			next();
+	metrics.init({ app: name, flushEvery: 40000 });
+	app.use(function(req, res, next) {
+		metrics.instrument(req, { as: 'express.http.req' });
+		metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
+	if (options.serviceDependencies) {
+		Object.keys(options.serviceDependencies).forEach(function (serv) {
+			serviceMatchers[serv] = options.serviceDependencies[serv];
 		});
 	}
+	metrics.fetch.instrument({
+		serviceMatchers: serviceMatchers,
+		onUninstrumented: function (url, opts) {
+			errorsHandler.captureMessage('Service ' + url + ' called but no metrics set up. See next-express README for details');
+		}
+	});
+
+	app.use(barriers.middleware);
+	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/production');
+	var flagsPromise = flags.init();
+	app.use(flags.middleware);
 
 	var actualAppListen = app.listen;
+
 	app.listen = function() {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
 		return Promise.all([flagsPromise, exposePartials]).then(function() {
-			if (options.metrics) metrics.count('express.start');
+			metrics.count('express.start');
 			actualAppListen.apply(app, args);
 		});
 	};
