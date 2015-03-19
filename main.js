@@ -22,6 +22,7 @@ var serviceMatchers = {
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
 	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
+	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/production/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
 	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/
@@ -63,6 +64,7 @@ module.exports = function(options) {
 	helpers.slice = require('./src/handlebars/slice');
 	helpers.json = require('./src/handlebars/json');
 	helpers.usePartial = require('./src/handlebars/use-partial');
+	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
@@ -90,7 +92,7 @@ module.exports = function(options) {
 	});
 
 	// makes the usePartial helper possible
-	var exposePartials = expressHandlebarsInstance.getPartials().then(function (partials) {
+	var exposePartials = expressHandlebarsInstance.getPartials().then(function(partials) {
 		handlebars.partials = partials;
 		// express handlebars does a poor job of making the helpers available everywhere, so we do it manually
 		handlebars.registerHelper(helpers);
@@ -120,6 +122,7 @@ module.exports = function(options) {
 
 	app.use(barriers.middleware);
 
+	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/production');
 	var flagsPromise = flags.init();
 	app.use(flags.middleware);
 

@@ -53,6 +53,6 @@ app.get('/vanilla', function(req, res, next) {
 	});
 });
 
-app.listen(port, function() {
+module.exports.listen = app.listen(port, function() {
 	console.log("Listening on " + port);
 });

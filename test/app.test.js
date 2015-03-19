@@ -11,6 +11,10 @@ var errorsHandler = require('express-errors-handler');
 
 describe('simple app', function() {
 
+	before(function() {
+		return app.listen;
+	});
+
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
@@ -78,6 +82,7 @@ describe('simple app', function() {
 				'capi-v1-pages-list': 'http://api.ft.com/site/v1/pages',
 				'sapi': 'http://api.ft.com/content/search/v1',
 				'user-prefs': 'http://ft-next-api-user-prefs-v002.herokuapp.com/',
+				'flags': 'http://ft-next-api-feature-flags.herokuapp.com/production',
 				// For some reason elastic search url breaks the tests.
 				// 'elastic-v1-atricle': 'http://abcd-1234.foundcluster.com:9243/v1_api_v2/item',
 				// 'elastic-search':
@@ -140,6 +145,12 @@ describe('simple app', function() {
 				.expect(200, /<html.*data-next-app="demo-app"/, done);
 		});
 
+		it('wrapper should expose offy flags to client side code', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /<html.*data-next-flags="(([a-z\-]+--off))( [a-z\-]+--off)*"/, done);
+		});
+
 		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
 			request(app)
 				.get('/vanilla')
@@ -152,7 +163,11 @@ describe('simple app', function() {
 				.get('/vanilla')
 				.expect(200, /<html.*data-next-app="demo-app"/, done);
 		});
-
+		it('vanilla should expose offy flags to client side code', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /<html.*data-next-flags="(([a-z\-]+--off))( [a-z\-]+--off)*"/, done);
+		});
 		it('should integrate with the image service', function(done) {
 			request(app)
 				.get('/templated')
