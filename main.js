@@ -15,6 +15,7 @@ var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
 
+flags.setUrl('http://next.ft.com/__flags.json');
 var flagsPromise = flags.init();
 
 module.exports = function(options) {
@@ -80,7 +81,7 @@ module.exports = function(options) {
 	});
 
 	// makes the usePartial helper possible
-	var exposePartials = expressHandlebarsInstance.getPartials().then(function (partials) {
+	var exposePartials = expressHandlebarsInstance.getPartials().then(function(partials) {
 		handlebars.partials = partials;
 		// express handlebars does a poor job of making the helpers available everywhere, so we do it manually
 		handlebars.registerHelper(helpers);
