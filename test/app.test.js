@@ -6,6 +6,10 @@ var app = require('./fixtures/app/main');
 
 describe('simple app', function() {
 
+	before(function() {
+		return app.listen;
+	});
+
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
