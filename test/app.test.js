@@ -8,12 +8,9 @@ var sinon = require('sinon');
 var nextExpress = require('../main');
 var expect = require('chai').expect;
 var errorsHandler = require('express-errors-handler');
+var flags = require('next-feature-flags-client');
 
 describe('simple app', function() {
-
-	before(function() {
-		return app.listen;
-	});
 
 	it('should have its own route', function(done) {
 		request(app)
@@ -37,11 +34,15 @@ describe('simple app', function() {
 	});
 
 	describe('metrics', function () {
+
 		beforeEach(function () {
+			console.log(flags.url);
+			delete flags.url;
 			GLOBAL.fetch.restore();
 			// fake metrics has not been initialised
 			delete metrics.graphite;
 		});
+
 		function getApp (conf) {
 			conf = conf || {};
 			conf.directory = __dirname + '/fixtures/app/';
@@ -57,7 +58,7 @@ describe('simple app', function() {
 
 		it('should count application starts', function (done) {
 			sinon.stub(metrics, 'count');
-			getApp();
+			var app = getApp();
 			app.listen().then(function () {
 				expect(metrics.count.calledWith('express.start')).to.be.true;
 				metrics.count.restore();
@@ -93,13 +94,14 @@ describe('simple app', function() {
 			Promise.all(Object.keys(services).map(function (serv) {
 				return fetch(services[serv], {
 					timeout: 50
-				});
+				}).catch(function () {});
 			}))
 				.then(function () {
 					expect(errorsHandler.captureMessage.called).to.be.false;
 					errorsHandler.captureMessage.restore();
 					done();
 				});
+
 		});
 
 		it('should notify sentry of unrecognised services', function (done) {
@@ -110,6 +112,7 @@ describe('simple app', function() {
 			fetch('http://notallowed.com', {
 				timeout: 50
 			})
+				.catch(function () {})
 				.then(function () {
 					expect(errorsHandler.captureMessage.called).to.be.true;
 					errorsHandler.captureMessage.restore();

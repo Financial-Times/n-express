@@ -121,12 +121,12 @@ module.exports = function(options) {
 	});
 
 	app.use(barriers.middleware);
-
 	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/production');
 	var flagsPromise = flags.init();
 	app.use(flags.middleware);
 
 	var actualAppListen = app.listen;
+
 	app.listen = function() {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
