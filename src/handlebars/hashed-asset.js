@@ -5,7 +5,7 @@ module.exports = function(options) {
 	var assetHash;
 	var file = options.fn(this);
 	var fallback = '/' + options.data.root.__name+'/' + file;
-	if (process.env.NODE_ENV === 'production') {
+	if (process.env.NODE_ENV !== 'production') {
 		console.log("Asset hashing is only switched on when NODE_ENV is production");
 		return fallback;
 	}
