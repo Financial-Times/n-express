@@ -158,7 +158,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/vanilla')
 				// doctype ... no header ... script loader ... tracking ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body>([^a-z])*<h1>(.|[\r\n])*addscripts([\t]+)tracking*/, done);
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body class="o-hoverable-on">([^a-z])*<h1>(.|[\r\n])*addscripts([\t]+)tracking*/, done);
 		});
 
 		it('vanilla should expose app name to client side code', function(done) {
