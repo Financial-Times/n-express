@@ -13,7 +13,7 @@
     "isomorphic-fetch": "^2.0.0",
     "next-feature-flags-client": "https://github.com/Financial-Times/next-feature-flags-client/archive/v5.1.1.tar.gz",
     "next-barrier-component": "Financial-Times/next-barrier-component#v1",
-    "ft-next-handlebars": "https://github.com/Financial-Times/next-handlebars/archive/master.tar.gz",
+    "ft-next-handlebars": "^1.0.0",
     "next-metrics": "https://github.com/Financial-Times/next-metrics/archive/v1.4.1.tar.gz"
   },
   "devDependencies": {
