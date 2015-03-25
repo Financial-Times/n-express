@@ -18,7 +18,6 @@
 		{{>next-welcome/main}}
 		{{/if}}
 		{{>next-footer/main}}
-		{{>access_barrier this}}
 		{{#if @root.flags.javascript.isSwitchedOn }}
 		<script>
 		window.nextFeatureFlags = {{{json @root.flags}}};
