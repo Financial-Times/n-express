@@ -20,9 +20,8 @@ module.exports = function(options) {
 	} catch(err) {
 		console.warn("./public/asset-hashes.json not found.  Falling back to un-fingerprinted files.");
 	}
-
 	if (assetHash) {
-		return '//financial-times.github.io/next-hashed-assets/' + options.data.root.__name + '/' + assetHash;
+		return '/next-hashed-assets/' + options.data.root.__name + '/' + assetHash;
 	}
 	return fallback;
 };
