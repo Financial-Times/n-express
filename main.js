@@ -61,6 +61,7 @@ module.exports = function(options) {
 	app.get('/robots.txt', robots);
 	var helpers = options.helpers || {};
 	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
+	helpers.hashedAsset = require('./src/handlebars/hashed-asset');
 
 	var handlebarsPromise = Handlebars(app, {
 		partialsDir: [
