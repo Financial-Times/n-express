@@ -25,7 +25,9 @@ var serviceMatchers = {
 	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/production/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
-	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/
+	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/,
+	// fastft
+	fastft: /https?:\/\/clamo\.ftdata\.co\.uk\/api/
 };
 
 module.exports = function(options) {
