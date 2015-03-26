@@ -7,8 +7,7 @@ require('isomorphic-fetch');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
-var expressHandlebars = require('express-handlebars');
-var handlebars = require('handlebars');
+var Handlebars = require('ft-next-handlebars');
 var barriers = require('next-barrier-component');
 var metrics = require('next-metrics');
 
@@ -35,7 +34,7 @@ module.exports = function(options) {
 	var app = express();
 	var name = options.name;
 	var directory = options.directory || process.cwd();
-	var helpers = options.helpers || {};
+
 
 	if (!name) {
 		try {
@@ -51,22 +50,6 @@ module.exports = function(options) {
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
 
-	helpers.paragraphs = require('./src/handlebars/paragraphs');
-	helpers.removeImageTags = require('./src/handlebars/remove-image-tags');
-	helpers.ifEquals = require('./src/handlebars/if-equals');
-	helpers.ifAll = require('./src/handlebars/if-all');
-	helpers.ifSome = require('./src/handlebars/if-some');
-	helpers.topicUrl = require('./src/handlebars/topic-url');
-	helpers.dateformat = require('./src/handlebars/dateformat');
-	helpers.resize = require('./src/handlebars/resize');
-	helpers.encode = require('./src/handlebars/encode');
-	helpers.hashedAsset = require('./src/handlebars/hashed-asset');
-	helpers.defineBlock = require('./src/handlebars/define-block');
-	helpers.outputBlock = require('./src/handlebars/output-block');
-	helpers.slice = require('./src/handlebars/slice');
-	helpers.json = require('./src/handlebars/json');
-	helpers.usePartial = require('./src/handlebars/use-partial');
-	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 
 	app.use('/' + name, express.static(directory + '/public', {
 		setHeaders: function(res) {
@@ -76,33 +59,18 @@ module.exports = function(options) {
 	}));
 
 	app.get('/robots.txt', robots);
+	var helpers = options.helpers || {};
+	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 
-	app.set('views', directory + '/views');
-
-	var expressHandlebarsInstance = new expressHandlebars.ExpressHandlebars({
-		// use a handlebars instance we have direct access to so we can expose partials
-		handlebars: handlebars,
-		extname: '.html',
-		helpers: helpers,
+	var handlebarsPromise = Handlebars(app, {
+		partialsDir: [
+			directory + '/views/partials'
+		],
 		defaultLayout: false,
 		layoutsDir: __dirname + '/layouts',
-		partialsDir: [
-			directory + '/views/partials',
-			directory + '/bower_components',
-			barriers.partialsDirectory
-		]
+		helpers: helpers,
+		directory: directory
 	});
-
-	// makes the usePartial helper possible
-	var exposePartials = expressHandlebarsInstance.getPartials().then(function(partials) {
-		handlebars.partials = partials;
-		// express handlebars does a poor job of making the helpers available everywhere, so we do it manually
-		handlebars.registerHelper(helpers);
-	});
-
-	app.engine('.html', expressHandlebarsInstance.engine);
-
-	app.set('view engine', '.html');
 
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
@@ -133,7 +101,7 @@ module.exports = function(options) {
 		var args = arguments;
 		app.use(errorsHandler.middleware);
 
-		return Promise.all([flagsPromise, exposePartials]).then(function() {
+		return Promise.all([flagsPromise, handlebarsPromise]).then(function() {
 			metrics.count('express.start');
 			actualAppListen.apply(app, args);
 		});
