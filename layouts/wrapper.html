@@ -7,7 +7,7 @@
 		<meta name="dfp_site" content="test.next.ft" />
 		<link rel="stylesheet" href="{{#hashedAsset}}main.css{{/hashedAsset}}"/>
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
-		{{>next-mustard/check}}
+		{{>next-js-setup/templates/ctm}}
 	</head>
 	<body class="o-hoverable-on">
 		{{>next-header/templates/main}}
@@ -23,7 +23,16 @@
 		window.nextFeatureFlags = {{{json @root.flags}}};
 		</script>
 		{{/if}}
-		{{>next-mustard/addscripts}}
+		{{>next-js-setup/templates/script-loader}}
 		{{>next-js-setup/templates/tracking}}
+	</body>
+</html>
+
+
+
+	</head>
+	<body class="o-hoverable-on">
+		{{{body}}}
+
 	</body>
 </html>

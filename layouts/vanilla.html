@@ -6,12 +6,17 @@
 		<meta name="theme-color" content="#fff1e0"/>
 		<meta name="dfp_site" content="test.next.ft" />
 		<link rel="stylesheet" href="{{#hashedAsset}}main.css{{/hashedAsset}}"/>
-		<title>{{#title}}{{{this}}} &mdash; {{/title}}Financial Times</title>
-		{{>next-mustard/check}}
+		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
+		{{>next-js-setup/templates/ctm}}
 	</head>
 	<body class="o-hoverable-on">
 		{{{body}}}
-		{{>next-mustard/addscripts}}
+		{{#if @root.flags.javascript.isSwitchedOn }}
+		<script>
+		window.nextFeatureFlags = {{{json @root.flags}}};
+		</script>
+		{{/if}}
+		{{>next-js-setup/templates/script-loader}}
 		{{>next-js-setup/templates/tracking}}
 	</body>
 </html>
