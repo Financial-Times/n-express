@@ -151,7 +151,7 @@ describe('simple app', function() {
 		it('wrapper should expose offy flags to client side code', function(done) {
 			request(app)
 				.get('/wrapped')
-				.expect(200, /<html.*data-next-flags="(([a-z\-]+--off))( [a-z\-]+--off)*"/, done);
+				.expect(200, /<html.*data-next-flags="[a-z0-9\-]+--off( [a-z0-9\-]+--off)*"/, done);
 		});
 
 		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
@@ -169,7 +169,7 @@ describe('simple app', function() {
 		it('vanilla should expose offy flags to client side code', function(done) {
 			request(app)
 				.get('/wrapped')
-				.expect(200, /<html.*data-next-flags="(([a-z\-]+--off))( [a-z\-]+--off)*"/, done);
+				.expect(200, /<html.*data-next-flags="[a-z0-9\-]+--off( [a-z0-9\-]+--off)*"/, done);
 		});
 		it('should integrate with the image service', function(done) {
 			request(app)
