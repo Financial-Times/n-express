@@ -65,7 +65,8 @@ module.exports = function(options) {
 
 	var handlebarsPromise = Handlebars(app, {
 		partialsDir: [
-			directory + '/views/partials'
+			directory + '/views/partials',
+			__dirname + '/partials'
 		],
 		defaultLayout: false,
 		layoutsDir: __dirname + '/layouts',
