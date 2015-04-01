@@ -14,7 +14,7 @@
     "next-feature-flags-client": "https://github.com/Financial-Times/next-feature-flags-client/archive/v5.1.1.tar.gz",
     "next-barrier-component": "Financial-Times/next-barrier-component#v1",
     "ft-next-handlebars": "^1.0.1",
-    "next-metrics": "https://github.com/Financial-Times/next-metrics/archive/v1.4.1.tar.gz"
+    "next-metrics": "^1.6.1"
   },
   "devDependencies": {
     "chai": "^2.1.2",
