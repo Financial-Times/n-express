@@ -25,6 +25,8 @@ var serviceMatchers = {
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
 	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/,
+	'capi-v2-thing': /^https?:\/\/api\.ft\.com\/things\/[\w\-]+/,
+	'capi-v2-content-by-concept': /^https?:\/\/api\.ft\.com\/content\?isAnnotatedBy=http:\/\/api\.ft\.com\/things\/[\w\-]+/,
 	// fastft
 	fastft: /https?:\/\/clamo\.ftdata\.co\.uk\/api/
 };
