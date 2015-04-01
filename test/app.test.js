@@ -89,6 +89,8 @@ describe('simple app', function() {
 				// 'elastic-search':
 				'capi-v2-article': 'http://api.ft.com/content/1234-abcd',
 				'capi-v2-enriched-article': 'http://api.ft.com/enrichedcontent/1234-abcd',
+				'capi-v2-thing': 'http://api.ft.com/things/1234-abcd',
+				'capi-v2-content-by-concept': 'http://api.ft.com/content?isAnnotatedBy=http://api.ft.com/things/1234-abcd',
 				'hello': 'http://world.com'
 			};
 			Promise.all(Object.keys(services).map(function (serv) {
