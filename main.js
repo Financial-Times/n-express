@@ -107,7 +107,14 @@ module.exports = function(options) {
 		return Promise.all([flagsPromise, handlebarsPromise]).then(function() {
 			metrics.count('express.start');
 			actualAppListen.apply(app, args);
-		});
+		})
+			.catch(function(err) {
+
+				// Crash app if flags or handlebars fail
+				setTimeout(function() {
+					throw err;
+				}, 0);
+			});
 	};
 
 	return app;
