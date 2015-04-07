@@ -7,7 +7,7 @@ require('isomorphic-fetch');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
-var Handlebars = require('ft-next-handlebars');
+var handlebars = require('ft-next-handlebars');
 var barriers = require('next-barrier-component');
 var metrics = require('next-metrics');
 
@@ -54,19 +54,20 @@ module.exports = function(options) {
 	app.locals.__rootDirectory = directory;
 
 
-	app.use('/' + name, express.static(directory + '/public', {
-		setHeaders: function(res) {
-			// TODO:MA Once we are generating new paths on every deploy (git hash?) then up the max-age to 'a long time'
-			res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
-		}
-	}));
+	if (!app.locals.__isProduction) {
+		app.use('/' + name, express.static(directory + '/public', {
+			setHeaders: function(res) {
+				res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
+			}
+		}));
+	}
 
 	app.get('/robots.txt', robots);
 	var helpers = options.helpers || {};
 	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 	helpers.hashedAsset = require('./src/handlebars/hashed-asset');
 
-	var handlebarsPromise = Handlebars(app, {
+	var handlebarsPromise = handlebars(app, {
 		partialsDir: [
 			directory + '/views/partials'
 		],
