@@ -5,6 +5,7 @@ module.exports = function(options) {
 	var assetHash;
 	var file = options.fn(this);
 	var fallback = '/' + options.data.root.__name+'/' + file;
+	var prefix = (options.data.root.flags.s3.isSwitchedOn ? 'next-' : '') + 'hashed-assets';
 	if (process.env.NODE_ENV !== 'production') {
 		console.log("Asset hashing is only switched on when NODE_ENV is production");
 		return fallback;
@@ -21,7 +22,7 @@ module.exports = function(options) {
 		console.warn("./public/asset-hashes.json not found.  Falling back to un-fingerprinted files.");
 	}
 	if (assetHash) {
-		return '/next-hashed-assets/' + options.data.root.__name + '/' + assetHash;
+		return '/' + prefix + '/' + options.data.root.__name + '/' + assetHash;
 	}
 	return fallback;
 };
