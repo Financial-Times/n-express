@@ -55,11 +55,7 @@ module.exports = function(options) {
 
 
 	if (!app.locals.__isProduction) {
-		app.use('/' + name, express.static(directory + '/public', {
-			setHeaders: function(res) {
-				res.setHeader('Cache-Control', 'max-age=120, public, stale-while-revalidate=259200, stale-if-error=259200');
-			}
-		}));
+		app.use('/' + name, express.static(directory + '/public'));
 	}
 
 	app.get('/robots.txt', robots);
