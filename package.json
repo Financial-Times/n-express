@@ -11,7 +11,7 @@
     "express": "^4.10.5",
     "express-errors-handler": "^1.0.0",
     "ft-next-handlebars": "^1.0.1",
-    "ft-next-logger": "0.0.2",
+    "ft-next-logger": "^1.0.0",
     "isomorphic-fetch": "^2.0.0",
     "next-barrier-component": "Financial-Times/next-barrier-component#v1",
     "next-feature-flags-client": "https://github.com/Financial-Times/next-feature-flags-client/archive/v5.1.1.tar.gz",
