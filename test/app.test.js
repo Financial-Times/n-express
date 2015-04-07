@@ -28,8 +28,6 @@ describe('simple app', function() {
 	it('should have a static resource', function(done) {
 		request(app)
 			.get('/demo-app/test.txt')
-			.expect('Cache-Control', /stale-if-error/)
-			.expect('Cache-Control', /stale-while-revalidate/)
 			.expect(200, 'Static file\n', done);
 	});
 
