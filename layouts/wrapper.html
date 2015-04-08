@@ -9,15 +9,18 @@
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
 		{{>next-js-setup/templates/ctm}}
 	</head>
-	<body class="o-hoverable-on">
-		{{>next-header/templates/main}}
+	<body class="o-hoverable-on sticky-footer-helpers--container">
+		<div class="sticky-footer-helpers--content">
+			{{>next-header/templates/main}}
 
-		{{{body}}}
-
-		{{#if @root.flags.welcomePanel.isSwitchedOn }}
-		{{>next-welcome/main}}
-		{{/if}}
-		{{>next-footer/main}}
+			{{{body}}}
+		</div>
+		<div class="sticky-footer-helpers--footer">
+			{{#if @root.flags.welcomePanel.isSwitchedOn }}
+			{{>next-welcome/main}}
+			{{/if}}
+			{{>next-footer/main}}
+		</div>
 		{{#if @root.flags.javascript.isSwitchedOn }}
 		<script>
 		window.nextFeatureFlags = {{{json @root.flags}}};
