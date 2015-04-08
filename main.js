@@ -11,6 +11,14 @@ var handlebars = require('ft-next-handlebars');
 var barriers = require('next-barrier-component');
 var metrics = require('next-metrics');
 
+// Report suspected memory leaks to Sentry
+if(process.env.NODE_ENV === 'production'){
+	var memwatch = require('memwatch');
+	memwatch.on('leak', function(info){
+		errorsHandler.captureException(new Error('Suspected Memory Leak'), {tags:{info:info}});
+	});
+}
+
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
 
