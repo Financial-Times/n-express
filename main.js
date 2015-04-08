@@ -29,7 +29,10 @@ var serviceMatchers = {
 	'capi-v2-organisation': /^https?:\/\/api\.ft\.com\/organisations\/[\w\-]+/,
 	'capi-v2-content-by-concept': /^https?:\/\/api\.ft\.com\/content\?isAnnotatedBy=http:\/\/api\.ft\.com\/things\/[\w\-]+/,
 	// fastft
-	fastft: /https?:\/\/clamo\.ftdata\.co\.uk\/api/
+	fastft: /https?:\/\/clamo\.ftdata\.co\.uk\/api/,
+	// v1 to v2 mapping endpoints
+	'v1-to-v2-mapping-people': /^https:\/\/next-v1tov2-mapping-dev\.herokuapp\.com\/concordance_mapping_v1tov2\/people\/[A-Za-z0-9=\-]+$/,
+	'v1-to-v2-mapping-organisations': /^https:\/\/next-v1tov2-mapping-dev\.herokuapp\.com\/concordance_mapping_v1tov2\/organisations\/[A-Za-z0-9=\-]+$/
 };
 
 module.exports = function(options) {
