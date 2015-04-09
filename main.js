@@ -95,7 +95,7 @@ module.exports = function(options) {
 	});
 
 	app.use(barriers.middleware);
-	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/production');
+	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/__flags.json');
 	var flagsPromise = flags.init();
 	app.use(flags.middleware);
 
