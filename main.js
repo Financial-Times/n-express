@@ -21,7 +21,7 @@ var serviceMatchers = {
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
 	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
-	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/production/,
+	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/__flags\.json/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
 	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/,
@@ -95,7 +95,7 @@ module.exports = function(options) {
 	});
 
 	app.use(barriers.middleware);
-	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/production');
+	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/__flags.json');
 	var flagsPromise = flags.init();
 	app.use(flags.middleware);
 
