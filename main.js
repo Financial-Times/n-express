@@ -20,6 +20,7 @@ var serviceMatchers = {
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
+	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v2_api_v1\/item/,
 	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
 	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/__flags\.json/,
 	// 'elastic-search':
