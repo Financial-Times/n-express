@@ -76,6 +76,7 @@ describe('simple app', function() {
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
 			var services = {
+				'ft.com': 'http://www.ft.com/cms/s/380e7966-b07f-11e4-9b8e-00144feab7de.html',
 				'capi-v1-article': 'http://api.ft.com/content/items/v1/1234-abcd',
 				'capi-v1-page': 'http://api.ft.com/site/v1/pages/1234-abcd',
 				'capi-v1-pages-list': 'http://api.ft.com/site/v1/pages',
