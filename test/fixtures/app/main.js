@@ -53,6 +53,13 @@ app.get('/vanilla', function(req, res, next) {
 	});
 });
 
+app.get('/session', function(req, res){
+	res.locals.session().then(function(sessionDetails){
+		res.status(200).json(sessionDetails);
+
+	});
+});
+
 module.exports.listen = app.listen(port, function() {
 	console.log("Listening on " + port);
 });
