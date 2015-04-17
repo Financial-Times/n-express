@@ -1,7 +1,6 @@
 {
   "name": "next-express",
   "dependencies": {
-    "next-sass-setup": "^v5.4.0",
     "next-js-setup": "^v1.9.0",
     "next-header": "*",
     "next-footer": "^1.0.0",
