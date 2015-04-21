@@ -93,9 +93,9 @@ app.listen(process.env.PORT, function() {
 	<h2>An image resized to 150px wide</h2>
 	<img src="{{#resize 150}}{{image}}{{/resize}}" />
 
-	{{#flags.myFlag.isSwitchedOn}}
+	{{#flags.myFlag}}
 	The 'myFlag' flag is switched on
-	{{/flags.myFlag.isSwitchedOn}}
+	{{/flags.myFlag}}
 
 	<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">
 		{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}
