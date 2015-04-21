@@ -1,9 +1,9 @@
 {
   "name": "next-express",
   "dependencies": {
-    "next-js-setup": "^v1.9.0",
+    "next-js-setup": "^v2.0.0",
     "next-header": "*",
     "next-footer": "^1.0.0",
-    "next-welcome": "^1.0.0"
+    "next-welcome": "^2.0.0"
   }
 }
