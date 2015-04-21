@@ -14,11 +14,11 @@
 
 		{{{body}}}
 
-		{{#if @root.flags.welcomePanel.isSwitchedOn }}
+		{{#if @root.flags.welcomePanel}}
 		{{>next-welcome/main}}
 		{{/if}}
 		{{>next-footer/main}}
-		{{#if @root.flags.javascript.isSwitchedOn }}
+		{{#if @root.flags.javascript}}
 		<script>
 		window.nextFeatureFlags = {{{json @root.flags}}};
 		</script>

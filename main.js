@@ -100,8 +100,7 @@ module.exports = function(options) {
 	});
 
 	app.use(barriers.middleware);
-	flags.setUrl('http://ft-next-api-feature-flags.herokuapp.com/__flags.json');
-	var flagsPromise = flags.init();
+	var flagsPromise = flags.init({ url: 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json' });
 	app.use(flags.middleware);
 
 	var actualAppListen = app.listen;

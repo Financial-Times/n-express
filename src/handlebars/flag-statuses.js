@@ -8,8 +8,8 @@ module.exports = function(opts) {
 	}
 
 	return 'data-next-flags="' + Object.keys(flags).filter(function(flagName) {
-			return !flags[flagName].isSwitchedOn;
-		}).map(function (flagName) {
+			return !flags[flagName];
+		}).map(function(flagName) {
 			return flagName.replace(/[A-Z]/g, function($0) {
 				return '-' + $0.toLowerCase();
 			}) + '--off';

@@ -11,7 +11,7 @@
 	</head>
 	<body class="o-hoverable-on">
 		{{{body}}}
-		{{#if @root.flags.javascript.isSwitchedOn }}
+		{{#if @root.flags.javascript}}
 		<script>
 		window.nextFeatureFlags = {{{json @root.flags}}};
 		</script>
