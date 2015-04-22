@@ -2,6 +2,9 @@ next-express
 ============
 
 Slightly enhanced Express.
+```
+npm install -S ft-next-express
+```
 
 Comes with:-
 - [Handlebars](http://handlebarsjs.com/) (with added support for loading partials from `bower_components`)
