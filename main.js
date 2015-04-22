@@ -99,6 +99,21 @@ module.exports = function(options) {
 		}
 	});
 
+	// Add in session helper
+	app.use(function(req, res, next){
+		res.locals.session = function(){
+			return fetch('https://session-next.ft.com/', {headers:{'Cookie: ' : req.get('Cookie')}})
+				.then(function(response){
+					return response.json();
+				})
+				.catch(function(err){
+					console.error(err);
+				})
+		};
+
+		next();
+	});
+
 	app.use(barriers.middleware);
 	var flagsPromise = flags.init({ url: 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json' });
 	app.use(flags.middleware);
