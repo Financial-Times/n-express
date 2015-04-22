@@ -10,6 +10,9 @@ var app = module.exports = express({
 	helpers: { yell: yell }
 });
 
+
+
+
 app.get("/", function(req, res) {
 	res.send("Hello world");
 });
@@ -51,6 +54,14 @@ app.get('/vanilla', function(req, res, next) {
 		items: [1,2,3,4,5],
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
 	});
+});
+
+var router = express.Router();
+
+app.use('/router', router);
+
+router.get("/", function(req, res) {
+	res.send("Hello router");
 });
 
 module.exports.listen = app.listen(port, function() {

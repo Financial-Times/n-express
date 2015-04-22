@@ -19,6 +19,13 @@ describe('simple app', function() {
 			.expect(200, 'Hello world', done);
 	});
 
+	it('should be possible to add routers', function(done) {
+		request(app)
+			.get('/router/')
+			.expect('Vary', /X-Flags/)
+			.expect(200, 'Hello router', done);
+	});
+
 	it('should have a robots.txt', function(done) {
 		request(app)
 			.get('/robots.txt')

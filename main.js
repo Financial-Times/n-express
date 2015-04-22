@@ -124,3 +124,6 @@ module.exports = function(options) {
 
 	return app;
 };
+
+module.exports.Router = express.Router
+
