@@ -37,7 +37,8 @@ var serviceMatchers = {
 	'v1-to-v2-mapping-people': /^https:\/\/next-v1tov2-mapping-dev\.herokuapp\.com\/concordance_mapping_v1tov2\/people\/[A-Za-z0-9=\-]+$/,
 	'v1-to-v2-mapping-organisations': /^https:\/\/next-v1tov2-mapping-dev\.herokuapp\.com\/concordance_mapping_v1tov2\/organisations\/[A-Za-z0-9=\-]+$/,
 	// ft.com (temporary for article comment hack)
-	'ft.com': /^http:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/
+	'ft.com': /^http:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
+	'beacon': /^http:\/\/beacon-next\.ft\.com\.global\.prod\.fastly\.net\/px\.gif/
 };
 
 module.exports = function(options) {
@@ -95,7 +96,7 @@ module.exports = function(options) {
 	metrics.fetch.instrument({
 		serviceMatchers: serviceMatchers,
 		onUninstrumented: function (url, opts) {
-			errorsHandler.captureMessage('Service ' + url + ' called but no metrics set up. See next-express README for details');
+			errorsHandler.captureMessage('Service ' + url.split('?')[0] + ' called but no metrics set up. See next-express README for details');
 		}
 	});
 
