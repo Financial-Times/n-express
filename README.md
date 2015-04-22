@@ -16,9 +16,9 @@ Comes with:-
 - By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts):
 	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard and tracking
 	 - wrapper.html - All the above but also including the next header and footer
-
 For vanilla and wrapper layouts scripts and styles must still be manually required/imported into your application's sass and js
 
+- Exposes `express.Router`
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
