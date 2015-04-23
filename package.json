@@ -20,6 +20,7 @@
   "devDependencies": {
     "chai": "^2.1.2",
     "mocha": "^2.0.1",
+    "next-build-tools": "^1.29.1",
     "npm-prepublish": "^1.0.2",
     "sinon": "^1.14.1",
     "supertest": "^0.15.0"
