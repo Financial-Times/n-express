@@ -38,7 +38,8 @@ var serviceMatchers = {
 	'v1-to-v2-mapping-organisations': /^https:\/\/next-v1tov2-mapping-dev\.herokuapp\.com\/concordance_mapping_v1tov2\/organisations\/[A-Za-z0-9=\-]+$/,
 	// ft.com (temporary for article comment hack)
 	'ft.com': /^http:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
-	'beacon': /^http:\/\/beacon-next\.ft\.com\.global\.prod\.fastly\.net\/px\.gif/
+	'beacon': /^http:\/\/beacon-next\.ft\.com\.global\.prod\.fastly\.net\/px\.gif/,
+	'session': /^https\:\/\/session-next\.ft\.com/
 };
 
 module.exports = function(options) {
@@ -150,5 +151,5 @@ module.exports = function(options) {
 	return app;
 };
 
-module.exports.Router = express.Router
-
+module.exports.Router = express.Router;
+module.exports.services = serviceMatchers;

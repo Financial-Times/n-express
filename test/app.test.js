@@ -40,7 +40,7 @@ describe('simple app', function() {
 	});
 
 	it('should be possible to disable flags', function (done) {
-		sinon.stub(flags, 'init')
+		sinon.stub(flags, 'init');
 		var app = nextExpress({
 			name: 'noflags',
 			directory: __dirname,
@@ -48,7 +48,7 @@ describe('simple app', function() {
 		});
 		app.get('/', function (req, res) {
 			res.end('', 200);
-		})
+		});
 		expect(flags.init.called).to.be.false;
 			request(app)
 			.get('/')
@@ -59,7 +59,7 @@ describe('simple app', function() {
 	});
 
 	it('should be possible to disable handlebars', function (done) {
-		sinon.stub(handlebars, 'handlebars')
+		sinon.stub(handlebars, 'handlebars');
 		var app = nextExpress({
 			name: 'nohandles',
 			directory: __dirname,
@@ -67,7 +67,7 @@ describe('simple app', function() {
 		});
 		app.get('/', function (req, res) {
 			res.end('', 200);
-		})
+		});
 		expect(handlebars.handlebars.called).to.be.false;
 			request(app)
 			.get('/')
