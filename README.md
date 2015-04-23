@@ -1,4 +1,4 @@
-next-express
+next-express [![Build Status](https://travis-ci.org/Financial-Times/next-express.svg?branch=master)](https://travis-ci.org/Financial-Times/next-express)
 ============
 
 Slightly enhanced Express.
