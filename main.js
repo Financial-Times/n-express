@@ -43,6 +43,17 @@ var serviceMatchers = {
 
 module.exports = function(options) {
 	options = options || {};
+	var defaults = {
+		withFlags: true,
+		withHandlebars: true
+	};
+
+	Object.keys(defaults).forEach(function (prop) {
+		if (typeof options[prop] === 'undefined') {
+			options[prop] = defaults[prop];
+		}
+	});
+
 	var app = express();
 	var name = options.name;
 	var directory = options.directory || process.cwd();
@@ -68,19 +79,26 @@ module.exports = function(options) {
 	}
 
 	app.get('/robots.txt', robots);
-	var helpers = options.helpers || {};
-	helpers.flagStatuses = require('./src/handlebars/flag-statuses');
-	helpers.hashedAsset = require('./src/handlebars/hashed-asset');
 
-	var handlebarsPromise = handlebars(app, {
-		partialsDir: [
-			directory + '/views/partials'
-		],
-		defaultLayout: false,
-		layoutsDir: __dirname + '/layouts',
-		helpers: helpers,
-		directory: directory
-	});
+	var handlebarsPromise = Promise.resolve();
+
+	if (options.withHandlebars) {
+		var helpers = options.helpers || {};
+		if (options.withFlags) {
+			helpers.flagStatuses = require('./src/handlebars/flag-statuses');
+		}
+		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
+
+		handlebarsPromise = handlebars(app, {
+			partialsDir: [
+				directory + '/views/partials'
+			],
+			defaultLayout: false,
+			layoutsDir: __dirname + '/layouts',
+			helpers: helpers,
+			directory: directory
+		});
+	}
 
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
@@ -101,8 +119,14 @@ module.exports = function(options) {
 	});
 
 	app.use(barriers.middleware);
-	var flagsPromise = flags.init({ url: 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json' });
-	app.use(flags.middleware);
+
+	var flagsPromise = Promise.resolve();
+
+	if (options.withFlags) {
+		flagsPromise = flags.init({ url: 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json' });
+		app.use(flags.middleware);
+	}
+
 
 	var actualAppListen = app.listen;
 

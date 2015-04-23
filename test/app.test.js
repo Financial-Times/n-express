@@ -9,6 +9,7 @@ var nextExpress = require('../main');
 var expect = require('chai').expect;
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
+var handlebars = require('ft-next-handlebars');
 
 describe('simple app', function() {
 
@@ -36,6 +37,44 @@ describe('simple app', function() {
 		request(app)
 			.get('/demo-app/test.txt')
 			.expect(200, 'Static file\n', done);
+	});
+
+	it('should be possible to disable flags', function (done) {
+		sinon.stub(flags, 'init')
+		var app = nextExpress({
+			name: 'noflags',
+			directory: __dirname,
+			withFlags: false
+		});
+		app.get('/', function (req, res) {
+			res.end('', 200);
+		})
+		expect(flags.init.called).to.be.false;
+			request(app)
+			.get('/')
+			.expect(200, function () {
+				flags.init.restore();
+				done();
+			});
+	});
+
+	it('should be possible to disable handlebars', function (done) {
+		sinon.stub(handlebars, 'handlebars')
+		var app = nextExpress({
+			name: 'nohandles',
+			directory: __dirname,
+			withHandlebars: false
+		});
+		app.get('/', function (req, res) {
+			res.end('', 200);
+		})
+		expect(handlebars.handlebars.called).to.be.false;
+			request(app)
+			.get('/')
+			.expect(200, function () {
+				handlebars.handlebars.restore();
+				done();
+			});
 	});
 
 	describe('metrics', function () {

@@ -15,7 +15,7 @@
     "isomorphic-fetch": "^2.0.0",
     "next-barrier-component": "Financial-Times/next-barrier-component#v1",
     "next-feature-flags-client": "^6.0.1",
-    "next-metrics": "^1.6.1"
+    "next-metrics": "^1.6.4"
   },
   "devDependencies": {
     "chai": "^2.1.2",
