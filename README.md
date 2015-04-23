@@ -62,7 +62,10 @@ var app = express({
 		// regexes can be whatever you like so it's possible to treat paths within a given service
 		// as seperate services
 		'youtube': /https?:\/\/youtube\.com/
-	}
+	},
+	// the following default to true but should normally be set to false if your app is an api
+	withFlags: false, // disable feature flag middleware
+	withHandlebars: false // disable handlebars middleware
 });
 
 app.get('/', function(req, res, next) {
