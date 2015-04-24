@@ -29,7 +29,7 @@ For vanilla and wrapper layouts scripts and styles must still be manually requir
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
-- instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services apecific to a particular app, pass in a 'serviceDependencies' option (see examples below)
+- instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a 'serviceDependencies' option (see examples below)
 
 
 
@@ -64,7 +64,7 @@ var app = express({
 	serviceDependencies: {
 		// service dependencies should be listed with a regex that matches urls for that service.
 		// regexes can be whatever you like so it's possible to treat paths within a given service
-		// as seperate services
+		// as separate services
 		'youtube': /https?:\/\/youtube\.com/
 	},
 	// the following default to true but should normally be set to false if your app is an api
