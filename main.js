@@ -157,3 +157,4 @@ module.exports = function(options) {
 
 module.exports.Router = express.Router;
 module.exports.services = serviceMatchers;
+module.exports.metrics = metrics;
