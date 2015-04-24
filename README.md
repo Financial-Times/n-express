@@ -29,7 +29,7 @@ For vanilla and wrapper layouts scripts and styles must still be manually requir
 - Provides `NODE_ENV` to templates via `__environment`
 - `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
-- instruments `fetch` to send data about server-to-server requests to graphite. By default capi1, capi2, sapi and elastic search are instrumented. To add more services pass in a 'serviceDependencies' option (see examples below)
+- instruments `fetch` to send data about server-to-server requests to graphite. See main.js fora  list of services already instrumented. To add more services extend the list or, for services apecific to a particular app, pass in a 'serviceDependencies' option (see examples below)
 
 
 
