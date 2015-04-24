@@ -132,7 +132,10 @@ module.exports = function(options) {
 		res.set({ 'Cache-Control': 'no-cache' });
 		res.sendFile(directory + '/public/__about.json');
 	});
-	app.use(barriers.middleware);
+
+	if (options.withHandlebars) {
+		app.use(barriers.middleware);
+	}
 
 	var flagsPromise = Promise.resolve();
 
