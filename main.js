@@ -10,7 +10,7 @@ var flags = require('next-feature-flags-client');
 var handlebars = require('ft-next-handlebars');
 var barriers = require('next-barrier-component');
 var metrics = require('next-metrics');
-
+var path = require('path');
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
 
@@ -99,6 +99,12 @@ module.exports = function(options) {
 			helpers: helpers,
 			directory: directory
 		});
+	}
+
+	if (require(path.join(process.cwd(), 'package.json')).dependencies['next-metrics']) {
+		console.warn('When using next-express avoid requiring next-metrics as a direct dependency - ');
+		console.warn(' it risks duplicating some data collection');
+		console.warn('Use `require(\'ft-next-express\').metrics` instead');
 	}
 
 	metrics.init({ app: name, flushEvery: 40000 });
