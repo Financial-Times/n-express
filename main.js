@@ -120,7 +120,8 @@ module.exports = function(options) {
 	});
 
 	app.get('/' + name + '/__about', function(req, res) {
-		res.sendFile(directory + '/public/about.json');
+		res.set({ 'Cache-Control': 'no-cache' });
+		res.sendFile(directory + '/public/__about.json');
 	});
 	app.use(barriers.middleware);
 
