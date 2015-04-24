@@ -44,9 +44,7 @@ var serviceMatchers = {
 module.exports = function(options) {
 	options = options || {};
 
-	var packageJson = {
-		dependencies: {}
-	};
+	var packageJson = {};
 
 	var defaults = {
 		withFlags: true,
@@ -105,7 +103,7 @@ module.exports = function(options) {
 		});
 	}
 
-	if (packageJson.dependencies['next-metrics']) {
+	if (packageJson.dependencies && packageJson.dependencies['next-metrics']) {
 		console.error('When using next-express avoid requiring next-metrics as a direct dependency');
 		console.error('- it risks duplicating some data collection');
 		console.error('Use `require(\'ft-next-express\').metrics` instead');
