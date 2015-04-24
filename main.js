@@ -119,6 +119,9 @@ module.exports = function(options) {
 		}
 	});
 
+	app.get('/' + name + '/__about', function(req, res) {
+		res.redirect('/' + name + '/__about.json');
+	});
 	app.use(barriers.middleware);
 
 	var flagsPromise = Promise.resolve();
