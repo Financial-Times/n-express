@@ -11,7 +11,11 @@ Comes with:-
 - [Origami Image Service](http://image.webservices.ft.com/) integration
 - [Sensible error handling](https://github.com/Financial-Times/express-errors-handler) (configurable via environment variables)
 - Full [Next Flags](https://github.com/Financial-Times/next-feature-flags-client) integration
-- Optional basic [Next Metrics](https://github.com/Financial-Times/next-metrics) integration
+- [Next Metrics](https://github.com/Financial-Times/next-metrics) integration
+  - measures sytem performance
+  - measures performance of service dependencies (if called using the `fetch` api)
+  - measures request and response performance
+  - exposes the configured metrics instance as `express.metrics`
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use next-assets or hashed-assets in production)
