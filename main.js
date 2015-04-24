@@ -69,7 +69,7 @@ module.exports = function(options) {
 			// Safely ignorable error
 		}
 	}
-	
+
 	if (!name) throw new Error("Please specify an application name");
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
@@ -115,6 +115,7 @@ module.exports = function(options) {
 		metrics.instrument(res, { as: 'express.http.res' });
 		next();
 	});
+
 	if (options.serviceDependencies) {
 		Object.keys(options.serviceDependencies).forEach(function (serv) {
 			serviceMatchers[serv] = options.serviceDependencies[serv];
@@ -142,7 +143,7 @@ module.exports = function(options) {
 	if (options.withHandlebars) {
 		app.use(barriers.middleware);
 	}
-	
+
 	var actualAppListen = app.listen;
 
 	app.listen = function() {
