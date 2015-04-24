@@ -61,7 +61,6 @@ module.exports = function(options) {
 	var name = options.name;
 	var directory = options.directory || process.cwd();
 
-
 	if (!name) {
 		try {
 			packageJson = require(directory + '/package.json');
@@ -70,12 +69,12 @@ module.exports = function(options) {
 			// Safely ignorable error
 		}
 	}
+	
 	if (!name) throw new Error("Please specify an application name");
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
-
 
 	if (!app.locals.__isProduction) {
 		app.use('/' + name, express.static(directory + '/public'));
@@ -133,10 +132,6 @@ module.exports = function(options) {
 		res.sendFile(directory + '/public/__about.json');
 	});
 
-	if (options.withHandlebars) {
-		app.use(barriers.middleware);
-	}
-
 	var flagsPromise = Promise.resolve();
 
 	if (options.withFlags) {
@@ -144,7 +139,10 @@ module.exports = function(options) {
 		app.use(flags.middleware);
 	}
 
-
+	if (options.withHandlebars) {
+		app.use(barriers.middleware);
+	}
+	
 	var actualAppListen = app.listen;
 
 	app.listen = function() {
