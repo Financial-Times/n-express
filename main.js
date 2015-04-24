@@ -120,7 +120,7 @@ module.exports = function(options) {
 	});
 
 	app.get('/' + name + '/__about', function(req, res) {
-		res.redirect('/' + name + '/__about.json');
+		res.sendFile(directory + '/public/about.json');
 	});
 	app.use(barriers.middleware);
 
