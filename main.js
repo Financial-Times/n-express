@@ -43,6 +43,11 @@ var serviceMatchers = {
 
 module.exports = function(options) {
 	options = options || {};
+
+	var packageJson = {
+		dependencies: {}
+	};
+
 	var defaults = {
 		withFlags: true,
 		withHandlebars: true
@@ -61,7 +66,7 @@ module.exports = function(options) {
 
 	if (!name) {
 		try {
-			var packageJson = require(directory + '/package.json');
+			packageJson = require(directory + '/package.json');
 			name = packageJson.name;
 		} catch(e) {
 			// Safely ignorable error
