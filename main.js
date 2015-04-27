@@ -102,13 +102,6 @@ module.exports = function(options) {
 		});
 	}
 
-	if (packageJson.dependencies && packageJson.dependencies['next-metrics']) {
-		console.error('When using next-express avoid requiring next-metrics as a direct dependency');
-		console.error('- it risks duplicating some data collection');
-		console.error('Use `require(\'ft-next-express\').metrics` instead');
-		throw 'Don\'t require next-metrics directly!';
-	}
-
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
 		metrics.instrument(req, { as: 'express.http.req' });
