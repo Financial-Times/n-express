@@ -90,10 +90,12 @@ module.exports = function(options) {
 			helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 		}
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
+		helpers.barrier = barriers.helper;
 
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
-				directory + '/views/partials'
+				directory + '/views/partials',
+				barriers.partials
 			],
 			defaultLayout: false,
 			layoutsDir: __dirname + '/layouts',
