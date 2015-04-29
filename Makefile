@@ -1,7 +1,7 @@
 .PHONY: test
 
 clean:
-	next-build-tools clean
+	git clean -fxd
 
 install:
 	npm install

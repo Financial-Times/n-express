@@ -14,7 +14,7 @@
     "ft-next-logger": "^1.0.0",
     "handlebars": "^3.0.3",
     "isomorphic-fetch": "^2.0.0",
-    "next-barrier-component": "Financial-Times/next-barrier-component#v2",
+    "next-barrier-component": "Financial-Times/next-barrier-component.git#v3.0.0",
     "next-feature-flags-client": "^6.0.1",
     "next-metrics": "^1.6.4"
   },
