@@ -1,5 +1,8 @@
 .PHONY: test
 
+clean:
+	next-build-tools clean
+
 install:
 	npm install
 
