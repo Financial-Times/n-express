@@ -98,7 +98,7 @@ module.exports = function(options) {
 				barriers.partials
 			],
 			defaultLayout: false,
-			layoutsDir: __dirname + '/layouts',
+			layoutsDir: options.layoutsDir || __dirname + '/layouts',
 			helpers: helpers,
 			directory: directory
 		});
