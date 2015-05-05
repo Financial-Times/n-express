@@ -20,6 +20,7 @@ Comes with:-
 - [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use next-assets or hashed-assets in production)
 - Exposes app name via `__name` to templates and in a `data-next-app` attribute on the html tag in templates
+- Adds a `/{{name-of-app}}/__about` endpoint, which exposes information about the current version of the application running
 - By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts):
 	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard and tracking
 	 - wrapper.html - All the above but also including the next header and footer
