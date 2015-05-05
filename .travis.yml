@@ -2,6 +2,7 @@ sudo: false
 language: node_js
 script: npm test
 node_js:
+- '0.10'
 - '0.12'
 before_deploy:
 - npm-prepublish --verbose
@@ -13,4 +14,5 @@ deploy:
   on:
     all_branches: true
     tags: true
+    node: '0.10'
     repo: Financial-Times/next-express
