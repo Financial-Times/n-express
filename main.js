@@ -20,7 +20,7 @@ var serviceMatchers = {
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
 	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v2_api_v[12]\/item/,
-	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
+	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com\/(.*)/,
 	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/__flags\.json/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
@@ -38,7 +38,9 @@ var serviceMatchers = {
 	// ft.com (temporary for article comment hack)
 	'ft.com': /^http:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
 	'beacon': /^http:\/\/beacon-next\.ft\.com\.global\.prod\.fastly\.net\/px\.gif/,
-	'session': /^https\:\/\/session-next\.ft\.com/
+	'session': /^https\:\/\/session-next\.ft\.com/,
+	'ab': /^http:\/\/ft-next-ab.herokuapp.com\/(.*)/
+
 };
 
 module.exports = function(options) {
