@@ -12,11 +12,9 @@
 	<body class="o-hoverable-on">
 		{{{body}}}
 		{{#if @root.flags.javascript}}
-		<script>
-		window.nextFeatureFlags = {{{json @root.flags}}};
-		</script>
+			{{>next-feature-flags-client/templates/flags}}
+			{{>next-js-setup/templates/script-loader}}
 		{{/if}}
-		{{>next-js-setup/templates/script-loader}}
 		{{>next-js-setup/templates/tracking}}
 	</body>
 </html>
