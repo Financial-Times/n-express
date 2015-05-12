@@ -7,7 +7,7 @@ install:
 	npm install
 
 test:
-	next-build-tools verify
+	next-build-tools verify --skip-layout-checks
 	mocha
 
 run:
