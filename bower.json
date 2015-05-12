@@ -1,8 +1,8 @@
 {
   "name": "next-express",
   "dependencies": {
-    "next-feature-flags-client": "Financial-Times/next-feature-flags-client#^v7.0.0",
-    "next-js-setup": "^v2.0.0",
+    "next-feature-flags-client": "^7.0.0",
+    "next-js-setup": "^2.0.0",
     "next-header": "*",
     "next-footer": "^1.0.0",
     "next-welcome": "^2.0.0"
