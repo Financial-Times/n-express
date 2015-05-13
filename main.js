@@ -38,7 +38,7 @@ var serviceMatchers = {
 	'v1-to-v2-mapping-organisations': /^https:\/\/next-v1tov2-mapping-dev\.herokuapp\.com\/concordance_mapping_v1tov2\/organisations\/[A-Za-z0-9=\-]+$/,
 	// ft.com (temporary for article comment hack)
 	'ft.com': /^https?:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
-	'beacon': /^https?:\/\/beacon-next\.ft\.com\.global\.prod\.fastly\.net\/px\.gif/,
+	'beacon': /^https?:\/\/beacon-next\.ft\.com\/px\.gif/,
 	'session': /^https?:\/\/session-next\.ft\.com/,
 	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/
 };
