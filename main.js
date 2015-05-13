@@ -9,6 +9,7 @@ var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var handlebars = require('ft-next-handlebars');
 var barriers = require('ft-next-barrier-component');
+var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
@@ -49,7 +50,8 @@ module.exports = function(options) {
 
 	var defaults = {
 		withFlags: true,
-		withHandlebars: true
+		withHandlebars: true,
+		withNavigation: true
 	};
 
 	Object.keys(defaults).forEach(function (prop) {
@@ -138,6 +140,10 @@ module.exports = function(options) {
 
 	if (options.withHandlebars) {
 		app.use(barriers.middleware);
+	}
+
+	if (options.withNavigation) {
+		app.use(navigation.middleware);
 	}
 
 	var actualAppListen = app.listen;
