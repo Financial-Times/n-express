@@ -56,6 +56,15 @@ app.get('/vanilla', function(req, res, next) {
 	});
 });
 
+app.get('/with-set-base', function(req, res, next) {
+	res.render('main', {
+		layout: 'wrapper',
+		setBase: '//next.ft.com',
+		items: [1,2,3,4,5],
+		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
+	});
+});
+
 var router = express.Router();
 
 app.use('/router', router);

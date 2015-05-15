@@ -5,6 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<meta name="theme-color" content="#fff1e0"/>
 		<meta name="dfp_site" content="test.next.ft" />
+		{{#if setBase}}
+			<base target="_parent" href="{{setBase}}">
+		{{/if}}
 		<link rel="stylesheet" href="{{#hashedAsset}}main.css{{/hashedAsset}}"/>
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
 		{{>next-js-setup/templates/ctm}}
