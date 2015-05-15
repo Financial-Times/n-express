@@ -272,6 +272,13 @@ describe('simple app', function() {
 				.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done);
 		});
 
+
+		it('should be able to set the base', function(done) {
+			request(app)
+				.get('/with-set-base')
+				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
+		});
+
 	});
 
 });
