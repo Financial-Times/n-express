@@ -10,7 +10,7 @@
     "es6-promise": "^2.0.1",
     "express": "^4.10.5",
     "express-errors-handler": "^1.0.0",
-    "ft-next-barrier-component": "^3.0.0",
+    "ft-next-barrier-component": "^4.0.0",
     "ft-next-handlebars": "^1.0.2",
     "ft-next-logger": "^1.0.0",
     "ft-next-navigation": "^2.0.0",
