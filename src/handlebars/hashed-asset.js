@@ -18,7 +18,7 @@ module.exports = function(options) {
 		logger.warn("./public/asset-hashes.json not found.  Falling back to un-fingerprinted files.");
 	}
 	if (assetHash) {
-		return '/hashed-assets/' + options.data.root.__name + '/' + assetHash;
+		return 'https://next-geebee.ft.com/hashed-assets/' + options.data.root.__name + '/' + assetHash;
 	}
 	return fallback;
 };
