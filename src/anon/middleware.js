@@ -1,8 +1,12 @@
 'use strict';
-var AnonymousModel = require('./anonymousModel');
+var models = require('./models');
 
 function anonymousMiddleware(req, res, next){
-	res.locals.anon = new AnonymousModel(req, res.locals.flags);
+	res.locals.anon = new models.AnonymousModel(req);
+	res.locals.firstClickFreeModel =
+		res.locals.anon.userIsAnonymous && res.locals.flags.firstClickFree ?
+			new models.FirstClickFreeModel() :
+			null;
 	next();
 }
 

@@ -45,9 +45,9 @@ describe('Anonymous Middleware', function(){
 			.set('X-FT-Anonymous-User', 'true')
 			.set('X-Flags', 'firstClickFree:on')
 			.expect(function(){
-				expect(locals.anon.firstClickFreeModel).to.be.an('object');
-				expect(locals.anon.firstClickFreeModel).to.have.property('signInLink');
-				expect(locals.anon.firstClickFreeModel).to.have.property('subscribeNowLink');
+				expect(locals.firstClickFreeModel).to.be.an('object');
+				expect(locals.firstClickFreeModel).to.have.property('signInLink');
+				expect(locals.firstClickFreeModel).to.have.property('subscribeNowLink');
 			})
 			.end(done);
 	});

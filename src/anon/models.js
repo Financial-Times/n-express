@@ -1,11 +1,7 @@
 'use strict';
 
-function AnonymousModel(req, flags){
+function AnonymousModel(req){
 	this.userIsAnonymous = ((req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
-	this.firstClickFreeModel =
-		this.userIsAnonymous && flags.firstClickFree ?
-			new FirstClickFreeModel() :
-			null;
 }
 
 function FirstClickFreeModel(){
@@ -13,4 +9,7 @@ function FirstClickFreeModel(){
 	this.subscribeNowLink = 'https://sub.ft.com/spa_5/';
 }
 
-module.exports = AnonymousModel;
+module.exports = {
+	AnonymousModel : AnonymousModel,
+	FirstClickFreeModel : FirstClickFreeModel
+};
