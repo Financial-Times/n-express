@@ -4,10 +4,11 @@ clean:
 	git clean -fxd
 
 install:
-	npm install
+	npm install origami-build-tools
+	obt install --verbose
 
 test:
-	next-build-tools verify --skip-layout-checks
+	nbt verify --skip-layout-checks
 	mocha
 
 run:
