@@ -13,6 +13,7 @@ var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
+var anon = require('./src/anon');
 
 var serviceMatchers = {
 	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
@@ -140,6 +141,7 @@ module.exports = function(options) {
 
 	if (options.withHandlebars) {
 		app.use(barriers.middleware);
+		app.use(anon.middleware);
 	}
 
 	if (options.withNavigation) {
