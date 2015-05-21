@@ -278,7 +278,7 @@ describe('simple app', function() {
 				.get('/with-set-base')
 				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
 		});
-
 	});
+
 
 });
