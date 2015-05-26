@@ -28,7 +28,7 @@ For vanilla and wrapper layouts scripts and styles must still be manually requir
 
 - Exposes `express.Router`
 - Provides `NODE_ENV` to templates via `__environment`
-- `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION`
+- `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION` (exposed as `data-next-is-production` on the `<html>` tag in templates)
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance
 - instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a 'serviceDependencies' option (see examples below)
 
