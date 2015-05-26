@@ -33,6 +33,12 @@ describe('simple app', function() {
 			.expect(200, done);
 	});
 
+	it('should have an about json', function(done) {
+		request(app)
+			.get('/demo-app/__about')
+			.expect(200, done);
+	});
+
 	it('should have a static resource', function(done) {
 		request(app)
 			.get('/demo-app/test.txt')
