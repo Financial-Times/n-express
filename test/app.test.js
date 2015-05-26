@@ -80,7 +80,6 @@ describe('simple app', function() {
 	describe('metrics', function () {
 
 		beforeEach(function () {
-			console.log(flags.url);
 			delete flags.url;
 			GLOBAL.fetch.restore();
 			// fake metrics has not been initialised
@@ -197,6 +196,22 @@ describe('simple app', function() {
 				.expect(200, /<html.*data-next-app="demo-app"/, done);
 		});
 
+		it('wrapper should expose non production-ness to client side code', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200)
+				.end(function (err, res) {
+					console.log(res);
+					expect(res.text.indexOf('data-next-is-production')).to.equal(-1);
+					done();
+				});
+		});
+		it('wrapper should expose production-ness to client side code', function(done) {
+			request(app)
+				.get('/wrapped?prod=true')
+				.expect(200, /<html.*data-next-is-production/, done);
+		});
+
 		it('wrapper should expose offy flags to client side code', function(done) {
 			request(app)
 				.get('/wrapped')
@@ -215,9 +230,23 @@ describe('simple app', function() {
 				.get('/vanilla')
 				.expect(200, /<html.*data-next-app="demo-app"/, done);
 		});
+		it('vanilla should expose non production-ness to client side code', function(done) {
+			request(app)
+				.get('/vanilla')
+				.expect(200)
+				.end(function (err, res) {
+					expect(res.text.indexOf('data-next-is-production')).to.equal(-1);
+					done();
+				});
+		});
+		it('vanilla should expose production-ness to client side code', function(done) {
+			request(app)
+				.get('/vanilla?prod=true')
+				.expect(200, /<html.*data-next-is-production/, done);
+		});
 		it('vanilla should expose offy flags to client side code', function(done) {
 			request(app)
-				.get('/wrapped')
+				.get('/vanilla')
 				.expect(200, /<html.*data-next-flags="(([a-z\d\-]+--off))( [a-z\d\-]+--off)*"/, done);
 		});
 		it('should integrate with the image service', function(done) {

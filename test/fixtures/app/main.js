@@ -41,6 +41,7 @@ app.get('/templated', function(req, res, next) {
 });
 
 app.get('/wrapped', function(req, res, next) {
+	res.locals.__isProduction  = req.query.prod || res.locals.__isProduction;
 	res.render('main', {
 		layout: 'wrapper',
 		items: [1,2,3,4,5],
@@ -49,6 +50,7 @@ app.get('/wrapped', function(req, res, next) {
 });
 
 app.get('/vanilla', function(req, res, next) {
+	res.locals.__isProduction  = req.query.prod || res.locals.__isProduction;
 	res.render('main', {
 		layout: 'vanilla',
 		items: [1,2,3,4,5],
