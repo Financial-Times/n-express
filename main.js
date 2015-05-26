@@ -80,6 +80,10 @@ module.exports = function(options) {
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
 
+	try {
+		app.locals.__version = require(directory + '/public/__about.json').appVersion;
+	} catch (e) {}
+
 	if (!app.locals.__isProduction) {
 		app.use('/' + name, express.static(directory + '/public'));
 	}

@@ -10,9 +10,6 @@ var app = module.exports = express({
 	helpers: { yell: yell }
 });
 
-
-
-
 app.get("/", function(req, res) {
 	res.send("Hello world");
 });

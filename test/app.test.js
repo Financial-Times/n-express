@@ -33,6 +33,12 @@ describe('simple app', function() {
 			.expect(200, done);
 	});
 
+	it('should have an about json', function(done) {
+		request(app)
+			.get('/demo-app/__about')
+			.expect(200, done);
+	});
+
 	it('should have a static resource', function(done) {
 		request(app)
 			.get('/demo-app/test.txt')
@@ -212,6 +218,13 @@ describe('simple app', function() {
 				.expect(200, /<html.*data-next-is-production/, done);
 		});
 
+		it('wrapper should expose app version to client side code', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /<html.*data-next-version="i-am-at-version-x"/, done);
+		});
+
+
 		it('wrapper should expose offy flags to client side code', function(done) {
 			request(app)
 				.get('/wrapped')
@@ -230,6 +243,7 @@ describe('simple app', function() {
 				.get('/vanilla')
 				.expect(200, /<html.*data-next-app="demo-app"/, done);
 		});
+
 		it('vanilla should expose non production-ness to client side code', function(done) {
 			request(app)
 				.get('/vanilla')
@@ -239,11 +253,19 @@ describe('simple app', function() {
 					done();
 				});
 		});
+
 		it('vanilla should expose production-ness to client side code', function(done) {
 			request(app)
 				.get('/vanilla?prod=true')
 				.expect(200, /<html.*data-next-is-production/, done);
 		});
+
+		it('vanilla should expose app version to client side code', function(done) {
+			request(app)
+				.get('/vanilla')
+				.expect(200, /<html.*data-next-version="i-am-at-version-x"/, done);
+		});
+
 		it('vanilla should expose offy flags to client side code', function(done) {
 			request(app)
 				.get('/vanilla')
