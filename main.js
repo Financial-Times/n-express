@@ -8,7 +8,7 @@ var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var handlebars = require('ft-next-handlebars');
-var barriers = require('ft-next-barrier-component');
+var barriers = require('./src/barriers');
 var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
@@ -102,8 +102,7 @@ module.exports = function(options) {
 
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
-				directory + '/views/partials',
-				barriers.partials
+				directory + '/views/partials'
 			],
 			defaultLayout: false,
 			layoutsDir: options.layoutsDir || __dirname + '/layouts',

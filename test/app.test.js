@@ -274,7 +274,7 @@ describe('simple app', function() {
 		it('should integrate with the image service', function(done) {
 			request(app)
 				.get('/templated')
-				.expect(200, /\/\/image.webservices.ft.com\/v1\/images\/raw\//, done);
+				.expect(200, /next-geebee\.ft\.com\/image\/v1\/images\/raw/, done);
 		});
 
 		it('should support loading partials via bower', function(done) {
