@@ -1,7 +1,7 @@
 'use strict';
 /*global describe, it, beforeEach*/
 var request = require('supertest');
-var nextExpress = require('../main');
+var nextExpress = require('../../main');
 var expect = require('chai').expect;
 
 

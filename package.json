@@ -7,10 +7,10 @@
     "release": "npm-prepublish --verbose && npm publish && git checkout package.json"
   },
   "dependencies": {
+    "debug": "^2.2.0",
     "es6-promise": "^2.0.1",
     "express": "^4.10.5",
     "express-errors-handler": "^1.0.0",
-    "ft-next-barrier-component": "^4.0.0",
     "ft-next-handlebars": "^1.0.2",
     "ft-next-logger": "^1.0.0",
     "ft-next-navigation": "^2.0.0",
@@ -20,10 +20,12 @@
   },
   "devDependencies": {
     "chai": "^2.1.2",
+    "fetch-mock": "^1.5.0",
     "mocha": "^2.0.1",
+    "mockery": "^1.4.0",
     "next-build-tools": "^2.0.0",
     "npm-prepublish": "^1.0.2",
     "sinon": "^1.14.1",
-    "supertest": "^0.15.0"
+    "supertest": "^1.0.0"
   }
 }

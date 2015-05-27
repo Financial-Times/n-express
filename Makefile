@@ -9,7 +9,7 @@ install:
 
 test:
 	nbt verify --skip-layout-checks
-	mocha
+	mocha --recursive
 
 run:
 	node test/fixtures/app/main.js
