@@ -42,7 +42,8 @@ var serviceMatchers = {
 	'beacon': /^https?:\/\/next-beacon\.ft\.com\/px\.gif/,
 	'session': /^https?:\/\/session-next\.ft\.com/,
 	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
-	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/
+	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
+	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/
 };
 
 module.exports = function(options) {
