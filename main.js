@@ -41,7 +41,8 @@ var serviceMatchers = {
 	'ft.com': /^https?:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
 	'beacon': /^https?:\/\/next-beacon\.ft\.com\/px\.gif/,
 	'session': /^https?:\/\/session-next\.ft\.com/,
-	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/
+	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
+	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/
 };
 
 module.exports = function(options) {
