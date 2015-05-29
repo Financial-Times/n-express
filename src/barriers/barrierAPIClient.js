@@ -30,6 +30,7 @@ function getBarrierData(req){
 					requestHeaders,
 					response.headers
 				);
+				debug(msg);
 			}
 			return response;
 		})
