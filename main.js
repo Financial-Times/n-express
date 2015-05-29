@@ -43,7 +43,8 @@ var serviceMatchers = {
 	'session': /^https?:\/\/session-next\.ft\.com/,
 	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
 	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
-	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/
+	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/,
+	'barriers-api': /https:\/\/subscribe.ft.com\/memb\/barrier/
 };
 
 module.exports = function(options) {
