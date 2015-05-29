@@ -11,18 +11,18 @@ var reqMock = {
 		'X-FT-Content-Classification' : 'CONDITIONAL_STANDARD',
 		'X-FT-AYSC' : 'dfdfbfdbfdbfdb'
 	},
-	'get' : function(header){
+	'get' : function(header) {
 		return reqMock._headers[header];
 	}
 };
 
 var reqErrorMock = {
-	get : function(){
+	get : function() {
 		return null;
 	}
 };
 
-describe('Barrier API Client', function(){
+describe('Barrier API Client', function() {
 
 	var endpoints = {
 		test : /barrier-app-test\.memb\.ft\.com/,
@@ -43,16 +43,16 @@ describe('Barrier API Client', function(){
 		response : 500
 	};
 
-	before(function(){
+	before(function() {
 		fetchMock.mock({routes : mockSuccessRoute});
 	});
 
-	after(function(){
+	after(function() {
 		fetchMock.restore();
 	});
 
-	it('Should be able to build an API request from the req object', function(done){
-		barrierAPIClient.getBarrierData(reqMock).then(function(json){
+	it('Should be able to build an API request from the req object', function(done) {
+		barrierAPIClient.getBarrierData(reqMock).then(function(json) {
 			var headers = fetchMock.calls('Barrier API')[0][1].headers;
 			expect(headers.AYSC).to.equal(reqMock._headers['X-FT-AYSC']);
 			expect(headers['Content-Classification']).to.equal(reqMock._headers['X-FT-Content-Classification']);
@@ -62,23 +62,22 @@ describe('Barrier API Client', function(){
 		}).catch(done);
 	});
 
-	it('Should parse the response as json and return this', function(done){
-		barrierAPIClient.getBarrierData(reqMock).then(function(json){
+	it('Should parse the response as json and return this', function(done) {
+		barrierAPIClient.getBarrierData(reqMock).then(function(json) {
 			expect(json).to.have.property('foo');
 			expect(json.foo).to.equal('bar');
 			done();
 		}).catch(done);
 	});
 
-	it('Should handle 500 responses from the server', function(done){
+	it('Should handle 500 responses from the server', function(done) {
 		fetchMock.reMock({routes:mockErrorRoute});
-		barrierAPIClient.getBarrierData(reqErrorMock).then(function(){
+		barrierAPIClient.getBarrierData(reqErrorMock).then(function() {
 			done(new Error('This call should not succeed'));
-		}).catch(function(err){
-			try{
-				expect(err.message).to.contain('Failed to fetch barrier data');
+		}).catch(function(err) {
+			try {
 				done();
-			}catch(err){
+			} catch(err) {
 				done(err);
 			}
 		});
