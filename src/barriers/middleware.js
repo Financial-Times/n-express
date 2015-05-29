@@ -52,7 +52,6 @@ function middleware(req, res, next) {
 			next();
 		}).catch(function(err) {
 			if (err instanceof fetchres.BadServerResponseError) {
-				debug('Failed to fetch barrier data message=%s', err.message);
 				next();
 			} else {
 				next(err);
