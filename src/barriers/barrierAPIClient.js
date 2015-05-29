@@ -34,7 +34,6 @@ function getBarrierData(req){
 			return response;
 		})
 		.then(fetchres.json);
-	});
 }
 
 module.exports = {
