@@ -133,7 +133,7 @@ describe('simple app', function() {
 				'capi-v1-pages-list': 'http://api.ft.com/site/v1/pages',
 				'sapi': 'http://api.ft.com/content/search/v1',
 				'user-prefs': 'http://ft-next-api-user-prefs-v002.herokuapp.com/',
-				'flags': 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json',
+				'flags': 'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json',
 				// For some reason elastic search url breaks the tests.
 				// 'elastic-v1-atricle': 'http://abcd-1234.foundcluster.com:9243/v1_api_v2/item',
 				// 'elastic-search':
