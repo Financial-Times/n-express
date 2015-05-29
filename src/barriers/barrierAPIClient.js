@@ -3,6 +3,7 @@
 require('isomorphic-fetch');
 var debug = require('debug')('ft-next-barrier-component');
 var util = require('util');
+var fetchres = require('fetchres');
 
 var endpoints = {
 	test : 'http://barrier-app-test.memb.ft.com/memb/barrier/v1',
@@ -20,19 +21,19 @@ function getRequestHeaders(req){
 
 function getBarrierData(req){
 	var requestHeaders = getRequestHeaders(req);
-	return fetch(endpoints.prod,{headers: requestHeaders}).then(function(response){
-
-		if(!response.ok){
-			var msg = util.format(
-				"Failed to fetch barrier data.  status=%s, requestHeaders=%j, responseHeaders=%j",
-				response.status,
-				requestHeaders,
-				response.headers
-			);
-			debug(msg);
-		}
-
-		return response.json();
+	return fetch(endpoints.prod, { headers: requestHeaders })
+		.then(function(response) {
+			if (!response.ok) {
+				var msg = util.format(
+					"Failed to fetch barrier data.  status=%s, requestHeaders=%j, responseHeaders=%j",
+					response.status,
+					requestHeaders,
+					response.headers
+				);
+			}
+			return response;
+		})
+		.then(fetchres.json);
 	});
 }
 
