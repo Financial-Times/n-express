@@ -193,7 +193,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/wrapped')
 				// doctype ... header ... script loader ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*flags(.|[\r\n])*script-loader(.|[\r\n])*<\/html>/, done);
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*footer(.|[\r\n])*flags(.|[\r\n])*script-loader(.|[\r\n])*<\/html>/, done);
 		});
 
 		it('wrapper should expose app name to client side code', function(done) {
