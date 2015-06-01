@@ -3,8 +3,7 @@
   "dependencies": {
     "next-feature-flags-client": "^7.0.0",
     "next-js-setup": "^2.0.0",
-    "next-header": "^9.6.1",
-    "next-footer": "^2.0.0",
+    "n-header-footer": "^1.0.0",
     "next-welcome": "^2.0.0"
   },
   "resolutions": {
