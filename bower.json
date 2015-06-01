@@ -10,5 +10,10 @@
     "next-sass-setup": "^6.0.1",
     "o-ft-icons": "next",
     "o-fonts": "^2.0.0"
-  }
+  },
+  "ignore": [
+    "layouts/"
+    "test/",
+    "src/"
+  ]
 }
