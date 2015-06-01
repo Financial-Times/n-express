@@ -12,7 +12,7 @@
     "o-fonts": "^2.0.0"
   },
   "ignore": [
-    "layouts/"
+    "layouts/",
     "test/",
     "src/"
   ]
