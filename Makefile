@@ -7,8 +7,10 @@ install:
 	npm install origami-build-tools
 	obt install --verbose
 
-test:
+test: unit-test
 	nbt verify --skip-layout-checks
+
+unit-test:
 	mocha --recursive
 
 run:

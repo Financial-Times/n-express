@@ -23,7 +23,7 @@ var serviceMatchers = {
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
 	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v2_api_v[12]\/item/,
 	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
-	'flags': /^https?:\/\/ft-next-api-feature-flags\.herokuapp\.com\/__flags\.json/,
+	'flags': /^https?:\/\/ft-next-feature-flags-prod\.s3-website-eu-west-1\.amazonaws\.com\/flags\/__flags\.json$/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
 	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/,
@@ -43,7 +43,8 @@ var serviceMatchers = {
 	'session': /^https?:\/\/session-next\.ft\.com/,
 	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
 	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
-	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/
+	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/,
+	'barriers-api': /https:\/\/subscribe.ft.com\/memb\/barrier/
 };
 
 module.exports = function(options) {
@@ -140,7 +141,7 @@ module.exports = function(options) {
 	var flagsPromise = Promise.resolve();
 
 	if (options.withFlags) {
-		flagsPromise = flags.init({ url: 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json' });
+		flagsPromise = flags.init({ url: 'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json' });
 		app.use(flags.middleware);
 	}
 

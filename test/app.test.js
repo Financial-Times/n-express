@@ -133,7 +133,7 @@ describe('simple app', function() {
 				'capi-v1-pages-list': 'http://api.ft.com/site/v1/pages',
 				'sapi': 'http://api.ft.com/content/search/v1',
 				'user-prefs': 'http://ft-next-api-user-prefs-v002.herokuapp.com/',
-				'flags': 'http://ft-next-api-feature-flags.herokuapp.com/__flags.json',
+				'flags': 'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json',
 				// For some reason elastic search url breaks the tests.
 				// 'elastic-v1-atricle': 'http://abcd-1234.foundcluster.com:9243/v1_api_v2/item',
 				// 'elastic-search':
@@ -193,7 +193,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/wrapped')
 				// doctype ... header ... script loader ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*flags(.|[\r\n])*script-loader(.|[\r\n])*<\/html>/, done);
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*footer(.|[\r\n])*flags(.|[\r\n])*script-loader(.|[\r\n])*<\/html>/, done);
 		});
 
 		it('wrapper should expose app name to client side code', function(done) {

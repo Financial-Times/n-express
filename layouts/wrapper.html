@@ -16,14 +16,14 @@
 		{{#outputBlock 'notification'}}
 		{{/outputBlock}}
 
-		{{>next-header/templates/main}}
+		{{>n-header-footer/templates/header}}
 
 		{{{body}}}
 
 		{{#if @root.flags.welcomePanel}}
 		{{>next-welcome/main}}
 		{{/if}}
-		{{>next-footer/templates/main}}
+		{{>n-header-footer/templates/footer}}
 		{{#if @root.flags.javascript}}
 			{{>next-feature-flags-client/templates/flags}}
 			{{>next-js-setup/templates/script-loader}}

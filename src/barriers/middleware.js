@@ -3,12 +3,13 @@ var debug = require('debug')('ft-next-barrier-component');
 var BarriersModel = require('./models/barriers');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
+var fetchres = require('fetchres');
 
 function fallbackBarrier(req, res){
 	res.redirect('https://registration.ft.com/registration/barrier/login?location=http://next.ft.com' + req.url);
 }
 
-function middleware(req, res, next){
+function middleware(req, res, next) {
 	res.locals.barrier = false;
 	res.locals.barriers = {};
 
@@ -44,14 +45,18 @@ function middleware(req, res, next){
 
 	debug('Show barrier barrierType=%s', barrierType);
 
-	barrierAPIClient.getBarrierData(req).then(function(json){
-		debug('Barrier data fetched');
-		res.locals.barriers = new BarriersModel(barrierType, json, countryCode);
-		next();
-	}).catch(function(err){
-		debug('Failed to fetch barrier data message=%s', err.message);
-		next(err);
-	});
+	barrierAPIClient.getBarrierData(req)
+		.then(function(json) {
+			debug('Barrier data fetched');
+			res.locals.barriers = new BarriersModel(barrierType, json, countryCode);
+			next();
+		}).catch(function(err) {
+			if (err instanceof fetchres.BadServerResponseError) {
+				next();
+			} else {
+				next(err);
+			}
+		});
 }
 
 module.exports =  middleware;
