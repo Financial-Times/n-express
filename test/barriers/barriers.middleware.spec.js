@@ -1,5 +1,5 @@
 'use strict';
-/*global describe, it, before, afterEach*/
+/*global describe, it, before, afterEach, after*/
 var express = require('express');
 var sinon = require('sinon');
 var request = require('supertest');

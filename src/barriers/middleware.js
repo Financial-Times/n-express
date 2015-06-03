@@ -3,6 +3,7 @@ var debug = require('debug')('ft-next-barrier-component');
 var BarriersModel = require('./models/barriers');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
+var fetchres = require('fetchres');
 
 
 function fallbackBarrier(req, res){
