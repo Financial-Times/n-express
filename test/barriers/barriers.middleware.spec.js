@@ -4,8 +4,9 @@ var express = require('express');
 var sinon = require('sinon');
 var request = require('supertest');
 var expect = require('chai').expect;
+var mockery = require('mockery');
 
-var middleware = require('../../src/barriers/middleware');
+var middleware;
 
 describe('Middleware', function(){
 
@@ -15,6 +16,7 @@ describe('Middleware', function(){
 	var firstClickFreeFlag = false;
 
 	before(function(){
+		middleware = require('../../src/barriers/middleware');
 		app = express();
 		routeHandler = function(req, res){
 			locals = res.locals;
@@ -28,6 +30,10 @@ describe('Middleware', function(){
 		app.use(middleware);
 		app.get('/*', routeHandlerSpy);
 		app.listen(4444);
+	});
+
+	after(function(){
+		mockery.disable();
 	});
 
 	afterEach(function(){

@@ -4,6 +4,7 @@ require('isomorphic-fetch');
 var debug = require('debug')('ft-next-barrier-component');
 var util = require('util');
 var fetchres = require('fetchres');
+var ravenClient = require('express-errors-handler');
 
 var endpoints = {
 	test : 'http://barrier-app-test.memb.ft.com/memb/barrier/v1',
@@ -21,6 +22,7 @@ function getRequestHeaders(req){
 
 function getBarrierData(req){
 	var requestHeaders = getRequestHeaders(req);
+	debug('Barriers API request url=%s headers=%j', endpoints.prod, requestHeaders);
 	return fetch(endpoints.prod, { headers: requestHeaders })
 		.then(function(response) {
 			if (!response.ok) {
@@ -31,6 +33,9 @@ function getBarrierData(req){
 					response.headers
 				);
 				debug(msg);
+				var err = new Error('Barrier API Call Failed');
+				var errData = {extra:{requestHeaders:requestHeaders,responseHeaders:response.headers}};
+				ravenClient.captureError(err,errData);
 			}
 			return response;
 		})

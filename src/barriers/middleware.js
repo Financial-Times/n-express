@@ -3,7 +3,7 @@ var debug = require('debug')('ft-next-barrier-component');
 var BarriersModel = require('./models/barriers');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
-var fetchres = require('fetchres');
+
 
 function fallbackBarrier(req, res){
 	res.redirect('https://registration.ft.com/registration/barrier/login?location=http://next.ft.com' + req.url);
@@ -51,11 +51,9 @@ function middleware(req, res, next) {
 			res.locals.barriers = new BarriersModel(barrierType, json, countryCode);
 			next();
 		}).catch(function(err) {
-			if (err instanceof fetchres.BadServerResponseError) {
-				next();
-			} else {
-				next(err);
-			}
+			// failover to a free site when barriers call fails
+			res.locals.barrier = false;
+			next();
 		});
 }
 
