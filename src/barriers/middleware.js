@@ -51,9 +51,13 @@ function middleware(req, res, next) {
 			res.locals.barriers = new BarriersModel(barrierType, json, countryCode);
 			next();
 		}).catch(function(err) {
-			// failover to a free site when barriers call fails
-			res.locals.barrier = false;
-			next();
+			if (err instanceof fetchres.BadServerResponseError) {
+				// failover to a free site when barriers call fails
+				res.locals.barrier = false;
+				next();
+			} else {
+				next(err);
+			}
 		});
 }
 
