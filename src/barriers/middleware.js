@@ -5,6 +5,7 @@ var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
 
+
 function fallbackBarrier(req, res){
 	res.redirect('https://registration.ft.com/registration/barrier/login?location=http://next.ft.com' + req.url);
 }
@@ -52,6 +53,8 @@ function middleware(req, res, next) {
 			next();
 		}).catch(function(err) {
 			if (err instanceof fetchres.BadServerResponseError) {
+				// failover to a free site when barriers call fails
+				res.locals.barrier = false;
 				next();
 			} else {
 				next(err);
