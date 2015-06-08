@@ -32,5 +32,9 @@
 			{{>next-js-setup/templates/script-loader}}
 		{{/if}}
 		{{>next-js-setup/templates/tracking}}
+		<script>
+			var nextData = {};
+			nextData.isLoggedIn = {{anon.userIsAnonymous}};
+		</script>
 	</body>
 </html>
