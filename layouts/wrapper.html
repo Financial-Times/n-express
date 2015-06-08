@@ -30,11 +30,12 @@
 		{{#if @root.flags.javascript}}
 			{{>next-feature-flags-client/templates/flags}}
 			{{>next-js-setup/templates/script-loader}}
+			<script>
+				{{#if anon}}
+					var nextIsAnonymous = {{anon.userIsAnonymous}};
+				{{/if}}
+			</script>
 		{{/if}}
 		{{>next-js-setup/templates/tracking}}
-		<script>
-			var nextData = {};
-			nextData.isLoggedIn = {{anon.userIsAnonymous}};
-		</script>
 	</body>
 </html>
