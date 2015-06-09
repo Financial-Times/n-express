@@ -24,7 +24,7 @@ var reqErrorMock = {
 	}
 };
 
-describe('Barrier API Client', function() {
+describe.only('Barrier API Client', function() {
 
 	var endpoints = {
 		test : /barrier-app-test\.memb\.ft\.com/,
