@@ -7,8 +7,8 @@ var fetchres = require('fetchres');
 var ravenClient = require('express-errors-handler');
 
 var endpoints = {
-	test : 'http://barrier-app-test.memb.ft.com/memb/barrier/v1',
-	prod : 'https://subscribe.ft.com/memb/barrier/v1'
+	test : 'https://barrier-app.memb.ft.com/memb/barrier/v1/barrier-data',
+	prod : 'https://subscribe.ft.com/memb/barrier/v1/barrier-data'
 };
 
 function getRequestHeaders(req){

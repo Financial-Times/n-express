@@ -14,9 +14,10 @@ describe('Middleware', function(){
 
 	var barriersFlag = true;
 	var firstClickFreeFlag = false;
+	var metricsMock = {count:sinon.spy()};
 
 	before(function(){
-		middleware = require('../../src/barriers/middleware');
+		middleware = require('../../src/barriers/middleware')(metricsMock);
 		app = express();
 		routeHandler = function(req, res){
 			locals = res.locals;
@@ -59,14 +60,16 @@ describe('Middleware', function(){
 			.set('X-FT-Content-Classification', contentClassification);
 	}
 
-	it('Should redirect if barriers flag is off', function(done){
+	it('Should set barrier property to false if barrier flag is off', function(done){
 		barriersFlag = false;
 		request(app)
 			.get('/blah')
 			.set('X-FT-Auth-Gate-Result', 'DENIED')
 			.set('X-FT-Barrier-Type', 'PREMIUM')
-			.expect('Location', 'https://registration.ft.com/registration/barrier/login?location=http://next.ft.com/blah')
-			.expect(302, done);
+			.expect(function(){
+				expect(locals.barrier).to.be.false;
+			})
+			.expect(200, done);
 	});
 
 	it('Should vary on the X-FT-Anonymous-User header', function(done){

@@ -272,12 +272,12 @@ describe('simple app', function() {
 				.expect(200, /<html.*data-next-flags="(([a-z\d\-]+--off))( [a-z\d\-]+--off)*"/, done);
 		});
 		it('should integrate with the image service', function(done) {
+			var expected = process.env.TRAVIS ?
+				/image\.webservices\.ft\.com\/v1\/images\/raw/ :
+				/next-geebee\.ft\.com\/image\/v1\/images\/raw/;
 			request(app)
 				.get('/templated')
-				// this line will pass locally, but fail on travis
-				//.expect(200, /next-geebee\.ft\.com\/image\/v1\/images\/raw/, done)
-				// this line will pass on travis but fail locally
-				.expect(200, /image\.webservices\.ft\.com\/v1\/images\/raw/, done);
+				.expect(200, expected, done);
 		});
 
 		it('should support loading partials via bower', function(done) {

@@ -5,10 +5,7 @@ var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
 
-
-function fallbackBarrier(req, res){
-	res.redirect('https://registration.ft.com/registration/barrier/login?location=http://next.ft.com' + req.url);
-}
+var metrics;
 
 function middleware(req, res, next) {
 	res.locals.barrier = false;
@@ -28,7 +25,10 @@ function middleware(req, res, next) {
 	}
 
 	if(!res.locals.flags.barrier){
-		return fallbackBarrier(req, res);
+		res.locals.barrier = false;
+		debug('Barrier Flag is off - site is currently free');
+		metrics.count && metrics.count('barrier_flag_off', 1);
+		return next();
 	}
 
 	res.locals.barrier = (barrierType !== null);
@@ -62,4 +62,7 @@ function middleware(req, res, next) {
 		});
 }
 
-module.exports =  middleware;
+module.exports =  function(m){
+	metrics = m;
+	return middleware;
+};
