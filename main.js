@@ -146,7 +146,7 @@ module.exports = function(options) {
 	}
 
 	if (options.withHandlebars) {
-		app.use(barriers.middleware);
+		app.use(barriers.middleware(metrics));
 		app.use(anon.middleware);
 	}
 
