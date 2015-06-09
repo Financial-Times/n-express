@@ -1,12 +1,14 @@
 'use strict';
-var models = require('./models');
+var anonModels = require('./models');
+var NavigationModel = require('../navigation/navigationModel');
 
 function anonymousMiddleware(req, res, next){
-	res.locals.anon = new models.AnonymousModel(req);
+	res.locals.anon = new anonModels.AnonymousModel(req);
 	res.locals.firstClickFreeModel =
 		res.locals.anon.userIsAnonymous && res.locals.flags.firstClickFree ?
-			new models.FirstClickFreeModel() :
+			new anonModels.FirstClickFreeModel() :
 			null;
+	res.locals.navigationModel = new NavigationModel(res.locals.flags, res.locals.anon.userIsAnonymous);
 	next();
 }
 

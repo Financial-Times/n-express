@@ -52,4 +52,41 @@ describe('Anonymous Middleware', function(){
 			.end(done);
 	});
 
+	describe('Navigation model', function(){
+
+		//todo [PW 9/6/15] this stuff doesn't belong here but not sure where it should go
+
+		it('Should set the myFT property to an object if user is not anonymous', function(done){
+			request(app)
+				.get('/')
+				.set('X-FT-Anonymous-User', 'false')
+				.expect(function(){
+					expect(locals.navigationModel.myFT).to.be.an('object');
+				})
+				.end(done);
+		});
+
+		it('Should set the myFT property to an object if anonymousMyFt flag is ON', function(done){
+			request(app)
+				.get('/')
+				.set('X-FT-Anonymous-User', 'true')
+				.set('X-Flags', 'anonymousMyFt:on')
+				.expect(function(){
+					expect(locals.navigationModel.myFT).to.be.an('object');
+				})
+				.end(done);
+		});
+
+		it('Should set the myAccount property to an object if user is not anonymous', function(done){
+			request(app)
+				.get('/')
+				.set('X-FT-Anonymous-User', 'false')
+				.expect(function(){
+					expect(locals.navigationModel.myAccount).to.be.an('object');
+				})
+				.end(done);
+		});
+
+	});
+
 });
