@@ -57,7 +57,7 @@ describe('Anonymous Middleware', function(){
 		it('Should set the myFT property to an object if user is not anonymous', function(done){
 			request(app)
 				.get('/')
-				.set('X-FT-Anonymous-User', 'false')
+				.set('FT-Session-Token', 'xvdsvdfvdfs')
 				.expect(function(){
 					expect(locals.navigationModel.myFT).to.be.an('object');
 				})
@@ -67,7 +67,7 @@ describe('Anonymous Middleware', function(){
 		it('Should set the myFT property to an object if anonymousMyFt flag is ON', function(done){
 			request(app)
 				.get('/')
-				.set('X-FT-Anonymous-User', 'true')
+				.set('FT-Session-Token', '')
 				.set('X-Flags', 'anonymousMyFt:on')
 				.expect(function(){
 					expect(locals.navigationModel.myFT).to.be.an('object');
@@ -78,7 +78,7 @@ describe('Anonymous Middleware', function(){
 		it('Should set the myAccount property to an object if user is not anonymous', function(done){
 			request(app)
 				.get('/')
-				.set('X-FT-Anonymous-User', 'false')
+				.set('FT-Session-Token', 'dkvbdfkjvbh')
 				.expect(function(){
 					expect(locals.navigationModel.myAccount).to.be.an('object');
 				})
