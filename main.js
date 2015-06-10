@@ -44,8 +44,9 @@ var serviceMatchers = {
 	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
 	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
 	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/,
-	'barriers-api': /https:\/\/subscribe.ft.com\/memb\/barrier/,
-	'brightcove': /http:\/\/api\.brightcove\.com\/services\/library/
+	'barriers-api': /^https:\/\/subscribe.ft.com\/memb\/barrier/,
+	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
+	'internalcapi': /^http:\/\/contentapi\.ft\.com/
 };
 
 module.exports = function(options) {
