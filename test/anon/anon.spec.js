@@ -9,8 +9,6 @@ describe('Anonymous Middleware', function(){
 
 	var app, locals;
 
-	var firstClickFreeFlag = false;
-
 	beforeEach(function(){
 		app = nextExpress({withFlags:true,withHandlebars:true});
 		app.get('/', function(req, res){
@@ -39,10 +37,10 @@ describe('Anonymous Middleware', function(){
 	});
 
 	it('Should provide a firstClickFree model when required', function(done){
-		firstClickFreeFlag = true;
 		request(app)
 			.get('/')
-			.set('X-FT-Anonymous-User', 'true')
+			.set('FT-Access-Decision', 'GRANTED')
+			.set('FT-Access-Decision-Policy', 'PRIVILEGED_REFERER_POLICY')
 			.set('X-Flags', 'firstClickFree:on')
 			.expect(function(){
 				expect(locals.firstClickFreeModel).to.be.an('object');
