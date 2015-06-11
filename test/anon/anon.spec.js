@@ -64,6 +64,16 @@ describe('Anonymous Middleware', function(){
 				.end(done);
 		});
 
+		it('Should set the myFT property to an object if user is not anonymous with the deprecated flag', function(done){
+			request(app)
+				.get('/')
+				.set('X-FT-Session-Token', 'xvdsvdfvdfs')
+				.expect(function(){
+					expect(locals.navigationModel.myFT).to.be.an('object');
+				})
+				.end(done);
+		});
+
 		it('Should set the myFT property to an object if anonymousMyFt flag is ON', function(done){
 			request(app)
 				.get('/')

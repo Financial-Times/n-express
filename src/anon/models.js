@@ -1,7 +1,7 @@
 'use strict';
 
 function AnonymousModel(req){
-	this.userIsAnonymous = !(req.get('FT-Session-Token'));
+	this.userIsAnonymous = !(req.get('FT-Session-Token') || req.get('X-FT-Session-Token'));
 }
 
 function FirstClickFreeModel(){
