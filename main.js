@@ -20,9 +20,9 @@ var serviceMatchers = {
 	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
-	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/item/,
-	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v2_api_v[12]\/item/,
-	'elastic-v1-search': /^https?:\/\/[\w\-]+\.foundcluster\.com:9243\/v1_api_v2\/_search/,
+	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/item/,
+	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v2_api_v[12]\/item/,
+	'elastic-v1-search': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/_search/,
 	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
 	'flags': /^https?:\/\/ft-next-feature-flags-prod\.s3-website-eu-west-1\.amazonaws\.com\/flags\/__flags\.json$/,
 	// 'elastic-search':
