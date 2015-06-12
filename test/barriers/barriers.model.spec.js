@@ -10,7 +10,7 @@ describe('Barriers Model', function(){
 	describe('Anonymous Barrier', function(){
 
 		it('Should have an anonymousBarrier property if barrier type is REGISTER_PLUS', function(){
-			var model = new BarriersModel(barrierTypes.REGISTER_PLUS, {});
+			var model = new BarriersModel(barrierTypes.TRIAL, {});
 			expect(model).to.have.property('anonymousBarrier');
 			expect(model).not.to.have.property('premiumBarrier');
 		});

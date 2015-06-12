@@ -9,12 +9,12 @@ function BarriersModel(type, json, countryCode){
 		this.premiumBarrier = new PremiumBarrierModel(json, countryCode);
 	}
 
-	if(type === barrierTypes.REGISTER_PLUS){
-		this.anonymousBarrier = new RegisterBarrierModel(json);
+	if(type === barrierTypes.TRIAL){
+		this.anonymousBarrier = new TrialBarrierModel(json);
 	}
 }
 
-function RegisterBarrierModel(){
+function TrialBarrierModel(){
 	this.signInLink = 'https://next.ft.com/login';
 	this.subscribeNowLink = 'https://sub.ft.com/spa_5/';
 }
