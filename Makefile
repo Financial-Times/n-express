@@ -17,3 +17,6 @@ unit-test:
 
 run:
 	node test/fixtures/app/main.js
+
+check:
+	npm-check-updates
