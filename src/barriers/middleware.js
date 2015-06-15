@@ -11,16 +11,20 @@ function middleware(req, res, next) {
 	res.locals.barrier = false;
 	res.locals.barriers = {};
 
-	var authGateResult = req.get('X-FT-Auth-Gate-Result');
-	var barrierType = req.get('X-FT-Barrier-Type');
-	var userIsAnonymous = ((req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
+	var accessDecision = req.get('FT-Access-Decision') || req.get('X-FT-Auth-Gate-Result');
+	var barrierType = req.get('FT-Barrier-Type') || req.get('X-FT-Barrier-Type');
+	var userIsAnonymous = ((req.get('FT-Anonymous-User') || req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
 	var countryCode = req.get('Country-Code');
+
+	debug('Barrier Middleware: accessDecision=%s barrierType=%s userIsAnonymous=%s countyCode=%s',
+		accessDecision, barrierType, userIsAnonymous, countryCode
+	);
 
 	res.vary('X-FT-Anonymous-User, X-FT-Auth-Gate-Result, X-FT-Barrier-Type, Country-Code');
 	res.set('Outbound-Cache-Control', 'private, no-cache, no-store, must-revalidate, max-age=0');
 
-	if(authGateResult !== 'DENIED'){
-		debug('Auth Gate Result is "%s" ,so no barrier to show', authGateResult);
+	if(accessDecision !== 'DENIED'){
+		debug('Auth Gate Result is "%s" ,so no barrier to show', accessDecision);
 		return next();
 	}
 
