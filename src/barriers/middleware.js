@@ -38,8 +38,8 @@ function middleware(req, res, next) {
 	res.locals.barrier = (barrierType !== null);
 
 	//todo remove this when we have a real barrier type from API
-	if(userIsAnonymous && barrierType !== null){
-		barrierType = barrierTypes.TRIAL;
+	if(!userIsAnonymous){
+		barrierType = barrierTypes.PREMIUM;
 	}
 
 	if(res.locals.flags.firstClickFree) {
