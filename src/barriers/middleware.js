@@ -38,9 +38,7 @@ function middleware(req, res, next) {
 	res.locals.barrier = (barrierType !== null);
 
 	//todo remove this when we have a real barrier type from API
-	if(!userIsAnonymous){
-		barrierType = barrierTypes.PREMIUM;
-	}
+	barrierType = userIsAnonymous ? barrierTypes.TRIAL : barrierTypes.PREMIUM;
 
 	if(res.locals.flags.firstClickFree) {
 		debug('First click free active, disable barrier');
