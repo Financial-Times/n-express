@@ -126,30 +126,15 @@ describe('simple app', function() {
 			});
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
-			var services = {
-				'ft.com': 'http://www.ft.com/cms/s/380e7966-b07f-11e4-9b8e-00144feab7de.html',
-				'capi-v1-article': 'http://api.ft.com/content/items/v1/1234-abcd',
-				'capi-v1-page': 'http://api.ft.com/site/v1/pages/1234-abcd',
-				'capi-v1-pages-list': 'http://api.ft.com/site/v1/pages',
-				'sapi': 'http://api.ft.com/content/search/v1',
-				'user-prefs': 'http://ft-next-api-user-prefs-v002.herokuapp.com/',
-				'flags': 'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json',
-				// For some reason elastic search url breaks the tests.
-				// 'elastic-v1-atricle': 'http://abcd-1234.foundcluster.com:9243/v1_api_v2/item',
-				// 'elastic-search':
-				'capi-v2-article': 'http://api.ft.com/content/1234-abcd',
-				'capi-v2-enriched-article': 'http://api.ft.com/enrichedcontent/1234-abcd',
-				'capi-v2-thing': 'http://api.ft.com/things/1234-abcd',
-				'capi-v2-people': 'http://api.ft.com/people/1234-abcd',
-				'capi-v2-organisation': 'http://api.ft.com/organisations/1234-abcd',
-				'capi-v2-content-by-concept': 'http://api.ft.com/content?isAnnotatedBy=http://api.ft.com/things/1234-abcd',
-				'hello': 'http://world.com'
-			};
-			Promise.all(Object.keys(services).map(function (serv) {
-				return fetch(services[serv], {
+
+			Promise.all([
+				fetch('http://ft-next-api-user-prefs-v002.herokuapp.com/', {
 					timeout: 50
-				}).catch(function () {});
-			}))
+				}).catch(function () {}),
+				fetch('http://world.com', {
+					timeout: 50
+				}).catch(function () {})
+			])
 				.then(function () {
 					expect(errorsHandler.captureMessage.called).to.be.false;
 					errorsHandler.captureMessage.restore();
