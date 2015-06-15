@@ -15,7 +15,7 @@ function BarriersModel(type, json, countryCode){
 }
 
 function TrialBarrierModel(){
-	this.signInLink = 'https://next.ft.com/login';
+	this.signInLink = '/login';
 	this.subscribeNowLink = 'https://sub.ft.com/spa_5/';
 }
 
