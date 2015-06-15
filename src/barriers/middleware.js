@@ -16,8 +16,8 @@ function middleware(req, res, next) {
 	var userIsAnonymous = ((req.get('FT-Anonymous-User') || req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
 	var countryCode = req.get('Country-Code');
 
-	debug('Barrier Middleware: accessDecision=%s barrierType=%s userIsAnonymous=%s countyCode=%s',
-		accessDecision, barrierType, userIsAnonymous, countryCode
+	debug('Barrier Middleware: accessDecision=%s barrierType=%s userIsAnonymous=%s countyCode=%s url=%s',
+		accessDecision, barrierType, userIsAnonymous, countryCode, req.url
 	);
 
 	res.vary('X-FT-Anonymous-User, X-FT-Auth-Gate-Result, X-FT-Barrier-Type, Country-Code');
@@ -25,6 +25,7 @@ function middleware(req, res, next) {
 
 	if(accessDecision !== 'DENIED'){
 		debug('Auth Gate Result is "%s" ,so no barrier to show', accessDecision);
+		res.locals.barrier = false;
 		return next();
 	}
 
@@ -35,7 +36,7 @@ function middleware(req, res, next) {
 		return next();
 	}
 
-	res.locals.barrier = (barrierType !== null);
+	res.locals.barrier = true;
 
 	//todo remove this when we have a real barrier type from API
 	barrierType = userIsAnonymous ? barrierTypes.TRIAL : barrierTypes.PREMIUM;
@@ -46,7 +47,7 @@ function middleware(req, res, next) {
 		return next();
 	}
 
-	debug('Show barrier barrierType=%s', barrierType);
+	debug('Show barrier barrierType=%s url=%s', barrierType, req.url);
 
 	barrierAPIClient.getBarrierData(req)
 		.then(function(json) {
