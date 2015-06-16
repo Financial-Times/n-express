@@ -15,8 +15,13 @@ describe('Middleware', function(){
 	var barriersFlag = true;
 	var firstClickFreeFlag = false;
 	var metricsMock = {count:sinon.spy()};
+	var apiClientMock = {
+		getBarrierData : sinon.stub().returns(Promise.resolve(require('../fixtures/barrierData.json')))
+	};
 
 	before(function(){
+		mockery.registerMock('./barrierAPIClient', apiClientMock);
+		mockery.enable({warnOnUnregistered:true, useCleanCache: true});
 		middleware = require('../../src/barriers/middleware')(metricsMock);
 		app = express();
 		routeHandler = function(req, res){
@@ -78,10 +83,10 @@ describe('Middleware', function(){
 			.expect(200, done);
 	});
 
-	it('Should set a barrier property to true if there is a barrier to show', function(done){
+	it('Should set the barrier property if there is a barrier to show', function(done){
 		setup()
 			.expect(function(){
-				expect(locals.barrier).to.be.true;
+				expect(locals.barrier).to.be.truthy;
 			})
 			.end(done);
 	});
@@ -89,7 +94,7 @@ describe('Middleware', function(){
 	it('Should add a barriers model to res.locals', function(done){
 		setup()
 			.expect(function(){
-				expect(locals.barriers).to.have.property('premiumBarrier');
+				expect(locals.barrier).to.have.property('premiumSimple');
 			})
 			.end(done);
 	});
@@ -98,7 +103,7 @@ describe('Middleware', function(){
 		firstClickFreeFlag = true;
 		setup()
 			.expect(function(){
-				expect(locals.barrier).to.be.false;
+				expect(locals.barrier).to.be.null;
 			})
 			.end(done);
 	});
