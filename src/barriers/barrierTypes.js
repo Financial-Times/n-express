@@ -1,6 +1,9 @@
 'use strict';
 var debug = require('debug')('ft-next-barrier-component');
+/* jshint ignore:start */
 var Symbol = require('es6-symbol');
+/* jshint ignore:end */
+
 
 function symbolFor(name){
 	Symbol(name);

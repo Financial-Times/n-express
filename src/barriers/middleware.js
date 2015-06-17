@@ -4,6 +4,10 @@ var BarriersModel = require('./models/barriersModel');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
+/* jshint ignore:start */
+var Symbol = require('es6-symbol');
+/* jshint ignore:end */
+
 
 var metrics;
 

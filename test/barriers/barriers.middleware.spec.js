@@ -8,7 +8,7 @@ var mockery = require('mockery');
 
 var middleware;
 
-describe('Middleware', function(){
+describe('Barriers Middleware', function(){
 
 	var app, routeHandler, routeHandlerSpy, locals, server;
 
