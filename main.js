@@ -47,7 +47,8 @@ var serviceMatchers = {
 	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/,
 	'barriers-api': /^https:\/\/subscribe.ft.com\/memb\/barrier/,
 	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
-	'internalcapi': /^http:\/\/contentapi\.ft\.com/
+	'internalcapi': /^http:\/\/contentapi\.ft\.com/,
+	'bertha': /^http:\/\/bertha\.ig\.ft\.com/
 };
 
 module.exports = function(options) {
