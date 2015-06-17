@@ -35,7 +35,7 @@ describe('simple app', function() {
 
 	it('should have an about json', function(done) {
 		request(app)
-			.get('/demo-app/__about')
+			.get('/__about')
 			.expect(200, done);
 	});
 
