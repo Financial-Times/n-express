@@ -1,34 +1,23 @@
 'use strict';
 var debug = require('debug')('ft-next-barrier-component');
 
-const BarrierAPITypes = {
-	PREMIUM : Symbol("PREMIUM"),
-	STANDARD_PLUS : Symbol("STANDARD_PLUS"),
-	REGISTER_PLUS : Symbol("REGISTER_PLUS"),
-	TRIAL : Symbol("TRIAL")
+function symbolFor(name){
+	Symbol(name);
+	return Symbol.for(name);
 }
 
-const types = {
-	PREMIUM : Symbol.for("PREMIUM"),
-	STANDARD_PLUS : Symbol.for("STANDARD_PLUS"),
-	REGISTER_PLUS : Symbol.for("REGISTER_PLUS"),
-	TRIAL : Symbol.for("TRIAL")
+
+var types = {
+	PREMIUM : symbolFor("PREMIUM"),
+	STANDARD_PLUS : symbolFor("STANDARD_PLUS"),
+	REGISTER_PLUS : symbolFor("REGISTER_PLUS"),
+	TRIAL : symbolFor("TRIAL")
 };
 
-const variants = {
-	[types.PREMIUM] : {
-		PREMIUM_SIMPLE : Symbol('PREMIUM_SIMPLE')
-	},
-	[types.TRIAL] : {
-		TRIAL_SIMPLE : Symbol('TRIAL_SIMPLE'),
-		TRIAL_GRID : Symbol('TRIAL_GRID')
-	}
-};
-
-const barriers = {
-	PREMIUM_SIMPLE: Symbol.for('PREMIUM_SIMPLE'),
-	TRIAL_SIMPLE: Symbol.for('TRIAL_SIMPLE'),
-	TRIAL_GRID : Symbol.for('TRIAL_GRID')
+var barriers = {
+	PREMIUM_SIMPLE: symbolFor('PREMIUM_SIMPLE'),
+	TRIAL_SIMPLE: symbolFor('TRIAL_SIMPLE'),
+	TRIAL_GRID : symbolFor('TRIAL_GRID')
 };
 
 module.exports = function getBarrierName(barrier, flags){

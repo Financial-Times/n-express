@@ -1,5 +1,4 @@
 'use strict';
-var util = require('util');
 var barrierTypes = require('../barrierTypes').barriers;
 var PremiumSimpleBarrierModel = require('./premiumSimpleBarrierModel');
 var TrialSimpleBarrierModel = require('./trialSimpleBarrierModel');

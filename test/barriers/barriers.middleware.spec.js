@@ -10,7 +10,7 @@ var middleware;
 
 describe('Middleware', function(){
 
-	var app, routeHandler, routeHandlerSpy, locals;
+	var app, routeHandler, routeHandlerSpy, locals, server;
 
 	var barriersFlag = true;
 	var firstClickFreeFlag = false;
@@ -21,7 +21,7 @@ describe('Middleware', function(){
 
 	before(function(){
 		mockery.registerMock('./barrierAPIClient', apiClientMock);
-		mockery.enable({warnOnUnregistered:true, useCleanCache: true});
+		mockery.enable({warnOnUnregistered:false, useCleanCache: true});
 		middleware = require('../../src/barriers/middleware')(metricsMock);
 		app = express();
 		routeHandler = function(req, res){
@@ -35,11 +35,12 @@ describe('Middleware', function(){
 		});
 		app.use(middleware);
 		app.get('/*', routeHandlerSpy);
-		app.listen(4444);
+		server = app.listen(4444);
 	});
 
 	after(function(){
 		mockery.disable();
+		server.close();
 	});
 
 	afterEach(function(){

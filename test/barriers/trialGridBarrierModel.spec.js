@@ -1,9 +1,10 @@
 'use strict';
+/* global describe, it, before*/
 require('isomorphic-fetch');
-const fetchres = require('fetchres');
-const TrialGridBarrierModel = require('../../src/barriers/models/trialGridBarrierModel');
-const hardCodedBarrierData = require('../../src/barriers/models/hardCodedBarrierData');
-const expect = require('chai').expect;
+var fetchres = require('fetchres');
+var TrialGridBarrierModel = require('../../src/barriers/models/trialGridBarrierModel');
+var hardCodedBarrierData = require('../../src/barriers/models/hardCodedBarrierData');
+var expect = require('chai').expect;
 
 describe('Trial Grid Barrier Model', function(){
 
@@ -130,7 +131,7 @@ describe('Trial Grid Barrier Model', function(){
 				expect(model.packages.premium.details.items).to.equal(data[keys[1]].items);
 				expect(model.packages.newspaper.details.items).to.equal(data[keys[0]].items);
 			});
-		})
+		});
 	});
 
 

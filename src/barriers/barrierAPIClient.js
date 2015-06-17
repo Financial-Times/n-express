@@ -7,7 +7,8 @@ var fetchres = require('fetchres');
 var ravenClient = require('express-errors-handler');
 
 var endpoints = {
-	test : 'https://barrier-app.memb.ft.com/memb/barrier/v1/barrier-data',
+	test : 'http://barrier-app-test.apps.memb.ft.com/memb/barrier/v1/barrier-data',
+	prodDirect : 'https://barrier-app.memb.ft.com/memb/barrier/v1/barrier-data',
 	prod : 'https://subscribe.ft.com/memb/barrier/v1/barrier-data'
 };
 
@@ -23,7 +24,7 @@ function getRequestHeaders(req){
 function getBarrierData(req){
 	var requestHeaders = getRequestHeaders(req);
 	debug('Barriers API request url=%s headers=%j', endpoints.prod, requestHeaders);
-	return fetch(endpoints.prod, { headers: requestHeaders })
+	return fetch(endpoints.test, { headers: requestHeaders })
 		.then(function(response) {
 			if (!response.ok) {
 				var msg = util.format(

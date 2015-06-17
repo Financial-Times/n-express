@@ -1,12 +1,12 @@
 'use strict';
 
-const TRIAL_OFFER = Symbol();
-const STANDARD_OFFER = Symbol();
-const PREMIUM_OFFER = Symbol();
-const NEWSPAPER_OFFER = Symbol();
+var TRIAL_OFFER = "TRIAL_OFFER";
+var STANDARD_OFFER = "STANDARD_OFFER";
+var PREMIUM_OFFER = "PREMIUM_OFFER";
+var NEWSPAPER_OFFER = "NEWSPAPER_OFFER";
 
-const data = {
-	[TRIAL_OFFER] : {
+var data = {
+	"TRIAL_OFFER" : {
 		name : 'ONLINE TRIAL',
 		title : '',
 		items : [
@@ -15,7 +15,7 @@ const data = {
 			{description: "<a href=\"#\">Learn more</a>"}
 		]
 	},
-	[STANDARD_OFFER] : {
+	"STANDARD_OFFER" : {
 		name : 'STANDARD DIGITAL',
 		title : '',
 		items : [
@@ -25,7 +25,7 @@ const data = {
 			{description : 'Fast FT - market-moving news and views, 24 hours a day'}
 		]
 	},
-	[PREMIUM_OFFER] : {
+	"PREMIUM_OFFER" : {
 		name : 'PREMIUM DIGITAL',
 		title : 'All the benefits of a standard digital subscription plus:',
 		items : [
@@ -35,7 +35,7 @@ const data = {
 			{description : 'Full access to EM Squared - data-driven news and analysis service on emerging markets'}
 		]
 	},
-	[NEWSPAPER_OFFER] : {
+	"NEWSPAPER_OFFER" : {
 		name : 'NEWSPAPER + PREMIUM DIGITAL',
 		title : 'All the benefits of a Premium Digital Subscription, plus:',
 		items : [

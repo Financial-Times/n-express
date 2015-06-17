@@ -3,7 +3,6 @@
 var BarriersModel = require('../../src/barriers/models/barriersModel');
 var expect = require('chai').expect;
 var barrierTypes = require('../../src/barriers/barrierTypes').barriers;
-var util = require('util');
 
 
 describe('Barriers Model', function(){
