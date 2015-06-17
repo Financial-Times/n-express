@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('ft-next-barrier-component');
+var Symbol = require('es6-symbol');
 
 function symbolFor(name){
 	Symbol(name);
