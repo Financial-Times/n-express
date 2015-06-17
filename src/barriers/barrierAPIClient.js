@@ -24,7 +24,7 @@ function getRequestHeaders(req){
 function getBarrierData(req){
 	var requestHeaders = getRequestHeaders(req);
 	debug('Barriers API request url=%s headers=%j', endpoints.prod, requestHeaders);
-	return fetch(endpoints.test, { headers: requestHeaders })
+	return fetch(endpoints.prod, { headers: requestHeaders })
 		.then(function(response) {
 			if (!response.ok) {
 				var msg = util.format(

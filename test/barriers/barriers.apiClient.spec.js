@@ -33,7 +33,7 @@ describe('Barrier API Client', function() {
 
 	var mockSuccessRoute = {
 		name : 'Barrier API',
-		matcher : endpoints.test,
+		matcher : endpoints.prod,
 		response : {
 			foo : 'bar'
 		}
@@ -41,7 +41,7 @@ describe('Barrier API Client', function() {
 
 	var mockErrorRoute  = {
 		name : 'Barrier API',
-		matcher : endpoints.test,
+		matcher : endpoints.prod,
 		response : 500
 	};
 
