@@ -4,6 +4,7 @@ var TRIAL_OFFER = "TRIAL_OFFER";
 var STANDARD_OFFER = "STANDARD_OFFER";
 var PREMIUM_OFFER = "PREMIUM_OFFER";
 var NEWSPAPER_OFFER = "NEWSPAPER_OFFER";
+var OTHER_OPTIONS = "OTHER_OPTIONS";
 
 var data = {
 	"TRIAL_OFFER" : {
@@ -42,6 +43,12 @@ var data = {
 			{description : 'Free delivery to your home or office, Monday to Saturday'},
 			{description : 'FT Weekend - a stimulating blend of news and lifestyle'}
 		]
+	},
+	"OTHER_OPTIONS" : {
+		corporate : 'http://ftcorporate.ft.com/',
+		newspaper : 'https://www.ftnewspaper.com/map2',
+		epaper : 'http://ftepaper.ft.com/',
+		weekendApp : 'https://sub.ft.com/ukweb/?ftcamp=subs/sem/print_weekend_sub/ppc/search/acquisition&utm_source=ppc&utm_medium=sem&utm_term=print_weekend_sub&utm_campaign=search&utm_uk=WSMABD&gclid=CMShtfX1mMYCFWbKtAodGBEA6Q'
 	}
 };
 
@@ -56,6 +63,10 @@ module.exports = function(model){
 	hydrate(model.packages.standard, data[STANDARD_OFFER]);
 	hydrate(model.packages.premium, data[PREMIUM_OFFER]);
 	hydrate(model.packages.newspaper, data[NEWSPAPER_OFFER]);
+	model.otherOptions.corporate.link = data[OTHER_OPTIONS].corporate;
+	model.otherOptions.newspaper.link = data[OTHER_OPTIONS].newspaper;
+	model.otherOptions.ePaper.link = data[OTHER_OPTIONS].epaper;
+	model.otherOptions.weekendAppEdition.link = data[OTHER_OPTIONS].weekendApp;
 	return model;
 };
 
@@ -64,5 +75,6 @@ module.exports.keys = [
 	NEWSPAPER_OFFER,
 	PREMIUM_OFFER,
 	STANDARD_OFFER,
-	TRIAL_OFFER
+	TRIAL_OFFER,
+	OTHER_OPTIONS
 ];

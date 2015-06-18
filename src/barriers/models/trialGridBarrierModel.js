@@ -4,6 +4,7 @@ var hardCodedBarrierData = require('./hardCodedBarrierData');
 function TrialGridBarrierModel(json) {
 	this.signInLink = '/login';
 	this.packages = new Packages(json.viewData.subscriptionOptions);
+	this.otherOptions = new OtherOptions();
 }
 
 function Packages(json) {
@@ -36,6 +37,17 @@ function PackageDetails(json) {
 	this.items = [
 		{description : ''}
 	];
+}
+
+function OtherOptions(){
+	this.corporate = new Option();
+	this.newspaper = new Option();
+	this.ePaper = new Option();
+	this.weekendAppEdition = new Option();
+}
+
+function Option(){
+	this.link = '';
 }
 
 

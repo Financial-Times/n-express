@@ -18,7 +18,7 @@ describe('Trial Grid Barrier Model', function(){
 		'FT_Location' : 'https://next.ft.com'
 	};
 
-	var barrierAPIUrl = 'http://barrier-app-test.memb.ft.com/memb/barrier/v1/barrier-data';
+	var barrierAPIUrl = 'https://subscribe.ft.com/memb/barrier/v1/barrier-data';
 
 	before(function(done){
 		fetch(barrierAPIUrl, {headers:requestHeaders}).then(fetchres.json).then(function(json){
@@ -130,6 +130,24 @@ describe('Trial Grid Barrier Model', function(){
 				expect(model.packages.standard.details.items).to.equal(data[keys[2]].items);
 				expect(model.packages.premium.details.items).to.equal(data[keys[1]].items);
 				expect(model.packages.newspaper.details.items).to.equal(data[keys[0]].items);
+			});
+
+			describe('Other Options', function(){
+				it('Should add a corporate link', function(){
+					expect(model.otherOptions.corporate.link).to.equal(data[keys[4]].corporate);
+				});
+
+				it('Should add a newspaper link', function(){
+					expect(model.otherOptions.newspaper.link).to.equal(data[keys[4]].newspaper);
+				});
+
+				it('Should add a ePaper link', function(){
+					expect(model.otherOptions.ePaper.link).to.equal(data[keys[4]].epaper);
+				});
+
+				it('Should add a weekendAppEdition link', function(){
+					expect(model.otherOptions.weekendAppEdition.link).to.equal(data[keys[4]].weekendApp);
+				});
 			});
 		});
 	});
