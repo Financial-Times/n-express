@@ -39,18 +39,16 @@ function PackageDetails(json) {
 	];
 }
 
+function Option(){
+	this.link = '';
+}
+
 function OtherOptions(){
 	this.corporate = new Option();
 	this.newspaper = new Option();
 	this.ePaper = new Option();
 	this.weekendAppEdition = new Option();
 }
-
-function Option(){
-	this.link = '';
-}
-
-
 module.exports = function factory(json){
 	return hardCodedBarrierData(new TrialGridBarrierModel(json));
 };
