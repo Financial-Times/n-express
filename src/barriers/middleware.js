@@ -4,6 +4,7 @@ var BarriersModel = require('./models/barriersModel');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
+var errorClient = require('express-errors-handler');
 /* jshint ignore:start */
 var Symbol = require('es6-symbol');
 /* jshint ignore:end */
@@ -56,7 +57,13 @@ function middleware(req, res, next) {
 		.then(function(json) {
 			debug('Barrier data fetched');
 			debug('Build view model for barrier %s', Symbol.keyFor(barrierType));
-			res.locals.barrier = new BarriersModel(barrierType, json, countryCode);
+			try{
+				res.locals.barrier = new BarriersModel(barrierType, json, countryCode);
+			}catch(err){
+				res.locals.barrier = null;
+				errorClient.captureError(err, {extra: {barrierAPIData: json}});
+			}
+
 			next();
 		}).catch(function(err) {
 			if (err instanceof fetchres.BadServerResponseError) {

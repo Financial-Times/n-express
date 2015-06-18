@@ -1,5 +1,5 @@
 'use strict';
-/* global describe, it, before*/
+/* global describe, it, before, beforeEach */
 require('isomorphic-fetch');
 var fetchres = require('fetchres');
 var TrialGridBarrierModel = require('../../src/barriers/models/trialGridBarrierModel');
@@ -23,13 +23,24 @@ describe('Trial Grid Barrier Model', function(){
 	before(function(done){
 		fetch(barrierAPIUrl, {headers:requestHeaders}).then(fetchres.json).then(function(json){
 			apiData = json;
-			model = new TrialGridBarrierModel(apiData);
 			done();
 		}).catch(done);
 	});
 
+	beforeEach(function(){
+		model = new TrialGridBarrierModel(apiData);
+	});
+
 	it('Should have a sign in link', function(){
 		expect(model.signInLink).to.equal('/login');
+	});
+
+	it('Should be able to cope with missing offers', function(){
+		var badData = JSON.parse(JSON.stringify(apiData));
+		delete badData.viewData.subscriptionOptions.TRIAL;
+		model = new TrialGridBarrierModel(badData);
+		expect(model.packages.standard).not.to.be.null;
+		expect(model.packages.trial).to.be.null;
 	});
 
 	describe('Offers Presented', function(){
@@ -130,6 +141,10 @@ describe('Trial Grid Barrier Model', function(){
 				expect(model.packages.standard.details.items).to.equal(data[keys[2]].items);
 				expect(model.packages.premium.details.items).to.equal(data[keys[1]].items);
 				expect(model.packages.newspaper.details.items).to.equal(data[keys[0]].items);
+			});
+
+			it('Should add the learnMoreLink to the trial package', function(){
+				expect(model.packages.trial.details.learnMoreLink).to.equal(data[keys[3]].learnMoreLink);
 			});
 
 			describe('Other Options', function(){
