@@ -8,15 +8,20 @@ var mockery = require('mockery');
 
 var middleware;
 
-describe('Middleware', function(){
+describe('Barriers Middleware', function(){
 
-	var app, routeHandler, routeHandlerSpy, locals;
+	var app, routeHandler, routeHandlerSpy, locals, server;
 
 	var barriersFlag = true;
 	var firstClickFreeFlag = false;
 	var metricsMock = {count:sinon.spy()};
+	var apiClientMock = {
+		getBarrierData : sinon.stub().returns(Promise.resolve(require('../fixtures/barrierData.json')))
+	};
 
 	before(function(){
+		mockery.registerMock('./barrierAPIClient', apiClientMock);
+		mockery.enable({warnOnUnregistered:false, useCleanCache: true});
 		middleware = require('../../src/barriers/middleware')(metricsMock);
 		app = express();
 		routeHandler = function(req, res){
@@ -30,11 +35,12 @@ describe('Middleware', function(){
 		});
 		app.use(middleware);
 		app.get('/*', routeHandlerSpy);
-		app.listen(4444);
+		server = app.listen(4444);
 	});
 
 	after(function(){
 		mockery.disable();
+		server.close();
 	});
 
 	afterEach(function(){
@@ -78,11 +84,10 @@ describe('Middleware', function(){
 			.expect(200, done);
 	});
 
-	// the barriers API has changed - this test passes in branch, ignoring for now
-	it.skip('Should set a barrier property to true if there is a barrier to show', function(done){
+	it('Should set the barrier property if there is a barrier to show', function(done){
 		setup()
 			.expect(function(){
-				expect(locals.barrier).to.be.true;
+				expect(locals.barrier).to.be.truthy;
 			})
 			.end(done);
 	});
@@ -91,7 +96,7 @@ describe('Middleware', function(){
 	it.skip('Should add a barriers model to res.locals', function(done){
 		setup()
 			.expect(function(){
-				expect(locals.barriers).to.have.property('premiumBarrier');
+				expect(locals.barrier).to.have.property('premiumSimple');
 			})
 			.end(done);
 	});
@@ -100,7 +105,7 @@ describe('Middleware', function(){
 		firstClickFreeFlag = true;
 		setup()
 			.expect(function(){
-				expect(locals.barrier).to.be.false;
+				expect(locals.barrier).to.be.null;
 			})
 			.end(done);
 	});

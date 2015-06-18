@@ -1,14 +1,18 @@
 'use strict';
 var debug = require('debug')('ft-next-barrier-component');
-var BarriersModel = require('./models/barriers');
+var BarriersModel = require('./models/barriersModel');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
+/* jshint ignore:start */
+var Symbol = require('es6-symbol');
+/* jshint ignore:end */
+
 
 var metrics;
 
 function middleware(req, res, next) {
-	res.locals.barrier = false;
+	res.locals.barrier = null;
 	res.locals.barriers = {};
 
 	var accessDecision = req.get('FT-Access-Decision') || req.get('X-FT-Auth-Gate-Result');
@@ -36,28 +40,27 @@ function middleware(req, res, next) {
 		return next();
 	}
 
-	res.locals.barrier = true;
+	res.locals.barrier = null;
 
 	//todo remove this when we have a real barrier type from API
-	barrierType = userIsAnonymous ? barrierTypes.TRIAL : barrierTypes.PREMIUM;
+	barrierType = userIsAnonymous ? barrierTypes('TRIAL', res.locals.flags) : barrierTypes('PREMIUM', res.locals.flags);
 
 	if(res.locals.flags.firstClickFree) {
 		debug('First click free active, disable barrier');
-		res.locals.barrier = false;
 		return next();
 	}
 
-	debug('Show barrier barrierType=%s url=%s', barrierType, req.url);
+	debug('Show barrier barrierType=%s url=%s', Symbol.keyFor(barrierType), req.url);
 
 	barrierAPIClient.getBarrierData(req)
 		.then(function(json) {
 			debug('Barrier data fetched');
-			res.locals.barriers = new BarriersModel(barrierType, json, countryCode);
+			debug('Build view model for barrier %s', Symbol.keyFor(barrierType));
+			res.locals.barrier = new BarriersModel(barrierType, json, countryCode);
 			next();
 		}).catch(function(err) {
 			if (err instanceof fetchres.BadServerResponseError) {
 				// failover to a free site when barriers call fails
-				res.locals.barrier = false;
 				next();
 			} else {
 				next(err);

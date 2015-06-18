@@ -7,16 +7,17 @@ var fetchres = require('fetchres');
 var ravenClient = require('express-errors-handler');
 
 var endpoints = {
-	test : 'https://barrier-app.memb.ft.com/memb/barrier/v1/barrier-data',
+	test : 'http://barrier-app-test.apps.memb.ft.com/memb/barrier/v1/barrier-data',
+	prodDirect : 'https://barrier-app.memb.ft.com/memb/barrier/v1/barrier-data',
 	prod : 'https://subscribe.ft.com/memb/barrier/v1/barrier-data'
 };
 
 function getRequestHeaders(req){
 	return {
-		"Session-Id": req.get('X-FT-Session-Token'),
+		"Session-Id": req.get('FT-Session-Token') || req.get('X-FT-Session-Token'),
 		"Country-Code": req.get('Country-Code'),
-		"Content-Classification": req.get('X-FT-Content-Classification'),
-		"AYSC": req.get('X-FT-AYSC')
+		"Content-Classification": req.get('FT-Content-Classification') ||req.get('X-FT-Content-Classification'),
+		"AYSC": req.get('FT-Cookie-AYSC') || req.get('X-FT-AYSC')
 	};
 }
 
