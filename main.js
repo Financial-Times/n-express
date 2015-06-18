@@ -27,6 +27,7 @@ var serviceMatchers = {
 	'flags': /^https?:\/\/ft-next-feature-flags-prod\.s3-website-eu-west-1\.amazonaws\.com\/flags\/__flags\.json$/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
+	'capi-v2-concordances': /^https?:\/\/api\.ft\.com\/concordances\?/,
 	'capi-v2-enriched-article': /^https?:\/\/api\.ft\.com\/enrichedcontent\/[\w\-]+/,
 	'capi-v2-lists': /^https?:\/\/api\.ft\.com\/lists\/[\w\-]+/,
 	'capi-v2-thing': /^https?:\/\/api\.ft\.com\/things\/[\w\-]+/,
