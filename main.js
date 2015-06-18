@@ -49,7 +49,8 @@ var serviceMatchers = {
 	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
 	'internalcapi': /^http:\/\/contentapi\.ft\.com/,
 	'bertha': /^http:\/\/bertha\.ig\.ft\.com/,
-	'markets': /^http:\/\/markets\.ft\.com/
+	'markets': /^http:\/\/markets\.ft\.com/,
+	'github': /^https:\/\/api\.github\.com/
 };
 
 module.exports = function(options) {
