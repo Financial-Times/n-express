@@ -48,7 +48,8 @@ var serviceMatchers = {
 	'barriers-api': /^https:\/\/subscribe.ft.com\/memb\/barrier/,
 	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
 	'internalcapi': /^http:\/\/contentapi\.ft\.com/,
-	'bertha': /^http:\/\/bertha\.ig\.ft\.com/
+	'bertha': /^http:\/\/bertha\.ig\.ft\.com/,
+	'markets': /^http:\/\/markets\.ft\.com/
 };
 
 module.exports = function(options) {
