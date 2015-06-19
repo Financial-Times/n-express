@@ -62,11 +62,13 @@ function middleware(req, res, next) {
 	barrierAPIClient.getBarrierData(req)
 		.then(function(json) {
 			debug('Barrier data fetched');
+			debug(json);
 			debug('Build view model for barrier %s', Symbol.keyFor(barrierType));
 			try{
 				res.locals.barrier = new BarriersModel(barrierType, json, countryCode);
 			}catch(err){
 				res.locals.barrier = null;
+				debug('Failed to parse json');
 				errorClient.captureError(err, {extra: {barrierAPIData: json}});
 			}
 			logBarrierShow(barrierType, userIsAnonymous, sessionToken);
