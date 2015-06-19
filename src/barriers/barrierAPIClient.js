@@ -15,8 +15,8 @@ var endpoints = {
 function getRequestHeaders(req){
 	return {
 		"Session-Id": req.get('FT-Session-Token') || req.get('X-FT-Session-Token'),
-		"Country-Code": req.get('Country-Code'),
-		"Content-Classification": req.get('FT-Content-Classification') ||req.get('X-FT-Content-Classification'),
+		"Country-Code": req.get('Country-Code') || 'GBR',
+		"Content-Classification": req.get('FT-Content-Classification') || req.get('X-FT-Content-Classification'),
 		"AYSC": req.get('FT-Cookie-AYSC') || req.get('X-FT-AYSC')
 	};
 }

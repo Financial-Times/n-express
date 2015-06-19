@@ -12,9 +12,9 @@ var data = {
 		title : '',
 		items : [
 			{description : "For 4 weeks receive unlimited digital access the FT's trusted, award-winning business news"},
-			{description: "* Terms and conditions apply"},
-			{description: "<a href=\"#\">Learn more</a>"}
-		]
+			{description: "* Terms and conditions apply"}
+		],
+		learnMoreLink : {href: '', text: 'Learn more'}
 	},
 	"STANDARD_OFFER" : {
 		name : 'STANDARD DIGITAL',
@@ -53,6 +53,10 @@ var data = {
 };
 
 function hydrate(packageModel, data){
+	if(!packageModel){
+		return;
+	}
+
 	packageModel.name = data.name;
 	packageModel.details.title = data.title;
 	packageModel.details.items = data.items;
@@ -63,6 +67,11 @@ module.exports = function(model){
 	hydrate(model.packages.standard, data[STANDARD_OFFER]);
 	hydrate(model.packages.premium, data[PREMIUM_OFFER]);
 	hydrate(model.packages.newspaper, data[NEWSPAPER_OFFER]);
+
+	if(model.packages.trial){
+		model.packages.trial.details.learnMoreLink = data[TRIAL_OFFER].learnMoreLink;
+	}
+
 	model.otherOptions.corporate.link = data[OTHER_OPTIONS].corporate;
 	model.otherOptions.newspaper.link = data[OTHER_OPTIONS].newspaper;
 	model.otherOptions.ePaper.link = data[OTHER_OPTIONS].epaper;

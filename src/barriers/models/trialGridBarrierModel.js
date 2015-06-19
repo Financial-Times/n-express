@@ -8,10 +8,10 @@ function TrialGridBarrierModel(json) {
 }
 
 function Packages(json) {
-	this.trial = new Package(json.TRIAL);
-	this.standard = new Package(json.STANDARD);
-	this.premium = new Package(json.PREMIUM);
-	this.newspaper = new Package(json.NEWSPAPER);
+	this.trial = json.TRIAL ? new Package(json.TRIAL) : null;
+	this.standard = json.STANDARD ? new Package(json.STANDARD): null;
+	this.premium = json.STANDARD ? new Package(json.PREMIUM) : null;
+	this.newspaper = json.NEWSPAPER ? new Package(json.NEWSPAPER) : null;
 }
 
 function Package(json) {

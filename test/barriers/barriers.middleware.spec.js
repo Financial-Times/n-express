@@ -92,15 +92,6 @@ describe('Barriers Middleware', function(){
 			.end(done);
 	});
 
-	// the barriers API has changed - this test passes in branch, ignoring for now
-	it.skip('Should add a barriers model to res.locals', function(done){
-		setup()
-			.expect(function(){
-				expect(locals.barrier).to.have.property('premiumSimple');
-			})
-			.end(done);
-	});
-
 	it('Should set barrier property to false if the firstClickFree flag is active', function(done){
 		firstClickFreeFlag = true;
 		setup()
