@@ -1,5 +1,6 @@
 'use strict';
 var debug = require('debug')('ft-next-barrier-component');
+var log = require('ft-next-splunk-logger')('ft-next-barrier-component');
 var BarriersModel = require('./models/barriersModel');
 var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
@@ -12,6 +13,10 @@ var Symbol = require('es6-symbol');
 
 var metrics;
 
+function logBarrierShow(barrier, userIsAnonymous, sessionToken){
+	log('BARRIER_DISPLAYED. We just showed the %s barrier to a user.  barrier=%s anonymous=%s session=%s', barrier, barrier, userIsAnonymous, sessionToken);
+}
+
 function middleware(req, res, next) {
 	res.locals.barrier = null;
 	res.locals.barriers = {};
@@ -20,6 +25,7 @@ function middleware(req, res, next) {
 	var barrierType = req.get('FT-Barrier-Type') || req.get('X-FT-Barrier-Type');
 	var userIsAnonymous = ((req.get('FT-Anonymous-User') || req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
 	var countryCode = req.get('Country-Code');
+	var sessionToken = req.get('FT-Session-Token') || req.get('X-FT-Session-Token');
 
 	debug('Barrier Middleware: accessDecision=%s barrierType=%s userIsAnonymous=%s countyCode=%s url=%s',
 		accessDecision, barrierType, userIsAnonymous, countryCode, req.url
@@ -63,7 +69,7 @@ function middleware(req, res, next) {
 				res.locals.barrier = null;
 				errorClient.captureError(err, {extra: {barrierAPIData: json}});
 			}
-
+			logBarrierShow(barrierType, userIsAnonymous, sessionToken);
 			next();
 		}).catch(function(err) {
 			if (err instanceof fetchres.BadServerResponseError) {

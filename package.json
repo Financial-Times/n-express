@@ -16,6 +16,7 @@
     "ft-next-handlebars": "^1.0.2",
     "ft-next-logger": "^1.0.0",
     "ft-next-navigation": "^2.0.0",
+    "ft-next-splunk-logger": "^1.3.0",
     "isomorphic-fetch": "^2.0.0",
     "next-feature-flags-client": "^7.0.0",
     "next-metrics": "^1.6.4"
