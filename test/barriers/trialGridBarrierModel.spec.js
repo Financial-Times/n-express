@@ -35,14 +35,6 @@ describe('Trial Grid Barrier Model', function(){
 		expect(model.signInLink).to.equal('/login');
 	});
 
-	it('Should be able to cope with missing offers', function(){
-		var badData = JSON.parse(JSON.stringify(apiData));
-		delete badData.viewData.subscriptionOptions.TRIAL;
-		model = new TrialGridBarrierModel(badData);
-		expect(model.packages.standard).not.to.be.null;
-		expect(model.packages.trial).to.be.null;
-	});
-
 	describe('Offers Presented', function(){
 
 		it('Should show the Trial offer', function(){
