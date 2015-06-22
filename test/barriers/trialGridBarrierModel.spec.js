@@ -86,6 +86,10 @@ describe('Trial Grid Barrier Model', function(){
 				expect(model.packages.premium.price.weekly).to.be.a('string');
 				expect(model.packages.newspaper.price.weekly).to.be.a('string');
 			});
+
+			it('Should have the trial price for the trial package', function(){
+				expect(model.packages.trial.price.trialPrice).to.equal(model.packages.trial.price.monthly);
+			});
 		});
 
 		describe('Details', function(){

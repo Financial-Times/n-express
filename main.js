@@ -47,6 +47,7 @@ var serviceMatchers = {
 	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
 	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/,
 	'barriers-api': /^https:\/\/subscribe.ft.com\/memb\/barrier/,
+	'barriers-api-direct': /^https?:\/\/barrier-app\.memb\.ft\.com\/memb\/barrier/,
 	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
 	'internalcapi': /^http:\/\/contentapi\.ft\.com/,
 	'bertha': /^http:\/\/bertha\.ig\.ft\.com/,

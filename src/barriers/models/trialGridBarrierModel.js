@@ -17,7 +17,7 @@ function Packages(json) {
 function Package(json) {
 	this.name = json.trackingOffer.productName;
 	this.type = json.type;
-	this.price = new PackagePrice(json.price);
+	this.price = new PackagePrice(json.price, json.type === 'TRIAL');
 	this.details = new PackageDetails(json);
 	this.subscribeLink = json.callToActionUrl;
 }
