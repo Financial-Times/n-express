@@ -27,7 +27,7 @@
     "mocha": "^2.0.1",
     "mocha-traceur": "^2.1.0",
     "mockery": "^1.4.0",
-    "next-build-tools": "^2.0.0",
+    "next-build-tools": "^3.0.0",
     "npm-check-updates": "^1.5.1",
     "npm-prepublish": "^1.0.2",
     "sinon": "^1.14.1",
