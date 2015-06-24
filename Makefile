@@ -13,9 +13,11 @@ verify:
 	nbt verify --skip-layout-checks
 
 unit-test:
+	export BEACON_API_URL=blah; \
 	mocha --recursive
 
 run:
+	export BEACON_API_URL=blah; \
 	node test/fixtures/app/main.js
 
 check:

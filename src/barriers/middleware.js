@@ -6,6 +6,8 @@ var barrierAPIClient = require('./barrierAPIClient');
 var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
 var errorClient = require('express-errors-handler');
+var beacon = require('next-beacon-node-client');
+var url = require('url');
 /* jshint ignore:start */
 var Symbol = require('es6-symbol');
 /* jshint ignore:end */
@@ -17,6 +19,25 @@ function logBarrierShow(barrier, userIsAnonymous, sessionToken){
 	log('BARRIER_DISPLAYED. We just showed the %s barrier to a user.  barrier=%s anonymous=%s session=%s', barrier, barrier, userIsAnonymous, sessionToken);
 }
 
+function makeBeaconRequest(req, sessionToken, type){
+	beacon.fire('barrier', {
+		meta: {
+			type: type
+		},
+		user: {
+			flags: req.get('FT-Flags') || req.get('X-Flags'),
+			sessionToken : sessionToken
+		},
+		page: {
+			location: {
+				pathname: req.path,
+				hostname: 'next.ft.com'
+			},
+			referrer: url.parse(req.get('Referrer') || '')
+		}
+	});
+}
+
 function middleware(req, res, next) {
 	res.locals.barrier = null;
 	res.locals.barriers = {};
@@ -26,6 +47,8 @@ function middleware(req, res, next) {
 	var userIsAnonymous = ((req.get('FT-Anonymous-User') || req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
 	var countryCode = req.get('Country-Code');
 	var sessionToken = req.get('FT-Session-Token') || req.get('X-FT-Session-Token');
+
+	var fireBeacon = makeBeaconRequest.bind(null, req, sessionToken);
 
 	debug('Barrier Middleware: accessDecision=%s barrierType=%s userIsAnonymous=%s countyCode=%s url=%s',
 		accessDecision, barrierType, userIsAnonymous, countryCode, req.url
@@ -44,6 +67,7 @@ function middleware(req, res, next) {
 		res.locals.barrier = false;
 		debug('Barrier Flag is off - site is currently free');
 		metrics.count && metrics.count('barrier_flag_off', 1);
+		fireBeacon('disabled');
 		return next();
 	}
 
@@ -54,6 +78,7 @@ function middleware(req, res, next) {
 
 	if(res.locals.flags.firstClickFree) {
 		debug('First click free active, disable barrier');
+		fireBeacon('firstClickFree');
 		return next();
 	}
 
@@ -72,10 +97,12 @@ function middleware(req, res, next) {
 				errorClient.captureError(err, {extra: {barrierAPIData: json}});
 			}
 			logBarrierShow(barrierType, userIsAnonymous, sessionToken);
+			fireBeacon('shown');
 			next();
 		}).catch(function(err) {
-			if (err instanceof fetchres.BadServerResponseError) {
+			if (err.name === fetchres.BadServerResponseError.name) {
 				// failover to a free site when barriers call fails
+				fireBeacon('failover');
 				next();
 			} else {
 				next(err);
