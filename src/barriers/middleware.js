@@ -19,8 +19,8 @@ function logBarrierShow(barrier, userIsAnonymous, sessionToken){
 	log('BARRIER_DISPLAYED. We just showed the %s barrier to a user.  barrier=%s anonymous=%s session=%s', barrier, barrier, userIsAnonymous, sessionToken);
 }
 
-function makeBeaconRequest(req, sessionToken, type){
-	beacon.fire('barrier', {
+function makeBeaconRequest(req, sessionToken, type, barrierType){
+	var data =  {
 		meta: {
 			type: type
 		},
@@ -35,7 +35,12 @@ function makeBeaconRequest(req, sessionToken, type){
 			},
 			referrer: url.parse(req.get('Referrer') || '')
 		}
-	});
+	};
+
+	if(barrierType){
+		data.meta.barrierType = barrierType;
+	}
+	beacon.fire('barrier', data);
 }
 
 function middleware(req, res, next) {
@@ -97,7 +102,7 @@ function middleware(req, res, next) {
 				errorClient.captureError(err, {extra: {barrierAPIData: json}});
 			}
 			logBarrierShow(barrierType, userIsAnonymous, sessionToken);
-			fireBeacon('shown');
+			fireBeacon('shown', barrierType);
 			next();
 		}).catch(function(err) {
 			if (err.name === fetchres.BadServerResponseError.name) {
