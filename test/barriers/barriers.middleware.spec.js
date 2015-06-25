@@ -5,7 +5,6 @@ var sinon = require('sinon');
 var request = require('supertest');
 var expect = require('chai').expect;
 var mockery = require('mockery');
-var fetchres = require('fetchres');
 
 var middleware;
 
@@ -19,13 +18,9 @@ describe('Barriers Middleware', function(){
 	var apiClientMock = {
 		getBarrierData : sinon.stub().returns(Promise.resolve(require('../fixtures/barrierData.json')))
 	};
-	var nodeBeaconMock = {
-		fire : sinon.spy()
-	};
 
 	before(function(){
 		mockery.registerMock('./barrierAPIClient', apiClientMock);
-		mockery.registerMock('next-beacon-node-client', nodeBeaconMock);
 		mockery.enable({warnOnUnregistered:false, useCleanCache: true});
 		middleware = require('../../src/barriers/middleware')(metricsMock);
 		app = express();
@@ -102,59 +97,6 @@ describe('Barriers Middleware', function(){
 		setup()
 			.expect(function(){
 				expect(locals.barrier).to.be.null;
-			})
-			.end(done);
-	});
-
-	it('Should fire a barrier.shown event when a barrier is shown', function(done){
-		firstClickFreeFlag = false;
-		setup()
-			.expect(function(){
-				sinon.assert.called(nodeBeaconMock.fire);
-				var args = nodeBeaconMock.fire.lastCall.args;
-				expect(args[0]).to.equal('barrier');
-				expect(args[1].meta.type).to.equal('shown');
-			})
-			.end(done);
-	});
-
-	it('Should fire a barrier.firstClickFree event when a barrier is deliberately not shown due to first click free', function(done){
-		firstClickFreeFlag = true;
-		setup()
-			.expect(function(){
-				sinon.assert.called(nodeBeaconMock.fire);
-				var args = nodeBeaconMock.fire.lastCall.args;
-				expect(args[0]).to.equal('barrier');
-				expect(args[1].meta.type).to.equal('firstClickFree');
-			})
-			.end(done);
-	});
-
-	it('Should fire a barrier.disabled event when a barrier is deliberately not shown due to the flag being off', function(done){
-		firstClickFreeFlag = false;
-		barriersFlag = false;
-		setup()
-			.expect(function(){
-				sinon.assert.called(nodeBeaconMock.fire);
-				var args = nodeBeaconMock.fire.lastCall.args;
-				expect(args[0]).to.equal('barrier');
-				expect(args[1].meta.type).to.equal('disabled');
-			})
-			.end(done);
-	});
-
-	it('Should fire a barrier.failover event when a barrier is not shown due to an error', function(done){
-		firstClickFreeFlag = false;
-		barriersFlag = true;
-		var err = new fetchres.BadServerResponseError('BadServerResponseError');
-		console.log((err instanceof fetchres.BadServerResponseError));
-		apiClientMock.getBarrierData.returns(Promise.reject(err));
-		setup()
-			.expect(function(){
-				sinon.assert.called(nodeBeaconMock.fire);
-				var args = nodeBeaconMock.fire.lastCall.args;
-				expect(args[0]).to.equal('barrier');
-				expect(args[1].meta.type).to.equal('failover');
 			})
 			.end(done);
 	});
