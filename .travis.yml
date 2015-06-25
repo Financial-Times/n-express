@@ -2,7 +2,7 @@ sudo: false
 language: node_js
 node_js:
 - '0.10'
-- '0.12.2'
+- 0.12.2
 cache:
   directories:
   - node_modules
@@ -23,3 +23,6 @@ deploy:
     tags: true
     node: '0.10'
     repo: Financial-Times/next-express
+notifications:
+  slack:
+    secure: e0SzW26oeX02Eanfiz5aqOjuob5x+55xnj8LSt6g/Xf3uKkSlFwOuvnKfsB9tpRFs86ztKxdgNEuH4k7bM4ICwi4YB64zHA3wQCyG7EidneIlCiDa+fQ1AzjdAeaKwPYBirxxYhHWkbVYf/m70FeRyjwbbwlueabNUjOrB8wUXc=
