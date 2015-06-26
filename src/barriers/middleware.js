@@ -89,7 +89,8 @@ function middleware(req, res, next) {
 
 	debug('Show barrier barrierType=%s url=%s', Symbol.keyFor(barrierType), req.url);
 
-	barrierAPIClient.getBarrierData(req)
+
+	barrierAPIClient.getBarrierDataFromRequest(req)
 		.then(function(json) {
 			debug('Barrier data fetched');
 			debug(json);
