@@ -21,8 +21,7 @@ function getRequestHeaders(req){
 	};
 }
 
-function getBarrierData(req){
-	var requestHeaders = getRequestHeaders(req);
+function getBarrierData(requestHeaders){
 	debug('Barriers API request url=%s headers=%j', endpoints.prod, requestHeaders);
 	return fetch(endpoints.prodDirect, { headers: requestHeaders })
 		.then(function(response) {
@@ -43,6 +42,11 @@ function getBarrierData(req){
 		.then(fetchres.json);
 }
 
+function getBarrierDataFromRequest(req){
+	return getBarrierData(getRequestHeaders(req));
+}
+
 module.exports = {
+	getBarrierDataFromRequest : getBarrierDataFromRequest,
 	getBarrierData : getBarrierData
 };

@@ -17,7 +17,7 @@ describe('Barriers Middleware', function(){
 	var firstClickFreeFlag = false;
 	var metricsMock = {count:sinon.spy()};
 	var apiClientMock = {
-		getBarrierData : sinon.stub().returns(Promise.resolve(require('../fixtures/barrierData.json')))
+		getBarrierDataFromRequest : sinon.stub().returns(Promise.resolve(require('../fixtures/barrierData.json')))
 	};
 	var nodeBeaconMock = {
 		fire : sinon.spy()
@@ -147,8 +147,7 @@ describe('Barriers Middleware', function(){
 		firstClickFreeFlag = false;
 		barriersFlag = true;
 		var err = new fetchres.BadServerResponseError('BadServerResponseError');
-		console.log((err instanceof fetchres.BadServerResponseError));
-		apiClientMock.getBarrierData.returns(Promise.reject(err));
+		apiClientMock.getBarrierDataFromRequest.returns(Promise.reject(err));
 		setup()
 			.expect(function(){
 				sinon.assert.called(nodeBeaconMock.fire);
