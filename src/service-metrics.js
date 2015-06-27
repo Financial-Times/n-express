@@ -50,7 +50,8 @@ var serviceMatchers = {
 	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
 	'bertha': /^http:\/\/bertha\.ig\.ft\.com/,
 	'markets': /^http:\/\/markets\.ft\.com/,
-	'fastly': /^https:\/\/api\.fastly\.com/
+	'fastly': /^https?:\/\/next\.ft\.com/,
+	'fastly-api': /^https:\/\/api\.fastly\.com/
 };
 
 module.exports = {
