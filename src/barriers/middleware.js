@@ -1,8 +1,8 @@
 'use strict';
 /* jshint ignore:start */
 var Symbol = require('es6-symbol');
-var getBarrierType = require('./barrierTypes');
 /* jshint ignore:end */
+var getBarrierType = require('./barrierTypes');
 var debug = require('debug')('ft-next-barrier-component');
 var log = require('ft-next-splunk-logger')('ft-next-barrier-component');
 var BarriersModel = require('./models/barriersModel');
@@ -99,7 +99,8 @@ function middleware(req, res, next) {
 			}catch(err){
 				res.locals.barrier = null;
 				debug('Failed to parse json');
-				errorClient.captureError(err, {extra: {barrierAPIData: json}});
+				fireBeacon('failover');
+				errorClient.captureError(err, {extra: {barrierAPIData: json, path: req.path, barrierType: barrierType}});
 			}
 
 			fireBeacon('shown', barrierType);
