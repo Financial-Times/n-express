@@ -9,7 +9,7 @@ module.exports = function(req, res) {
 	var errors = util.format('heroku.%s.*.express.http.req.count', req.app.locals.__name);
 	var responseTime = util.format('heroku.%s.*.express.http.res.status_2xx_response_time.mean', req.app.locals.__name);
 
-	res.send(JSON.stringify([
+	res.json([
 		{
 			check: util.format('divideSeries(sumSeries(%s),sumSeries(%s))', requests, errors),
 			name: "error-rate",
@@ -32,6 +32,6 @@ module.exports = function(req, res) {
 			serviceLevel: 'gold',
 			escalation: ['slack_next_dev', 'email_next_team', 'pager_duty']
 		}
-	]));
+	]);
 
 };
