@@ -1,16 +1,17 @@
 'use strict';
+/* jshint ignore:start */
+var Symbol = require('es6-symbol');
+/* jshint ignore:end */
+var getBarrierType = require('./barrierTypes');
 var debug = require('debug')('ft-next-barrier-component');
 var log = require('ft-next-splunk-logger')('ft-next-barrier-component');
 var BarriersModel = require('./models/barriersModel');
 var barrierAPIClient = require('./barrierAPIClient');
-var barrierTypes = require('./barrierTypes');
 var fetchres = require('fetchres');
 var errorClient = require('express-errors-handler');
 var beacon = require('next-beacon-node-client');
 var url = require('url');
-/* jshint ignore:start */
-var Symbol = require('es6-symbol');
-/* jshint ignore:end */
+
 
 
 var metrics;
@@ -48,7 +49,7 @@ function middleware(req, res, next) {
 	res.locals.barriers = {};
 
 	var accessDecision = req.get('FT-Access-Decision') || req.get('X-FT-Auth-Gate-Result');
-	var barrierType = req.get('FT-Barrier-Type') || req.get('X-FT-Barrier-Type');
+	var barrierType = getBarrierType(req.get('FT-Barrier-Type') || req.get('X-FT-Barrier-Type'), res.locals.flags);
 	var userIsAnonymous = ((req.get('FT-Anonymous-User') || req.get('X-FT-Anonymous-User') || '').toLowerCase() === 'true');
 	var countryCode = req.get('Country-Code');
 	var sessionToken = req.get('FT-Session-Token') || req.get('X-FT-Session-Token');
@@ -78,9 +79,6 @@ function middleware(req, res, next) {
 
 	res.locals.barrier = null;
 
-	//todo remove this when we have a real barrier type from API
-	barrierType = userIsAnonymous ? barrierTypes('TRIAL', res.locals.flags) : barrierTypes('PREMIUM', res.locals.flags);
-
 	if(res.locals.flags.firstClickFree) {
 		debug('First click free active, disable barrier');
 		fireBeacon('firstClickFree');
@@ -97,12 +95,14 @@ function middleware(req, res, next) {
 			debug('Build view model for barrier %s', Symbol.keyFor(barrierType));
 			try{
 				res.locals.barrier = new BarriersModel(barrierType, json, countryCode);
+				logBarrierShow(barrierType, userIsAnonymous, sessionToken);
 			}catch(err){
 				res.locals.barrier = null;
 				debug('Failed to parse json');
-				errorClient.captureError(err, {extra: {barrierAPIData: json}});
+				fireBeacon('failover');
+				errorClient.captureError(err, {extra: {barrierAPIData: json, path: req.path, barrierType: barrierType}});
 			}
-			logBarrierShow(barrierType, userIsAnonymous, sessionToken);
+
 			fireBeacon('shown', barrierType);
 			next();
 		}).catch(function(err) {
