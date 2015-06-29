@@ -12,6 +12,7 @@ var barriers = require('./src/barriers');
 var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
+var sensu = require('./src/express/sensu');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
@@ -62,6 +63,7 @@ module.exports = function(options) {
 	}
 
 	app.get('/robots.txt', robots);
+	app.get('/__sensu', sensu);
 
 	var handlebarsPromise = Promise.resolve();
 
