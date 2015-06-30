@@ -34,7 +34,14 @@ function getBarrierData(requestHeaders){
 				);
 				debug(msg);
 				var err = new Error('Barrier API Call Failed');
-				var errData = {extra:{requestHeaders:requestHeaders,responseHeaders:response.headers}};
+				var errData = {
+					extra:{
+						requestHeaders:requestHeaders,
+						responseHeaders:response.headers,
+						status:response.status	
+					}
+					
+				};
 				ravenClient.captureError(err,errData);
 			}
 			return response;
