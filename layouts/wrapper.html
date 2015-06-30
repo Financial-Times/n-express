@@ -41,7 +41,10 @@
 		{{{body}}}
 
 		{{#if @root.flags.welcomePanel}}
-		{{>next-welcome/main}}
+			{{>next-welcome/main}}
+		{{/if}}
+		{{#if @root.flags.myFTOnboardingOverlay}}
+			{{>next-welcome/overlay}}
 		{{/if}}
 		{{>n-header-footer/templates/footer}}
 		{{#if @root.flags.javascript}}
