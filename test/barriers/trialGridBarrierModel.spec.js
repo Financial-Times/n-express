@@ -1,31 +1,14 @@
 'use strict';
-/* global describe, it, before, beforeEach */
+/* global describe, it, beforeEach */
 require('isomorphic-fetch');
-var fetchres = require('fetchres');
 var TrialGridBarrierModel = require('../../src/barriers/models/trialGridBarrierModel');
 var hardCodedBarrierData = require('../../src/barriers/models/hardCodedBarrierData');
 var expect = require('chai').expect;
 
 describe('Trial Grid Barrier Model', function(){
 
-	var apiData;
+	var apiData = require('../fixtures/barrierData.json');
 	var model;
-	var requestHeaders = {
-		'Session-Id' : '04Php9SDvE2o05aglBovDnXIzwAAAU1rrQT1wg.MEUCIQDiAgu1jRjooIkO0d2tWJihjkExf6R0gOw-Dq8htEoAZQIgT3fFkTjk8o6ufS_xv4Asowx60wY6kiqjBP2S1Q_yNes',
-		'Country-Code' : 'GBR',
-		'Content-Classification' : 'CONDITIONAL_STANDARD',
-		'AYSC' : '_01_02X_04PVT_05TEL_06TEC_07TS_12_13GBR_14GBR_15PVT_17PVT_18PVT_19xxxx_20x_22P0P2Tools_24PVT_25PVT_26PVT_27PVT_96PVT_97_98PVT_',
-		'FT_Location' : 'https://next.ft.com'
-	};
-
-	var barrierAPIUrl = 'https://subscribe.ft.com/memb/barrier/v1/barrier-data';
-
-	before(function(done){
-		fetch(barrierAPIUrl, {headers:requestHeaders}).then(fetchres.json).then(function(json){
-			apiData = json;
-			done();
-		}).catch(done);
-	});
 
 	beforeEach(function(){
 		model = new TrialGridBarrierModel(apiData);
