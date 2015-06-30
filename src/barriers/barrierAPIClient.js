@@ -17,7 +17,8 @@ function getRequestHeaders(req){
 		"Session-Id": req.get('FT-Session-Token') || req.get('X-FT-Session-Token'),
 		"Country-Code": req.get('Country-Code') || 'GBR',
 		"Content-Classification": req.get('FT-Content-Classification') || req.get('X-FT-Content-Classification'),
-		"AYSC": req.get('FT-Cookie-AYSC') || req.get('X-FT-AYSC')
+		"AYSC": req.get('FT-Cookie-AYSC') || req.get('X-FT-AYSC'),
+		"FT-Location" : req.protocol + '://' + req.hostname + req.path
 	};
 }
 
@@ -48,5 +49,6 @@ function getBarrierDataFromRequest(req){
 
 module.exports = {
 	getBarrierDataFromRequest : getBarrierDataFromRequest,
-	getBarrierData : getBarrierData
+	getBarrierData : getBarrierData,
+	getBarrierRequestHeaders : getRequestHeaders
 };

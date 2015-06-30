@@ -11,7 +11,14 @@ function Packages(json) {
 	this.trial = new Package(json.TRIAL);
 	this.standard = new Package(json.STANDARD);
 	this.premium = new Package(json.PREMIUM);
-	this.newspaper = new Package(json.NEWSPAPER);
+	if(json.NEWSPAPER_BUNDLE) {
+		this.newspaper = new Package(json.NEWSPAPER_BUNDLE);
+	}else if(json.NEWSPAPER) {
+		this.newspaper = new Package(json.NEWSPAPER);
+	}else{
+		this.newspaper = null;
+	}
+
 }
 
 function Package(json) {

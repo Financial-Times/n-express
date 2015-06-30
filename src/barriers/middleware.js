@@ -100,7 +100,7 @@ function middleware(req, res, next) {
 				res.locals.barrier = null;
 				debug('Failed to parse json');
 				fireBeacon('failover');
-				errorClient.captureError(err, {extra: {barrierAPIData: json, path: req.path, barrierType: barrierType}});
+				errorClient.captureError(err, {extra: {request: barrierAPIClient.getBarrierRequestHeaders(req), barrierAPIData: json, path: req.path}});
 			}
 
 			fireBeacon('shown', barrierType);
