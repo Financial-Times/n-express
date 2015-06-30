@@ -5,6 +5,7 @@ function NavigationModel(flags, isAnon){
 	this.myAccount = isAnon ? null : {};
 	this.signIn = isAnon ? {} : null;
 	this.signOut = !isAnon ? {} : null;
+	this.subscribe = isAnon ? {} : null;
 }
 
 module.exports = NavigationModel;
