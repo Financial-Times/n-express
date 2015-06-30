@@ -38,9 +38,8 @@ function getBarrierData(requestHeaders){
 					extra:{
 						requestHeaders:requestHeaders,
 						responseHeaders:response.headers,
-						status:response.status	
+						status:response.status
 					}
-					
 				};
 				ravenClient.captureError(err,errData);
 			}
