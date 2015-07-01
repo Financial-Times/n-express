@@ -8,7 +8,6 @@ var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var handlebars = require('ft-next-handlebars');
-var barriers = require('./src/barriers');
 var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
@@ -25,7 +24,6 @@ module.exports = function(options) {
 		withFlags: true,
 		withHandlebars: true,
 		withNavigation: true,
-		withBarriers: true
 	};
 
 	Object.keys(defaults).forEach(function (prop) {
@@ -71,7 +69,6 @@ module.exports = function(options) {
 			helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 		}
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
-		helpers.barrier = barriers.helper;
 
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
@@ -106,9 +103,6 @@ module.exports = function(options) {
 	}
 
 	if (options.withHandlebars) {
-		if (options.withBarriers) {
-			app.use(barriers.middleware(metrics));
-		}
 		app.use(anon.middleware);
 	}
 
