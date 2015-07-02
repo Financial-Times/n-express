@@ -5,8 +5,8 @@ function AnonymousModel(req){
 }
 
 function FirstClickFreeModel(){
-	this.signInLink = 'https://next.ft.com/login';
-	this.subscribeNowLink = 'https://sub.ft.com/spa_5/';
+	this.signInLink = '/login';
+	this.subscribeNowLink = '/product-selector';
 }
 
 module.exports = {
