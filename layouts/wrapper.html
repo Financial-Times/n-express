@@ -36,7 +36,7 @@
 
 		{{#if showSkipLinks}}
 			<a class="u-visually-hidden" href="#primary-nav">Skip to navigation</a>
-			<a class="u-visually-hidden" href="#content">Skip to content</a>
+			<a class="u-visually-hidden" href="#site-content">Skip to content</a>
 		{{/if}}
 
 		{{#outputBlock 'notification'}}
@@ -44,9 +44,7 @@
 
 		{{>n-header-footer/templates/header}}
 
-		{{#if showSkipLinks}}<div id="content">{{/if}}
 		{{{body}}}
-		{{#if showSkipLinks}}</div>{{/if}}
 
 		{{#if @root.flags.welcomePanel}}
 			{{>next-welcome/main}}
