@@ -44,9 +44,9 @@
 
 		{{>n-header-footer/templates/header}}
 
-		{{#if showSkipLinks}}<div id="content">{{#if}}
+		{{#if showSkipLinks}}<div id="content">{{/if}}
 		{{{body}}}
-		{{#if showSkipLinks}}</div>{{#if}}
+		{{#if showSkipLinks}}</div>{{/if}}
 
 		{{#if @root.flags.welcomePanel}}
 			{{>next-welcome/main}}
