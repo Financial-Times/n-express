@@ -69,7 +69,7 @@ module.exports = function(options) {
 			helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 		}
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
-
+		app.locals.showSkipLinks = options.withNavigation;
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
 				directory + '/views/partials'
@@ -77,8 +77,7 @@ module.exports = function(options) {
 			defaultLayout: false,
 			layoutsDir: options.layoutsDir || __dirname + '/layouts',
 			helpers: helpers,
-			directory: directory,
-			showSkipLinks: options.withNavigation
+			directory: directory
 		});
 	}
 
