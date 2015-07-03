@@ -209,6 +209,11 @@ describe('simple app', function() {
 				.expect(200, /<html.*data-next-version="i-am-at-version-x"/, done);
 		});
 
+		it('wrapper should expose accessibility skip links to client side code', function(done){
+			request(app)
+				.get('/wrapped')
+				.expect(200, /<a class="u-visually-hidden" href="#primary-nav">Skip to navigation<\/a>/, done);
+		});
 
 		it('wrapper should expose offy flags to client side code', function(done) {
 			request(app)
@@ -319,6 +324,7 @@ describe('simple app', function() {
 				.get('/with-set-base')
 				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
 		});
+
 	});
 
 

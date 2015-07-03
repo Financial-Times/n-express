@@ -23,7 +23,7 @@ module.exports = function(options) {
 	var defaults = {
 		withFlags: true,
 		withHandlebars: true,
-		withNavigation: true,
+		withNavigation: true
 	};
 
 	Object.keys(defaults).forEach(function (prop) {
@@ -77,7 +77,8 @@ module.exports = function(options) {
 			defaultLayout: false,
 			layoutsDir: options.layoutsDir || __dirname + '/layouts',
 			helpers: helpers,
-			directory: directory
+			directory: directory,
+			showSkipLinks: options.withNavigation
 		});
 	}
 
