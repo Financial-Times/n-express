@@ -33,6 +33,12 @@
 		{{/outputBlock}}
 	</head>
 	<body class="o-hoverable-on">
+
+		{{#if showSkipLinks}}
+			<a class="u-visually-hidden" href="#primary-nav">Skip to navigation</a>
+			<a class="u-visually-hidden" href="#site-content">Skip to content</a>
+		{{/if}}
+
 		{{#outputBlock 'notification'}}
 		{{/outputBlock}}
 

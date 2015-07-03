@@ -23,7 +23,7 @@ module.exports = function(options) {
 	var defaults = {
 		withFlags: true,
 		withHandlebars: true,
-		withNavigation: true,
+		withNavigation: true
 	};
 
 	Object.keys(defaults).forEach(function (prop) {
@@ -69,7 +69,7 @@ module.exports = function(options) {
 			helpers.flagStatuses = require('./src/handlebars/flag-statuses');
 		}
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
-
+		app.locals.showSkipLinks = options.withNavigation;
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
 				directory + '/views/partials'
