@@ -12,7 +12,7 @@
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
 		{{>next-js-setup/templates/ctm}}
 	</head>
-	<body class="o-hoverable-on">
+<body class="o-hoverable-on" data-next-is-logged-in="{{@root.anon.userIsLoggedIn}}" data-next-anonymous-myft="{{@root.flags.anonymousMyFt}}">
 		{{{body}}}
 		{{#if @root.flags.javascript}}
 			{{>next-feature-flags-client/templates/flags}}
