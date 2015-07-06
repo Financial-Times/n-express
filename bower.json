@@ -9,7 +9,9 @@
   "resolutions": {
     "next-sass-setup": "^6.0.1",
     "o-ft-icons": "next",
-    "o-fonts": "^2.0.0"
+    "o-fonts": "^2.0.0",
+    "o-buttons": "v3",
+    "next-buttons": "^2.1.0"
   },
   "ignore": [
     "layouts/",
