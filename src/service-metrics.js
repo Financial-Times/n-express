@@ -48,7 +48,8 @@ var serviceMatchers = {
 	'bertha': /^http:\/\/bertha\.ig\.ft\.com/,
 	'markets': /^http:\/\/markets\.ft\.com/,
 	'fastly': /^https?:\/\/next\.ft\.com/,
-	'fastly-api': /^https:\/\/api\.fastly\.com/
+	'fastly-api': /^https:\/\/api\.fastly\.com/,
+	'harrier: /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\/',
 };
 
 module.exports = {
