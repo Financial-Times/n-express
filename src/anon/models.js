@@ -1,12 +1,18 @@
 'use strict';
 
 function AnonymousModel(req){
-	this.userIsAnonymous = !(req.get('FT-Session-Token') || req.get('X-FT-Session-Token'));
+	if(req.get('FT-Session-Token')){
+		this.userIsLoggedIn = true;
+		this.userIsAnonymous = false;
+	}else{
+		this.userIsLoggedIn = false;
+		this.userIsAnonymous = true;
+	}
 }
 
 function FirstClickFreeModel(){
-	this.signInLink = 'https://next.ft.com/login';
-	this.subscribeNowLink = 'https://sub.ft.com/spa_5/';
+	this.signInLink = '/login';
+	this.subscribeNowLink = '/product-selector';
 }
 
 module.exports = {

@@ -32,16 +32,17 @@
 		{{#outputBlock 'head'}}
 		{{/outputBlock}}
 	</head>
-	<body class="o-hoverable-on">
-		{{#outputBlock 'notification'}}
-		{{/outputBlock}}
-
+	<body class="o-hoverable-on" data-next-is-logged-in="{{@root.anon.userIsLoggedIn}}" data-next-anonymous-myft="{{@root.flags.anonymousMyFt}}">
+		
 		{{>n-header-footer/templates/header}}
 
 		{{{body}}}
 
 		{{#if @root.flags.welcomePanel}}
-		{{>next-welcome/main}}
+			{{>next-welcome/main}}
+		{{/if}}
+		{{#if @root.flags.myFTOnboardingOverlay}}
+			{{>next-welcome/overlay}}
 		{{/if}}
 		{{>n-header-footer/templates/footer}}
 		{{#if @root.flags.javascript}}
