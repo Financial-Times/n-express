@@ -336,5 +336,4 @@ describe('simple app', function() {
 
 	});
 
-
 });
