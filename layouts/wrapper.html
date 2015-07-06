@@ -28,14 +28,14 @@
 		<meta name="msapplication-TileImage" content="https://next-geebee.ft.com/assets/brand-alpha/icons/mstile-144x144.png">
 		<meta name="theme-color" content="#fff1e0">
 		
-		{{#if @root.flags.openGraph}}
+		{{#if og}}
 		<meta property="og:title" content="{{ og.title }}"/>
 		<meta property="og:url" content="{{ og.url }}"/>
 		<meta property="og:description" content="{{ og.description }}"/>
 		<meta property="og:image" content="{{ og.image }}"/>
 		<meta property="og:type" content="article"/>
 		<meta property="og:site_name" content="Financial Times"/>
-		{{/openGraph}}
+		{{/if}}
 
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
 		{{>next-js-setup/templates/ctm}}

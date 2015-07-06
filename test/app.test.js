@@ -197,6 +197,7 @@ describe('simple app', function() {
 					done();
 				});
 		});
+
 		it('wrapper should expose production-ness to client side code', function(done) {
 			request(app)
 				.get('/wrapped?prod=true')
@@ -318,6 +319,12 @@ describe('simple app', function() {
 			request(app)
 				.get('/with-set-base')
 				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
+		});
+
+		it('open graph', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /property="og:url" content="1"/, done);
 		});
 	});
 
