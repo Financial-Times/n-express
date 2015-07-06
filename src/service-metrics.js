@@ -49,7 +49,7 @@ var serviceMatchers = {
 	'markets': /^http:\/\/markets\.ft\.com/,
 	'fastly': /^https?:\/\/next\.ft\.com/,
 	'fastly-api': /^https:\/\/api\.fastly\.com/,
-	'harrier: /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\/',
+	'harrier: /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\/'
 };
 
 module.exports = {
