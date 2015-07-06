@@ -326,12 +326,12 @@ describe('simple app', function() {
 				.get('/wrapped')
 				.expect(200, /property="og:url" content="1"/, done);
 		});
-		
+
 		it('should render twitter card markup', function(done) {
 			request(app)
 				.get('/wrapped')
 				.expect(200, /property="twitter:image" content="http:\/\/foo\.png"/, done)
-				.expect(200, /property="twitter:title" content="hello"/, done)
+				.expect(200, /property="twitter:title" content="hello"/, done);
 		});
 
 	});
