@@ -172,7 +172,7 @@ describe('simple app', function() {
 				})
 				.end(done);
 		});
-	
+
 	});
 
 	describe('templating', function () {
