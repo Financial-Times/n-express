@@ -29,7 +29,7 @@ module.exports = function(req, res) {
 			critical: 1000,
 			occurences: 3,
 			interval: 60,
-			serviceLevel: 'gold',
+			serviceLevel: 'bronze',
 			escalation: ['slack_next_dev', 'email_next_team', 'pager_duty']
 		}
 	]);

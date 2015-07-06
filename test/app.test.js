@@ -161,6 +161,20 @@ describe('simple app', function() {
 
 	});
 
+	describe('metrics', function () {
+
+		it('should serve monitoring', function(done) {
+			request(app)
+				.get('/__sensu')
+				.expect('Content-Type', /json/)
+				.expect(function (res) {
+					if (res.body[0].name !== 'error-rate') throw new Error('Sensu check not found');
+				})
+				.end(done);
+		});
+	
+	});
+
 	describe('templating', function () {
 		it('should do templating', function(done) {
 			request(app)
