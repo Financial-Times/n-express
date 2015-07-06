@@ -321,11 +321,19 @@ describe('simple app', function() {
 				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
 		});
 
-		it('open graph', function(done) {
+		it('should render open graph markup', function(done) {
 			request(app)
 				.get('/wrapped')
 				.expect(200, /property="og:url" content="1"/, done);
 		});
+		
+		it('should render twitter card markup', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /property="twitter:image" content="http:\/\/foo\.png"/, done)
+				.expect(200, /property="twitter:title" content="hello"/, done)
+		});
+
 	});
 
 

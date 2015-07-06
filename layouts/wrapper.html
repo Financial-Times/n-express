@@ -32,11 +32,19 @@
 		<meta property="og:title" content="{{ og.title }}"/>
 		<meta property="og:url" content="{{ og.url }}"/>
 		<meta property="og:description" content="{{ og.description }}"/>
-		<meta property="og:image" content="{{ og.image }}"/>
+		{{#if og.image}}<meta property="og:image" content="{{ og.image }}"/>{{/if}}
 		<meta property="og:type" content="article"/>
 		<meta property="og:site_name" content="Financial Times"/>
 		{{/if}}
-
+		
+		{{#if twitterCard}}
+		<meta property="twitter:card" content="{{ twitterCard.type }}"/>
+		<meta property="twitter:site" content="@FinancialTimes"/>
+		<meta property="twitter:title" content="{{ twitterCard.title }}"/>
+		<meta property="twitter:description" content="{{ twitterCard.description }}"/>
+		{{#if twitterCard.image}}<meta property="twitter:image" content="{{ twitterCard.image }}"/>{{/if}}
+		{{/if}}
+		
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
 		{{>next-js-setup/templates/ctm}}
 		{{#outputBlock 'head'}}

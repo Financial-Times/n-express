@@ -45,6 +45,10 @@ app.get('/wrapped', function(req, res, next) {
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>",
 		og: {
 			url: 1
+		},
+		twitterCard: {
+			title: 'hello',
+			image: 'http://foo.png'
 		}
 	});
 });
