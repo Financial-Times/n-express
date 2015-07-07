@@ -20,7 +20,7 @@ deploy:
   on:
     all_branches: true
     tags: true
-    node: '0.12'
+    node: '0.10'
     repo: Financial-Times/next-express
 notifications:
   slack:
