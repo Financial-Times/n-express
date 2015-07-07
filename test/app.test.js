@@ -211,6 +211,7 @@ describe('simple app', function() {
 					done();
 				});
 		});
+
 		it('wrapper should expose production-ness to client side code', function(done) {
 			request(app)
 				.get('/wrapped?prod=true')
@@ -333,7 +334,20 @@ describe('simple app', function() {
 				.get('/with-set-base')
 				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
 		});
-	});
 
+		it('should render open graph markup', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /property="og:url" content="1"/, done);
+		});
+
+		it('should render twitter card markup', function(done) {
+			request(app)
+				.get('/wrapped')
+				.expect(200, /property="twitter:image" content="http:\/\/foo\.png"/, done)
+				.expect(200, /property="twitter:title" content="hello"/, done);
+		});
+
+	});
 
 });
