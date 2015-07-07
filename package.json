@@ -34,5 +34,8 @@
     "npm-prepublish": "^1.0.2",
     "sinon": "^1.14.1",
     "supertest": "^1.0.0"
+  },
+  "engines": {
+	"node": "0.12.x"
   }
 }

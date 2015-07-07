@@ -1,12 +1,18 @@
 'use strict';
 
 function AnonymousModel(req){
-	this.userIsAnonymous = !(req.get('FT-Session-Token') || req.get('X-FT-Session-Token'));
+	if(req.get('FT-Session-Token')){
+		this.userIsLoggedIn = true;
+		this.userIsAnonymous = false;
+	}else{
+		this.userIsLoggedIn = false;
+		this.userIsAnonymous = true;
+	}
 }
 
 function FirstClickFreeModel(){
-	this.signInLink = 'https://next.ft.com/login';
-	this.subscribeNowLink = 'https://sub.ft.com/spa_5/?segID=400872&segmentID=676c655f-9b47-27a8-97db-ab3a6a6dbc54';
+	this.signInLink = '/login';
+	this.subscribeNowLink = '/product-selector?segID=400872&segmentID=676c655f-9b47-27a8-97db-ab3a6a6dbc54';
 }
 
 module.exports = {

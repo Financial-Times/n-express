@@ -42,7 +42,14 @@ app.get('/wrapped', function(req, res, next) {
 	res.render('main', {
 		layout: 'wrapper',
 		items: [1,2,3,4,5],
-		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
+		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>",
+		og: {
+			url: 1
+		},
+		twitterCard: {
+			title: 'hello',
+			image: 'http://foo.png'
+		}
 	});
 });
 

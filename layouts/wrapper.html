@@ -27,21 +27,40 @@
 		<meta name="msapplication-TileColor" content="#fff1e0">
 		<meta name="msapplication-TileImage" content="https://next-geebee.ft.com/assets/brand-alpha/icons/mstile-144x144.png">
 		<meta name="theme-color" content="#fff1e0">
+		
+		{{#if og}}
+		<meta property="og:title" content="{{ og.title }}"/>
+		<meta property="og:url" content="{{ og.url }}"/>
+		<meta property="og:description" content="{{ og.description }}"/>
+		{{#if og.image}}<meta property="og:image" content="{{ og.image }}"/>{{/if}}
+		<meta property="og:type" content="article"/>
+		<meta property="og:site_name" content="Financial Times"/>
+		{{/if}}
+		
+		{{#if twitterCard}}
+		<meta property="twitter:card" content="{{ twitterCard.card }}"/>
+		<meta property="twitter:site" content="@FinancialTimes"/>
+		<meta property="twitter:title" content="{{ twitterCard.title }}"/>
+		<meta property="twitter:description" content="{{ twitterCard.description }}"/>
+		{{#if twitterCard.image}}<meta property="twitter:image" content="{{ twitterCard.image }}"/>{{/if}}
+		{{/if}}
+		
 		<title>{{#title}}{{{this}}} &mdash; {{/title}}FT.com</title>
 		{{>next-js-setup/templates/ctm}}
 		{{#outputBlock 'head'}}
 		{{/outputBlock}}
 	</head>
-	<body class="o-hoverable-on">
-		{{#outputBlock 'notification'}}
-		{{/outputBlock}}
-
+	<body class="o-hoverable-on" data-next-is-logged-in="{{@root.anon.userIsLoggedIn}}" data-next-anonymous-myft="{{@root.flags.anonymousMyFt}}">
+		
 		{{>n-header-footer/templates/header}}
 
 		{{{body}}}
 
 		{{#if @root.flags.welcomePanel}}
-		{{>next-welcome/main}}
+			{{>next-welcome/main}}
+		{{/if}}
+		{{#if @root.flags.myFTOnboardingOverlay}}
+			{{>next-welcome/overlay}}
 		{{/if}}
 		{{>n-header-footer/templates/footer}}
 		{{#if @root.flags.javascript}}
