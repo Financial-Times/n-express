@@ -11,7 +11,7 @@ var handlebars = require('ft-next-handlebars');
 var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
-var sensu = require('./src/express/sensu');
+var sensu = require('./src/sensu');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
@@ -25,6 +25,7 @@ module.exports = function(options) {
 		withFlags: true,
 		withHandlebars: true,
 		withNavigation: true,
+		sensuChecks: []
 	};
 
 	Object.keys(defaults).forEach(function (prop) {
@@ -51,6 +52,7 @@ module.exports = function(options) {
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
+	app.locals.__sensu = sensu(name, options.sensuChecks);
 
 	try {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
@@ -61,7 +63,10 @@ module.exports = function(options) {
 	}
 
 	app.get('/robots.txt', robots);
-	app.get('/__sensu', sensu);
+	app.get('/__sensu', function(req, res) {
+		res.set({ 'Cache-Control': 'max-age=60' });
+		res.json(res.app.locals.__sensu);
+	});
 
 	var handlebarsPromise = Promise.resolve();
 

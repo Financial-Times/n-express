@@ -167,8 +167,10 @@ describe('simple app', function() {
 			request(app)
 				.get('/__sensu')
 				.expect('Content-Type', /json/)
+				.expect('Cache-Control', /max-age=60/)
 				.expect(function (res) {
-					if (res.body[0].name !== 'error-rate') throw new Error('Sensu check not found');
+					if (res.body[0].name !== 'custom-metric') throw new Error('Custom sensu check "custom-metric" not found');
+					if (res.body[1].name !== 'error-rate') throw new Error('Default sensu check "error-rate" not found');
 				})
 				.end(done);
 		});
