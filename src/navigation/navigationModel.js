@@ -1,7 +1,7 @@
 'use strict';
 
 function NavigationModel(flags, isAnon){
-	this.myFT = !isAnon || flags.anonymousMyFt ? {} : null;
+	this.myFT = !isAnon ? {} : null;
 	this.myAccount = isAnon ? null : {};
 	this.signIn = isAnon ? {} : null;
 	this.signOut = !isAnon ? {} : null;

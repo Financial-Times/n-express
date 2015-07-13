@@ -64,17 +64,6 @@ describe('Anonymous Middleware', function(){
 				.end(done);
 		});
 
-		it('Should set the myFT property to an object if anonymousMyFt flag is ON', function(done){
-			request(app)
-				.get('/')
-				.set('FT-Session-Token', '')
-				.set('X-Flags', 'anonymousMyFt:on')
-				.expect(function(){
-					expect(locals.navigationModel.myFT).to.be.an('object');
-				})
-				.end(done);
-		});
-
 		it('Should set the myAccount property to an object if user is not anonymous', function(done){
 			request(app)
 				.get('/')
@@ -84,8 +73,5 @@ describe('Anonymous Middleware', function(){
 				})
 				.end(done);
 		});
-
-
 	});
-
 });
