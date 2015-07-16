@@ -7,7 +7,14 @@ var yell = require('./src/yell');
 
 var app = module.exports = express({
 	directory: __dirname,
-	helpers: { yell: yell }
+	helpers: { yell: yell },
+	sensuChecks: [
+		{
+			check: 'sumSeries(foo.*.bar)',
+			name: "custom-metric",
+			message: "The ratio of errors to good responses is above a healthy rate"
+		}
+	]
 });
 
 app.get("/", function(req, res) {

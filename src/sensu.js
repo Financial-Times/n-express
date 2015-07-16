@@ -2,14 +2,14 @@
 
 var util = require('util');
 
+// default checks for all express applications
+module.exports = function(appName, customChecks) {
 
-module.exports = function(req, res) {
+	var requests = util.format('heroku.%s.*.express.http.req.count', appName);
+	var errors = util.format('heroku.%s.*.express.http.res.status_5xx.count', appName);
+	var responseTime = util.format('heroku.%s.*.express.http.res.status_2xx_response_time.mean', appName);
 
-	var requests = util.format('heroku.%s.*.express.http.req.count', req.app.locals.__name);
-	var errors = util.format('heroku.%s.*.express.http.req.count', req.app.locals.__name);
-	var responseTime = util.format('heroku.%s.*.express.http.res.status_2xx_response_time.mean', req.app.locals.__name);
-
-	res.json([
+	return customChecks.concat([
 		{
 			check: util.format('divideSeries(sumSeries(%s),sumSeries(%s))', requests, errors),
 			name: "error-rate",
