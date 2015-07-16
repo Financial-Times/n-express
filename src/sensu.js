@@ -6,7 +6,7 @@ var util = require('util');
 module.exports = function(appName, customChecks) {
 
 	var requests = util.format('heroku.%s.*.express.http.req.count', appName);
-	var errors = util.format('heroku.%s.*.express.http.req.count', appName);
+	var errors = util.format('heroku.%s.*.express.http.res.status_5xx.count', appName);
 	var responseTime = util.format('heroku.%s.*.express.http.res.status_2xx_response_time.mean', appName);
 
 	return customChecks.concat([
