@@ -14,7 +14,7 @@ module.exports = function(appName, customChecks) {
 			check: util.format('divideSeries(sumSeries(%s),sumSeries(%s))', requests, errors),
 			name: "error-rate",
 			message: "The ratio of errors to good responses is above a healthy rate",
-			warn: 0.05,
+			warn: 0.75,
 			critical: 1,
 			occurences: 3,
 			interval: 60,
