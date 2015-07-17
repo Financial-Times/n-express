@@ -49,7 +49,8 @@ var serviceMatchers = {
 	'markets': /^http:\/\/markets\.ft\.com/,
 	'fastly': /^https?:\/\/next\.ft\.com/,
 	'fastly-api': /^https:\/\/api\.fastly\.com/,
-	'harrier': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//
+	'harrier': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//,
+	'personalised-feed-v1': /^http:\/\/personalised-feed\.ft\.com\/v1\/feed/
 };
 
 module.exports = {
