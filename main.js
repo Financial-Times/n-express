@@ -4,6 +4,12 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
+Object.keys(console).forEach(function (key) {
+	if (console[key]bind) {
+		console[key] = console[key].bind(console);
+	}
+})
+
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
