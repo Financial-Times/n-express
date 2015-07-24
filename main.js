@@ -5,7 +5,7 @@ require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
 Object.keys(console).forEach(function (key) {
-	if (console[key]bind) {
+	if (console[key].bind) {
 		console[key] = console[key].bind(console);
 	}
 })
