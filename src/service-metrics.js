@@ -50,7 +50,7 @@ var serviceMatchers = {
 	'fastly': /^https?:\/\/next\.ft\.com/,
 	'fastly-api': /^https:\/\/api\.fastly\.com/,
 	'harrier': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//,
-	'personalised-feed-v1': /^http:\/\/personalised-feed\.ft\.com\/v1\/feed/
+	'personalised-feed-v1': /^http:\/\/(personalised-feed\.ft\.com|ft-next-personalised-feed-api\.herokuapp\.com)\/v1\/feed/
 };
 
 module.exports = {
