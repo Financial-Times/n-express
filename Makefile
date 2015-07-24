@@ -10,7 +10,7 @@ install:
 test: verify unit-test
 
 verify:
-	nbt verify --skip-layout-checks
+	nbt verify --skip-layout-checks --skip-dotenv-check
 
 unit-test:
 	export BEACON_API_URL=blah; \
