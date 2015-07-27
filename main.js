@@ -25,7 +25,8 @@ module.exports = function(options) {
 		withFlags: true,
 		withHandlebars: true,
 		withNavigation: true,
-		sensuChecks: []
+		sensuChecks: [],
+		healthChecks: []
 	};
 
 	Object.keys(defaults).forEach(function (prop) {
@@ -36,12 +37,14 @@ module.exports = function(options) {
 
 	var app = express();
 	var name = options.name;
+	var description = "";
 	var directory = options.directory || process.cwd();
 
 	if (!name) {
 		try {
 			packageJson = require(directory + '/package.json');
 			name = packageJson.name;
+			description = packageJson.description || "";
 		} catch(e) {
 			// Safely ignorable error
 		}
@@ -52,7 +55,8 @@ module.exports = function(options) {
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
-	app.locals.__sensu = sensu(name, options.sensuChecks);
+	var sensuChecks = sensu(name, options.sensuChecks);
+	var healthChecks = options.healthChecks;
 
 	try {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
@@ -65,7 +69,35 @@ module.exports = function(options) {
 	app.get('/robots.txt', robots);
 	app.get('/__sensu', function(req, res) {
 		res.set({ 'Cache-Control': 'max-age=60' });
-		res.json(res.app.locals.__sensu);
+		res.json(sensuChecks);
+	});
+
+	app.get('/__health', function(req, res) {
+		res.set({ 'Cache-Control': 'no-store' });
+		var ok = true;
+		var checks = healthChecks.map(function(check) {
+			check = check.getStatus();
+			if (check.ok === false) {
+				ok = false;
+			}
+			return check;
+		});
+		if (checks.length === 0) {
+			checks.push({
+				name: 'App has healthchecks',
+				ok: false,
+				severity: 3,
+				businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
+				technicalSummary: 'This app has no healthchecks set up',
+				panicGuide: 'Don\'t Panic'
+			});
+		}
+		res.json({
+			schemaVersion: 1,
+			name: app.locals.__name,
+			description: description,
+			checks: checks
+		});
 	});
 
 	var handlebarsPromise = Promise.resolve();
