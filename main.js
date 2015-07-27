@@ -79,7 +79,7 @@ module.exports = function(options) {
 		});
 		if (checks.length === 0) {
 			checks.push({
-				name: 'App has healthchecks',
+				name: 'App has no healthchecks',
 				ok: false,
 				severity: 3,
 				businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
