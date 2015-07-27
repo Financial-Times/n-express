@@ -74,13 +74,8 @@ module.exports = function(options) {
 
 	app.get('/__health', function(req, res) {
 		res.set({ 'Cache-Control': 'no-store' });
-		var ok = true;
 		var checks = healthChecks.map(function(check) {
-			check = check.getStatus();
-			if (check.ok === false) {
-				ok = false;
-			}
-			return check;
+			return check.getStatus();
 		});
 		if (checks.length === 0) {
 			checks.push({
