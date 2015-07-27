@@ -97,7 +97,7 @@ module.exports = function(options) {
 
 	serviceMetrics.init(options.serviceDependencies);
 
-	app.get('/' + name + '/__about', function(req, res) {
+	app.get('/__about', function(req, res) {
 		res.set({ 'Cache-Control': 'no-cache' });
 		res.sendFile(directory + '/public/__about.json');
 	});
