@@ -66,6 +66,27 @@ module.exports = function(options) {
 		app.use('/' + name, express.static(directory + '/public'));
 	}
 
+	metrics.init({ app: name, flushEvery: 40000 });
+	app.use(function(req, res, next) {
+		metrics.instrument(req, { as: 'express.http.req' });
+		metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
+
+	serviceMetrics.init(options.serviceDependencies);
+
+	['get', 'put', 'delete', 'post'].forEach(function (method) {
+		var nativeMethod = app[method];
+		app[method] = function (route, controller, metricsConf) {
+			metricsConf = metricsConf || {};
+			metrics.router.defineRoute(route, metricsConf);
+			return nativeMethod.call(app, route, function (req, res, next) {
+				metrics.router.allocateToRoute(req, res, metricsConf.name || route);
+				return controller(req, res, next);
+			});
+		};
+	});
+
 	app.get('/robots.txt', robots);
 	app.get('/__sensu', function(req, res) {
 		res.set({ 'Cache-Control': 'max-age=60' });
@@ -115,14 +136,7 @@ module.exports = function(options) {
 		});
 	}
 
-	metrics.init({ app: name, flushEvery: 40000 });
-	app.use(function(req, res, next) {
-		metrics.instrument(req, { as: 'express.http.req' });
-		metrics.instrument(res, { as: 'express.http.res' });
-		next();
-	});
 
-	serviceMetrics.init(options.serviceDependencies);
 
 	app.get('/__about', function(req, res) {
 		res.set({ 'Cache-Control': 'no-cache' });
