@@ -12,7 +12,7 @@ deploy:
   provider: npm
   email: strategic.products@ft.com
   api_key:
-    secure: bU9JZeQzEfzHcqJNOjGWaR0Rq7dWTPwwUKoOBzFOQXxaUriLx3KViPgGzHvDx5i3ffDpM43u0TDWqfhhl6j5Ar8dPUFCNPibmQ6J5yo+wUDv13XLwjLriE7yCLxRL2WKdrCUfDUNzd5DGZHiP7TBcFmMGtBEACJQogcMnKuqWuU=
+    secure: ccXYzgs2T+t2zW2Mw9Tz9Ivat7DkjAMN3wzYG9/BNEjeAhhnOraE36dDHVO0DgiNC2cJr6OOpnsxRDUc0K6yC6b/C7Ig7RuUq2Xm7hC47x0dohvV9gAmDgYeUTkB0YINMBtVmWhZgJQTS1WbqYpvX73UXtWn/A2oHSlPdQQMejM=
   on:
     tags: true
     repo: Financial-Times/next-express
