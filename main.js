@@ -75,17 +75,21 @@ module.exports = function(options) {
 
 	serviceMetrics.init(options.serviceDependencies);
 
-	['get', 'put', 'delete', 'post'].forEach(function (method) {
-		var nativeMethod = app[method];
-		app[method] = function (route, controller, metricsConf) {
-			metricsConf = metricsConf || {};
-			metrics.router.defineRoute(route, metricsConf);
-			return nativeMethod.call(app, route, function (req, res, next) {
-				metrics.router.allocateToRoute(req, res, metricsConf.name || route);
-				return controller(req, res, next);
-			});
-		};
-	});
+	['checkout', 'connect', 'copy', 'delete', 'get', 'head', 'lock', 'merge', 'mkactivity', 'mkcol', 'move', 'm-search', 'notify', 'options', 'patch', 'post', 'propfind', 'proppatch', 'purge', 'put', 'report', 'search', 'subscribe', 'trace', 'unlock', 'unsubscribe']
+		.forEach(function (method) {
+			var nativeMethod = app[method];
+			app[method] = function (route, controller, metricsConf) {
+				if (method === 'get' && arguments.length === 1) {
+					return nativeMethod.call(app, route);
+				}
+				metricsConf = metricsConf || {};
+				metrics.router.defineRoute(method, route, metricsConf);
+				return nativeMethod.call(app, route, function (req, res, next) {
+					metrics.router.allocateToRoute(req, res, method + '_' + (metricsConf.name || route));
+					return controller(req, res, next);
+				});
+			};
+		});
 
 	app.get('/robots.txt', robots);
 	app.get('/__sensu', function(req, res) {
