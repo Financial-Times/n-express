@@ -4,7 +4,6 @@ var fetchres = require('fetchres');
 var services = require('./service-metrics').services;
 
 module.exports = function(app) {
-	app = 'article';
 	return function(req, res, next) {
 		var from = new Date((new Date()).getTime() - 7 * 24 * 60 * 60 * 1000);
 		var url = 'https://www.hostedgraphite.com/bbaf3ccf/' + process.env.HOSTEDGRAPHITE_READ_APIKEY
