@@ -15,6 +15,7 @@ var sensu = require('./src/sensu');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
+var dependencies = require('./src/dependencies');
 
 module.exports = function(options) {
 	options = options || {};
@@ -94,6 +95,8 @@ module.exports = function(options) {
 			checks: checks
 		});
 	});
+
+	app.get('/__dependencies', dependencies(app.locals.__name));
 
 	var handlebarsPromise = Promise.resolve();
 
