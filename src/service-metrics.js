@@ -36,7 +36,7 @@ var serviceMatchers = {
 	// fastft
 	'fastft': /https?:\/\/clamo\.ftdata\.co\.uk\/api/,
 	// ft.com (temporary for article comment hack)
-	'ft.com': /^https?:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
+	'ft-com': /^https?:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
 	'beacon': /^https?:\/\/next-beacon\.ft\.com\/px\.gif/,
 	'session': /^https?:\/\/session-next\.ft\.com/,
 	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
