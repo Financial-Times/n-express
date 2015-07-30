@@ -15,4 +15,3 @@ describe('service metrics', function() {
 	});
 
 });
-
