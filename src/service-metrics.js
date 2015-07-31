@@ -57,7 +57,10 @@ var serviceMatchers = {
 module.exports = {
 	init: function (additionalServices) {
 		if (additionalServices) {
-			Object.keys(additionalServices).forEach(function (serv) {
+			Object.keys(additionalServices).forEach(function(serv) {
+				if (serv.toLowerCase() !== serv || serv.indexOf('.') > -1) {
+					throw new Error("service dependency names should not have full stops in them and should be lowercase");
+				}
 				serviceMatchers[serv] = additionalServices[serv];
 			});
 		}
