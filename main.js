@@ -73,7 +73,7 @@ module.exports = function(options) {
 		res.json(sensuChecks);
 	});
 	
-	app.get('/__teapot', function(req, res) {
+	app.get('/__brew-coffee', function(req, res) {
 		res.sendStatus(418);
 	});
 
