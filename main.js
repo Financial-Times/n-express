@@ -72,6 +72,10 @@ module.exports = function(options) {
 		res.set({ 'Cache-Control': 'max-age=60' });
 		res.json(sensuChecks);
 	});
+	
+	app.get('/__teapot', function(req, res) {
+		res.sendStatus(418);
+	});
 
 	app.get('/__health', function(req, res) {
 		res.set({ 'Cache-Control': 'no-store' });
