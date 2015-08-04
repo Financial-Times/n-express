@@ -76,11 +76,11 @@ module.exports = function(options) {
 		} else {
 			res.set('ft-backend-authentication', false);
 			// TODO: once fastly and everything all set up uncomment the conditional
-			if (process.env.NODE_ENV === 'production') {
-				res.sendStatus(401);
-			} else {
+			// if (process.env.NODE_ENV === 'production') {
+			// res.sendStatus(401);
+			// } else {
 				next();
-			}
+			// }
 		}
 	});
 
