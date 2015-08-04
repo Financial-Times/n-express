@@ -5,7 +5,7 @@ var debounce = require('debounce');
 var unregisteredServices = {};
 
 var getMessage = function () {
-	var message = Object.keys(unregisteredServices).join(', ') + ' services called but no metrics set up. See next-express/src/service-metrics.js';
+	var message = Object.keys(unregisteredServices).join(', ') + ' services called but no metrics set up. Do the services match the whitelist? See next-express/src/service-metrics.js';
 	unregisteredServices = {};
 	return message;
 };
