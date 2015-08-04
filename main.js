@@ -16,6 +16,7 @@ var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
+var circuitBreakers = require('./src/circuit-breakers');
 
 module.exports = function(options) {
 	options = options || {};
@@ -126,6 +127,11 @@ module.exports = function(options) {
 	});
 
 	serviceMetrics.init(options.serviceDependencies);
+
+	circuitBreakers.instrument({
+		metrics: metrics,
+		serviceMatchers: serviceMetrics.services
+	});
 
 	app.get('/__about', function(req, res) {
 		res.set({ 'Cache-Control': 'no-cache' });
