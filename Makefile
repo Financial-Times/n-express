@@ -13,11 +13,9 @@ verify:
 	nbt verify --skip-layout-checks --skip-dotenv-check
 
 unit-test:
-	export BEACON_API_URL=blah; \
-	mocha --recursive
+	export FT_NEXT_BACKEND_KEY=test-backend-key; mocha --recursive
 
 run:
-	export BEACON_API_URL=blah; \
 	node test/fixtures/app/main.js
 
 check:

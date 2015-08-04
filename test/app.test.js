@@ -1,4 +1,4 @@
-/*global it, describe, beforeEach*/
+/*global it, describe, beforeEach, xit, before, after*/
 "use strict";
 
 var request = require('supertest');
@@ -43,6 +43,52 @@ describe('simple app', function() {
 		request(app)
 			.get('/demo-app/test.txt')
 			.expect(200, 'Static file\n', done);
+	});
+
+	describe('backend access', function () {
+		before(function () {
+			process.env.NODE_ENV = 'production';
+		});
+
+		after(function () {
+			process.env.NODE_ENV = '';
+		});
+
+		xit('should 401 for arbitrary route without a backend access key in production', function (done) {
+			request(app)
+				.get('/vanilla')
+				.expect('ft-backend-authentication', /false/)
+				.expect(401, done);
+		});
+
+		xit('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
+			request(app)
+				.get('/vanilla')
+				.set('FT-Next-Backend-Key', 'as-if')
+				.expect('ft-backend-authentication', /false/)
+				.expect(401, done);
+		});
+
+		it('should allow static assets through without backend access key', function (done) {
+			request(app)
+				.get('/demo-app/test.txt')
+				.expect(200, done);
+		});
+
+		it('should allow double-underscorey routes through without backend access key', function (done) {
+			request(app)
+				.get('/__about')
+				.expect(200, done);
+		});
+
+		it('should accept any request with backend access key', function (done) {
+			request(app)
+				.get('/vanilla')
+				.set('FT-Next-Backend-Key', 'test-backend-key')
+				.expect('ft-backend-authentication', /true/)
+				.expect(200, done);
+		});
+
 	});
 
 	it('should be possible to disable flags', function (done) {

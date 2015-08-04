@@ -63,6 +63,26 @@ module.exports = function(options) {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
 	} catch (e) {}
 
+	// Only allow authorized upstream applications access
+	app.use(function (req, res, next) {
+		console.log(process.env.NODE_ENV);
+		if (req.path.indexOf('/' + name) === 0 ||
+			req.path.indexOf('/__') === 0) {
+			next();
+		} else if (req.get('ft-next-backend-key') === process.env.FT_NEXT_BACKEND_KEY) {
+			res.set('ft-backend-authentication', true);
+			next();
+		} else {
+			res.set('ft-backend-authentication', false);
+			// TODO: once fastly and everything all set up uncomment the conditional
+			// if (process.env.NODE_ENV === 'production') {
+			// res.sendStatus(401);
+			// } else {
+				next();
+			// }
+		}
+	});
+
 	if (!app.locals.__isProduction) {
 		app.use('/' + name, express.static(directory + '/public'));
 	}
