@@ -45,6 +45,55 @@ describe('simple app', function() {
 			.expect(200, 'Static file\n', done);
 	});
 
+	describe('backend access', function () {
+		before(function () {
+			process.env.NODE_ENV = 'production';
+		});
+
+		after(function () {
+			process.env.NODE_ENV = '';
+		})
+
+		it('should 401 for arbitrary route without a backend access key in production', function (done) {
+			request(app)
+				.get('/vanilla')
+				.expect(401, done);
+		});
+
+		it('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
+			request(app)
+				.get('/vanilla')
+				.set('FT-Next-Backend-Key', 'as-if')
+				.expect(401, done);
+		});
+
+		it('should allow robots.txt through without backend access key', function (done) {
+			request(app)
+				.get('/robots.txt')
+				.expect(200, done);
+		});
+
+		it('should allow static assets through without backend access key', function (done) {
+			request(app)
+				.get('/demo-app/test.txt')
+				.expect(200, done);
+		});
+
+		it('should allow double-underscorey routes through without backend access key', function (done) {
+			request(app)
+				.get('/__about')
+				.expect(200, done);
+		});
+
+		it('should accept any request with backend access key', function (done) {
+			request(app)
+				.get('/vanilla')
+				.set('FT-Next-Backend-Key', 'test-backend-key')
+				.expect(200, done);
+		});
+
+	});
+
 	it('should be possible to disable flags', function (done) {
 		sinon.stub(flags, 'init');
 		var app = nextExpress({
