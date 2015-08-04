@@ -32,6 +32,7 @@ Breaker.prototype.instrument = function(opts) {
 
 	GLOBAL.fetch = function(url, opts) {
 		var service;
+		var args = arguments;
 		// that.serviceNames.some(function(name) {
 		// 	if (that.serviceMatchers[name].test(url)) {
 		// 		service = name;
@@ -45,10 +46,8 @@ Breaker.prototype.instrument = function(opts) {
 		if (service && that.serviceBreakers[service]) {
 
 			return new Promise(function (resolve, reject) {
-
 				that.serviceBreakers[service].run(function(success, fail) {
-
-					_fetch.apply(this, arguments)
+					_fetch.apply(this, args)
 						.then(function(res) {
 							if(!res.ok) {
 								fail();
@@ -62,7 +61,7 @@ Breaker.prototype.instrument = function(opts) {
 							reject(err);
 						});
 
-				}, function(){
+				}.bind(this), function(){
 					// Use node-ftech response object:
 					// https://github.com/bitinn/node-fetch/blob/master/lib/response.js#L20
 					resolve(new _fetch.Response({
@@ -72,7 +71,7 @@ Breaker.prototype.instrument = function(opts) {
 						timeout: 3000
 					}));
 				});
-			});
+			}.bind(this));
 
 		} else {
 			return _fetch.apply(this, arguments);
