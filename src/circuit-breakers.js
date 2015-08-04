@@ -30,7 +30,8 @@ Breaker.prototype.instrument = function(opts) {
 	var _fetch = GLOBAL.fetch;
 	var that = this; // not using bind as don't want to muck around with fetch's scope
 
-	GLOBAL.fetch = function(url, opts) {
+	GLOBAL.fetch.prototype = Object.create(_fetch.prototype);
+	GLOBAL.fetch.constructor = function(url, opts) {
 		var service;
 		var args = arguments;
 		// that.serviceNames.some(function(name) {
