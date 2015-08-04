@@ -69,12 +69,6 @@ describe('simple app', function() {
 				.expect(401, done);
 		});
 
-		it('should allow robots.txt through without backend access key', function (done) {
-			request(app)
-				.get('/robots.txt')
-				.expect(200, done);
-		});
-
 		it('should allow static assets through without backend access key', function (done) {
 			request(app)
 				.get('/demo-app/test.txt')

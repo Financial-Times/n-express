@@ -67,8 +67,7 @@ module.exports = function(options) {
 	app.use(function (req, res, next) {
 		console.log(process.env.NODE_ENV);
 		if (req.path.indexOf('/' + name) === 0 ||
-			req.path.indexOf('/__') === 0 ||
-			req.path === '/robots.txt') {
+			req.path.indexOf('/__') === 0) {
 			next();
 		} else if (req.get('ft-next-backend-key') === process.env.FT_NEXT_BACKEND_KEY) {
 			res.set('ft-backend-authentication', true);
