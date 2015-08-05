@@ -69,11 +69,11 @@ module.exports = function(options) {
 		if (req.path.indexOf('/' + name) === 0 ||
 			req.path.indexOf('/__') === 0) {
 			next();
-		} else if (req.get('ft-next-backend-key') === process.env.FT_NEXT_BACKEND_KEY) {
-			res.set('ft-backend-authentication', true);
+		} else if (req.get('FT-Next-Backend-Key') === process.env.FT_NEXT_BACKEND_KEY) {
+			res.set('FT-Backend-Authentication', true);
 			next();
 		} else {
-			res.set('ft-backend-authentication', false);
+			res.set('FT-Backend-Authentication', false);
 			// TODO: once fastly and everything all set up uncomment the conditional
 			// if (process.env.NODE_ENV === 'production') {
 			// res.sendStatus(401);
