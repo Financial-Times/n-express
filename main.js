@@ -67,7 +67,9 @@ module.exports = function(options) {
 	// Only allow authorized upstream applications access
 	if (options.withBackendAuthentication) {
 		app.use(function (req, res, next) {
+			// allow static assets through
 			if (req.path.indexOf('/' + name) === 0 ||
+				// allow healthchecks etc. through
 				req.path.indexOf('/__') === 0) {
 				next();
 			} else if (req.get('FT-Next-Backend-Key') === process.env.FT_NEXT_BACKEND_KEY) {
