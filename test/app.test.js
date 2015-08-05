@@ -57,7 +57,7 @@ describe('simple app', function() {
 		xit('should 401 for arbitrary route without a backend access key in production', function (done) {
 			request(app)
 				.get('/vanilla')
-				.expect('ft-backend-authentication', /false/)
+				.expect('FT-Backend-Authentication', /false/)
 				.expect(401, done);
 		});
 
@@ -85,7 +85,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/vanilla')
 				.set('FT-Next-Backend-Key', 'test-backend-key')
-				.expect('ft-backend-authentication', /true/)
+				.expect('FT-Backend-Authentication', /true/)
 				.expect(200, done);
 		});
 
