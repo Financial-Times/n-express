@@ -1,4 +1,4 @@
-/*global it, describe, beforeEach, xit, before, after*/
+/*global it, describe, beforeEach, before, after*/
 "use strict";
 
 var request = require('supertest');
@@ -54,14 +54,14 @@ describe('simple app', function() {
 			process.env.NODE_ENV = '';
 		});
 
-		xit('should 401 for arbitrary route without a backend access key in production', function (done) {
+		it('should 401 for arbitrary route without a backend access key in production', function (done) {
 			request(app)
 				.get('/vanilla')
 				.expect('FT-Backend-Authentication', /false/)
 				.expect(401, done);
 		});
 
-		xit('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
+		it('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
 			request(app)
 				.get('/vanilla')
 				.set('FT-Next-Backend-Key', 'as-if')
@@ -89,7 +89,24 @@ describe('simple app', function() {
 				.expect(200, done);
 		});
 
+		it('should be possible to disable backend authentication', function (done) {
+			sinon.stub(flags, 'init');
+			var app = nextExpress({
+				name: 'noBackendAuth',
+				directory: __dirname,
+				withBackendAuthentication: false
+			});
+			app.get('/let-me-in', function (req, res) {
+				res.end('', 200);
+			});
+			request(app)
+				.get('/let-me-in')
+				.expect(200, done);
+		});
+
 	});
+
+
 
 	it('should be possible to disable flags', function (done) {
 		sinon.stub(flags, 'init');
