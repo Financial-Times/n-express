@@ -132,6 +132,7 @@ module.exports = function(options) {
 		metrics: metrics,
 		serviceMatchers: serviceMetrics.services
 	});
+	app.circuitBreakers = circuitBreakers.serviceBreakers;
 
 	app.get('/__about', function(req, res) {
 		res.set({ 'Cache-Control': 'no-cache' });
@@ -178,3 +179,4 @@ module.exports = function(options) {
 module.exports.Router = express.Router;
 module.exports.services = serviceMetrics.services;
 module.exports.metrics = metrics;
+module.exports.circuitBreakers = circuitBreakers.serviceBreakers;

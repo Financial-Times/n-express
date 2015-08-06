@@ -1,10 +1,11 @@
 'use strict';
 var CircuitBreaker = require('circuit-breaker-js');
+var Response = require('node-fetch').Response;
 
 var Breaker = function() {
 	this.serviceBreakers = {};
 	this.defaultBreakerOptions = {
-		windowDuration: 10000,
+		windowDuration: 30000,
 		numBuckets: 10,
 		timeoutDuration: 3000,
 		errorThreshold: 50,
@@ -30,8 +31,7 @@ Breaker.prototype.instrument = function(opts) {
 	var _fetch = GLOBAL.fetch;
 	var that = this; // not using bind as don't want to muck around with fetch's scope
 
-	GLOBAL.fetch.prototype = Object.create(_fetch.prototype);
-	GLOBAL.fetch.constructor = function(url, opts) {
+	GLOBAL.fetch = function(url, opts) {
 		var service;
 		var args = arguments;
 		// that.serviceNames.some(function(name) {
@@ -65,8 +65,8 @@ Breaker.prototype.instrument = function(opts) {
 				}.bind(this), function(){
 					// Use node-ftech response object:
 					// https://github.com/bitinn/node-fetch/blob/master/lib/response.js#L20
-					resolve(new _fetch.Response({
-						message: '503 Service Unavailable: Circuit breaker tripped.'
+					resolve(new Response({
+						message: 'Service Unavailable: Circuit breaker tripped.'
 					}, {
 						status: 503,
 						timeout: 3000
@@ -78,7 +78,11 @@ Breaker.prototype.instrument = function(opts) {
 			return _fetch.apply(this, arguments);
 		}
 	};
-
+	for(var prop in _fetch) {
+		if(!fetch.hasOwnProperty(prop)) {
+			fetch[prop] = _fetch[prop];
+		}
+	}
 };
 
 module.exports = new Breaker();
