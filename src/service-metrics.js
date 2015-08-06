@@ -52,7 +52,8 @@ var serviceMatchers = {
 	'fastly-api': /^https:\/\/api\.fastly\.com/,
 	'ft-next-harrier-eu': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//,
 	'ft-next-personalised-feed-api': /^http:\/\/(personalised-feed\.ft\.com|ft-next-personalised-feed-api\.herokuapp\.com)\/v1\/feed/,
-	'graphite': /^https:\/\/www\.hostedgraphite\.com\//
+	'graphite': /^https:\/\/www\.hostedgraphite\.com\//,
+	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/
 };
 
 module.exports = {
