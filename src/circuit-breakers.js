@@ -1,3 +1,4 @@
+/* jshint forin: false */
 'use strict';
 var CircuitBreaker = require('circuit-breaker-js');
 var Response = require('node-fetch').Response;
