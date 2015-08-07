@@ -10,7 +10,7 @@ var sinon = require('sinon');
 describe('circuit breakers', function(){
 
 	describe('services', function() {
-		it('should instrument  with a circuit breaker for each service', function(done){
+		it('should instrument fetch with a circuit breaker for each service', function(done){
 			var realFetch = GLOBAL.fetch;
 			var app = nextExpress();
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
