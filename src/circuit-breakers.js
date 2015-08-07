@@ -22,10 +22,10 @@ Breaker.prototype.instrument = function(opts) {
 		this.serviceBreakers[service] = new CircuitBreaker(this.defaultBreakerOptions);
 
 		this.serviceBreakers[service].onCircuitOpen = function() {
-			opts.metrics.count('fetch_' + service + '_circuit_open', 1);
+			opts.metrics.count('fetch.' + service + '.circuit.open', 1);
 		};
 		this.serviceBreakers[service].onCircuitClose = function() {
-			opts.metrics.count('fetch_' + service + '_circuit_close', 1);
+			opts.metrics.count('fetch.' + service + '.circuit.close', 1);
 		};
 	}.bind(this));
 
