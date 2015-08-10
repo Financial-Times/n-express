@@ -26,6 +26,7 @@ module.exports = function(options) {
 		withFlags: true,
 		withHandlebars: true,
 		withNavigation: true,
+		withAnonMiddleware: true,
 		withBackendAuthentication: true,
 		sensuChecks: [],
 		healthChecks: []
@@ -162,7 +163,7 @@ module.exports = function(options) {
 		app.use(flags.middleware);
 	}
 
-	if (options.withHandlebars) {
+	if (options.withAnonMiddleware) {
 		app.use(anon.middleware);
 	}
 
