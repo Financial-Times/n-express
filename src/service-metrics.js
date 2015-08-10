@@ -18,6 +18,7 @@ var serviceMatchers = {
 	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
 	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
+	'capi-v1-navigations': /^https?:\/\/api\.ft\.com\/site\/v1\/navigations/,
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/item/,
 	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v2_api_v[12]\/item/,
