@@ -397,7 +397,7 @@ describe('simple app', function() {
 		it('should be able to set the base', function(done) {
 			request(app)
 				.get('/with-set-base')
-				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
+				.expect(200, /<base target="_parent" href="\/\/next.ft.com"\/>/, done);
 		});
 
 		it('should render open graph markup', function(done) {
