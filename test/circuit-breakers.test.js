@@ -1,6 +1,6 @@
 'use strict';
 
-/*global it, describe, beforeEach */
+/*global it, describe, before, afterEach*/
 require('es6-promise').polyfill();
 var nextExpress = require('../main');
 var expect = require('chai').expect;
