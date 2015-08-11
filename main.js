@@ -61,6 +61,9 @@ module.exports = function(options) {
 	var sensuChecks = sensu(name, options.sensuChecks);
 	var healthChecks = options.healthChecks;
 
+	//Remove x-powered-by header
+	app.set('x-powered-by', false);
+
 	try {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
 	} catch (e) {}
