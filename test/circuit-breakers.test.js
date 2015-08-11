@@ -6,7 +6,6 @@ var nextExpress = require('../main');
 var expect = require('chai').expect;
 var metrics = require('next-metrics');
 var sinon = require('sinon');
-var PORT = 3000;
 
 describe('circuit breakers', function(){
 
@@ -24,7 +23,7 @@ describe('circuit breakers', function(){
 		var app;
 		var breaker;
 
-		beforeEach(function() {
+		before(function() {
 			app = nextExpress({
 				serviceDependencies: {
 					'ft-next-personalised-feed-api': /\/__fail/
@@ -40,21 +39,27 @@ describe('circuit breakers', function(){
 			breaker.numBuckets = 1;
 			breaker.volumeThreshold = 1;
 
-			return app.listen(++PORT);
+			return app.listen(4242);
+		});
+
+		afterEach(function() {
+			// HACK: Reset the breaker
+			breaker._buckets = [breaker._createBucket()];
+			breaker._state = 2;
 		});
 
 		it('should trip circuit if service fails', function() {
-			return fetch('http://localhost:' + PORT + '/__fail')
+			return fetch('http://localhost:4242/__fail')
 				.then(function() {
 					expect(breaker.isOpen()).to.be.true;
 				});
 		});
 
 		it('should fail /__health.2 if circuit is tripped', function() {
-			return fetch('http://localhost:' + PORT + '/__fail')
+			return fetch('http://localhost:4242/__fail')
 				.then(function() {
 					expect(breaker.isOpen()).to.be.true;
-					return fetch('http://localhost:' + PORT + '/__health.2');
+					return fetch('http://localhost:4242/__health.2');
 				})
 				.then(function(res) {
 					expect(res.status).to.be.equal(500);
@@ -62,18 +67,20 @@ describe('circuit breakers', function(){
 		});
 
 		it('should fail fast when circuit is tripped', function() {
-			return fetch('http://localhost:' + PORT + '/__fail')
+			return fetch('http://localhost:4242/__fail')
 				.then(function() {
-					return fetch('http://localhost:5000/__fail');
+					expect(breaker.isOpen()).to.be.true;
+					return fetch('http://localhost:4242/__fail');
 				})
 				.then(function(res) {
+					console.log(res);
 					expect(res.body.message).to.contain('Circuit breaker tripped.');
 				});
 		});
 
 		it('should count every time the circuit trips', function() {
 			sinon.stub(metrics, 'count');
-			return fetch('http://localhost:' + PORT + '/__fail')
+			return fetch('http://localhost:4242/__fail')
 				.then(function() {
 					expect(metrics.count.calledWith('fetch.ft-next-personalised-feed-api.circuit.open')).to.be.true;
 					metrics.count.restore();
