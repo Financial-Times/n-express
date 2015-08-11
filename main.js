@@ -96,7 +96,7 @@ module.exports = function(options) {
 		}
 		if (req.params[0]) {
 			checks.forEach(function(check) {
-				if (check.severity >= Number(req.params[0]) && check.ok === false) {
+				if (check.severity <= Number(req.params[0]) && check.ok === false) {
 					res.status(500);
 				}
 			});
