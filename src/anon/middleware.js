@@ -3,7 +3,7 @@ var anonModels = require('./models');
 var NavigationModel = require('../navigation/navigationModel');
 
 function showFirstClickFree(req, res){
-	return  res.locals.flags.firstClickFree &&
+	return res.locals.flags && res.locals.flags.firstClickFree &&
 			req.get('FT-Access-Decision') === 'GRANTED' &&
 			req.get('FT-Access-Decision-Policy') === 'PRIVILEGED_REFERER_POLICY';
 }

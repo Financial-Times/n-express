@@ -1,6 +1,7 @@
 /*jshint node:true*/
 "use strict";
 
+require('array.prototype.find');
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
@@ -27,6 +28,8 @@ module.exports = function(options) {
 		withFlags: true,
 		withHandlebars: true,
 		withNavigation: true,
+		withAnonMiddleware: true,
+		withBackendAuthentication: true,
 		sensuChecks: [],
 		healthChecks: []
 	};
@@ -60,9 +63,34 @@ module.exports = function(options) {
 	var sensuChecks = sensu(name, options.sensuChecks);
 	var healthChecks = options.healthChecks;
 
+	//Remove x-powered-by header
+	app.set('x-powered-by', false);
+
 	try {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
 	} catch (e) {}
+
+	// Only allow authorized upstream applications access
+	if (options.withBackendAuthentication) {
+		app.use(function (req, res, next) {
+			// allow static assets through
+			if (req.path.indexOf('/' + name) === 0 ||
+				// allow healthchecks etc. through
+				req.path.indexOf('/__') === 0) {
+				next();
+			} else if (req.get('FT-Next-Backend-Key') === process.env.FT_NEXT_BACKEND_KEY) {
+				res.set('FT-Backend-Authentication', true);
+				next();
+			} else {
+				res.set('FT-Backend-Authentication', false);
+				if (process.env.NODE_ENV === 'production') {
+					res.sendStatus(401);
+				} else {
+					next();
+				}
+			}
+		});
+	}
 
 	if (!app.locals.__isProduction) {
 		app.use('/' + name, express.static(directory + '/public'));
@@ -74,7 +102,11 @@ module.exports = function(options) {
 		res.json(sensuChecks);
 	});
 
-	app.get('/__health', function(req, res) {
+	app.get('/__brew-coffee', function(req, res) {
+		res.sendStatus(418);
+	});
+
+	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
 		res.set({ 'Cache-Control': 'no-store' });
 		var checks = healthChecks.map(function(check) {
 			return check.getStatus();
@@ -87,6 +119,13 @@ module.exports = function(options) {
 				businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
 				technicalSummary: 'This app has no healthchecks set up',
 				panicGuide: 'Don\'t Panic'
+			});
+		}
+		if (req.params[0]) {
+			checks.forEach(function(check) {
+				if (check.severity <= Number(req.params[0]) && check.ok === false) {
+					res.status(500);
+				}
 			});
 		}
 		res.json({
@@ -146,7 +185,7 @@ module.exports = function(options) {
 		app.use(flags.middleware);
 	}
 
-	if (options.withHandlebars) {
+	if (options.withAnonMiddleware) {
 		app.use(anon.middleware);
 	}
 
