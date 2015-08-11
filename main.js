@@ -97,6 +97,10 @@ module.exports = function(options) {
 		res.json(sensuChecks);
 	});
 
+	app.get('/__brew-coffee', function(req, res) {
+		res.sendStatus(418);
+	});
+
 	app.get('/__health', function(req, res) {
 		res.set({ 'Cache-Control': 'no-store' });
 		var checks = healthChecks.map(function(check) {
