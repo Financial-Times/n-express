@@ -3,13 +3,6 @@
 
 var request = require('supertest');
 var app = require('./fixtures/app/main');
-var metrics = require('next-metrics');
-var sinon = require('sinon');
-var nextExpress = require('../main');
-var expect = require('chai').expect;
-var errorsHandler = require('express-errors-handler');
-var flags = require('next-feature-flags-client');
-var handlebars = require('ft-next-handlebars');
 
 describe('health', function() {
 
