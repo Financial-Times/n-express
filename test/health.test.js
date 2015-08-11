@@ -1,4 +1,4 @@
-/*global it, describe, beforeEach, before, after*/
+/*global it, describe*/
 "use strict";
 
 var request = require('supertest');
