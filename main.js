@@ -105,7 +105,7 @@ module.exports = function(options) {
 		res.sendStatus(418);
 	});
 
-	app.get(/\/__health(?:\.([123]))?/, function(req, res) {
+	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
 		res.set({ 'Cache-Control': 'no-store' });
 		var checks = healthChecks.map(function(check) {
 			return check.getStatus();
