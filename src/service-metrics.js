@@ -18,6 +18,7 @@ var serviceMatchers = {
 	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
 	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
+	'capi-v1-navigations': /^https?:\/\/api\.ft\.com\/site\/v1\/navigations/,
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/item/,
 	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v2_api_v[12]\/item/,
@@ -52,7 +53,8 @@ var serviceMatchers = {
 	'fastly-api': /^https:\/\/api\.fastly\.com/,
 	'ft-next-harrier-eu': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//,
 	'ft-next-personalised-feed-api': /^http:\/\/(personalised-feed\.ft\.com|ft-next-personalised-feed-api\.herokuapp\.com)\/v1\/feed/,
-	'graphite': /^https:\/\/www\.hostedgraphite\.com\//
+	'graphite': /^https:\/\/www\.hostedgraphite\.com\//,
+	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/
 };
 
 module.exports = {

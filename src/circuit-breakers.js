@@ -35,18 +35,16 @@ Breaker.prototype.instrument = function(opts) {
 	GLOBAL.fetch = function(url, opts) {
 		var service;
 		var args = arguments;
-		// that.serviceNames.some(function(name) {
-		// 	if (that.serviceMatchers[name].test(url)) {
-		// 		service = name;
-		// 		return true;
-		// 	}
-		// });
-
-		// HACK: Temoprarily only test functionality on single service;
-		service = 'ft-next-personalised-feed-api';
+		that.serviceNames.some(function(name) {
+			if (that.serviceMatchers[name].test(url)
+				// HACK: Temoprarily only test functionality on single service;
+				&& name === 'ft-next-personalised-feed-api') {
+				service = name;
+				return true;
+			}
+		});
 
 		if (service && that.serviceBreakers[service]) {
-
 			return new Promise(function (resolve, reject) {
 				that.serviceBreakers[service].run(function(success, fail) {
 					_fetch.apply(this, args)
@@ -64,7 +62,7 @@ Breaker.prototype.instrument = function(opts) {
 						});
 
 				}.bind(this), function(){
-					// Use node-ftech response object:
+					// Use node-fetch response object:
 					// https://github.com/bitinn/node-fetch/blob/master/lib/response.js#L20
 					resolve(new Response({
 						message: 'Service Unavailable: Circuit breaker tripped.'
