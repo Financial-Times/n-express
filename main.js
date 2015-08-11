@@ -96,7 +96,7 @@ module.exports = function(options) {
 		res.set({ 'Cache-Control': 'max-age=60' });
 		res.json(sensuChecks);
 	});
-	
+
 	app.get('/__brew-coffee', function(req, res) {
 		res.sendStatus(418);
 	});
