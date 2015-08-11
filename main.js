@@ -26,6 +26,8 @@ module.exports = function(options) {
 		withFlags: true,
 		withHandlebars: true,
 		withNavigation: true,
+		withAnonMiddleware: true,
+		withBackendAuthentication: true,
 		sensuChecks: [],
 		healthChecks: []
 	};
@@ -62,6 +64,28 @@ module.exports = function(options) {
 	try {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
 	} catch (e) {}
+
+	// Only allow authorized upstream applications access
+	if (options.withBackendAuthentication) {
+		app.use(function (req, res, next) {
+			// allow static assets through
+			if (req.path.indexOf('/' + name) === 0 ||
+				// allow healthchecks etc. through
+				req.path.indexOf('/__') === 0) {
+				next();
+			} else if (req.get('FT-Next-Backend-Key') === process.env.FT_NEXT_BACKEND_KEY) {
+				res.set('FT-Backend-Authentication', true);
+				next();
+			} else {
+				res.set('FT-Backend-Authentication', false);
+				if (process.env.NODE_ENV === 'production') {
+					res.sendStatus(401);
+				} else {
+					next();
+				}
+			}
+		});
+	}
 
 	if (!app.locals.__isProduction) {
 		app.use('/' + name, express.static(directory + '/public'));
@@ -143,7 +167,7 @@ module.exports = function(options) {
 		app.use(flags.middleware);
 	}
 
-	if (options.withHandlebars) {
+	if (options.withAnonMiddleware) {
 		app.use(anon.middleware);
 	}
 

@@ -72,6 +72,7 @@ var app = express({
 	// the following default to true but should normally be set to false if your app is an api
 	withFlags: false, // disable feature flag middleware
 	withHandlebars: false // disable handlebars middleware
+	withBackendAuthentication: false // disable authentication which only allows requests in via fastly
 });
 
 app.get('/', function(req, res, next) {

@@ -18,11 +18,13 @@ var serviceMatchers = {
 	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
 	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
+	'capi-v1-navigations': /^https?:\/\/api\.ft\.com\/site\/v1\/navigations/,
 	'sapi': /^https?:\/\/api\.ft\.com\/content\/search\/v1/,
 	'elastic-v1-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/item/,
 	'elastic-v2-article': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v2_api_v[12]\/item/,
 	'elastic-v1-search': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/_search/,
-	'user-prefs': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
+	'elastic-v2-search': /^https:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v2_api_v2\/_search/,
+	'ft-next-api-user-prefs-v002': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
 	'flags': /^https?:\/\/ft-next-feature-flags-prod\.s3-website-eu-west-1\.amazonaws\.com\/flags\/__flags\.json$/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
@@ -37,11 +39,11 @@ var serviceMatchers = {
 	'fastft': /https?:\/\/clamo\.ftdata\.co\.uk\/api/,
 	// ft.com (temporary for article comment hack)
 	'ft-com': /^https?:\/\/www\.ft\.com\/cms\/s\/[\w\-]+\.html$/,
-	'beacon': /^https?:\/\/next-beacon\.ft\.com\/px\.gif/,
-	'session': /^https?:\/\/session-next\.ft\.com/,
-	'ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
-	'concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
-	'markets-proxy': /^https?:\/\/next-markets-proxy\.ft\.com/,
+	'ft-next-beacon': /^https?:\/\/next-beacon\.ft\.com\/px\.gif/,
+	'ft-next-session-service': /^https?:\/\/session-next\.ft\.com/,
+	'ft-next-ab': /^https?:\/\/ft-next-ab\.herokuapp\.com/,
+	'ft-next-concepts-api': /^https?:\/\/ft-next-concepts-api\.herokuapp\.com/,
+	'ft-next-markets-proxy-api': /^https?:\/\/next-markets-proxy\.ft\.com/,
 	'barriers-api': /^https:\/\/subscribe.ft.com\/memb\/barrier/,
 	'barriers-api-direct': /^https?:\/\/barrier-app\.memb\.ft\.com\/memb\/barrier/,
 	'brightcove': /^http:\/\/api\.brightcove\.com\/services\/library/,
@@ -49,15 +51,19 @@ var serviceMatchers = {
 	'markets': /^http:\/\/markets\.ft\.com/,
 	'fastly': /^https?:\/\/next\.ft\.com/,
 	'fastly-api': /^https:\/\/api\.fastly\.com/,
-	'harrier': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//,
-	'personalised-feed-v1': /^http:\/\/(personalised-feed\.ft\.com|ft-next-personalised-feed-api\.herokuapp\.com)\/v1\/feed/,
-	'graphite': /^https:\/\/www\.hostedgraphite\.com\//
+	'ft-next-harrier-eu': /^https:\/\/ft-next-harrier-eu\.herokuapp\.com\//,
+	'ft-next-personalised-feed-api': /^http:\/\/(personalised-feed\.ft\.com|ft-next-personalised-feed-api\.herokuapp\.com)\/v1\/feed/,
+	'graphite': /^https:\/\/www\.hostedgraphite\.com\//,
+	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/
 };
 
 module.exports = {
 	init: function (additionalServices) {
 		if (additionalServices) {
-			Object.keys(additionalServices).forEach(function (serv) {
+			Object.keys(additionalServices).forEach(function(serv) {
+				if (serv.toLowerCase() !== serv || serv.indexOf('.') > -1) {
+					throw new Error("service dependency names should not have full stops in them and should be lowercase");
+				}
 				serviceMatchers[serv] = additionalServices[serv];
 			});
 		}
