@@ -95,6 +95,31 @@ module.exports = function(options) {
 		app.use('/' + name, express.static(directory + '/public'));
 	}
 
+	metrics.init({ app: name, flushEvery: 40000 });
+	app.use(function(req, res, next) {
+		metrics.instrument(req, { as: 'express.http.req' });
+		metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
+
+	serviceMetrics.init(options.serviceDependencies);
+
+	['checkout', 'connect', 'copy', 'delete', 'get', 'head', 'lock', 'merge', 'mkactivity', 'mkcol', 'move', 'm-search', 'notify', 'options', 'patch', 'post', 'propfind', 'proppatch', 'purge', 'put', 'report', 'search', 'subscribe', 'trace', 'unlock', 'unsubscribe']
+		.forEach(function (method) {
+			var nativeMethod = app[method];
+			app[method] = function (route, controller, metricsConf) {
+				if (method === 'get' && arguments.length === 1) {
+					return nativeMethod.call(app, route);
+				}
+				metricsConf = metricsConf || {};
+				metrics.router.defineRoute(method, route, metricsConf);
+				return nativeMethod.call(app, route, function (req, res, next) {
+					metrics.router.allocateToRoute(req, res, method + '_' + (metricsConf.name || route));
+					return controller(req, res, next);
+				});
+			};
+		});
+
 	app.get('/robots.txt', robots);
 	app.get('/__sensu', function(req, res) {
 		res.set({ 'Cache-Control': 'max-age=60' });
@@ -157,14 +182,7 @@ module.exports = function(options) {
 		});
 	}
 
-	metrics.init({ app: name, flushEvery: 40000 });
-	app.use(function(req, res, next) {
-		metrics.instrument(req, { as: 'express.http.req' });
-		metrics.instrument(res, { as: 'express.http.res' });
-		next();
-	});
 
-	serviceMetrics.init(options.serviceDependencies);
 
 	app.get('/__about', function(req, res) {
 		res.set({ 'Cache-Control': 'no-cache' });
