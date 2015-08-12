@@ -164,6 +164,14 @@ module.exports = function(options) {
 		next();
 	});
 
+	if (options.serviceDependencies) {
+		var errMessage = 'next-express: options.serviceDependencies is deprecated. \n Please add any missing services you need to https://github.com/Financial-Times/next-express/blob/master/src/service-metrics.js';
+		if (process.env.NODE_ENV !== 'production') {
+			throw new Error(errMessage);
+		} else {
+			console.warn(errMessage);
+		}
+	}
 	serviceMetrics.init(options.serviceDependencies);
 
 	app.get('/__about', function(req, res) {

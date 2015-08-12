@@ -182,11 +182,7 @@ describe('simple app', function() {
 			var realFetch = GLOBAL.fetch;
 
 			sinon.stub(errorsHandler, 'captureMessage');
-			getApp({
-				serviceDependencies: {
-					'hello': /^http:\/\/world/
-				}
-			});
+			getApp();
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
 
@@ -194,7 +190,7 @@ describe('simple app', function() {
 				fetch('http://ft-next-api-user-prefs-v002.herokuapp.com/', {
 					timeout: 50
 				}).catch(function () {}),
-				fetch('http://world.com', {
+				fetch('http://bertha.ig.ft.com/ghjgjh', {
 					timeout: 50
 				}).catch(function () {})
 			])
