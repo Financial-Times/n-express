@@ -55,7 +55,10 @@ var serviceMatchers = {
 	'ft-next-personalised-feed-api': /^https?:\/\/(personalised-feed\.ft\.com|ft-next-personalised-feed-api\.herokuapp\.com)\/v1\/feed/,
 	'portfolio': /https?\:\/\/portfolio\.ft\.com/,
 	'graphite': /^https:\/\/www\.hostedgraphite\.com\//,
-	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/
+	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/,
+	'next-sapi-capi-slurp': /https?\:\/\/next-slurp\.ft\.com/,
+	'spoor-uuid-counter': /https?\:\/\/spoor-uuid-counter\.herokuapp\.com/,
+	'live-fyre': /https?\:\/\/ft.bootstrap.fyre.co/
 };
 
 module.exports = {
