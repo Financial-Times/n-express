@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html class="no-js" data-next-app="{{__name}}" {{#if __isProduction}}data-next-is-production{{/if}} {{#if __version}}data-next-version="{{__version}}"{{/if}} {{{flagStatuses}}}>
 	<head>
+		<meta charset="utf-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 		{{#if setBase}}
-			<base target="_parent" href="{{setBase}}">
+			<base target="_parent" href="{{setBase}}"/>
 		{{/if}}
 		<link rel="stylesheet" href="{{#hashedAsset}}main.css{{/hashedAsset}}"/>
 
 		<link rel="apple-touch-icon" sizes="180x180" href="https://next-geebee.ft.com/assets/brand-alpha/icons/apple-touch-icon-180x180.png"/>
-		<link rel="manifest" href="https://next-geebee.ft.com/assets/brand-alpha/icons/android-manifest.json"/>
+		<link rel="manifest" href="/assets/manifest/manifest-v2.json"/>
 		<meta name="msapplication-TileColor" content="#fff1e0"/>
 		<meta name="msapplication-TileImage" content="https://next-geebee.ft.com/assets/brand-alpha/icons/mstile-144x144.png"/>
 		<meta name="theme-color" content="#fff1e0"/>

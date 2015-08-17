@@ -1,4 +1,4 @@
-/*global it, describe, beforeEach*/
+/*global it, describe, beforeEach, before, after*/
 "use strict";
 
 var request = require('supertest');
@@ -44,6 +44,69 @@ describe('simple app', function() {
 			.get('/demo-app/test.txt')
 			.expect(200, 'Static file\n', done);
 	});
+
+	describe('backend access', function () {
+		before(function () {
+			process.env.NODE_ENV = 'production';
+		});
+
+		after(function () {
+			process.env.NODE_ENV = '';
+		});
+
+		it('should 401 for arbitrary route without a backend access key in production', function (done) {
+			request(app)
+				.get('/vanilla')
+				.expect('FT-Backend-Authentication', /false/)
+				.expect(401, done);
+		});
+
+		it('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
+			request(app)
+				.get('/vanilla')
+				.set('FT-Next-Backend-Key', 'as-if')
+				.expect('ft-backend-authentication', /false/)
+				.expect(401, done);
+		});
+
+		it('should allow static assets through without backend access key', function (done) {
+			request(app)
+				.get('/demo-app/test.txt')
+				.expect(200, done);
+		});
+
+		it('should allow double-underscorey routes through without backend access key', function (done) {
+			request(app)
+				.get('/__about')
+				.expect(200, done);
+		});
+
+		it('should accept any request with backend access key', function (done) {
+			request(app)
+				.get('/vanilla')
+				.set('FT-Next-Backend-Key', 'test-backend-key')
+				.expect('FT-Backend-Authentication', /true/)
+				.expect(200, done);
+		});
+
+		it('should be possible to disable backend authentication', function (done) {
+			sinon.stub(flags, 'init');
+			var app = nextExpress({
+				name: 'noBackendAuth',
+				directory: __dirname,
+				withBackendAuthentication: false
+			});
+			app.get('/let-me-in', function (req, res) {
+				res.end('', 200);
+			});
+			request(app)
+				.get('/let-me-in')
+				.expect(200, done);
+		});
+
+	});
+
+
 
 	it('should be possible to disable flags', function (done) {
 		sinon.stub(flags, 'init');
@@ -119,11 +182,7 @@ describe('simple app', function() {
 			var realFetch = GLOBAL.fetch;
 
 			sinon.stub(errorsHandler, 'captureMessage');
-			getApp({
-				serviceDependencies: {
-					'hello': /^http:\/\/world/
-				}
-			});
+			getApp();
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
 
@@ -131,7 +190,7 @@ describe('simple app', function() {
 				fetch('http://ft-next-api-user-prefs-v002.herokuapp.com/', {
 					timeout: 50
 				}).catch(function () {}),
-				fetch('http://world.com', {
+				fetch('http://bertha.ig.ft.com/ghjgjh', {
 					timeout: 50
 				}).catch(function () {})
 			])
@@ -334,7 +393,7 @@ describe('simple app', function() {
 		it('should be able to set the base', function(done) {
 			request(app)
 				.get('/with-set-base')
-				.expect(200, /<base target="_parent" href="\/\/next.ft.com">/, done);
+				.expect(200, /<base target="_parent" href="\/\/next.ft.com"\/>/, done);
 		});
 
 		it('should render open graph markup', function(done) {
