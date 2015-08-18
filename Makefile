@@ -27,11 +27,11 @@ release-patch:
 	git push && git push --tags
 
 release-minor:
-	npm version patch
+	npm version minor
 	npm publish
 	git push && git push --tags
 
-release-minor:
-	npm version patch
+release-major:
+	npm version major
 	npm publish
 	git push && git push --tags
