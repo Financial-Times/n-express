@@ -181,8 +181,17 @@ module.exports = function(options) {
 
 	var flagsPromise = Promise.resolve();
 
+	var flagsEndpoints = [
+		'http://next-flags.ft.com/',
+		'http://ft-next-feature-flags-prod-us.s3-website-us-east-1.amazonaws.com/flags/__flags.json',
+		'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json'
+	];
+
 	if (options.withFlags) {
-		flagsPromise = flags.init({ url: 'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json' });
+		flagsPromise = flags.init({ urls : flagsEndpoints });
+		flagsPromise.then(function(){
+			console.log('Flags loaded from %s', flags.url);
+		});
 		app.use(flags.middleware);
 	}
 
