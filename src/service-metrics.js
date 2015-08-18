@@ -11,6 +11,7 @@ var getMessage = function () {
 };
 
 var alerter = debounce(function () {
+	console.log('alert', errorsHandler.captureMessage);
 	errorsHandler.captureMessage(getMessage());
 }, 5 * 60 * 1000, true);
 
