@@ -190,7 +190,7 @@ module.exports = function(options) {
 	if (options.withFlags) {
 		flagsPromise = flags.init({ urls : flagsEndpoints });
 		flagsPromise.then(function(){
-			console.log('Flags loaded from %s', flags.url)
+			console.log('Flags loaded from %s', flags.url);
 		});
 		app.use(flags.middleware);
 	}
