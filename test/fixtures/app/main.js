@@ -5,6 +5,8 @@ var port = process.env.PORT || 3000;
 var express = require('../../../main');
 var yell = require('./src/yell');
 
+express.services['ft-next-personalised-feed-api'] = /\/__fail/;
+
 var app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
@@ -76,6 +78,10 @@ app.get('/with-set-base', function(req, res, next) {
 		items: [1,2,3,4,5],
 		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
 	});
+});
+
+app.get('/__fail', function(req, res){
+	res.sendStatus(503);
 });
 
 var router = express.Router();
