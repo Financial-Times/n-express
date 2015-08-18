@@ -20,3 +20,18 @@ run:
 
 check:
 	npm-check-updates
+
+release-patch:
+	npm version patch
+	npm publish
+	git push && git push --tags
+
+release-minor:
+	npm version patch
+	npm publish
+	git push && git push --tags
+
+release-minor:
+	npm version patch
+	npm publish
+	git push && git push --tags
