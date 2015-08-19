@@ -23,7 +23,7 @@ Comes with:-
 - Adds a `/{{name-of-app}}/__about` endpoint, which exposes information about the current version of the application running
 - By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts):
 	 - vanilla.html - Outputs the application's template preceded by `<!DOCTYPE html>`, `<head>` and wrapped in `<html>` and `<body>` tags, and loading all standard next app styles and scripts, including cutting the mustard and tracking
-	 - wrapper.html - All the above but also including the next header and footer
+	 - wrapper.html - All the above but also including the next header and footer. If `stickyFooter: true` is set in the pages view data the footer will be sticky
 For vanilla and wrapper layouts scripts and styles must still be manually required/imported into your application's sass and js
 
 - Exposes `express.Router`
