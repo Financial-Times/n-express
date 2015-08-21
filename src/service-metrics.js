@@ -26,7 +26,7 @@ var serviceMatchers = {
 	'elastic-v1-search': /^https?:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v1_api_v2\/_search/,
 	'elastic-v2-search': /^https:\/\/[\w\-]+\.foundcluster\.com(:\d+)?\/v2_api_v2\/_search/,
 	'ft-next-api-user-prefs-v002': /^https?:\/\/ft-next-api-user-prefs-v002\.herokuapp\.com/,
-	'flags': /^https?:\/\/(?:ft-next-feature-flags-prod\.s3-website-eu-west-1\.amazonaws\.com|next-flags\.ft\.com)/,
+	'flags': /^https?:\/\/(?:ft-next-feature-flags-prod\..*\.amazonaws\.com|next-flags\.ft\.com)/,
 	// 'elastic-search':
 	'capi-v2-article': /^https?:\/\/api\.ft\.com\/content\/[\w\-]+/,
 	'capi-v2-concordances': /^https?:\/\/api\.ft\.com\/concordances\?/,
