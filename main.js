@@ -17,6 +17,8 @@ var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
+var circuitBreakers = require('./src/circuit-breakers');
+var health = require('./src/health');
 
 module.exports = function(options) {
 	options = options || {};
@@ -105,36 +107,6 @@ module.exports = function(options) {
 		res.sendStatus(418);
 	});
 
-	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
-		res.set({ 'Cache-Control': 'no-store' });
-		var checks = healthChecks.map(function(check) {
-			return check.getStatus();
-		});
-		if (checks.length === 0) {
-			checks.push({
-				name: 'App has no healthchecks',
-				ok: false,
-				severity: 3,
-				businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
-				technicalSummary: 'This app has no healthchecks set up',
-				panicGuide: 'Don\'t Panic'
-			});
-		}
-		if (req.params[0]) {
-			checks.forEach(function(check) {
-				if (check.severity <= Number(req.params[0]) && check.ok === false) {
-					res.status(500);
-				}
-			});
-		}
-		res.json({
-			schemaVersion: 1,
-			name: app.locals.__name,
-			description: description,
-			checks: checks
-		});
-	});
-
 	app.get('/__dependencies', dependencies(app.locals.__name));
 
 	var handlebarsPromise = Promise.resolve();
@@ -173,6 +145,13 @@ module.exports = function(options) {
 		}
 	}
 	serviceMetrics.init(options.serviceDependencies);
+
+	circuitBreakers.instrument({
+		metrics: metrics,
+		serviceMatchers: serviceMetrics.services
+	});
+	app.circuitBreakers = circuitBreakers.serviceBreakers;
+	app.get(/\/__health(?:\.([123]))?$/, health(healthChecks, app.locals.__name, description, app.circuitBreakers));
 
 	app.get('/__about', function(req, res) {
 		res.set({ 'Cache-Control': 'no-cache' });
@@ -228,3 +207,4 @@ module.exports = function(options) {
 module.exports.Router = express.Router;
 module.exports.services = serviceMetrics.services;
 module.exports.metrics = metrics;
+module.exports.circuitBreakers = circuitBreakers.serviceBreakers;
