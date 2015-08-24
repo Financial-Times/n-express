@@ -21,7 +21,7 @@
     "ft-next-splunk-logger": "^1.3.0",
     "next-beacon-node-client": "https://github.com/Financial-Times/next-beacon-node-client/archive/v2.1.3.tar.gz",
     "isomorphic-fetch": "^2.0.0",
-    "next-feature-flags-client": "^7.2.0",
+    "next-feature-flags-client": "^8.0.0",
     "next-metrics": "^1.6.4"
   },
   "devDependencies": {
