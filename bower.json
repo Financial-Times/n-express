@@ -2,6 +2,7 @@
   "name": "next-express",
   "dependencies": {
     "next-js-setup": "^3.0.0",
+    "next-feature-flags-client": "^7.0.0",
     "n-header-footer": "^1.0.0",
     "next-welcome": "^2.0.0"
   },
