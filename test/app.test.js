@@ -291,12 +291,6 @@ describe('simple app', function() {
 		});
 
 
-		it('wrapper should expose offy flags to client side code', function(done) {
-			request(app)
-				.get('/wrapped')
-				.expect(200, /<html.*data-next-flags="(([a-z\d\-]+--off))( [a-z\d\-]+--off)*"/, done);
-		});
-
 		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
 			request(app)
 				.get('/vanilla')
@@ -330,12 +324,6 @@ describe('simple app', function() {
 			request(app)
 				.get('/vanilla')
 				.expect(200, /<html.*data-next-version="i-am-at-version-x"/, done);
-		});
-
-		it('vanilla should expose offy flags to client side code', function(done) {
-			request(app)
-				.get('/vanilla')
-				.expect(200, /<html.*data-next-flags="(([a-z\d\-]+--off))( [a-z\d\-]+--off)*"/, done);
 		});
 
 		//fixme - this test breaks on Travis

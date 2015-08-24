@@ -141,9 +141,6 @@ module.exports = function(options) {
 
 	if (options.withHandlebars) {
 		var helpers = options.helpers || {};
-		if (options.withFlags) {
-			helpers.flagStatuses = require('./src/handlebars/flag-statuses');
-		}
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
 
 		handlebarsPromise = handlebars(app, {
