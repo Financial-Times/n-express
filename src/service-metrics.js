@@ -59,7 +59,8 @@ var serviceMatchers = {
 	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/,
 	'next-sapi-capi-slurp': /https?\:\/\/next-slurp\.ft\.com/,
 	'spoor-uuid-counter': /https?\:\/\/spoor-uuid-counter\.herokuapp\.com/,
-	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/
+	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/,
+	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/
 };
 
 module.exports = {
