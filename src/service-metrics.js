@@ -60,7 +60,8 @@ var serviceMatchers = {
 	'next-sapi-capi-slurp': /https?\:\/\/next-slurp\.ft\.com/,
 	'spoor-uuid-counter': /https?\:\/\/spoor-uuid-counter\.herokuapp\.com/,
 	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/,
-	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/
+	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/,
+	'ft-next-service-registry': /http\:\/\/next-registry\.ft\.com/
 };
 
 module.exports = {
