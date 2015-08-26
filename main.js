@@ -148,7 +148,8 @@ module.exports = function(options) {
 				directory + '/views/partials'
 			],
 			defaultLayout: false,
-			layoutsDir: options.layoutsDir || __dirname + '/layouts',
+			// The most common use case, n-layout is not bundled with tis package
+			layoutsDir: options.layoutsDir || directory + '/bower_components/n-layout/templates',
 			helpers: helpers,
 			directory: directory
 		});
