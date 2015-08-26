@@ -1,7 +1,7 @@
 'use strict';
 
 function AnonymousModel(req){
-	if(req.get('FT-Session-Token')){
+	if(req.get('FT-User-UUID')){
 		this.userIsLoggedIn = true;
 		this.userIsAnonymous = false;
 	}else{
