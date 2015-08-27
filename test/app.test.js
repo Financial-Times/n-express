@@ -56,14 +56,14 @@ describe('simple app', function() {
 
 		it('should 401 for arbitrary route without a backend access key in production', function (done) {
 			request(app)
-				.get('/vanilla')
+				.get('/')
 				.expect('FT-Backend-Authentication', /false/)
 				.expect(401, done);
 		});
 
 		it('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
 			request(app)
-				.get('/vanilla')
+				.get('/')
 				.set('FT-Next-Backend-Key', 'as-if')
 				.expect('ft-backend-authentication', /false/)
 				.expect(401, done);
@@ -83,7 +83,7 @@ describe('simple app', function() {
 
 		it('should accept any request with backend access key', function (done) {
 			request(app)
-				.get('/vanilla')
+				.get('/')
 				.set('FT-Next-Backend-Key', 'test-backend-key')
 				.expect('FT-Backend-Authentication', /true/)
 				.expect(200, done);
@@ -242,6 +242,7 @@ describe('simple app', function() {
 	});
 
 	describe('templating', function () {
+
 		it('should do templating', function(done) {
 			request(app)
 				.get('/templated')
@@ -254,76 +255,10 @@ describe('simple app', function() {
 				.expect(200, /^<h1>FT - on/, done);
 		});
 
-		it('should be possible to inherit a wrapper (inc header & footer) layout', function(done) {
+		it('should be possible to inherit a layout', function(done) {
 			request(app)
-				.get('/wrapped')
-				// doctype ... header ... script loader ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*header(.|[\r\n])*footer(.|[\r\n])*flags(.|[\r\n])*script-loader(.|[\r\n])*<\/html>/, done);
-		});
-
-		it('wrapper should expose app name to client side code', function(done) {
-			request(app)
-				.get('/wrapped')
-				.expect(200, /<html.*data-next-app="demo-app"/, done);
-		});
-
-		it('wrapper should expose non production-ness to client side code', function(done) {
-			request(app)
-				.get('/wrapped')
-				.expect(200)
-				.end(function (err, res) {
-					console.log(res);
-					expect(res.text.indexOf('data-next-is-production')).to.equal(-1);
-					done();
-				});
-		});
-
-		it('wrapper should expose production-ness to client side code', function(done) {
-			request(app)
-				.get('/wrapped?prod=true')
-				.expect(200, /<html.*data-next-is-production/, done);
-		});
-
-		it('wrapper should expose app version to client side code', function(done) {
-			request(app)
-				.get('/wrapped')
-				.expect(200, /<html.*data-next-version="i-am-at-version-x"/, done);
-		});
-
-
-		it('should be possible to inherit a vanilla (inc html head only) layout', function(done) {
-			request(app)
-				.get('/vanilla')
-				// doctype ... no header ... script loader ... tracking ... end page
-				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*<body [^>]+>([^a-z])*<h1>(.|[\r\n])*flags(.|[\r\n])*script-loader([\t]+)tracking*/, done);
-		});
-
-		it('vanilla should expose app name to client side code', function(done) {
-			request(app)
-				.get('/vanilla')
-				.expect(200, /<html.*data-next-app="demo-app"/, done);
-		});
-
-		it('vanilla should expose non production-ness to client side code', function(done) {
-			request(app)
-				.get('/vanilla')
-				.expect(200)
-				.end(function (err, res) {
-					expect(res.text.indexOf('data-next-is-production')).to.equal(-1);
-					done();
-				});
-		});
-
-		it('vanilla should expose production-ness to client side code', function(done) {
-			request(app)
-				.get('/vanilla?prod=true')
-				.expect(200, /<html.*data-next-is-production/, done);
-		});
-
-		it('vanilla should expose app version to client side code', function(done) {
-			request(app)
-				.get('/vanilla')
-				.expect(200, /<html.*data-next-version="i-am-at-version-x"/, done);
+				.get('/with-layout')
+				.expect(200, /^<!DOCTYPE html>(.|[\r\n])*head(.|[\r\n])*body(.|[\r\n])*h1(.|[\r\n])*h2(.|[\r\n])*<\/html>/, done);
 		});
 
 		//fixme - this test breaks on Travis
@@ -372,7 +307,6 @@ describe('simple app', function() {
 			});
 		});
 
-
 		it('should treat undefined flags as offy (like falsey)', function(done) {
 			request(app)
 				.get('/templated')
@@ -380,26 +314,6 @@ describe('simple app', function() {
 				// https://github.com/Financial-Times/next-feature-flags-client/issues/26
 				//.expect(/<undefinedflag-off>Should appear<\/undefinedflag-off>/)
 				.expect(200, /<undefinedflag-on><\/undefinedflag-on>/, done);
-		});
-
-
-		it('should be able to set the base', function(done) {
-			request(app)
-				.get('/with-set-base')
-				.expect(200, /<base target="_parent" href="\/\/next.ft.com"\/>/, done);
-		});
-
-		it('should render open graph markup', function(done) {
-			request(app)
-				.get('/wrapped')
-				.expect(200, /property="og:url" content="1"/, done);
-		});
-
-		it('should render twitter card markup', function(done) {
-			request(app)
-				.get('/wrapped')
-				.expect(200, /property="twitter:image" content="http:\/\/foo\.png"/, done)
-				.expect(200, /property="twitter:title" content="hello"/, done);
 		});
 
 	});

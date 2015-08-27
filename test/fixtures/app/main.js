@@ -8,6 +8,7 @@ var yell = require('./src/yell');
 var app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
+	layoutsDir: __dirname + '/views/',
 	sensuChecks: [
 		{
 			check: 'sumSeries(foo.*.bar)',
@@ -44,37 +45,13 @@ app.get('/templated', function(req, res, next) {
 	});
 });
 
-app.get('/wrapped', function(req, res, next) {
+app.get('/with-layout', function(req, res, next) {
 	res.locals.__isProduction  = req.query.prod || res.locals.__isProduction;
 	res.render('main', {
 		layout: 'wrapper',
+		title: 'FT',
 		items: [1,2,3,4,5],
-		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>",
-		og: {
-			url: 1
-		},
-		twitterCard: {
-			title: 'hello',
-			image: 'http://foo.png'
-		}
-	});
-});
-
-app.get('/vanilla', function(req, res, next) {
-	res.locals.__isProduction  = req.query.prod || res.locals.__isProduction;
-	res.render('main', {
-		layout: 'vanilla',
-		items: [1,2,3,4,5],
-		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
-	});
-});
-
-app.get('/with-set-base', function(req, res, next) {
-	res.render('main', {
-		layout: 'wrapper',
-		setBase: '//next.ft.com',
-		items: [1,2,3,4,5],
-		text : "<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>"
+		text : '<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>'
 	});
 });
 
