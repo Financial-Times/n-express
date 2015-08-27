@@ -149,7 +149,7 @@ module.exports = function(options) {
 			],
 			defaultLayout: false,
 			// The most common use case, n-layout is not bundled with tis package
-			layoutsDir: options.layoutsDir !== 'undefined' ? options.layoutsDir : (directory + '/bower_components/n-layout/templates'),
+			layoutsDir: typeof options.layoutsDir !== 'undefined' ? options.layoutsDir : (directory + '/bower_components/n-layout/templates'),
 			helpers: helpers,
 			directory: directory
 		});
