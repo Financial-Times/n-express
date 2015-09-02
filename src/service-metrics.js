@@ -61,7 +61,8 @@ var serviceMatchers = {
 	'spoor-uuid-counter': /https?\:\/\/spoor-uuid-counter\.herokuapp\.com/,
 	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/,
 	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/,
-	'ft-next-service-registry': /http\:\/\/next-registry\.ft\.com/
+	'ft-next-service-registry': /http\:\/\/next-registry\.ft\.com/,
+	'pingdom': /https\:\/\/api\.pingdom\.com/
 };
 
 module.exports = {
