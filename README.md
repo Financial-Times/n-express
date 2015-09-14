@@ -18,7 +18,7 @@ Comes with:-
   - measures request and response performance
   - exposes the configured metrics instance as `express.metrics`
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
-- [Promise](https://github.com/jakearchibald/es6-promise) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
+- [Symbol](https://github.com/medikoo/es6-symbol) & [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfills
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use [next-assets](https://github.com/Financial-Times/next-assets) or hashed-assets in production)
 - Exposes app name via `__name` to templates and in a `data-next-app` attribute on the html tag in templates
 - Adds a `/{{name-of-app}}/__about` endpoint, which exposes information about the current version of the application running
