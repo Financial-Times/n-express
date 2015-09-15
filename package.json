@@ -10,7 +10,6 @@
     "array.prototype.find": "^1.0.0",
     "debounce": "^1.0.0",
     "debug": "^2.2.0",
-    "es6-promise": "^2.0.1",
     "es6-symbol": "^2.0.1",
     "express": "^4.10.5",
     "express-errors-handler": "^1.0.0",
