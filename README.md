@@ -147,3 +147,36 @@ This’ll make sure your tests wait for flags to be ready.
 Each health check should take the form of an object with a getStatus function. The getStatus function must return a valid check object (see the [FT Check Standard](https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk)).
 
 This check object can optionally be wrapped in a promise. The promise should be designed to always resolve. If the check fails, the promise should return the check object with its 'ok' attribute set to false.
+
+An example health check that returns a promise might look a bit like this:
+
+```
+function checkIfOk() {
+	return somePromiseFunction()
+		.then((result) => {
+			return result == 10;
+		})
+		.catch((err) => {
+			return false;
+		});
+}
+
+
+var healthCheck = {
+	getStatus: () => {
+		return checkIfOk()
+			.then((result) => {
+				return {
+					name: "Some healthcheck",
+					ok: result,
+					businessImpact: "None",
+					checkOutput: 'checking...',
+					severity: 1,
+					lastUpdated: new Date(),
+					technicalSummary: "lorem ipsum",
+					panicGuide: "lorem ipsum"
+				};
+			})
+	}
+};
+```
