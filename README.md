@@ -150,7 +150,7 @@ This check object can optionally be wrapped in a promise. The promise should be 
 
 An example health check that returns a promise might look a bit like this:
 
-```
+```js
 function checkIfOk() {
 	return somePromiseFunction()
 		.then((result) => {
