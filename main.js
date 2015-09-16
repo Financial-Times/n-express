@@ -106,31 +106,40 @@ module.exports = function(options) {
 
 	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
-		var checks = healthChecks.map(function(check) {
-			return check.getStatus();
+		var checkPromises = healthChecks.map(function(check) {
+			return Promise.resolve(check.getStatus());
 		});
-		if (checks.length === 0) {
-			checks.push({
-				name: 'App has no healthchecks',
-				ok: false,
-				severity: 3,
-				businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
-				technicalSummary: 'This app has no healthchecks set up',
-				panicGuide: 'Don\'t Panic'
+
+		Promise.all(checkPromises).then(function (checks) {
+
+			if (checks.length === 0) {
+				checks.push({
+					name: 'App has no healthchecks',
+					ok: false,
+					severity: 3,
+					businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
+					technicalSummary: 'This app has no healthchecks set up',
+					panicGuide: 'Don\'t Panic'
+				});
+			}
+			if (req.params[0]) {
+				checks.forEach(function (check) {
+					if (check.severity <= Number(req.params[0]) && check.ok === false) {
+						res.status(500);
+					}
+				});
+			}
+			res.json({
+				schemaVersion: 1,
+				name: app.locals.__name,
+				description: description,
+				checks: checks
 			});
-		}
-		if (req.params[0]) {
-			checks.forEach(function(check) {
-				if (check.severity <= Number(req.params[0]) && check.ok === false) {
-					res.status(500);
-				}
+
+		}).catch(function (err) {
+			res.status(500).json({
+				error: 'Error in health check getStatus function' + (err ? ': ' + err.message : '')
 			});
-		}
-		res.json({
-			schemaVersion: 1,
-			name: app.locals.__name,
-			description: description,
-			checks: checks
 		});
 	});
 

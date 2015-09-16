@@ -30,6 +30,7 @@ Comes with:-
 - `__version` is set to the same value as that used by [next-build-tools/about](https://github.com/Financial-Times/next-build-tools/blob/master/lib/about.js) (exposed as `data-next-version` on the `<html>` tag in templates)
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance and layouts
 - instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a 'serviceDependencies' option (see examples below)
+- Provides an solution for returning health checks that adhere to the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit#)
 
 ## Installation
 
@@ -69,6 +70,9 @@ var app = express({
 	withFlags: false, // disable feature flag middleware
 	withHandlebars: false // disable handlebars middleware
 	withBackendAuthentication: false // disable authentication which only allows requests in via fastly
+
+	// Optional, defaults to empty array
+	healthChecks: []
 });
 
 app.get('/', function(req, res, next) {
@@ -136,3 +140,10 @@ before(function() {
 ```
 
 This’ll make sure your tests wait for flags to be ready.
+
+
+## Health checks
+
+Each health check should take the form of an object with a getStatus function. The getStatus function must return a valid check object (see the [FT Check Standard](https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk)).
+
+This check object can optionally be wrapped in a promise. The promise should be designed to always resolve. If the check fails, the promise should return the check object with its 'ok' attribute set to false.
