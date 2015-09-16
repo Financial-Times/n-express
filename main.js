@@ -116,7 +116,8 @@ module.exports = function(options) {
 				severity: 3,
 				businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
 				technicalSummary: 'This app has no healthchecks set up',
-				panicGuide: 'Don\'t Panic'
+				panicGuide: 'Don\'t Panic',
+				lastUpdated: new Date()
 			});
 		}
 		if (req.params[0]) {
