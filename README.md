@@ -30,6 +30,7 @@ Comes with:-
 - `__version` is set to the same value as that used by [next-build-tools/about](https://github.com/Financial-Times/next-build-tools/blob/master/lib/about.js) (exposed as `data-next-version` on the `<html>` tag in templates)
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance and layouts
 - instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a 'serviceDependencies' option (see examples below)
+- Provides a solution for implementing app health checks in adherence to the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit)
 
 ## Installation
 
@@ -69,6 +70,9 @@ var app = express({
 	withFlags: false, // disable feature flag middleware
 	withHandlebars: false // disable handlebars middleware
 	withBackendAuthentication: false // disable authentication which only allows requests in via fastly
+
+	// Optional
+	healthChecks: []
 });
 
 app.get('/', function(req, res, next) {
@@ -136,3 +140,34 @@ before(function() {
 ```
 
 This’ll make sure your tests wait for flags to be ready.
+
+
+## Health checks
+
+For an example set of health check results, see [next.ft.com/__health](https://next.ft.com/__health). For testing health checks, the [Health Status Formatter extension for Google Chrome](https://github.com/triblondon/health-status-formatter) is recommended.
+
+Health checks can be tested for failures of a specific degree of severity by appending the severity number to the health check URL. This is particularly useful for setting up fine-grained alerting. For example, if on next.ft.com a severity level 2 health check were failing:
+
+https://next.ft.com/__health.1 would return HTTP status 200
+https://next.ft.com/__health.2 would return HTTP status 500
+https://next.ft.com/__health.3 would return HTTP status 500
+
+Each health check must have a getStatus() property, which returns an object meeting the specifications of the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit) and the [FT Check Standard] (https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk#). This might look roughly like the following example:
+
+
+```js
+var exampleHealthCheck = {
+	getStatus: () => {
+		return {
+			name: 'Some health check',
+			ok: true,
+			checkOutput: 'Everything is fine',
+			lastUpdated: new Date(),
+			panicGuide: 'Don\'t panic',
+			severity: 3,
+			businessImpact: "Some specific feature will fail",
+			technicalSummary: "Doesn\'t actually check anything, just an example"
+		};
+	}
+}
+```
