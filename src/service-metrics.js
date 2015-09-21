@@ -64,7 +64,11 @@ var serviceMatchers = {
 	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/,
 	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/,
 	'ft-next-service-registry': /http\:\/\/next-registry\.ft\.com/,
-	'pingdom': /https\:\/\/api\.pingdom\.com/
+	'pingdom': /https\:\/\/api\.pingdom\.com/,
+	'popular': /http:\/\/mostpopular\.sp\.ft-static.com/,
+	'popular-topics': /https:\/\/ft-next-popular-api\.herokuapp\.com/,
+	'konstructor': /https:\/\/konstructor\.ft\.com/,
+	'video': /http:\/\/next-video\.ft\.com/
 };
 
 module.exports = {
