@@ -9,7 +9,7 @@ var nextExpress = require('../main');
 var expect = require('chai').expect;
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
-var handlebars = require('ft-next-handlebars');
+var handlebars = require('@financial-times/n-handlebars');
 
 describe('simple app', function() {
 
@@ -289,10 +289,10 @@ describe('simple app', function() {
 				.expect(200, /on app demo-app/, done);
 		});
 
-		describe('next-handlebars features', function () {
+		describe('n-handlebars features', function () {
 
 			// these two helpers
-			// a) provide a sample of next-handlebars' features
+			// a) provide a sample of n-handlebars' features
 			// b) are the trickiest ones most likely to break
 			it('should provide inheritance helpers', function(done) {
 				request(app)
