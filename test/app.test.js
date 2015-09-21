@@ -9,7 +9,7 @@ var nextExpress = require('../main');
 var expect = require('chai').expect;
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
-var handlebars = require('n-handlebars');
+var handlebars = require('@financial-times/n-handlebars');
 
 describe('simple app', function() {
 

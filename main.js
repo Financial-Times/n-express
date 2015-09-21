@@ -7,7 +7,7 @@ require('isomorphic-fetch');
 var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
-var handlebars = require('n-handlebars');
+var handlebars = require('@financial-times/n-handlebars');
 var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
 var robots = require('./src/express/robots');
