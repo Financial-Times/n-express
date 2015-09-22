@@ -60,11 +60,15 @@ var serviceMatchers = {
 	'ft-next-sharedcount-api': /^https:\/\/ft-next-sharedcount-api\.herokuapp\.com/,
 	'next-sapi-capi-slurp': /https?\:\/\/next-slurp\.ft\.com/,
 	'spoor-uuid-counter': /https?\:\/\/spoor-uuid-counter\.herokuapp\.com/,
-	'spoor-ingest': /spoor-api.ft\.com\/ingest/,
+	'spoor-ingest': /https:\/\/spoor-api\.ft\.com\/ingest/,
 	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/,
 	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/,
 	'ft-next-service-registry': /http\:\/\/next-registry\.ft\.com/,
-	'pingdom': /https\:\/\/api\.pingdom\.com/
+	'pingdom': /https\:\/\/api\.pingdom\.com/,
+	'popular': /http:\/\/mostpopular\.sp\.ft-static.com/,
+	'popular-topics': /https:\/\/ft-next-popular-api\.herokuapp\.com/,
+	'konstructor': /https:\/\/konstructor\.ft\.com/,
+	'video': /http:\/\/next-video\.ft\.com/
 };
 
 module.exports = {
