@@ -63,6 +63,7 @@ var serviceMatchers = {
 	'spoor-ingest': /https:\/\/spoor-api\.ft\.com\/ingest/,
 	'livefyre': /https?\:\/\/ft.bootstrap.fyre.co/,
 	'ft-next-myft-api': /https?\:\/\/ft-next-myft-api\.herokuapp\.com/,
+	'myft-api': /https:\/\/myft-api\.ft\.com/,
 	'ft-next-service-registry': /http\:\/\/next-registry\.ft\.com/,
 	'pingdom': /https\:\/\/api\.pingdom\.com/,
 	'popular': /http:\/\/mostpopular\.sp\.ft-static.com/,
