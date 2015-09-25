@@ -10,6 +10,7 @@ var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
 var navigation = require('ft-next-navigation');
 var metrics = require('next-metrics');
+var nextLogger = require('ft-next-logger');
 var robots = require('./src/express/robots');
 var sensu = require('./src/sensu');
 var normalizeName = require('./src/normalize-name');
@@ -54,6 +55,7 @@ module.exports = function(options) {
 	}
 
 	if (!name) throw new Error("Please specify an application name");
+	nextLogger.init(name);
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
@@ -223,3 +225,4 @@ module.exports = function(options) {
 module.exports.Router = express.Router;
 module.exports.services = serviceMetrics.services;
 module.exports.metrics = metrics;
+module.exports.logger = nextLogger.logger;
