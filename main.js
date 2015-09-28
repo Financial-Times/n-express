@@ -1,7 +1,6 @@
 /*jshint node:true*/
 "use strict";
 
-require('array.prototype.find');
 require('isomorphic-fetch');
 
 var express = require('express');
