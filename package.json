@@ -1,10 +1,9 @@
 {
   "name": "ft-next-express",
-  "version": "0.0.0",
+  "version": "15.1.0",
   "main": "main.js",
   "scripts": {
-    "test": "make test",
-    "release": "npm-prepublish --verbose && npm publish && git checkout package.json"
+    "test": "make test"
   },
   "dependencies": {
     "debounce": "^1.0.0",
@@ -28,7 +27,6 @@
     "mockery": "^1.4.0",
     "next-build-tools": "^3.0.0",
     "npm-check-updates": "^1.5.1",
-    "npm-prepublish": "^1.0.2",
     "sinon": "^1.14.1",
     "supertest": "^1.0.0"
   },
