@@ -26,7 +26,7 @@ app.get("/__flags.json", function(req, res) {
 	res.send(res.locals.flags);
 });
 
-app.get('/templated', function(req, res, next) {
+app.get('/templated', function(req, res) {
 	res.render('main', {
 		title: "FT",
 		image: "https://avatars0.githubusercontent.com/u/3502508?v=3",
@@ -45,8 +45,8 @@ app.get('/templated', function(req, res, next) {
 	});
 });
 
-app.get('/with-layout', function(req, res, next) {
-	res.locals.__isProduction  = req.query.prod || res.locals.__isProduction;
+app.get('/with-layout', function(req, res) {
+	res.locals.__isProduction = req.query.prod || res.locals.__isProduction;
 	res.render('main', {
 		layout: 'wrapper',
 		title: 'FT',
@@ -55,7 +55,7 @@ app.get('/with-layout', function(req, res, next) {
 	});
 });
 
-var router = express.Router();
+var router = new express.Router();
 
 app.use('/router', router);
 

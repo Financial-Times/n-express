@@ -85,7 +85,7 @@ module.exports = {
 		}
 		metrics.fetch.instrument({
 			serviceMatchers: serviceMatchers,
-			onUninstrumented: function (url, opts) {
+			onUninstrumented: function(url) {
 				unregisteredServices[url.split('?')[0]] = true;
 				alerter();
 			}
