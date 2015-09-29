@@ -5,12 +5,12 @@ var nextExpress = require('../../main');
 var expect = require('chai').expect;
 
 
-describe('Anonymous Middleware', function(){
-
-	var app, locals;
+describe('Anonymous Middleware', function() {
+	var app;
+	var locals;
 
 	beforeEach(function(){
-		app = nextExpress({withFlags:true,withHandlebars:true});
+		app = nextExpress({ withFlags:true, withHandlebars:true });
 		app.get('/', function(req, res){
 			locals = res.locals;
 			res.sendStatus(200).end();

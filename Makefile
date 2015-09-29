@@ -18,9 +18,6 @@ unit-test:
 run:
 	node test/fixtures/app/main.js
 
-check:
-	npm-check-updates
-
 release-patch:
 	npm version patch
 	npm publish
