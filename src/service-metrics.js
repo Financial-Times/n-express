@@ -16,6 +16,7 @@ var alerter = debounce(function () {
 
 var serviceMatchers = {
 	'amo': /^https?:\/\/barrier-app.memb\.ft\.com\/memb\/amo\/v1\/amo-data/,
+	'blogs': /^https?:\/\/blogs\.ft\.com/,
 	'capi-v1-article': /^https?:\/\/api\.ft\.com\/content\/items\/v1\/[\w\-]+/,
 	'capi-v1-page': /^https?:\/\/api\.ft\.com\/site\/v1\/pages\/[\w\-]+/,
 	'capi-v1-pages-list': /^https?:\/\/api\.ft\.com\/site\/v1\/pages/,
