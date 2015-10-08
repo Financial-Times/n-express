@@ -58,7 +58,7 @@ module.exports = function(options) {
 	// set up the logger
 	nextLogger.addConsole(process.env.NODE_ENV === 'test' ? 'error' : 'info');
 	if (process.env.NODE_ENV === 'production' && process.env.SPLUNK_URL) {
-		nextLogger.addSplunk(name, process.env.SPLUNK_URL);
+		nextLogger.addSplunk(process.env.SPLUNK_URL);
 	}
 
 	app.locals.__name = name = normalizeName(name);
