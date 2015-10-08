@@ -90,7 +90,7 @@ module.exports = function(options) {
 		});
 
 		// Log CSP violation reports to splunk via nextLogger
-		app.get('/__csp-reports', function(req, res) {
+		app.get('/__csp-reports', function(req) {
 			if(app.locals.__isProduction) {
 				nextLogger.logger.warn(JSON.stringify(req.body));
 			}
