@@ -54,7 +54,13 @@ module.exports = function(options) {
 	}
 
 	if (!name) throw new Error("Please specify an application name");
-	nextLogger.init(name);
+
+	// set up the logger
+	nextLogger.addConsole(process.env.NODE_ENV === 'test' ? 'error' : 'info');
+	if (process.env.NODE_ENV === 'production' && process.env.SPLUNK_URL) {
+		nextLogger.addSplunk(name, process.env.SPLUNK_URL);
+	}
+
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
