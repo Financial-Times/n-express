@@ -1,6 +1,6 @@
 {
   "name": "ft-next-express",
-  "version": "15.3.2",
+  "version": "15.3.3",
   "main": "main.js",
   "scripts": {
     "test": "make test"
