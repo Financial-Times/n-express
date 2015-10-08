@@ -72,7 +72,8 @@ var serviceMatchers = {
 	'popular-topics': /https:\/\/ft-next-popular-api\.herokuapp\.com/,
 	'konstructor': /https:\/\/konstructor\.ft\.com/,
 	'video': /http:\/\/next-video\.ft\.com/,
-	's3o': /https:\/\/s3o.ft.com/
+	's3o': /https:\/\/s3o.ft.com/,
+	'graphql-api': /^https?:\/\/next-graphql-api\.ft\.com/
 };
 
 module.exports = {
