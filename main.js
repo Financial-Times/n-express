@@ -4,6 +4,7 @@
 require('isomorphic-fetch');
 
 var express = require('express');
+var csp = require('express-csp');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
@@ -28,6 +29,7 @@ module.exports = function(options) {
 		withNavigation: true,
 		withAnonMiddleware: true,
 		withBackendAuthentication: true,
+		withContentSecurityPolicy: true,
 		sensuChecks: [],
 		healthChecks: []
 	};
@@ -67,6 +69,33 @@ module.exports = function(options) {
 	app.locals.__rootDirectory = directory;
 	var sensuChecks = sensu(name, options.sensuChecks);
 	var healthChecks = options.healthChecks;
+
+	// Note: Only *report* CSP violations.
+	// The aim is to know which scripts are being executed via third-parties.
+	if (options.withContentSecurityPolicy) {
+		csp.extend(app, {
+			reportPolicy: {
+				directives: {
+					'report-uri': ['/__csp-reports'],
+					'default-src': [
+						'unsafe-inline',
+						'unsafe-eval',
+						'self',
+						'*.ft.com',
+						'*.fyre.co',
+						'*.livefyre.com'
+					]
+				}
+			}
+		});
+
+		// Log CSP violation reports to splunk via nextLogger
+		app.get('/__csp-reports', function(req, res) {
+			if(app.locals.__isProduction) {
+				nextLogger.logger.warn(JSON.stringify(req.body));
+			}
+		});
+	}
 
 	//Remove x-powered-by header
 	app.set('x-powered-by', false);
