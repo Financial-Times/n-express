@@ -78,7 +78,9 @@ var serviceMatchers = {
 	'konstructor': /https:\/\/konstructor\.ft\.com/,
 	'video': /http:\/\/next-video\.ft\.com/,
 	's3o': /https:\/\/s3o.ft.com/,
-	'graphql-api': /^https?:\/\/next-graphql-api\.ft\.com/
+	'graphql-api': /^https?:\/\/next-graphql-api\.ft\.com/,
+	//Used for next-article healthcheck
+	'session-user-data': /^https:\/\/session-user-data.webservices.ft.com/
 };
 
 module.exports = {
