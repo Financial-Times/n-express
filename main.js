@@ -76,7 +76,7 @@ module.exports = function(options) {
 		csp.extend(app, {
 			reportPolicy: {
 				directives: {
-					'report-uri': ['/__csp-reports'],
+					'report-uri': ['https://ft-next-csp-ingest.herokuapp.com/__csp-ingest'],
 					'default-src': [
 						'unsafe-inline',
 						'unsafe-eval',
@@ -86,13 +86,6 @@ module.exports = function(options) {
 						'*.livefyre.com'
 					]
 				}
-			}
-		});
-
-		// Log CSP violation reports to splunk via nextLogger
-		app.get('/__csp-reports', function(req) {
-			if(app.locals.__isProduction) {
-				nextLogger.logger.warn(JSON.stringify(req.body));
 			}
 		});
 	}
