@@ -43,7 +43,7 @@ var serviceMatchers = {
 	'capi-v2-thing': /^https?:\/\/api\.ft\.com\/things\/[\w\-]+/,
 	'capi-v2-people': /^https?:\/\/api\.ft\.com\/people\/[\w\-]+/,
 	'capi-v2-organisation': /^https?:\/\/api\.ft\.com\/organisations\/[\w\-]+/,
-	'capi-v2-content-by-concept': /^https?:\/\/api\.ft\.com\/content\?isAnnotatedBy=https?:\/\/api\.ft\.com\/things\/[\w\-]+/,
+	'capi-v2-content-by-concept': /^https?:\/\/api\.ft\.com\/content\?isAnnotatedBy=http:\/\/api\.ft\.com\/things\/[\w\-]+/,
 	// fastft
 	'fastft': /https?:\/\/clamo\.ftdata\.co\.uk\/api/,
 	// ft.com (temporary for article comment hack)
