@@ -229,6 +229,6 @@ module.exports = function(options) {
 
 module.exports.Router = express.Router;
 module.exports.static = express.static;
-module.exports.services = serviceMetrics.services;
+module.exports.services = metrics.services;
 module.exports.metrics = metrics;
 module.exports.logger = nextLogger.logger;
