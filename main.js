@@ -55,12 +55,6 @@ module.exports = function(options) {
 
 	if (!name) throw new Error("Please specify an application name");
 
-	// set up the logger
-	nextLogger.addConsole(process.env.NODE_ENV === 'test' ? 'error' : 'info');
-	if (process.env.NODE_ENV === 'production' && process.env.SPLUNK_URL) {
-		nextLogger.addSplunk(process.env.SPLUNK_URL);
-	}
-
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
@@ -231,4 +225,5 @@ module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.services = metrics.services;
 module.exports.metrics = metrics;
+// TODO: for backwards compatiability, but modules/apps can use next-logger directly, as of v4.0.0
 module.exports.logger = nextLogger.logger;
