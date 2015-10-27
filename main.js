@@ -128,12 +128,14 @@ module.exports = function(options) {
 				}
 			});
 		}
-		res.json({
+
+		res.set('Content-Type', 'application/json');
+		res.send(JSON.stringify({
 			schemaVersion: 1,
 			name: app.locals.__name,
 			description: description,
 			checks: checks
-		});
+		}, undefined, 2));
 	});
 
 	app.get('/__dependencies', dependencies(app.locals.__name));
