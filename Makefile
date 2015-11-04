@@ -4,7 +4,6 @@ clean:
 	git clean -fxd
 
 install:
-	npm install origami-build-tools
 	obt install --verbose
 
 test: verify unit-test

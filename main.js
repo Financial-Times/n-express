@@ -7,7 +7,7 @@ var express = require('express');
 var errorsHandler = require('express-errors-handler');
 var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
-var navigation = require('ft-next-navigation');
+var navigation = require('@financial-times/n-navigation');
 var metrics = require('next-metrics');
 var nextLogger = require('ft-next-logger');
 var robots = require('./src/express/robots');
@@ -54,12 +54,6 @@ module.exports = function(options) {
 	}
 
 	if (!name) throw new Error("Please specify an application name");
-
-	// set up the logger
-	nextLogger.addConsole(process.env.NODE_ENV === 'test' ? 'error' : 'info');
-	if (process.env.NODE_ENV === 'production' && process.env.SPLUNK_URL) {
-		nextLogger.addSplunk(process.env.SPLUNK_URL);
-	}
 
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
@@ -134,12 +128,14 @@ module.exports = function(options) {
 				}
 			});
 		}
-		res.json({
+
+		res.set('Content-Type', 'application/json');
+		res.send(JSON.stringify({
 			schemaVersion: 1,
 			name: app.locals.__name,
 			description: description,
 			checks: checks
-		});
+		}, undefined, 2));
 	});
 
 	app.get('/__dependencies', dependencies(app.locals.__name));
@@ -231,4 +227,5 @@ module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.services = metrics.services;
 module.exports.metrics = metrics;
+// TODO: for backwards compatiability, but modules/apps can use next-logger directly, as of v4.0.0
 module.exports.logger = nextLogger.logger;
