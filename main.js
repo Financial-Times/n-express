@@ -18,6 +18,9 @@ var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
 
 module.exports = function(options) {
+
+
+
 	options = options || {};
 
 	var packageJson = {};
@@ -28,6 +31,7 @@ module.exports = function(options) {
 		withNavigation: true,
 		withAnonMiddleware: true,
 		withBackendAuthentication: true,
+		logToSplunk: 'info',
 		sensuChecks: [],
 		healthChecks: []
 	};
@@ -54,6 +58,14 @@ module.exports = function(options) {
 	}
 
 	if (!name) throw new Error("Please specify an application name");
+
+	if (options.logToSplunk) {
+		if (process.env.SPLUNK_URL) {
+			nextLogger.addSplunk(process.env.SPLUNK_URL, options.logToSplunk);
+		} else if (process.env.SPLUNK_URL_ROOT) {
+			nextLogger.addSplunk(process.env.SPLUNK_URL_ROOT + '/' + name, options.logToSplunk)
+		}
+	}
 
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
