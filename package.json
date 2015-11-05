@@ -16,7 +16,7 @@
     "@financial-times/n-navigation": "^5.0.4",
     "next-beacon-node-client": "https://github.com/Financial-Times/next-beacon-node-client/archive/v2.1.3.tar.gz",
     "isomorphic-fetch": "^2.0.0",
-    "next-feature-flags-client": "^8.0.0",
+    "next-feature-flags-client": "Financial-Times/next-feature-flags-client#mvt",
     "next-metrics": "^1.16.1"
   },
   "devDependencies": {
