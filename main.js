@@ -16,6 +16,9 @@ var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var csurf = require('csurf');
 
 module.exports = function(options) {
 	options = options || {};
@@ -200,6 +203,25 @@ module.exports = function(options) {
 	if (options.withNavigation) {
 		app.use(navigation.middleware);
 	}
+
+	app.use(cookieParser());
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({extended: false}));
+	app.use(csurf({cookie: true}));
+
+	app.use((req, res, next) => {
+		res.locals.csrfToken = req.csrfToken();
+		next();
+	});
+
+	app.use((err, req, res, next) => {
+		if (err.code !== 'EBADCSRFTOKEN'){
+			return next(err);
+		} else {
+			res.status(403);
+			res.send('Missing or invalid CSRF token');
+		}
+	});
 
 	var actualAppListen = app.listen;
 
