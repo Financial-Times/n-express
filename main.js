@@ -132,7 +132,7 @@ module.exports = function(options) {
 		res.set('Content-Type', 'application/json');
 		res.send(JSON.stringify({
 			schemaVersion: 1,
-			name: app.locals.__name,
+			name: "Next FT " + app.locals.__name,
 			description: description,
 			checks: checks
 		}, undefined, 2));
