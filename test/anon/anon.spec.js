@@ -54,7 +54,7 @@ describe('Anonymous Middleware', function() {
 
 		//todo [PW 9/6/15] this stuff doesn't belong here but not sure where it should go
 
-		it('Should set the myFT property to an object if user is not anonymous', function(done){
+		it('Should set the myFT property to an object', function(done){
 			request(app)
 				.get('/')
 				.set('FT-User-UUID', 'xvdsvdfvdfs')
