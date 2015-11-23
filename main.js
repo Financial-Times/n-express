@@ -184,8 +184,8 @@ module.exports = function(options) {
 
 	var flagsEndpoints = [
 		'http://next-flags.ft.com/',
-		'http://ft-next-feature-flags-prod-us.s3-website-us-east-1.amazonaws.com/flags/__flags.json',
-		'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/flags/__flags.json'
+		'http://ft-next-feature-flags-prod-us.s3-website-us-east-1.amazonaws.com/__flags.json',
+		'http://ft-next-feature-flags-prod.s3-website-eu-west-1.amazonaws.com/__flags.json'
 	];
 
 	if (options.withFlags) {
