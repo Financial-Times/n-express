@@ -78,6 +78,12 @@ app.get('/single-vary', function (req, res) {
 	res.sendStatus(200);
 });
 
+app.get('/vary-method', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.vary('Test-Vary');
+	res.sendStatus(200);
+});
+
 app.get('/duplicate-vary', function (req, res) {
 	// NOTE testing out tricky capitalisation
 	res.set('Vary', 'x-ft-anonymous-user');
@@ -101,6 +107,18 @@ app.get('/multiple-vary', function (req, res) {
 
 app.get('/unset-vary', function (req, res) {
 	res.unVary('Country-Code')
+	res.sendStatus(200);
+});
+
+app.get('/unset-all-vary', function (req, res) {
+	res.unVaryAll();
+	res.sendStatus(200);
+});
+
+app.get('/no-empty-vary', function (req, res) {
+	res.unVaryAll();
+	res.vary('thing');
+	res.unVary('thing');
 	res.sendStatus(200);
 });
 

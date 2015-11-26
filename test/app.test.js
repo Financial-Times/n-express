@@ -77,6 +77,12 @@ describe('simple app', function() {
 				.expect(200, done);
 		});
 
+		it('extend vary header using vary method', function (done) {
+			request(app)
+				.get('/vary-method')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, country-code, accept-encoding, test-vary')
+				.expect(200, done);
+		});
 
 		it('extend vary header using array of values', function (done) {
 			request(app)
@@ -106,6 +112,27 @@ describe('simple app', function() {
 				.expect('vary', 'x-flags, x-ft-anonymous-user, accept-encoding')
 				.expect(200, done);
 		});
+
+		it('unset all vary headers', function (done) {
+			request(app)
+				.get('/unset-all-vary')
+				.expect(200)
+				.end((err, res) => {
+					expect(res.headers).to.not.have.key('vary');
+					done();
+				});
+		});
+
+		it('not attempt empty string as vary header', function (done) {
+			request(app)
+				.get('/no-empty-vary')
+				.expect(200)
+				.end((err, res) => {
+					expect(res.headers).to.not.have.key('vary');
+					done();
+				});
+		});
+
 
 		it('co-mingle extending and unsetting vary headers', function (done) {
 			request(app)

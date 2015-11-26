@@ -10,9 +10,13 @@ function extendVary (val, set) {
 
 module.exports = function(req, res, next) {
 	const resSet = res.set;
-	const varyOn = new Set(['x-flags', 'x-ft-anonymous-user', 'country-code', 'accept-encoding']);
+	const varyOn = new Set(['country-code', 'accept-encoding']);
 
 	res.set('vary', Array.from(varyOn).join(', '));
+
+	res.vary = function (name) {
+		return res.set('vary', name);
+	}
 
 	res.set = function (name, val) {
 		if (val && typeof name === 'string') {
@@ -31,7 +35,17 @@ module.exports = function(req, res, next) {
 
 	res.unVary = function (name) {
 		varyOn.delete(name.toLowerCase());
-		res.set('vary', Array.from(varyOn).join(', '));
+		const list = Array.from(varyOn);
+		if (list.length) {
+			res.set('vary', list.join(', '));
+		} else {
+			res.removeHeader('vary');
+		}
+	}
+
+	res.unVaryAll = function () {
+		varyOn.clear()
+		res.removeHeader('vary');
 	}
 
 	next();
