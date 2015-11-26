@@ -1,7 +1,8 @@
 'use strict';
 
 function extendVary (val, set) {
-	val.split(',').forEach(header => {
+	val = Array.isArray(val) ? val : val.split(',');
+	val.forEach(header => {
 		set.add(header.trim().toLowerCase())
 	})
 	return Array.from(set).join(', ');
@@ -10,6 +11,8 @@ function extendVary (val, set) {
 module.exports = function(req, res, next) {
 	const resSet = res.set;
 	const varyOn = new Set(['x-flags', 'x-ft-anonymous-user', 'country-code', 'accept-encoding']);
+
+	res.set('vary', Array.from(varyOn).join(', '));
 
 	res.set = function (name, val) {
 		if (val && typeof name === 'string') {
@@ -23,7 +26,7 @@ module.exports = function(req, res, next) {
 				}
 			})
 		}
-		return resSet.call(res, name, val)
+		return val ? resSet.call(res, name, val) : resSet.call(res, name)
 	}
 
 	res.unVary = function (name) {

@@ -16,14 +16,14 @@ describe('simple app', function() {
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
-			.expect('Vary', /X-Flags/)
+			.expect('Vary', /X-Flags/i)
 			.expect(200, 'Hello world', done);
 	});
 
 	it('should be possible to add routers', function(done) {
 		request(app)
 			.get('/router/')
-			.expect('Vary', /X-Flags/)
+			.expect('Vary', /X-Flags/i)
 			.expect(200, 'Hello router', done);
 	});
 
@@ -43,6 +43,78 @@ describe('simple app', function() {
 		request(app)
 			.get('/demo-app/test.txt')
 			.expect(200, 'Static file\n', done);
+	});
+
+	describe('vary headers', function () {
+
+		it('set single headers', function (done) {
+			request(app)
+				.get('/single-header')
+				.expect('test-header', 'is-set')
+				.expect(200, done);
+		});
+
+		it('set maps of headers', function (done) {
+			request(app)
+				.get('/multiple-header')
+				.expect('test-header1', 'is-set')
+				.expect('test-header2', 'is-set')
+				.expect(200, done);
+		});
+
+		it('set default vary headers', function (done) {
+			request(app)
+				.get('/default-vary')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, country-code, accept-encoding')
+				.expect(200, done);
+
+		});
+
+		it('extend vary header using single value', function (done) {
+			request(app)
+				.get('/single-vary')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, country-code, accept-encoding, test-vary')
+				.expect(200, done);
+		});
+
+
+		it('extend vary header using array of values', function (done) {
+			request(app)
+				.get('/array-vary')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, country-code, accept-encoding, test-vary1, test-vary2')
+				.expect(200, done);
+		});
+
+		it('won\'t duplicate vary headers', function (done) {
+			request(app)
+				.get('/duplicate-vary')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, country-code, accept-encoding')
+				.expect(200, done);
+		});
+
+		it('extend vary header using a map', function (done) {
+			request(app)
+				.get('/multiple-vary')
+				.expect('test-header', 'is-set')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, country-code, accept-encoding, test-vary')
+				.expect(200, done);
+		});
+
+		it('unset single vary header', function (done) {
+			request(app)
+				.get('/unset-vary')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, accept-encoding')
+				.expect(200, done);
+		});
+
+		it('co-mingle extending and unsetting vary headers', function (done) {
+			request(app)
+				.get('/mixed-vary')
+				.expect('test-header', 'is-set')
+				.expect('vary', 'x-flags, x-ft-anonymous-user, accept-encoding, test-vary')
+				.expect(200, done);
+		});
+
 	});
 
 	describe('backend access', function () {

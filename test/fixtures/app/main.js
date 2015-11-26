@@ -55,6 +55,62 @@ app.get('/with-layout', function(req, res) {
 	});
 });
 
+app.get('/single-header', function (req, res) {
+	res.set('test-header', 'is-set');
+	res.sendStatus(200);
+});
+
+app.get('/multiple-header', function (req, res) {
+	res.set({
+		'test-header1': 'is-set',
+		'test-header2': 'is-set'
+	});
+	res.sendStatus(200);
+});
+
+app.get('/default-vary', function (req, res) {
+	res.sendStatus(200);
+});
+
+app.get('/single-vary', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.set('Vary', 'Test-Vary');
+	res.sendStatus(200);
+});
+
+app.get('/duplicate-vary', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.set('Vary', 'x-ft-anonymous-user');
+	res.sendStatus(200);
+});
+
+
+app.get('/array-vary', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.set('Vary', ['Test-Vary1', 'Test-Vary2']);
+	res.sendStatus(200);
+});
+
+app.get('/multiple-vary', function (req, res) {
+	res.set({
+		'test-header': 'is-set',
+		'Vary': 'Test-Vary'
+	});
+	res.sendStatus(200);
+});
+
+app.get('/unset-vary', function (req, res) {
+	res.unVary('Country-Code')
+	res.sendStatus(200);
+});
+
+app.get('/mixed-vary', function (req, res) {
+	res.unVary('Country-code')
+	res.set('Vary', 'test-vary');
+	res.set({'test-header': 'is-set'});
+	res.sendStatus(200);
+});
+
 var router = new express.Router();
 
 app.use('/router', router);

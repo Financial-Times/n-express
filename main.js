@@ -159,6 +159,8 @@ module.exports = function(options) {
 		});
 	}
 
+	app.use(vary);
+
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
 		metrics.instrument(req, { as: 'express.http.req' });
@@ -166,7 +168,7 @@ module.exports = function(options) {
 		next();
 	});
 
-	app.use(vary);
+
 
 	if (options.serviceDependencies) {
 		var errMessage = 'next-express: options.serviceDependencies is deprecated. \n Please add any missing services you need to https://github.com/Financial-Times/next-express/blob/master/src/service-metrics.js';
