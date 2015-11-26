@@ -1,0 +1,35 @@
+'use strict';
+
+function extendVary (val, set) {
+	val.split(',').forEach(header => {
+		set.add(header.trim().toLowerCase())
+	})
+	return Array.from(set).join(', ');
+}
+
+module.exports = function(req, res, next) {
+	const resSet = res.set;
+	const varyOn = new Set(['x-flags', 'x-ft-anonymous-user', 'country-code', 'accept-encoding']);
+
+	res.set = function (name, val) {
+		if (val && typeof name === 'string') {
+			if (name.toLowerCase() === 'vary') {
+				val = extendVary(val, varyOn)
+			}
+		} else if (typeof name === 'object') {
+			Object.keys(name).forEach(key => {
+				if (key.toLowerCase() === 'vary') {
+					name[key] === extendVary(name[key], varyOn);
+				}
+			})
+		}
+		return resSet.call(res, name, val)
+	}
+
+	res.unVary = function (name) {
+		varyOn.delete(name.toLowerCase());
+		res.set('vary', Array.from(varyOn).join(', '));
+	}
+
+	next();
+};
