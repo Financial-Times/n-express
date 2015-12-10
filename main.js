@@ -16,6 +16,7 @@ var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
+const editions = require('./src/middleware/editions');
 
 module.exports = function(options) {
 	options = options || {};
@@ -200,6 +201,8 @@ module.exports = function(options) {
 	if (options.withNavigation) {
 		app.use(navigation.middleware);
 	}
+
+	app.use(editions);
 
 	var actualAppListen = app.listen;
 
