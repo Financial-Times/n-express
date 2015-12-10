@@ -10,10 +10,10 @@ const editions = (req, res, next) => {
 		}
 	];
 	const currentEdition = req.get('X-FT-Edition') || 'uk';
-	res.locals.editions = editions.map(edition => {
-		edition.isCurrent = edition.id === currentEdition;
-		return edition;
-	});
+	res.locals.editions = {
+		current: editions.find(({ id }) => id === currentEdition),
+		others: editions.filter(({ id }) => id !== currentEdition)
+	};
 	next();
 };
 
