@@ -11,8 +11,8 @@ const editions = (req, res, next) => {
 	];
 	const currentEdition = req.get('X-FT-Edition') || 'uk';
 	res.locals.editions = {
-		current: editions.find(({ id }) => id === currentEdition),
-		others: editions.filter(({ id }) => id !== currentEdition)
+		current: editions.find(edition => edition.id === currentEdition),
+		others: editions.filter(edition => edition.id !== currentEdition)
 	};
 	next();
 };
