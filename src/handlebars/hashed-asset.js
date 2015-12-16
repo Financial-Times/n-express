@@ -8,7 +8,6 @@ module.exports = function(options) {
 	var file = options.fn(this);
 	var fallback = '/' + options.data.root.__name+'/' + file;
 	if (process.env.NODE_ENV !== 'production') {
-		logger.info("Asset hashing is only switched on when NODE_ENV is production");
 		return fallback;
 	}
 
