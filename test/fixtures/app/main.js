@@ -8,6 +8,7 @@ var yell = require('./src/yell');
 var app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
+	withNavigation: false,
 	layoutsDir: __dirname + '/views/',
 	sensuChecks: [
 		{
