@@ -8,6 +8,7 @@ var yell = require('./src/yell');
 var app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
+	withNavigation: false,
 	layoutsDir: __dirname + '/views/',
 	sensuChecks: [
 		{
@@ -53,6 +54,80 @@ app.get('/with-layout', function(req, res) {
 		items: [1,2,3,4,5],
 		text : '<p>Paragraph 1</p><p>Paragraph 2</p><p>Paragraph 3</p>'
 	});
+});
+
+app.get('/single-header', function (req, res) {
+	res.set('test-header', 'is-set');
+	res.sendStatus(200);
+});
+
+app.get('/multiple-header', function (req, res) {
+	res.set({
+		'test-header1': 'is-set',
+		'test-header2': 'is-set'
+	});
+	res.sendStatus(200);
+});
+
+app.get('/default-vary', function (req, res) {
+	res.sendStatus(200);
+});
+
+app.get('/single-vary', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.set('Vary', 'Test-Vary');
+	res.sendStatus(200);
+});
+
+app.get('/vary-method', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.vary('Test-Vary');
+	res.sendStatus(200);
+});
+
+app.get('/duplicate-vary', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.set('Vary', 'x-ft-anonymous-user');
+	res.sendStatus(200);
+});
+
+
+app.get('/array-vary', function (req, res) {
+	// NOTE testing out tricky capitalisation
+	res.set('Vary', ['Test-Vary1', 'Test-Vary2']);
+	res.sendStatus(200);
+});
+
+app.get('/multiple-vary', function (req, res) {
+	res.set({
+		'test-header': 'is-set',
+		'Vary': 'Test-Vary'
+	});
+	res.sendStatus(200);
+});
+
+app.get('/unset-vary', function (req, res) {
+	res.unVary('Country-Code')
+	res.sendStatus(200);
+});
+
+app.get('/unset-all-vary', function (req, res) {
+	res.unVaryAll();
+	res.sendStatus(200);
+});
+
+app.get('/no-empty-vary', function (req, res) {
+	res.unVaryAll();
+	res.vary('thing');
+	res.unVary('thing');
+	res.sendStatus(200);
+});
+
+app.get('/mixed-vary', function (req, res) {
+	res.unVary('Country-code')
+	res.set('Vary', 'test-vary');
+	res.set({'test-header': 'is-set'});
+	res.sendStatus(200);
 });
 
 var router = new express.Router();

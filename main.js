@@ -16,6 +16,7 @@ var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
+var vary = require('./src/middleware/vary');
 
 module.exports = function(options) {
 	options = options || {};
@@ -158,12 +159,16 @@ module.exports = function(options) {
 		});
 	}
 
+	app.use(vary);
+
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
 		metrics.instrument(req, { as: 'express.http.req' });
 		metrics.instrument(res, { as: 'express.http.res' });
 		next();
 	});
+
+
 
 	if (options.serviceDependencies) {
 		var errMessage = 'next-express: options.serviceDependencies is deprecated. \n Please add any missing services you need to https://github.com/Financial-Times/next-express/blob/master/src/service-metrics.js';
