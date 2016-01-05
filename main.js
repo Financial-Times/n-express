@@ -209,8 +209,14 @@ module.exports = function(options) {
 	var actualAppListen = app.listen;
 
 	app.listen = function() {
-		var args = arguments;
+		var args = [].slice.apply(arguments);
 		app.use(errorsHandler.middleware);
+		var port = args[0];
+		var cb = args[1];
+		args[1] = function () {
+			nextLogger.logger.info(`App ${name} listening on ${port}`)
+			return cb && cb.apply(this, arguments)
+		}
 
 		return Promise.all([flagsPromise, handlebarsPromise]).then(function() {
 			metrics.count('express.start');
