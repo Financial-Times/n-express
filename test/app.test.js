@@ -386,10 +386,54 @@ describe('simple app', function() {
 				.expect(200, /on app demo-app/, done);
 		});
 
+		describe('ijento', function () {
+			it('set default ijento config', function (done) {
+				request(app)
+					.get('/any-page')
+					.end((err, res) => {
+						expect(res.body).to.deep.equal({
+							uuid: null,
+							classification: null,
+							type: 'Page',
+							sitemap: null
+						});
+						done();
+					})
+			});
+
+			it('set sitemap for /uk', function (done) {
+				request(app)
+					.get('/uk')
+					.end((err, res) => {
+						expect(res.body).to.deep.equal({
+							uuid: null,
+							classification: null,
+							type: 'Page',
+							sitemap: 'Sections.Front page'
+						});
+						done();
+					})
+			});
+
+			it('set sitemap for /international', function (done) {
+				request(app)
+					.get('/international')
+					.end((err, res) => {
+						expect(res.body).to.deep.equal({
+							uuid: null,
+							classification: null,
+							type: 'Page',
+							sitemap: 'Sections.Front page'
+						});
+						done();
+					})
+			});
+		})
+
 		describe('n-handlebars features', function () {
 
 			// these two helpers
-			// a) provide a sample of n-handlebars' features
+			// a) provide a sample of n-handlebars' features to make sure it is being consumed at all
 			// b) are the trickiest ones most likely to break
 			it('should provide inheritance helpers', function(done) {
 				request(app)
