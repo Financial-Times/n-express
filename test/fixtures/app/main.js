@@ -27,6 +27,10 @@ app.get("/__flags.json", function(req, res) {
 	res.send(res.locals.flags);
 });
 
+app.get(/\/(uk|international|any-page)/, function(req, res) {
+	res.json(res.locals.ijentoConfig);
+});
+
 app.get('/templated', function(req, res) {
 	res.render('main', {
 		title: "FT",
