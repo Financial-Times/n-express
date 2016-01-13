@@ -4,7 +4,6 @@ var request = require('supertest');
 var nextExpress = require('../../main');
 var expect = require('chai').expect;
 
-
 describe('Anonymous Middleware', function() {
 	var app;
 	var locals;
@@ -48,30 +47,5 @@ describe('Anonymous Middleware', function() {
 				expect(locals.firstClickFreeModel).to.have.property('subscribeNowLink');
 			})
 			.end(done);
-	});
-
-	describe('Navigation model', function(){
-
-		//todo [PW 9/6/15] this stuff doesn't belong here but not sure where it should go
-
-		it('Should set the myFT property to an object', function(done){
-			request(app)
-				.get('/')
-				.set('FT-User-UUID', 'xvdsvdfvdfs')
-				.expect(function(){
-					expect(locals.navigationModel.myFT).to.be.an('object');
-				})
-				.end(done);
-		});
-
-		it('Should set the myAccount property to an object if user is not anonymous', function(done){
-			request(app)
-				.get('/')
-				.set('FT-User-UUID', 'dkvbdfkjvbh')
-				.expect(function(){
-					expect(locals.navigationModel.myAccount).to.be.an('object');
-				})
-				.end(done);
-		});
 	});
 });
