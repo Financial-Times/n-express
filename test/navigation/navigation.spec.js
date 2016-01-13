@@ -16,7 +16,7 @@ describe('Navigation model', () => {
 		});
 	});
 
-	it('Should set the myFT property to an object', done => {
+	it('Should set the myFT property to an object if user is not anonymous', done => {
 		request(app)
 			.get('/')
 			.set('FT-User-UUID', 'xvdsvdfvdfs')
@@ -32,6 +32,26 @@ describe('Navigation model', () => {
 			.set('FT-User-UUID', 'dkvbdfkjvbh')
 			.expect(() => {
 				expect(locals.navigationModel.myAccount).to.be.an('object');
+			})
+			.end(done);
+	});
+
+	it('Should set the signInUrl property to a string beginning with `https://` or  `/`', done => {
+		request(app)
+			.get('/')
+			.expect(() => {
+				expect(locals.navigationModel.signInUrl).to.be.a('string');
+				expect(locals.navigationModel.signInUrl).to.match(/^(https:\/)?\//);
+			})
+			.end(done);
+	});
+
+	it('Should set the subscribeUrl property to a string beginning with `https://` or  `/`', done => {
+		request(app)
+			.get('/')
+			.expect(() => {
+				expect(locals.navigationModel.subscribeUrl).to.be.a('string');
+				expect(locals.navigationModel.subscribeUrl).to.match(/^(https:\/)?\//);
 			})
 			.end(done);
 	});
