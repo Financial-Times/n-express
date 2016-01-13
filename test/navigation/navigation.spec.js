@@ -1,36 +1,36 @@
 'use strict';
-/*global describe, it, beforeEach*/
-var request = require('supertest');
-var nextExpress = require('../../main');
-var expect = require('chai').expect;
 
-describe('Navigation model', function() {
-	var app;
-	var locals;
+const request = require('supertest');
+const nextExpress = require('../../main');
+const expect = require('chai').expect;
 
-	beforeEach(function(){
+describe('Navigation model', () => {
+	let app;
+	let locals;
+
+	beforeEach(() => {
 		app = nextExpress({ withFlags:true, withHandlebars:true });
-		app.get('/', function(req, res){
+		app.get('/', (req, res) => {
 			locals = res.locals;
 			res.sendStatus(200).end();
 		});
 	});
 
-	it('Should set the myFT property to an object', function(done){
+	it('Should set the myFT property to an object', done => {
 		request(app)
 			.get('/')
 			.set('FT-User-UUID', 'xvdsvdfvdfs')
-			.expect(function(){
+			.expect(() => {
 				expect(locals.navigationModel.myFT).to.be.an('object');
 			})
 			.end(done);
 	});
 
-	it('Should set the myAccount property to an object if user is not anonymous', function(done){
+	it('Should set the myAccount property to an object if user is not anonymous', done => {
 		request(app)
 			.get('/')
 			.set('FT-User-UUID', 'dkvbdfkjvbh')
-			.expect(function(){
+			.expect(() => {
 				expect(locals.navigationModel.myAccount).to.be.an('object');
 			})
 			.end(done);
