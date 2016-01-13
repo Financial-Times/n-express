@@ -1,4 +1,4 @@
-next-express [![Build Status](https://travis-ci.org/Financial-Times/next-express.svg?branch=master)](https://travis-ci.org/Financial-Times/next-express)
+next-express [![Circle CI](https://circleci.com/gh/Financial-Times/next-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/next-express/tree/master)
 ============
 
 Slightly enhanced Express.
