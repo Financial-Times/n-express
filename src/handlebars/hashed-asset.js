@@ -1,7 +1,7 @@
 /*jshint node:true*/
 'use strict';
 
-var logger = require('ft-next-logger').logger;
+var logger = require('@financial-times/n-logger').default;
 
 module.exports = function(options) {
 	var assetHash;
