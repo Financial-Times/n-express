@@ -9,7 +9,7 @@ var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
 var navigation = require('@financial-times/n-navigation');
 var metrics = require('next-metrics');
-var nextLogger = require('ft-next-logger');
+var nextLogger = require('@financial-times/n-logger').default;
 var robots = require('./src/express/robots');
 var sensu = require('./src/sensu');
 var normalizeName = require('./src/normalize-name');
@@ -218,7 +218,7 @@ module.exports = function(options) {
 		var port = args[0];
 		var cb = args[1];
 		args[1] = function () {
-			nextLogger.logger.info(`App ${name} listening on ${port}`)
+			nextLogger.info(`App ${name} listening on ${port}`)
 			return cb && cb.apply(this, arguments)
 		}
 
@@ -244,4 +244,4 @@ module.exports.services = metrics.services;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
 // TODO: for backwards compatiability, but modules/apps can use next-logger directly, as of v4.0.0
-module.exports.logger = nextLogger.logger;
+module.exports.logger = nextLogger;
