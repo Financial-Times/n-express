@@ -210,7 +210,7 @@ module.exports = function(options) {
 		var port = args[0];
 		var cb = args[1];
 		args[1] = function () {
-			nextLogger.info(`App ${name} listening on ${port}`)
+			nextLogger.info({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version })
 			return cb && cb.apply(this, arguments)
 		}
 
