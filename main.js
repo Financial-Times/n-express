@@ -210,7 +210,8 @@ module.exports = function(options) {
 		var port = args[0];
 		var cb = args[1];
 		args[1] = function () {
-			nextLogger.info({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
+			// HACK: Use warn so that it gets into Splunk logs
+			nextLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
 			return cb && cb.apply(this, arguments);
 		}
 
