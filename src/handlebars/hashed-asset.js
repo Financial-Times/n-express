@@ -1,23 +1,25 @@
-/*jshint node:true*/
 'use strict';
 
-var logger = require('@financial-times/n-logger').default;
+const logger = require('@financial-times/n-logger').default;
 
-module.exports = function(options) {
-	var assetHash;
-	var file = options.fn(this);
-	var fallback = '/' + options.data.root.__name+'/' + file;
-	if (process.env.NODE_ENV !== 'production') {
-		return fallback;
-	}
+module.exports = function(app) {
+	let assetHashes;
 
 	try {
-		assetHash = require(options.data.root.__rootDirectory + '/public/asset-hashes.json')[file];
+		assetHashes = require(`${app.__rootDirectory}/public/asset-hashes.json`);
 	} catch(err) {
-		logger.warn("./public/asset-hashes.json not found.  Falling back to un-fingerprinted files.");
+		logger.warn('./public/asset-hashes.json not found. Falling back to un-fingerprinted files.');
 	}
-	if (assetHash) {
-		return 'https://next-geebee.ft.com/hashed-assets/' + options.data.root.__name + '/' + assetHash;
+
+	return function(options) {
+		const file = options.fn(this);
+		const fallback = `/${app.__name}/${file}`;
+		const hash = assetHashes && assetHashes[file];
+
+		if (!app.__isProduction || !hash) {
+			return fallback;
+		}
+
+		return `https://next-geebee.ft.com/hashed-assets/${app.__name}/${hash}`;
 	}
-	return fallback;
 };

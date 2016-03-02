@@ -146,7 +146,7 @@ module.exports = function(options) {
 
 	if (options.withHandlebars) {
 		var helpers = options.helpers || {};
-		helpers.hashedAsset = require('./src/handlebars/hashed-asset');
+		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app.locals);
 
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
