@@ -11,7 +11,6 @@ var navigation = require('@financial-times/n-navigation');
 var metrics = require('next-metrics');
 var nextLogger = require('@financial-times/n-logger').default;
 var robots = require('./src/express/robots');
-var sensu = require('./src/sensu');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
@@ -30,7 +29,6 @@ module.exports = function(options) {
 		withNavigation: true,
 		withAnonMiddleware: true,
 		withBackendAuthentication: true,
-		sensuChecks: [],
 		healthChecks: []
 	};
 
@@ -61,7 +59,6 @@ module.exports = function(options) {
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
-	var sensuChecks = sensu(name, options.sensuChecks);
 	var healthChecks = options.healthChecks;
 
 	//Remove x-powered-by header
@@ -98,11 +95,6 @@ module.exports = function(options) {
 	}
 
 	app.get('/robots.txt', robots);
-	app.get('/__sensu', function(req, res) {
-		res.set({ 'Cache-Control': 'max-age=60' });
-		res.json(sensuChecks);
-	});
-
 	app.get('/__brew-coffee', function(req, res) {
 		res.sendStatus(418);
 	});

@@ -9,14 +9,7 @@ var app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
 	withNavigation: false,
-	layoutsDir: __dirname + '/views/',
-	sensuChecks: [
-		{
-			check: 'sumSeries(foo.*.bar)',
-			name: "custom-metric",
-			message: "The ratio of errors to good responses is above a healthy rate"
-		}
-	]
+	layoutsDir: __dirname + '/views/'
 });
 
 app.get("/", function(req, res) {
