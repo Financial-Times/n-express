@@ -4,7 +4,7 @@ next-express [![Circle CI](https://circleci.com/gh/Financial-Times/next-express/
 Slightly enhanced Express.
 
 ```
-npm install -S ft-next-express
+npm install -S @financial-times/n-express
 ```
 
 Comes with:-
@@ -22,7 +22,7 @@ Comes with:-
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use [next-assets](https://github.com/Financial-Times/next-assets) or hashed-assets in production)
 - Exposes app name via `__name` to templates and in a `data-next-app` attribute on the html tag in templates
 - Adds a `/{{name-of-app}}/__about` endpoint, which exposes information about the current version of the application running
-- By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts)
+- By default the application's templates are outputted unchanged, but n-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts)
 
 - Exposes `express.Router`
 - Provides `NODE_ENV` to templates via `__environment`
@@ -36,7 +36,7 @@ Comes with:-
 ## Installation
 
 ```sh
-npm install --save ft-next-express
+npm install --save @financial-times/n-express
 ```
 When using the default layout there is also a hard dependency on some bower components. To install them (and add to your app's bower.json) run the following on your local machine. It's assumed you will have bower installed globally.
 
@@ -48,7 +48,7 @@ $ ./path/to/ft-next-express/bower-install.sh
 
 ### `main.js`
 ```js
-var express = require('ft-next-express');
+var express = require('@financial-times/n-express');
 
 var app = express({
 
