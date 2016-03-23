@@ -1,5 +1,5 @@
 {
-  "name": "ft-next-express",
+  "name": "@financial-times/n-express",
   "version": "15.11.2",
   "main": "main.js",
   "scripts": {
