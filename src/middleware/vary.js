@@ -19,18 +19,21 @@ module.exports = function(req, res, next) {
 	}
 
 	res.set = function (name, val) {
-		if (val && typeof name === 'string') {
+
+		if (arguments.length === 2 && typeof name === 'string') {
 			if (name.toLowerCase() === 'vary') {
 				val = extendVary(val, varyOn)
 			}
+			return resSet.call(res, name, val);
 		} else if (typeof name === 'object') {
 			Object.keys(name).forEach(key => {
 				if (key.toLowerCase() === 'vary') {
 					name[key] === extendVary(name[key], varyOn);
 				}
 			})
+			return resSet.call(res, name);
 		}
-		return val ? resSet.call(res, name, val) : resSet.call(res, name)
+		return resSet.call(res, name, val);
 	}
 
 	res.unVary = function (name) {
