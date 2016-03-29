@@ -4,7 +4,7 @@
 require('isomorphic-fetch');
 
 var express = require('express');
-var errorsHandler = require('express-errors-handler');
+var raven = require('@financial-times/n-raven');
 var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
 var navigation = require('@financial-times/n-navigation');
@@ -206,7 +206,7 @@ module.exports = function(options) {
 
 	app.listen = function() {
 		var args = [].slice.apply(arguments);
-		app.use(errorsHandler.middleware);
+		app.use(raven.middleware);
 		var port = args[0];
 		var cb = args[1];
 		args[1] = function () {
