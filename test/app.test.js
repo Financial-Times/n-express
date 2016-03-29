@@ -7,7 +7,7 @@ var metrics = require('next-metrics');
 var sinon = require('sinon');
 var nextExpress = require('../main');
 var expect = require('chai').expect;
-var errorsHandler = require('express-errors-handler');
+var raven = require('@financial-times/n-raven');
 var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
 
@@ -278,7 +278,7 @@ describe('simple app', function() {
 		it('should instrument fetch for recognised services', function (done) {
 			var realFetch = GLOBAL.fetch;
 
-			sinon.stub(errorsHandler, 'captureMessage');
+			sinon.stub(raven, 'captureMessage');
 			getApp();
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
@@ -292,8 +292,8 @@ describe('simple app', function() {
 				}).catch(function () {})
 			])
 				.then(function () {
-					expect(errorsHandler.captureMessage.called).to.be.false;
-					errorsHandler.captureMessage.restore();
+					expect(raven.captureMessage.called).to.be.false;
+					raven.captureMessage.restore();
 					done();
 				});
 
@@ -302,7 +302,7 @@ describe('simple app', function() {
 		//fixme - I'm not sure ow this test ever passed but it doesn't now
 		it.skip('should notify sentry of unrecognised services', function (done) {
 
-			sinon.stub(errorsHandler, 'captureMessage');
+			sinon.stub(raven, 'captureMessage');
 			getApp();
 
 			fetch('http://notallowed.com', {
@@ -311,8 +311,8 @@ describe('simple app', function() {
 				.catch(function (err) {
 					console.log(err);
 					try{
-						sinon.assert.called(errorsHandler.captureMessage);
-						errorsHandler.captureMessage.restore();
+						sinon.assert.called(raven.captureMessage);
+						raven.captureMessage.restore();
 						done();
 					}catch(e){
 						done(e);

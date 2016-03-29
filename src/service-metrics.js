@@ -1,5 +1,5 @@
 'use strict';
-var errorsHandler = require('express-errors-handler');
+var raven = require('@financial-times/n-raven');
 var metrics = require('next-metrics');
 var debounce = require('debounce');
 var unregisteredServices = {};
@@ -11,7 +11,7 @@ var getMessage = function () {
 };
 
 var alerter = debounce(function () {
-	errorsHandler.captureMessage(getMessage());
+	raven.captureMessage(getMessage());
 }, 5 * 60 * 1000, true);
 
 /**
