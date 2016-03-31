@@ -16,7 +16,6 @@ var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
 var dependencies = require('./src/dependencies');
 var vary = require('./src/middleware/vary');
-var ijento = require('./src/middleware/ijento');
 
 module.exports = function(options) {
 	options = options || {};
@@ -183,7 +182,6 @@ module.exports = function(options) {
 	if (options.withFlags) {
 		flagsPromise = flags.init();
 		app.use(flags.middleware);
-		app.use(ijento);
 	}
 
 	if (options.withAnonMiddleware) {
