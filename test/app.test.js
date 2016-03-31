@@ -193,6 +193,7 @@ describe('simple app', function() {
 			var app = nextExpress({
 				name: 'noBackendAuth',
 				directory: __dirname,
+				withHandlebars: false,
 				withBackendAuthentication: false
 			});
 			app.get('/let-me-in', function (req, res) {
@@ -210,6 +211,7 @@ describe('simple app', function() {
 		var app = nextExpress({
 			name: 'noflags',
 			directory: __dirname,
+			withHandlebars: false,
 			withFlags: false
 		});
 		app.get('/', function (req, res) {

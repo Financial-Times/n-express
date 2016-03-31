@@ -9,7 +9,7 @@ describe('Anonymous Middleware', function() {
 	var locals;
 
 	beforeEach(function(){
-		app = nextExpress({ withFlags:true, withHandlebars:true });
+		app = nextExpress({ withFlags:true, withHandlebars:false });
 		app.get('/', function(req, res){
 			locals = res.locals;
 			res.sendStatus(200).end();
