@@ -3,6 +3,12 @@
 
 require('isomorphic-fetch');
 
+Object.keys(console).forEach(function (key) {
+	if (console[key].bind) {
+		console[key] = console[key].bind(console);
+	}
+})
+
 var express = require('express');
 var raven = require('@financial-times/n-raven');
 var flags = require('next-feature-flags-client');
