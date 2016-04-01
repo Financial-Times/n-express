@@ -8,7 +8,11 @@ const yell = require('./src/yell');
 const app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
+	withFlags: true,
+	withHandlebars: true,
 	withNavigation: false,
+	withAnonMiddleware: true,
+	withBackendAuthentication: true,
 	layoutsDir: __dirname + '/views/'
 });
 

@@ -22,11 +22,11 @@ module.exports = function(options) {
 	var packageJson = {};
 
 	var defaults = {
-		withFlags: true,
-		withHandlebars: true,
-		withNavigation: true,
-		withAnonMiddleware: true,
-		withBackendAuthentication: true,
+		withFlags: false,
+		withHandlebars: false,
+		withNavigation: false,
+		withAnonMiddleware: false,
+		withBackendAuthentication: false,
 		healthChecks: []
 	};
 
