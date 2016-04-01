@@ -19,13 +19,9 @@
   "devDependencies": {
     "chai": "^3.0.0",
     "eslint": "^1.10.3",
-    "fetch-mock": "^2.0.1",
     "lintspaces-cli": "^0.1.1",
     "mocha": "^2.0.1",
-    "mocha-traceur": "^2.1.0",
-    "mockery": "^1.4.0",
     "next-build-tools": "^5.6.2",
-    "origami-build-tools": "^4.2.0",
     "shellpromise": "^1.4.0",
     "sinon": "^1.14.1",
     "supertest": "^1.0.0"
