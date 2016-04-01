@@ -14,7 +14,6 @@ var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
-var dependencies = require('./src/dependencies');
 var vary = require('./src/middleware/vary');
 
 module.exports = function(options) {
@@ -131,7 +130,6 @@ module.exports = function(options) {
 		}, undefined, 2));
 	});
 
-	app.get('/__dependencies', dependencies(app.locals.__name));
 
 	var handlebarsPromise = Promise.resolve();
 
