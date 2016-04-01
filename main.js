@@ -9,7 +9,7 @@ var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
 var navigation = require('@financial-times/n-navigation');
 var metrics = require('next-metrics');
-var nextLogger = require('@financial-times/n-logger').default;
+var nLogger = require('@financial-times/n-logger').default;
 var robots = require('./src/express/robots');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
@@ -199,7 +199,7 @@ module.exports = function(options) {
 		var cb = args[1];
 		args[1] = function () {
 			// HACK: Use warn so that it gets into Splunk logs
-			nextLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
+			nLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
 			return cb && cb.apply(this, arguments);
 		}
 
@@ -224,5 +224,5 @@ module.exports.static = express.static;
 module.exports.services = metrics.services;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
-// TODO: for backwards compatiability, but modules/apps can use next-logger directly, as of v4.0.0
-module.exports.logger = nextLogger;
+// TODO: for backwards compatiability, but modules/apps can use n-logger directly, as of v4.0.0
+module.exports.logger = nLogger;

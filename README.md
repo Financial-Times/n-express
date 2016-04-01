@@ -31,7 +31,7 @@ Comes with:-
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance and layouts
 - instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a 'serviceDependencies' option (see examples below)
 - Provides a solution for implementing app health checks in adherence to the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit)
-- Logging ([Next logger](https://github.com/Financial-Times/next-logger)), exposed via `express.logger`
+- Logging ([Next logger](https://github.com/Financial-Times/n-logger)), exposed via `express.logger`
 
 ## Installation
 
