@@ -224,5 +224,3 @@ module.exports.static = express.static;
 module.exports.services = metrics.services;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
-// TODO: for backwards compatiability, but modules/apps can use n-logger directly, as of v4.0.0
-module.exports.logger = nLogger;
