@@ -1,4 +1,4 @@
-next-express [![Circle CI](https://circleci.com/gh/Financial-Times/next-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/next-express/tree/master)
+n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/master)
 ============
 
 Slightly enhanced Express.
@@ -47,7 +47,7 @@ var express = require('@financial-times/n-express');
 
 var app = express({
 
-	// Optional.  If name is not provided, next-express will try to infer it from package.json
+	// Optional.  If name is not provided, n-express will try to infer it from package.json
 	name: "xian",
 
 	// Optional
