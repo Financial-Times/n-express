@@ -1,11 +1,11 @@
 /*jshint node:true*/
 'use strict';
 
-var port = process.env.PORT || 3000;
-var express = require('../../../main');
-var yell = require('./src/yell');
+const PORT = process.env.PORT || 3000;
+const express = require('../../..');
+const yell = require('./src/yell');
 
-var app = module.exports = express({
+const app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
 	withNavigation: false,
@@ -131,6 +131,4 @@ router.get("/", function(req, res) {
 	res.send("Hello router");
 });
 
-module.exports.listen = app.listen(port, function() {
-	console.log("Listening on " + port);
-});
+module.exports.listen = app.listen(PORT);
