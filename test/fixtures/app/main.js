@@ -1,22 +1,19 @@
 /*jshint node:true*/
 'use strict';
 
-var port = process.env.PORT || 3000;
-var express = require('../../../main');
-var yell = require('./src/yell');
+const PORT = process.env.PORT || 3000;
+const express = require('../../..');
+const yell = require('./src/yell');
 
-var app = module.exports = express({
+const app = module.exports = express({
 	directory: __dirname,
 	helpers: { yell: yell },
+	withFlags: true,
+	withHandlebars: true,
 	withNavigation: false,
-	layoutsDir: __dirname + '/views/',
-	sensuChecks: [
-		{
-			check: 'sumSeries(foo.*.bar)',
-			name: "custom-metric",
-			message: "The ratio of errors to good responses is above a healthy rate"
-		}
-	]
+	withAnonMiddleware: true,
+	withBackendAuthentication: true,
+	layoutsDir: __dirname + '/views/'
 });
 
 app.get("/", function(req, res) {
@@ -25,10 +22,6 @@ app.get("/", function(req, res) {
 
 app.get("/__flags.json", function(req, res) {
 	res.send(res.locals.flags);
-});
-
-app.get(/\/(uk|international|any-page)/, function(req, res) {
-	res.json(res.locals.ijentoConfig);
 });
 
 app.get('/templated', function(req, res) {
@@ -142,6 +135,4 @@ router.get("/", function(req, res) {
 	res.send("Hello router");
 });
 
-module.exports.listen = app.listen(port, function() {
-	console.log("Listening on " + port);
-});
+module.exports.listen = app.listen(PORT);

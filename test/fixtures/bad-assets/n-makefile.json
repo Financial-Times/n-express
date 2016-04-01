@@ -1,0 +1,7 @@
+{
+  "assets": {
+    "entry": {
+      "./public/main.js": "./client/main.js"
+    }
+  }
+}

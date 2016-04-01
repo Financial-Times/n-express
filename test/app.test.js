@@ -193,6 +193,7 @@ describe('simple app', function() {
 			var app = nextExpress({
 				name: 'noBackendAuth',
 				directory: __dirname,
+				withHandlebars: false,
 				withBackendAuthentication: false
 			});
 			app.get('/let-me-in', function (req, res) {
@@ -210,6 +211,7 @@ describe('simple app', function() {
 		var app = nextExpress({
 			name: 'noflags',
 			directory: __dirname,
+			withHandlebars: false,
 			withFlags: false
 		});
 		app.get('/', function (req, res) {
@@ -322,22 +324,6 @@ describe('simple app', function() {
 
 	});
 
-	describe('metrics', function () {
-
-		it('should serve monitoring', function(done) {
-			request(app)
-				.get('/__sensu')
-				.expect('Content-Type', /json/)
-				.expect('Cache-Control', /max-age=60/)
-				.expect(function (res) {
-					if (res.body[0].name !== 'custom-metric') throw new Error('Custom sensu check "custom-metric" not found');
-					if (res.body[1].name !== 'error-rate') throw new Error('Default sensu check "error-rate" not found');
-				})
-				.end(done);
-		});
-
-	});
-
 	describe('templating', function () {
 
 		it('should do templating', function(done) {
@@ -385,50 +371,6 @@ describe('simple app', function() {
 				.get('/templated')
 				.expect(200, /on app demo-app/, done);
 		});
-
-		describe('ijento', function () {
-			it('set default ijento config', function (done) {
-				request(app)
-					.get('/any-page')
-					.end((err, res) => {
-						expect(res.body).to.deep.equal({
-							uuid: null,
-							classification: null,
-							type: 'Page',
-							sitemap: null
-						});
-						done();
-					})
-			});
-
-			it('set sitemap for /uk', function (done) {
-				request(app)
-					.get('/uk')
-					.end((err, res) => {
-						expect(res.body).to.deep.equal({
-							uuid: null,
-							classification: null,
-							type: 'Page',
-							sitemap: 'Sections.Front page'
-						});
-						done();
-					})
-			});
-
-			it('set sitemap for /international', function (done) {
-				request(app)
-					.get('/international')
-					.end((err, res) => {
-						expect(res.body).to.deep.equal({
-							uuid: null,
-							classification: null,
-							type: 'Page',
-							sitemap: 'Sections.Front page'
-						});
-						done();
-					})
-			});
-		})
 
 		describe('n-handlebars features', function () {
 

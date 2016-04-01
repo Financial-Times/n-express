@@ -1,10 +1,10 @@
-next-express [![Circle CI](https://circleci.com/gh/Financial-Times/next-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/next-express/tree/master)
+n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/master)
 ============
 
 Slightly enhanced Express.
 
 ```
-npm install -S ft-next-express
+npm install -S @financial-times/n-express
 ```
 
 Comes with:-
@@ -22,7 +22,7 @@ Comes with:-
 - Exposes everything in the app's `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use [next-assets](https://github.com/Financial-Times/next-assets) or hashed-assets in production)
 - Exposes app name via `__name` to templates and in a `data-next-app` attribute on the html tag in templates
 - Adds a `/{{name-of-app}}/__about` endpoint, which exposes information about the current version of the application running
-- By default the application's templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts)
+- By default the application's templates are outputted unchanged, but n-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts)
 
 - Exposes `express.Router`
 - Provides `NODE_ENV` to templates via `__environment`
@@ -31,23 +31,23 @@ Comes with:-
 - Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance and layouts
 - instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a 'serviceDependencies' option (see examples below)
 - Provides a solution for implementing app health checks in adherence to the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit)
-- Logging ([Next logger](https://github.com/Financial-Times/next-logger)), exposed via `express.logger`
+- Logging ([Next logger](https://github.com/Financial-Times/n-logger)), exposed via `express.logger`
 
 ## Installation
 
 ```sh
-npm install --save ft-next-express
+npm install --save @financial-times/n-express
 ```
 
 ## Example app
 
 ### `main.js`
 ```js
-var express = require('ft-next-express');
+var express = require('@financial-times/n-express');
 
 var app = express({
 
-	// Optional.  If name is not provided, next-express will try to infer it from package.json
+	// Optional.  If name is not provided, n-express will try to infer it from package.json
 	name: "xian",
 
 	// Optional

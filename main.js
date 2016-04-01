@@ -9,15 +9,12 @@ var flags = require('next-feature-flags-client');
 var handlebars = require('@financial-times/n-handlebars');
 var navigation = require('@financial-times/n-navigation');
 var metrics = require('next-metrics');
-var nextLogger = require('@financial-times/n-logger').default;
+var nLogger = require('@financial-times/n-logger').default;
 var robots = require('./src/express/robots');
-var sensu = require('./src/sensu');
 var normalizeName = require('./src/normalize-name');
 var anon = require('./src/anon');
 var serviceMetrics = require('./src/service-metrics');
-var dependencies = require('./src/dependencies');
 var vary = require('./src/middleware/vary');
-var ijento = require('./src/middleware/ijento');
 
 module.exports = function(options) {
 	options = options || {};
@@ -25,12 +22,11 @@ module.exports = function(options) {
 	var packageJson = {};
 
 	var defaults = {
-		withFlags: true,
-		withHandlebars: true,
-		withNavigation: true,
-		withAnonMiddleware: true,
-		withBackendAuthentication: true,
-		sensuChecks: [],
+		withFlags: false,
+		withHandlebars: false,
+		withNavigation: false,
+		withAnonMiddleware: false,
+		withBackendAuthentication: false,
 		healthChecks: []
 	};
 
@@ -61,7 +57,6 @@ module.exports = function(options) {
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
-	var sensuChecks = sensu(name, options.sensuChecks);
 	var healthChecks = options.healthChecks;
 
 	//Remove x-powered-by header
@@ -91,6 +86,8 @@ module.exports = function(options) {
 				}
 			}
 		});
+	} else {
+		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
 	}
 
 	if (!app.locals.__isProduction) {
@@ -98,11 +95,6 @@ module.exports = function(options) {
 	}
 
 	app.get('/robots.txt', robots);
-	app.get('/__sensu', function(req, res) {
-		res.set({ 'Cache-Control': 'max-age=60' });
-		res.json(sensuChecks);
-	});
-
 	app.get('/__brew-coffee', function(req, res) {
 		res.sendStatus(418);
 	});
@@ -140,7 +132,6 @@ module.exports = function(options) {
 		}, undefined, 2));
 	});
 
-	app.get('/__dependencies', dependencies(app.locals.__name));
 
 	var handlebarsPromise = Promise.resolve();
 
@@ -169,16 +160,6 @@ module.exports = function(options) {
 		next();
 	});
 
-
-
-	if (options.serviceDependencies) {
-		var errMessage = 'next-express: options.serviceDependencies is deprecated. \n Please add any missing services you need to https://github.com/Financial-Times/next-express/blob/master/src/service-metrics.js';
-		if (process.env.NODE_ENV !== 'production') {
-			throw new Error(errMessage);
-		} else {
-			console.warn(errMessage);
-		}
-	}
 	serviceMetrics.init(options.serviceDependencies);
 
 	app.get('/__about', function(req, res) {
@@ -191,7 +172,6 @@ module.exports = function(options) {
 	if (options.withFlags) {
 		flagsPromise = flags.init();
 		app.use(flags.middleware);
-		app.use(ijento);
 	}
 
 	if (options.withAnonMiddleware) {
@@ -211,7 +191,7 @@ module.exports = function(options) {
 		var cb = args[1];
 		args[1] = function () {
 			// HACK: Use warn so that it gets into Splunk logs
-			nextLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
+			nLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
 			return cb && cb.apply(this, arguments);
 		}
 
@@ -233,8 +213,5 @@ module.exports = function(options) {
 
 module.exports.Router = express.Router;
 module.exports.static = express.static;
-module.exports.services = metrics.services;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
-// TODO: for backwards compatiability, but modules/apps can use next-logger directly, as of v4.0.0
-module.exports.logger = nextLogger;
