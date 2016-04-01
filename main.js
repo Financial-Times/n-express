@@ -86,6 +86,8 @@ module.exports = function(options) {
 				}
 			}
 		});
+	} else {
+		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
 	}
 
 	if (!app.locals.__isProduction) {
