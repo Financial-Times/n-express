@@ -25,10 +25,10 @@ describe('Anonymous Middleware', function() {
 			.end(done);
 	});
 
-	it('Should set the res.locals.userIsAnoymous property based on the X-FT-Anonymous-User header', function(done){
+	it('Should set the res.locals.userIsAnoymous property based on the FT-Anonymous-User header', function(done){
 		request(app)
 			.get('/')
-			.set('X-FT-Anonymous-User', 'true')
+			.set('FT-Anonymous-User', 'true')
 			.expect(function(){
 				expect(locals.anon.userIsAnonymous).to.be.true;
 			})

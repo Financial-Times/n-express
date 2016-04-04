@@ -15,7 +15,7 @@ function anonymousMiddleware(req, res, next){
 			new anonModels.FirstClickFreeModel() :
 			null;
 	res.locals.navigationModel = new NavigationModel(res.locals.flags, res.locals.anon.userIsAnonymous);
-	res.vary('x-ft-anonymous-user');
+	res.vary('FT-Anonymous-User');
 	next();
 }
 
