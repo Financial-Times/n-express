@@ -91,7 +91,7 @@ app.get('/vary-method', function (req, res) {
 
 app.get('/duplicate-vary', function (req, res) {
 	// NOTE testing out tricky capitalisation
-	res.set('Vary', 'x-ft-anonymous-user');
+	res.set('Vary', 'ft-anonymous-user');
 	res.sendStatus(200);
 });
 
