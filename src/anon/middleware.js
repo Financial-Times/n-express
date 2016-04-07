@@ -14,7 +14,10 @@ function anonymousMiddleware(req, res, next){
 		showFirstClickFree(req, res) ?
 			new anonModels.FirstClickFreeModel() :
 			null;
-	res.locals.navigationModel = new NavigationModel(res.locals.flags, res.locals.anon.userIsAnonymous, req.get('FT-Vanity-Url') || req.url);
+	const currentUrl = req.get('ft-blocked-url')
+		|| req.get('FT-Vanity-Url')
+		|| req.url;
+	res.locals.navigationModel = new NavigationModel(res.locals.flags, res.locals.anon.userIsAnonymous, currentUrl);
 	res.vary('FT-Anonymous-User');
 	next();
 }
