@@ -55,14 +55,15 @@ module.exports = function(options) {
 
 	if (!name) throw new Error("Please specify an application name");
 
-	if (options.withRequestTracing && process.env.NODE_ENV === 'production') {
-		if (process.env.TRACE_API_KEY) {
-			process.env.TRACE_SERVICE_NAME = normalizeName(name);
-			require('@risingstack/trace');
-		} else {
-			nLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
-		}
-	}
+	// Temporarily disabled while investigating build problems
+	// if (options.withRequestTracing && process.env.NODE_ENV === 'production') {
+	// 	if (process.env.TRACE_API_KEY) {
+	// 		process.env.TRACE_SERVICE_NAME = normalizeName(name);
+	// 		require('@risingstack/trace');
+	// 	} else {
+	// 		nLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
+	// 	}
+	// }
 
 	const app = express();
 
