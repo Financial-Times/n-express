@@ -27,6 +27,7 @@ module.exports = function(options) {
 		withNavigation: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
+		withRequestTracing: false,
 		healthChecks: []
 	};
 
@@ -35,6 +36,14 @@ module.exports = function(options) {
 			options[prop] = defaults[prop];
 		}
 	});
+
+	if (options.withRequestTracing) {
+		if (process.env.TRACE_API_KEY && process.env.TRACE_SERVICE_NAME) {
+			require('@risingstack/trace');
+		} else {
+			nLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
+		}
+	}
 
 	var app = express();
 	var name = options.name;
