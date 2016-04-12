@@ -3,25 +3,25 @@
 
 require('isomorphic-fetch');
 
-var express = require('express');
-var raven = require('@financial-times/n-raven');
-var flags = require('next-feature-flags-client');
-var handlebars = require('@financial-times/n-handlebars');
-var navigation = require('@financial-times/n-navigation');
-var metrics = require('next-metrics');
-var nLogger = require('@financial-times/n-logger').default;
-var robots = require('./src/express/robots');
-var normalizeName = require('./src/normalize-name');
-var anon = require('./src/anon');
-var serviceMetrics = require('./src/service-metrics');
-var vary = require('./src/middleware/vary');
+const express = require('express');
+const raven = require('@financial-times/n-raven');
+const flags = require('next-feature-flags-client');
+const handlebars = require('@financial-times/n-handlebars');
+const navigation = require('@financial-times/n-navigation');
+const metrics = require('next-metrics');
+const nLogger = require('@financial-times/n-logger').default;
+const robots = require('./src/express/robots');
+const normalizeName = require('./src/normalize-name');
+const anon = require('./src/anon');
+const serviceMetrics = require('./src/service-metrics');
+const vary = require('./src/middleware/vary');
 
 module.exports = function(options) {
+
+
 	options = options || {};
 
-	var packageJson = {};
-
-	var defaults = {
+	const defaults = {
 		withFlags: false,
 		withHandlebars: false,
 		withNavigation: false,
@@ -31,30 +31,23 @@ module.exports = function(options) {
 		healthChecks: []
 	};
 
+
 	Object.keys(defaults).forEach(function (prop) {
 		if (typeof options[prop] === 'undefined') {
 			options[prop] = defaults[prop];
 		}
 	});
 
-	if (options.withRequestTracing) {
-		if (process.env.TRACE_API_KEY && process.env.TRACE_SERVICE_NAME) {
-			require('@risingstack/trace');
-		} else {
-			nLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
-		}
-	}
-
-	var app = express();
-	var name = options.name;
-	var description = "";
-	var directory = options.directory || process.cwd();
+	let packageJson = {};
+	let name = options.name;
+	let description = '';
+	let directory = options.directory || process.cwd();
 
 	if (!name) {
 		try {
 			packageJson = require(directory + '/package.json');
 			name = packageJson.name;
-			description = packageJson.description || "";
+			description = packageJson.description || '';
 		} catch(e) {
 			// Safely ignorable error
 		}
@@ -62,11 +55,22 @@ module.exports = function(options) {
 
 	if (!name) throw new Error("Please specify an application name");
 
+	if (options.withRequestTracing && process.env.NODE_ENV === 'production') {
+		if (process.env.TRACE_API_KEY) {
+			process.env.TRACE_SERVICE_NAME = normalizeName(name);
+			require('@risingstack/trace');
+		} else {
+			nLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
+		}
+	}
+
+	const app = express();
+
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
 	app.locals.__rootDirectory = directory;
-	var healthChecks = options.healthChecks;
+	const healthChecks = options.healthChecks;
 
 	//Remove x-powered-by header
 	app.set('x-powered-by', false);
@@ -110,7 +114,7 @@ module.exports = function(options) {
 
 	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
-		var checks = healthChecks.map(function(check) {
+		const checks = healthChecks.map(function(check) {
 			return check.getStatus();
 		});
 		if (checks.length === 0) {
@@ -142,10 +146,10 @@ module.exports = function(options) {
 	});
 
 
-	var handlebarsPromise = Promise.resolve();
+	let handlebarsPromise = Promise.resolve();
 
 	if (options.withHandlebars) {
-		var helpers = options.helpers || {};
+		const helpers = options.helpers || {};
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app.locals);
 
 		handlebarsPromise = handlebars(app, {
@@ -176,7 +180,7 @@ module.exports = function(options) {
 		res.sendFile(directory + '/public/__about.json');
 	});
 
-	var flagsPromise = Promise.resolve();
+	let flagsPromise = Promise.resolve();
 
 	if (options.withFlags) {
 		flagsPromise = flags.init();
@@ -191,13 +195,13 @@ module.exports = function(options) {
 		app.use(navigation.middleware);
 	}
 
-	var actualAppListen = app.listen;
+	const actualAppListen = app.listen;
 
 	app.listen = function() {
-		var args = [].slice.apply(arguments);
+		const args = [].slice.apply(arguments);
 		app.use(raven.middleware);
-		var port = args[0];
-		var cb = args[1];
+		const port = args[0];
+		const cb = args[1];
 		args[1] = function () {
 			// HACK: Use warn so that it gets into Splunk logs
 			nLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
