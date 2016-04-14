@@ -62,7 +62,7 @@ module.exports = function(options) {
 			process.env.TRACE_SERVICE_NAME = normalizeName(name);
 			require('@risingstack/trace');
 		} else {
-			nLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
+			nextLogger.warn('TRACE_API_KEY and TRACE_SERVICE_NAME are required to apply request tracing');
 		}
 	}
 
