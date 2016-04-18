@@ -1,0 +1,117 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/wheresrhys/.nvm/versions/node/v4.4.1/bin/node',
+1 verbose cli   '/Users/wheresrhys/.nvm/versions/node/v4.4.1/bin/npm',
+1 verbose cli   'publish',
+1 verbose cli   '--registry',
+1 verbose cli   'http://registry.npmjs.org' ]
+2 info using npm@2.14.20
+3 info using node@v4.4.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/wheresrhys/Projects/next/n-express',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/wheresrhys/.npm/ft-next-express/15.14.1/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/wheresrhys/.npm correctMkdir not in flight; initializing
+10 verbose tar pack [ '/Users/wheresrhys/.npm/ft-next-express/15.14.1/package.tgz',
+10 verbose tar pack   '/Users/wheresrhys/Projects/next/n-express' ]
+11 verbose tarball /Users/wheresrhys/.npm/ft-next-express/15.14.1/package.tgz
+12 verbose folder /Users/wheresrhys/Projects/next/n-express
+13 info prepublish ft-next-express@15.14.1
+14 verbose addLocalTarball adding from inside cache /Users/wheresrhys/.npm/ft-next-express/15.14.1/package.tgz
+15 verbose correctMkdir /Users/wheresrhys/.npm correctMkdir not in flight; initializing
+16 silly cache afterAdd ft-next-express@15.14.1
+17 verbose afterAdd /Users/wheresrhys/.npm/ft-next-express/15.14.1/package/package.json not in flight; writing
+18 verbose correctMkdir /Users/wheresrhys/.npm correctMkdir not in flight; initializing
+19 verbose afterAdd /Users/wheresrhys/.npm/ft-next-express/15.14.1/package/package.json written
+20 silly publish { name: 'ft-next-express',
+20 silly publish   version: '15.14.1',
+20 silly publish   main: 'main.js',
+20 silly publish   scripts: { test: 'make test' },
+20 silly publish   dependencies:
+20 silly publish    { '@financial-times/n-handlebars': '^1.4.1',
+20 silly publish      '@financial-times/n-logger': '^5.0.0',
+20 silly publish      '@financial-times/n-navigation': '^5.0.4',
+20 silly publish      '@financial-times/n-raven': '^2.0.0',
+20 silly publish      '@risingstack/trace': '2.5.4',
+20 silly publish      debounce: '^1.0.0',
+20 silly publish      debug: '^2.2.0',
+20 silly publish      express: '^4.10.5',
+20 silly publish      fetchres: '^1.3.0',
+20 silly publish      'isomorphic-fetch': '^2.0.0',
+20 silly publish      'next-beacon-node-client': 'https://github.com/Financial-Times/next-beacon-node-client/archive/v2.1.3.tar.gz',
+20 silly publish      'next-feature-flags-client': '^8.4.0',
+20 silly publish      'next-metrics': '^1.16.1' },
+20 silly publish   devDependencies:
+20 silly publish    { chai: '^3.0.0',
+20 silly publish      'fetch-mock': '^2.0.1',
+20 silly publish      mocha: '^2.0.1',
+20 silly publish      'mocha-traceur': '^2.1.0',
+20 silly publish      mockery: '^1.4.0',
+20 silly publish      'next-build-tools': '^5.6.2',
+20 silly publish      sinon: '^1.14.1',
+20 silly publish      supertest: '^1.0.0' },
+20 silly publish   engines: { node: '4.2.3' },
+20 silly publish   readme: 'next-express [![Circle CI](https://circleci.com/gh/Financial-Times/next-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/next-express/tree/master)\n============\n\nSlightly enhanced Express.\n\n```\nnpm install -S ft-next-express\n```\n\nComes with:-\n- [Handlebars](http://handlebarsjs.com/) (with added support for loading partials from `bower_components`)\n- [Origami Image Service](http://image.webservices.ft.com/) integration\n- [Sensible error handling](https://github.com/Financial-Times/express-errors-handler) (configurable via environment variables)\n- Full [Next Flags](https://github.com/Financial-Times/next-feature-flags-client) integration\n- [Next Metrics](https://github.com/Financial-Times/next-metrics) integration\n  - measures sytem performance\n  - measures performance of service dependencies (if called using the `fetch` api)\n  - measures request and response performance\n  - exposes the configured metrics instance as `express.metrics`\n- Anti-search engine `GET /robots.txt` (possibly might need to change in the future)\n- [(Isomorphic)](https://github.com/matthew-andrews/isomorphic-fetch) Fetch polyfill\n- Exposes everything in the app\'s `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use [next-assets](https://github.com/Financial-Times/next-assets) or hashed-assets in production)\n- Exposes app name via `__name` to templates and in a `data-next-app` attribute on the html tag in templates\n- Adds a `/{{name-of-app}}/__about` endpoint, which exposes information about the current version of the application running\n- By default the application\'s templates are outputted unchanged, but ft-next-express provides 2 [inheritable layouts](https://github.com/ericf/express-handlebars#layouts)\n\n- Exposes `express.Router`\n- Provides `NODE_ENV` to templates via `__environment`\n- `__isProduction` is `true` if `NODE_ENV` equals `PRODUCTION` (exposed as `data-next-is-production` on the `<html>` tag in templates)\n- `__version` is set to the same value as that used by [next-build-tools/about](https://github.com/Financial-Times/next-build-tools/blob/master/lib/about.js) (exposed as `data-next-version` on the `<html>` tag in templates)\n- Provides a range of [handlebars helpers](#handlebars-helpers), including template inheritance and layouts\n- instruments `fetch` to send data about server-to-server requests to graphite. See main.js for a list of services already instrumented. To add more services extend the list or, for services specific to a particular app, pass in a \'serviceDependencies\' option (see examples below)\n- Provides a solution for implementing app health checks in adherence to the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit)\n- Logging ([Next logger](https://github.com/Financial-Times/next-logger)), exposed via `express.logger`\n\n## Installation\n\n```sh\nnpm install --save ft-next-express\n```\n\n## Example app\n\n### `main.js`\n```js\nvar express = require(\'ft-next-express\');\n\nvar app = express({\n\n\t// Optional.  If name is not provided, next-express will try to infer it from package.json\n\tname: "xian",\n\n\t// Optional\n\thelpers: {\n\t\tuppercase: function(options) {\n\t\t\treturn options.fn(this).toUpperCase();\n\t\t}\n\t},\n\tserviceDependencies: {\n\t\t// service dependencies should be listed with a regex that matches urls for that service.\n\t\t// regexes can be whatever you like so it\'s possible to treat paths within a given service\n\t\t// as separate services\n\t\t\'youtube\': /https?:\\/\\/youtube\\.com/\n\t},\n\t// the following default to true but should normally be set to false if your app is an api\n\twithFlags: false, // disable feature flag middleware\n\twithHandlebars: false // disable handlebars middleware\n\twithBackendAuthentication: false // disable authentication which only allows requests in via fastly\n\n\t// Optional\n\thealthChecks: []\n});\n\napp.get(\'/\', function(req, res, next) {\n\tres.render(\'main\', {\n\t\ttitle: "FT",\n\t\timage: "https://avatars0.githubusercontent.com/u/3502508?v=3",\n\t\tdate: new Date(),\n\t\ttext : "<p>This wont be shown</p><p>This will be shown</p><p>This wont be shown</p>"\n\t});\n});\n\napp.listen(process.env.PORT, function() {\n\tconsole.log("Listening on " + process.env.PORT);\n});\n```\n\n### `views/main.html`\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset="utf-8">\n\t<title>{{title}}</title>\n\t<!-- this will be output as <link rel="stylesheet" href="/xian/main.css"> -->\n\t<link rel="stylesheet" href="/{{__name}}/main.css">\n</head>\n<body>\n\t<h1>{{title}}</h1>\n\t{{#uppercase}}this text will be uppercase{{/uppercase}}\n\t<h2>An image resized to 150px wide</h2>\n\t<img src="{{#resize 150}}{{image}}{{/resize}}" />\n\n\t{{#flags.myFlag}}\n\tThe \'myFlag\' flag is switched on\n\t{{/flags.myFlag}}\n\n\t<time data-o-component="o-date" class="o-date" datetime="{{#dateformat}}{{date}}{{/dateformat}}">\n\t\t{{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}\n\t</time>\n\n\t{{paragraphs text start=1 end=2}}\n\n\t{{#removeImageTags}}\n\tImage<img src="someimage.jpg" alt="This wont be shown"/>EndImage\n\t{{/removeImageTags}}\n</body>\n</html>\n```\n\n## Testing flags\n\nIf you’re using flags and testing with mocha, you’ll need to expose listen in your app:\n\n```\nmodule.exports.listen = app.listen(port);\n```\n\nAnd in your tests, add this:\n\n```\nbefore(function() {\n\treturn app.listen;\n});\n```\n\nThis’ll make sure your tests wait for flags to be ready.\n\n\n## Health checks\n\nFor an example set of health check results, see [next.ft.com/__health](https://next.ft.com/__health). For testing health checks, the [Health Status Formatter extension for Google Chrome](https://github.com/triblondon/health-status-formatter) is recommended.\n\nHealth checks can be tested for failures of a specific degree of severity by appending the severity number to the health check URL. This is particularly useful for setting up fine-grained alerting. For example, if on next.ft.com a severity level 2 health check were failing:\n\nhttps://next.ft.com/__health.1 would return HTTP status 200\nhttps://next.ft.com/__health.2 would return HTTP status 500\nhttps://next.ft.com/__health.3 would return HTTP status 500\n\nEach health check must have a getStatus() property, which returns an object meeting the specifications of the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit) and the [FT Check Standard] (https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk#). This might look roughly like the following example:\n\n\n```js\nvar exampleHealthCheck = {\n\tgetStatus: () => {\n\t\treturn {\n\t\t\tname: \'Some health check\',\n\t\t\tok: true,\n\t\t\tcheckOutput: \'Everything is fine\',\n\t\t\tlastUpdated: new Date(),\n\t\t\tpanicGuide: \'Don\\\'t panic\',\n\t\t\tseverity: 3,\n\t\t\tbusinessImpact: "Some specific feature will fail",\n\t\t\ttechnicalSummary: "Doesn\\\'t actually check anything, just an example"\n\t\t};\n\t}\n}\n```\n',
+20 silly publish   readmeFilename: 'README.md',
+20 silly publish   gitHead: '5dfb82982c4293598d79c5c6e22903b29f0b111f',
+20 silly publish   description: 'next-express [![Circle CI](https://circleci.com/gh/Financial-Times/next-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/next-express/tree/master) ============',
+20 silly publish   _id: 'ft-next-express@15.14.1',
+20 silly publish   _shasum: 'b5438c8e17826ed3d16a198fb11e2d79b9df47a9',
+20 silly publish   _from: '.' }
+21 verbose getPublishConfig undefined
+22 silly mapToRegistry name ft-next-express
+23 silly mapToRegistry using default registry
+24 silly mapToRegistry registry http://registry.npmjs.org/
+25 silly mapToRegistry uri http://registry.npmjs.org/ft-next-express
+26 verbose publish registryBase http://registry.npmjs.org/
+27 silly publish uploading /Users/wheresrhys/.npm/ft-next-express/15.14.1/package.tgz
+28 verbose request uri http://registry.npmjs.org/ft-next-express
+29 verbose request sending authorization for write operation
+30 info attempt registry request try #1 at 10:24:19 AM
+31 verbose request using bearer token for auth
+32 verbose request id a5fc87377047fb3d
+33 http request PUT http://registry.npmjs.org/ft-next-express
+34 http 403 http://registry.npmjs.org/ft-next-express
+35 verbose headers { 'content-type': 'application/json',
+35 verbose headers   'cache-control': 'max-age=300',
+35 verbose headers   'content-length': '97',
+35 verbose headers   'accept-ranges': 'bytes',
+35 verbose headers   date: 'Mon, 18 Apr 2016 09:23:42 GMT',
+35 verbose headers   via: '1.1 varnish',
+35 verbose headers   connection: 'keep-alive',
+35 verbose headers   'x-served-by': 'cache-lcy1128-LCY',
+35 verbose headers   'x-cache': 'MISS',
+35 verbose headers   'x-cache-hits': '0',
+35 verbose headers   'x-timer': 'S1460971421.206563,VS0,VE1269',
+35 verbose headers   vary: 'Accept-Encoding' }
+36 verbose request invalidating /Users/wheresrhys/.npm/registry.npmjs.org/ft-next-express on PUT
+37 error publish Failed PUT 403
+38 verbose stack Error: "You cannot publish over the previously published version 15.14.1." : ft-next-express
+38 verbose stack     at makeError (/Users/wheresrhys/.nvm/versions/node/v4.4.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+38 verbose stack     at CachingRegistryClient.<anonymous> (/Users/wheresrhys/.nvm/versions/node/v4.4.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+38 verbose stack     at Request._callback (/Users/wheresrhys/.nvm/versions/node/v4.4.1/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+38 verbose stack     at Request.self.callback (/Users/wheresrhys/.nvm/versions/node/v4.4.1/lib/node_modules/npm/node_modules/request/request.js:199:22)
+38 verbose stack     at emitTwo (events.js:87:13)
+38 verbose stack     at Request.emit (events.js:172:7)
+38 verbose stack     at Request.<anonymous> (/Users/wheresrhys/.nvm/versions/node/v4.4.1/lib/node_modules/npm/node_modules/request/request.js:1036:10)
+38 verbose stack     at emitOne (events.js:82:20)
+38 verbose stack     at Request.emit (events.js:169:7)
+38 verbose stack     at IncomingMessage.<anonymous> (/Users/wheresrhys/.nvm/versions/node/v4.4.1/lib/node_modules/npm/node_modules/request/request.js:963:12)
+39 verbose statusCode 403
+40 verbose pkgid ft-next-express
+41 verbose cwd /Users/wheresrhys/Projects/next/n-express
+42 error Darwin 14.5.0
+43 error argv "/Users/wheresrhys/.nvm/versions/node/v4.4.1/bin/node" "/Users/wheresrhys/.nvm/versions/node/v4.4.1/bin/npm" "publish" "--registry" "http://registry.npmjs.org"
+44 error node v4.4.1
+45 error npm  v2.14.20
+46 error code E403
+47 error "You cannot publish over the previously published version 15.14.1." : ft-next-express
+48 error If you need help, you may report this error at:
+48 error     <https://github.com/npm/npm/issues>
+49 verbose exit [ 1, true ]
