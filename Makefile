@@ -4,7 +4,7 @@ clean:
 	git clean -fxd
 
 install:
-	obt install --verbose
+	@echo already installed
 
 test: unit-test verify
 
