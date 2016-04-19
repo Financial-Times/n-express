@@ -19,6 +19,29 @@ var dependencies = require('./src/dependencies');
 var vary = require('./src/middleware/vary');
 var ijento = require('./src/middleware/ijento');
 
+if (process.env.NODE_ENV !== 'production') {
+	const date = new Date();
+	if (date.getFullYear() > 2016 || date.getMonth() > 4 || (date.getMonth() === 4 && date.getDate() > 10)) {
+		throw 'ft-next-express v15 is deprecated. Please upgrade to @financial-times/n-express v16';
+	} else if (date.getMonth() === 4) {
+		nextLogger.warn(`
+/ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * /
+/ * * WARNING WARNING WARNING WARNING WARNING WARNING * * * * /
+/ * * WARNING WARNING WARNING WARNING WARNING WARNING * * * * /
+/ * * WARNING WARNING WARNING WARNING WARNING WARNING * * * * /
+/ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * /
+/ * * * ft-next-express v15 is deprecated, and will * * * * * /
+/ * * * start failing builds soon.  * * * * * * * * * * * * * /
+/ * * * Please upgrade to @financial-times/n-express v16  * * /
+/ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * /
+/ * * WARNING WARNING WARNING WARNING WARNING WARNING * * * * /
+/ * * WARNING WARNING WARNING WARNING WARNING WARNING * * * * /
+/ * * WARNING WARNING WARNING WARNING WARNING WARNING * * * * /
+/ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * /
+`);
+	}
+}
+
 module.exports = function(options) {
 	options = options || {};
 
