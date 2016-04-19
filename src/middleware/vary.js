@@ -10,7 +10,7 @@ function extendVary (val, set) {
 
 module.exports = function(req, res, next) {
 	const resSet = res.set;
-	const varyOn = new Set(['country-code']);
+	const varyOn = new Set([]);
 
 	res.set('vary', Array.from(varyOn).join(', '));
 

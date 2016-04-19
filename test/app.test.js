@@ -65,7 +65,7 @@ describe('simple app', function() {
 		it('set default vary headers', function (done) {
 			request(app)
 				.get('/default-vary')
-				.expect('vary', 'country-code, x-flags, ft-anonymous-user')
+				.expect('vary', 'x-flags, ft-anonymous-user')
 				.expect(200, done);
 
 		});
@@ -73,28 +73,28 @@ describe('simple app', function() {
 		it('extend vary header using single value', function (done) {
 			request(app)
 				.get('/single-vary')
-				.expect('vary', 'country-code, x-flags, ft-anonymous-user, test-vary')
+				.expect('vary', 'x-flags, ft-anonymous-user, test-vary')
 				.expect(200, done);
 		});
 
 		it('extend vary header using vary method', function (done) {
 			request(app)
 				.get('/vary-method')
-				.expect('vary', 'country-code, x-flags, ft-anonymous-user, test-vary')
+				.expect('vary', 'x-flags, ft-anonymous-user, test-vary')
 				.expect(200, done);
 		});
 
 		it('extend vary header using array of values', function (done) {
 			request(app)
 				.get('/array-vary')
-				.expect('vary', 'country-code, x-flags, ft-anonymous-user, test-vary1, test-vary2')
+				.expect('vary', 'x-flags, ft-anonymous-user, test-vary1, test-vary2')
 				.expect(200, done);
 		});
 
 		it('won\'t duplicate vary headers', function (done) {
 			request(app)
 				.get('/duplicate-vary')
-				.expect('vary', 'country-code, x-flags, ft-anonymous-user')
+				.expect('vary', 'x-flags, ft-anonymous-user')
 				.expect(200, done);
 		});
 
@@ -102,7 +102,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/multiple-vary')
 				.expect('test-header', 'is-set')
-				.expect('vary', 'country-code, x-flags, ft-anonymous-user, test-vary')
+				.expect('vary', 'x-flags, ft-anonymous-user, test-vary')
 				.expect(200, done);
 		});
 
