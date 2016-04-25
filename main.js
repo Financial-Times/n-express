@@ -140,6 +140,7 @@ module.exports = function(options) {
 		res.send(JSON.stringify({
 			schemaVersion: 1,
 			name: "Next FT " + app.locals.__name,
+			systemCode: options.systemCode,
 			description: description,
 			checks: checks
 		}, undefined, 2));
