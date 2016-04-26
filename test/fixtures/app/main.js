@@ -127,6 +127,16 @@ app.get('/mixed-vary', function (req, res) {
 	res.sendStatus(200);
 });
 
+app.get('/cache', (req, res) => {
+	res.cache(req.query.length)
+	res.sendStatus(200);
+});
+
+app.post('/cache', require('body-parser').json(), (req, res) => {
+	res.cache(req.body[0], req.body[1]);
+	res.sendStatus(200);
+});
+
 var router = new express.Router();
 
 app.use('/router', router);

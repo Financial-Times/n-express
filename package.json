@@ -18,6 +18,7 @@
     "next-metrics": "^1.16.1"
   },
   "devDependencies": {
+    "body-parser": "^1.15.0",
     "chai": "^3.0.0",
     "eslint": "^2.5.3",
     "lintspaces-cli": "^0.1.1",

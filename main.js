@@ -15,6 +15,7 @@ const normalizeName = require('./src/normalize-name');
 const anon = require('./src/anon');
 const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
+const cache = require('./src/middleware/cache');
 
 module.exports = function(options) {
 
@@ -164,6 +165,7 @@ module.exports = function(options) {
 		});
 	}
 
+	app.use(cache);
 	app.use(vary);
 
 	metrics.init({ app: name, flushEvery: 40000 });

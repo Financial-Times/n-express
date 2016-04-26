@@ -3,43 +3,43 @@
 // Note - private/public declarations will automatically be added as appropriate if not specified
 const presets = {
 	no: {
-		maxAge: 0,
+		'max-age': 0,
 		conditions: 'no-cache, no-store, must-revalidate'
 	},
 	short: {
-		maxAge: 600,
-		staleWhileRevalidate: 60,
-		staleIfError: 86400
+		'max-age': 600,
+		'stale-while-revalidate': 60,
+		'stale-if-error': 86400
 	},
 	hour: {
-		maxAge: 3600,
-		staleWhileRevalidate: 60,
-		staleIfError: 86400
+		'max-age': 3600,
+		'stale-while-revalidate': 60,
+		'stale-if-error': 86400
 	},
 	day: {
-		maxAge: 86400,
-		staleWhileRevalidate: 60,
-		staleIfError: 86400
+		'max-age': 86400,
+		'stale-while-revalidate': 60,
+		'stale-if-error': 86400
 	},
 	long: {
-		maxAge: 86400,
-		staleWhileRevalidate: 60,
-		staleIfError: 259200
+		'max-age': 86400,
+		'stale-while-revalidate': 60,
+		'stale-if-error': 259200
 	}
 }
 
 function headerObjToString(obj) {
 	const parts = [];
-	if (obj.maxAge) {
-		parts.push(`max-age=${obj.maxAge}`);
+	if (obj['max-age']) {
+		parts.push(`max-age=${obj['max-age']}`);
 	}
 
-	if (obj.staleWhileRevalidate) {
-		parts.push(`stale-while-revalidate=${obj.staleWhileRevalidate}`);
+	if (obj['stale-while-revalidate']) {
+		parts.push(`stale-while-revalidate=${obj['stale-while-revalidate']}`);
 	}
 
-	if (obj.staleIfError) {
-		parts.push(`stale-if-error=${obj.staleIfError}`);
+	if (obj['stale-if-error']) {
+		parts.push(`stale-if-error=${obj['stale-if-error']}`);
 	}
 
 	if (obj.conditions) {
@@ -52,17 +52,21 @@ function headerObjToString(obj) {
 		parts.push(`public`);
 	}
 
-	return parts.join(',');
+	return parts.join(', ');
 }
 
 const presetStrings = Object.keys(presets).reduce((obj, key) => {
 	obj[key] = privatize(headerObjToString(presets[key]));
+	return obj;
 }, {});
+
+const outboundCacheControl = headerObjToString(presets.no)
 
 const presetNames = Object.keys(presets).join('\n');
 
 function isHeaderString (str) {
-
+	//TODO consider being stricter here
+	return typeof str === 'string' && !/^[a-z]+$/.test(str);
 }
 
 function privatize(str) {
@@ -89,7 +93,6 @@ function setCacheHeaders (setter, surrogate, cache) {
 		}
 		headerObj['Cache-Control'] = cache;
 	}
-
 	return setter(headerObj)
 }
 
@@ -97,20 +100,24 @@ function nextCache (preset, overrides) {
 
 	// allow total flexibility, while still enforcing a few conditions
 	if (isHeaderString(preset)) {
-		return setCacheHeaders(this.set, preset, overrides);
+		return setCacheHeaders(this.set, preset, overrides || outboundCacheControl);
 	}
-
+	// console.log(preset, overrides)
 	let headerVal = presetStrings[preset];
-
+	let outbound = outboundCacheControl;
 	if (!headerVal) {
 		throw `Invalid cache-control preset. Choose from: \n${presetNames}`;
 	}
 
 	if (overrides) {
-		headerVal = headerObjToString(Object.assign({}, headerVal, overrides));
+		headerVal = headerObjToString(Object.assign({}, presets[preset], overrides));
+		if (overrides.public) {
+			outbound = publicize(outbound);
+		} else {
+			headerVal = privatize(headerVal);
+		}
 	}
-
-	return setCacheHeaders(this.set, headerVal, presets.no);
+	return setCacheHeaders(this.set, headerVal, outbound);
 }
 
 module.exports = function(req, res, next) {
