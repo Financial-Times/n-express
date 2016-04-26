@@ -3,15 +3,6 @@
 
 var request = require('supertest');
 var app = require('../fixtures/app/main');
-var metrics = require('next-metrics');
-var sinon = require('sinon');
-var nextExpress = require('../../main');
-var expect = require('chai').expect;
-var raven = require('@financial-times/n-raven');
-var flags = require('next-feature-flags-client');
-var handlebars = require('@financial-times/n-handlebars');
-
-const log = console.log.bind(console);
 
 describe('cache middleware', function () {
 
