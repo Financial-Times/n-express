@@ -28,7 +28,8 @@ Define Cache-Control and Surrogate-Control headers for your response in a way th
 ## Cache varying
 Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition, Accept-Encoding as of Apr 2016 ) as they are required for most responses - the user experience will break if they are not. To control these a few additional methods are provided
 - `res.unvary('My-Header')` - use if your response definitely doesn't need to vary on one of the standard vary headers e.g. .rss probably doesn't need to vary on ft-edition
-- `res.unvaryAll()` - remove all vary headers .*Do not use lightly!!!*
+- `res.unvaryAll('wrapper')` removes all headers included by default for use by the usual next page layout... ideal for serving html fragments, json etc.
+- `res.unvaryAll()` - remove all vary headers. *Do not use lightly!!!*
 - `res.vary('My-Header') - add to the list of vary headers
 
 ## next-metrics
