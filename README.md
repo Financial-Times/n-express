@@ -38,7 +38,7 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 - `res.unvary('My-Header')` - use if your response definitely doesn't need to vary on one of the standard vary headers e.g. .rss probably doesn't need to vary on ft-edition
 - `res.unvaryAll('wrapper')` removes all headers included by default for use by the usual next page layout... ideal for serving html fragments, json etc.
 - `res.unvaryAll()` - remove all vary headers. *Do not use lightly!!!*
-- `res.vary('My-Header') - add to the list of vary headers
+- `res.vary('My-Header')` - add to the list of vary headers
 
 ## next-metrics
 As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`
