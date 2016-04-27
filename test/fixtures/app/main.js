@@ -109,12 +109,12 @@ app.get('/unset-vary', function (req, res) {
 });
 
 app.get('/unset-all-vary', function (req, res) {
-	res.unVaryAll();
+	res.unvaryAll(req.query.preset);
 	res.sendStatus(200);
 });
 
 app.get('/no-empty-vary', function (req, res) {
-	res.unVaryAll();
+	res.unvaryAll();
 	res.vary('thing');
 	res.unVary('thing');
 	res.sendStatus(200);

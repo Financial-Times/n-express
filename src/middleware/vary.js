@@ -36,8 +36,8 @@ module.exports = function(req, res, next) {
 		return resSet.call(res, name, val);
 	}
 
-	res.unVary = function (name) {
-		varyOn.delete(name.toLowerCase());
+	res.unvary = function () {
+		Array.from(arguments).forEach(name => varyOn.delete(name.toLowerCase()))
 		const list = Array.from(varyOn);
 		if (list.length) {
 			res.set('vary', list.join(', '));
@@ -46,10 +46,18 @@ module.exports = function(req, res, next) {
 		}
 	}
 
-	res.unVaryAll = function () {
-		varyOn.clear()
-		res.removeHeader('vary');
+	res.unvaryAll = function (preset) {
+		if (preset === 'wrapper') {
+			res.unVary('ft-anonymous-user', 'ft-edition');
+		} else {
+			varyOn.clear()
+			res.removeHeader('vary');
+		}
 	}
+
+	// backwards compatible uber-camel-cased names
+	res.unVary = res.unvary;
+	res.unVaryAll = res.unvaryAll;
 
 	next();
 };

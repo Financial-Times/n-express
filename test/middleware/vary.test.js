@@ -83,6 +83,13 @@ describe('vary middleware', function () {
 			});
 	});
 
+	it('unset all vary headers needed by the wrapper layout', function (done) {
+		request(app)
+			.get('/unset-all-vary?preset=wrapper')
+			.expect('vary', 'x-flags')
+			.expect(200, done);
+	});
+
 	it('not attempt empty string as vary header', function (done) {
 		request(app)
 			.get('/no-empty-vary')
