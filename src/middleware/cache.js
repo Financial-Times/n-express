@@ -126,3 +126,10 @@ module.exports = function(req, res, next) {
 
 	next();
 };
+
+module.exports.middleware = function (preset, overrides) {
+	return function (req, res, next) {
+		res.cache(preset, overrides);
+		next();
+	}
+}
