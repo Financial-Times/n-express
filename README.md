@@ -24,6 +24,14 @@ Define Cache-Control and Surrogate-Control headers for your response in a way th
 - `no`, `short`, `hour`, `day` or `long` presets can be used e.g. `res.cache('long')`
 - the above can have parts overridden e.g. `res.cache('long', {'stale-on-revalidate': 15000000000000})`
 - can also be passed one or two Cache-Control header strings, which are used for `Surrogate-Control` and outbound `Cache-Control` respectively
+- The above can also be invoked using the middleware pattern e.g.
+```
+const express  = require('@financial-times/n-express');
+const app = express();
+app.get('/', express.cacheMiddleware('short', {'max-age': 5}), myController);
+
+```
+
 
 ## Cache varying
 Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition, Accept-Encoding as of Apr 2016 ) as they are required for most responses - the user experience will break if they are not. To control these a few additional methods are provided

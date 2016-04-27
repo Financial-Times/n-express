@@ -3,8 +3,10 @@
 
 var request = require('supertest');
 var app = require('../fixtures/app/main');
+var sinon = require('sinon');
+var expect = require('chai').expect;
 
-describe('cache middleware', function () {
+describe('cache helper', function () {
 
 	it('set no cache', function (done) {
 		request(app)
@@ -118,3 +120,21 @@ describe('cache middleware', function () {
 			.expect(500, done)
 	});
 });
+
+const express = require('../../main');
+const cache = require('../../src/middleware/cache');
+
+describe('cache middleware provision', function () {
+	it('should export cache middleware', function () {
+		const res = {cache: sinon.stub()};
+		const req = {};
+		const next = sinon.stub();
+
+		expect(express.cacheMiddleware).to.equal(cache.middleware);
+
+		cache.middleware('long', 'anoverride')(req, res, next);
+
+		expect(res.cache.calledWith('long', 'anoverride')).to.be.true;
+		expect(next.calledOnce).to.be.true;
+	});
+})
