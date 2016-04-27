@@ -205,6 +205,13 @@ module.exports = function(options) {
 	const headCssPromise = options.hasHeadCss ? readFile(directory + '/public/head.css', 'utf-8') : Promise.resolve();
 	app.use(headCssMiddleware(headCssPromise));
 
+	if (options.withHandlebars) {
+		app.use(function (req, res, next) {
+			res.vary('FT-Force-Opt-In-Device');
+			next();
+		});
+	}
+
 	const actualAppListen = app.listen;
 
 	app.listen = function() {

@@ -146,6 +146,15 @@ describe('simple app', function() {
 			});
 	});
 
+
+	// By default, app.withHandlebars is true
+	it('should add a `FT-Force-Opt-In-Device` header to the vary for all apps that use handlebars', function (done) {
+		request(app)
+			.get('/')
+			.expect('Vary', /FT-Force-Opt-In-Device/i)
+			.expect(200, 'Hello world', done);
+	});
+
 	describe('metrics', function () {
 
 		beforeEach(function () {
