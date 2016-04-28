@@ -16,14 +16,14 @@ describe('simple app', function() {
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
-			.expect('Vary', /X-Flags/i)
+			.expect('Vary', /FT-Flags/i)
 			.expect(200, 'Hello world', done);
 	});
 
 	it('should be possible to add routers', function(done) {
 		request(app)
 			.get('/router/')
-			.expect('Vary', /X-Flags/i)
+			.expect('Vary', /FT-Flags/i)
 			.expect(200, 'Hello router', done);
 	});
 
