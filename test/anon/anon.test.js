@@ -40,7 +40,7 @@ describe('Anonymous Middleware', function() {
 			.get('/')
 			.set('FT-Access-Decision', 'GRANTED')
 			.set('FT-Access-Decision-Policy', 'PRIVILEGED_REFERER_POLICY')
-			.set('X-Flags', 'firstClickFree:on')
+			.set('FT-Flags', 'firstClickFree:on')
 			.expect(function(){
 				expect(locals.firstClickFreeModel).to.be.an('object');
 				expect(locals.firstClickFreeModel).to.have.property('signInLink');
