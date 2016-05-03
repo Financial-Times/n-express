@@ -45,7 +45,7 @@ As next-metrics must be a singleton to ensure reliable reporting, it is exported
 
 # Other enhancements
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
-- Our [Handlebars](http://handlebarsjs.com/) engine loads partials from `bower_components` and has  anukmber of [additional helpers](https://github.com/Financial-Times/n-handlebars). It also points to [n-layout](https://github.com/Financial-Times/n-layout) to provide a vanilla and 'wrapper' layout
+- Our [Handlebars](http://handlebarsjs.com/) engine loads partials from `bower_components` and has a number of [additional helpers](https://github.com/Financial-Times/n-handlebars). It also points to [n-layout](https://github.com/Financial-Times/n-layout) to provide a vanilla and 'wrapper' layout
 - Errors are sent to sentry using [n-raven](https://github.com/Financial-Times/n-raven)
 - Instrumentation of system and http (incoming and outgoing) performance using [Next Metrics](https://github.com/Financial-Times/next-metrics)
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
