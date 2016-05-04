@@ -1,7 +1,7 @@
 'use strict';
 
 function AnonymousModel(req){
-	if(req.get('FT-User-UUID')){
+	if(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(req.get('FT-User-UUID'))) {
 		this.userIsLoggedIn = true;
 		this.userIsAnonymous = false;
 	}else{
