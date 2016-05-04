@@ -1,8 +1,8 @@
 /*global it, describe*/
-"use strict";
+'use strict';
 
-var request = require('supertest');
-var app = require('./fixtures/app/main');
+const request = require('supertest');
+const app = require('./fixtures/app/main');
 
 describe('health', function() {
 

@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-var fs = require('fs');
-var robots = fs.readFileSync(__dirname + '/robots.txt', { encoding: 'utf8' });
+const fs = require('fs');
+const robots = fs.readFileSync(__dirname + '/robots.txt', { encoding: 'utf8' });
 
 module.exports = function(req, res) {
 	res.set({

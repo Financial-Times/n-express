@@ -19,7 +19,6 @@ const cache = require('./src/middleware/cache');
 
 module.exports = function(options) {
 
-
 	options = options || {};
 
 	const defaults = {
@@ -54,7 +53,7 @@ module.exports = function(options) {
 		}
 	}
 
-	if (!name) throw new Error("Please specify an application name");
+	if (!name) throw new Error('Please specify an application name');
 
 	if (options.withRequestTracing && process.env.NODE_ENV === 'production' && process.env.REQUEST_TRACING === 'on') {
 		if (process.env.TRACE_API_KEY) {
