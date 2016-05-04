@@ -1,10 +1,10 @@
 /*global it, describe, beforeEach, before, after*/
-"use strict";
+'use strict';
 
-var request = require('supertest');
-var app = require('../fixtures/app/main');
-var sinon = require('sinon');
-var expect = require('chai').expect;
+const request = require('supertest');
+const app = require('../fixtures/app/main');
+const sinon = require('sinon');
+const expect = require('chai').expect;
 
 describe('cache helper', function () {
 

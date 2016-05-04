@@ -1,15 +1,15 @@
 /*global it, describe, beforeEach, before, after*/
-"use strict";
+'use strict';
 
-var request = require('supertest');
-var app = require('./fixtures/app/main');
-var metrics = require('next-metrics');
-var sinon = require('sinon');
-var nextExpress = require('../main');
-var expect = require('chai').expect;
-var raven = require('@financial-times/n-raven');
-var flags = require('next-feature-flags-client');
-var handlebars = require('@financial-times/n-handlebars');
+const request = require('supertest');
+const app = require('./fixtures/app/main');
+const metrics = require('next-metrics');
+const sinon = require('sinon');
+const nextExpress = require('../main');
+const expect = require('chai').expect;
+const raven = require('@financial-times/n-raven');
+const flags = require('next-feature-flags-client');
+const handlebars = require('@financial-times/n-handlebars');
 
 describe('simple app', function() {
 
@@ -91,7 +91,7 @@ describe('simple app', function() {
 
 		it('should be possible to disable backend authentication', function (done) {
 			sinon.stub(flags, 'init').returns(Promise.resolve(null));
-			var app = nextExpress({
+			const app = nextExpress({
 				name: 'noBackendAuth',
 				directory: __dirname,
 				withHandlebars: false,
@@ -109,7 +109,7 @@ describe('simple app', function() {
 
 	it('should be possible to disable flags', function (done) {
 		sinon.stub(flags, 'init').returns(Promise.resolve(null));
-		var app = nextExpress({
+		const app = nextExpress({
 			name: 'noflags',
 			directory: __dirname,
 			withHandlebars: false,
@@ -129,7 +129,7 @@ describe('simple app', function() {
 
 	it('should be possible to disable handlebars', function (done) {
 		sinon.stub(handlebars, 'handlebars');
-		var app = nextExpress({
+		const app = nextExpress({
 			name: 'nohandles',
 			directory: __dirname,
 			withHandlebars: false
@@ -170,7 +170,7 @@ describe('simple app', function() {
 
 		it('should count application starts', function (done) {
 			sinon.stub(metrics, 'count');
-			var app = getApp();
+			const app = getApp();
 			app.listen().then(function () {
 				expect(metrics.count.calledWith('express.start')).to.be.true;
 				metrics.count.restore();
@@ -179,7 +179,7 @@ describe('simple app', function() {
 		});
 
 		it('should instrument fetch for recognised services', function (done) {
-			var realFetch = GLOBAL.fetch;
+			const realFetch = GLOBAL.fetch;
 
 			sinon.stub(raven, 'captureMessage');
 			getApp();
@@ -247,7 +247,7 @@ describe('simple app', function() {
 
 		//fixme - this test breaks on Travis
 		it.skip('should integrate with the image service', function(done) {
-			var expected = process.env.TRAVIS ?
+			const expected = process.env.TRAVIS ?
 				/image\.webservices\.ft\.com\/v1\/images\/raw/ :
 				/next-geebee\.ft\.com\/image\/v1\/images\/raw/;
 			request(app)

@@ -1,20 +1,20 @@
 <h1>{{title}} - on app {{__name}}</h1>
 {{#yell}}Hello{{/yell}}
 <h2>Resize test</h2>
-<img src="{{#resize 150}}{{image}}{{/resize}}" />
+<img src='{{#resize 150}}{{image}}{{/resize}}' />
 <h2>Partials test:-</h2>
-<div style="background: yellow">
+<div style='background: yellow'>
 	{{> dep-1/templates/partial }}
 </div>
 
 <h2>Symlinked Partials test:-</h2>
-<div style="background: yellow">
+<div style='background: yellow'>
 	{{> linked-dep-1/templates/partial }}
 </div>
 <h2>Dates test:-</h2>
 <ul>
-	<li>Full date: {{#dateformat "dddd, d mmmm, yyyy"}}{{date}}{{/dateformat}}</li>
-	<li>Custom date: {{#dateformat "dd/mm/yy"}}{{date}}{{/dateformat}}</li>
+	<li>Full date: {{#dateformat 'dddd, d mmmm, yyyy'}}{{date}}{{/dateformat}}</li>
+	<li>Custom date: {{#dateformat 'dd/mm/yy'}}{{date}}{{/dateformat}}</li>
 	<li>ISO date: {{#dateformat}}{{date}}{{/dateformat}}</li>
 </ul>
 
@@ -23,7 +23,7 @@ Start Paragraphs{{{paragraphs text start=1 end=2}}}End Paragraphs
 {{#defineBlock 'block2'}}{{block2override}}{{/defineBlock}}
 {{>inheritanceTest}}
 {{#removeImageTags}}
-Image<img src="someimage.jpg"/>EndImage
+Image<img src='someimage.jpg'/>EndImage
 {{/removeImageTags}}
 
 <undefinedflag-on>{{#flags.undefinedFlag.isSwitchedOn}}
@@ -35,15 +35,15 @@ Should appear
 {{/flags.undefinedFlag.isSwitchedOff}}</undefinedflag-off>
 
 
-ifEquals:{{#ifEquals thing1 "thing1"}}first{{else}}not first{{/ifEquals}} {{#ifEquals thing1 "thing2"}}second{{else}}not second{{/ifEquals}}
+ifEquals:{{#ifEquals thing1 'thing1'}}first{{else}}not first{{/ifEquals}} {{#ifEquals thing1 'thing2'}}second{{else}}not second{{/ifEquals}}
 ifAll:{{#ifAll thing1 thing2 thing3}}first{{else}}not first{{/ifAll}} {{#ifAll thing1 thing2 nothing}}second{{else}}not second{{/ifAll}}
 ifSome:{{#ifSome thing1 nothing}}first{{else}}not first{{/ifSome}} {{#ifSome nothing stillNothing}}second{{else}}not second{{/ifSome}}
 
-slice:{{#slice items limit="2" offset="2"}}{{this}}{{/slice}}:end
+slice:{{#slice items limit='2' offset='2'}}{{this}}{{/slice}}:end
 
-{{encode "http://domain.com?q=this / that" mode='uri'}} {{encode "http://domain.com?q=this / that"}}
+{{encode 'http://domain.com?q=this / that' mode='uri'}} {{encode 'http://domain.com?q=this / that'}}
 {{#resize 200}}http://image.jpg{{/resize}}
 {{#partial}}
 {{usePartial 'dynamic-partial/test'}}
 {{/partial}}
-<div data-it="{{json obj}}"></div>
+<div data-it='{{json obj}}'></div>

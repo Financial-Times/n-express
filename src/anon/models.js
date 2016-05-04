@@ -1,12 +1,12 @@
 'use strict';
 
 function AnonymousModel(req){
-	if(req.get('FT-User-UUID')){
-		this.userIsLoggedIn = true;
-		this.userIsAnonymous = false;
-	}else{
+	if (req.get('FT-Anonymous-User') === 'true'){
 		this.userIsLoggedIn = false;
 		this.userIsAnonymous = true;
+	} else {
+		this.userIsLoggedIn = true;
+		this.userIsAnonymous = false;
 	}
 }
 

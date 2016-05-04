@@ -1,9 +1,9 @@
 /*global it, describe, beforeEach, before, after*/
-"use strict";
+'use strict';
 
-var request = require('supertest');
-var app = require('../fixtures/app/main');
-var expect = require('chai').expect;
+const request = require('supertest');
+const app = require('../fixtures/app/main');
+const expect = require('chai').expect;
 
 describe('vary middleware', function () {
 

@@ -1,16 +1,16 @@
 'use strict';
-var raven = require('@financial-times/n-raven');
-var metrics = require('next-metrics');
-var debounce = require('debounce');
-var unregisteredServices = {};
+const raven = require('@financial-times/n-raven');
+const metrics = require('next-metrics');
+const debounce = require('debounce');
+const unregisteredServices = {};
 
-var getMessage = function () {
-	var message = Object.keys(unregisteredServices).join(', ') + ' services called but no metrics set up. See next-metrics/lib/metrics/services.js';
+const getMessage = function () {
+	const message = Object.keys(unregisteredServices).join(', ') + ' services called but no metrics set up. See next-metrics/lib/metrics/services.js';
 	unregisteredServices = {};
 	return message;
 };
 
-var alerter = debounce(function () {
+const alerter = debounce(function () {
 	raven.captureMessage(getMessage());
 }, 5 * 60 * 1000, true);
 

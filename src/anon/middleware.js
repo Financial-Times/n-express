@@ -1,6 +1,6 @@
 'use strict';
-var anonModels = require('./models');
-var NavigationModel = require('../navigation/navigationModel');
+const anonModels = require('./models');
+const NavigationModel = require('../navigation/navigationModel');
 
 function showFirstClickFree(req, res){
 	return res.locals.flags && res.locals.flags.firstClickFree &&

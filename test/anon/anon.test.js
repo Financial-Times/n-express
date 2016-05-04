@@ -1,12 +1,12 @@
 'use strict';
 /*global describe, it, beforeEach*/
-var request = require('supertest');
-var nextExpress = require('../../main');
-var expect = require('chai').expect;
+const request = require('supertest');
+const nextExpress = require('../../main');
+const expect = require('chai').expect;
 
 describe('Anonymous Middleware', function() {
-	var app;
-	var locals;
+	let app;
+	let locals;
 
 	beforeEach(function(){
 		app = nextExpress({ withFlags:true, withHandlebars:false, withAnonMiddleware:true });
