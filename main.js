@@ -69,6 +69,7 @@ module.exports = function(options) {
 	app.locals.__name = name = normalizeName(name);
 	app.locals.__environment = process.env.NODE_ENV || '';
 	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
+	app.locals.__isBranch = app.locals.__environment.toUpperCase() === 'BRANCH';
 	app.locals.__rootDirectory = directory;
 	const healthChecks = options.healthChecks;
 
