@@ -3,6 +3,7 @@
 
 require('isomorphic-fetch');
 
+const denodeify = require('denodeify');
 const express = require('express');
 const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
@@ -16,6 +17,7 @@ const anon = require('./src/anon');
 const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
+const headCssMiddleware = require('./src/middleware/head-css');
 
 module.exports = function(options) {
 
@@ -28,6 +30,7 @@ module.exports = function(options) {
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
 		withRequestTracing: false,
+		hasHeadCss: false,
 		healthChecks: []
 	};
 
@@ -197,6 +200,11 @@ module.exports = function(options) {
 		app.use(navigation.middleware);
 	}
 
+	// get head css
+	const readFile = denodeify(require('fs').readFile);
+	const headCssPromise = options.hasHeadCss ? readFile(directory + '/public/head.css', 'utf-8') : Promise.resolve();
+	app.use(headCssMiddleware(headCssPromise));
+
 	const actualAppListen = app.listen;
 
 	app.listen = function() {
@@ -208,14 +216,14 @@ module.exports = function(options) {
 			// HACK: Use warn so that it gets into Splunk logs
 			nLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
 			return cb && cb.apply(this, arguments);
-		}
+		};
 
-		return Promise.all([flagsPromise, handlebarsPromise]).then(function() {
-			metrics.count('express.start');
-			actualAppListen.apply(app, args);
-		})
+		return Promise.all([flagsPromise, handlebarsPromise, headCssPromise])
+			.then(function() {
+				metrics.count('express.start');
+				actualAppListen.apply(app, args);
+			})
 			.catch(function(err) {
-
 				// Crash app if flags or handlebars fail
 				setTimeout(function() {
 					throw err;
