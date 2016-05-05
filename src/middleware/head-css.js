@@ -5,6 +5,9 @@ module.exports = function(headCssPromise) {
 			.then(function(headCss) {
 				res.locals.headCss = headCss;
 				next();
+			})
+			.catch(function(err) {
+				next(err);
 			});
 	}
 
