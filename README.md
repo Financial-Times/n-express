@@ -17,6 +17,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `withAnonMiddleware` - sets the user's signed in state in the data model, and varies the response accordingly
 - `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `withRequestTracing` - enables additional instrumentation of requests and responses to track performance
+- `hasHeadCss` - if the app outputs a `head.css` file, read it (assumes it's in the `public` dir) and store in the `res.locals.headCss`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 
 ## Cache control
