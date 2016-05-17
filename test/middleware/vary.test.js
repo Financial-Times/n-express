@@ -25,7 +25,7 @@ describe('vary middleware', function () {
 	it('set default vary headers', function (done) {
 		request(app)
 			.get('/default-vary')
-			.expect('vary', 'ft-flags, ft-anonymous-user')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device')
 			.expect(200, done);
 
 	});
@@ -33,28 +33,28 @@ describe('vary middleware', function () {
 	it('extend vary header using single value', function (done) {
 		request(app)
 			.get('/single-vary')
-			.expect('vary', 'ft-flags, ft-anonymous-user, test-vary')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device, test-vary')
 			.expect(200, done);
 	});
 
 	it('extend vary header using vary method', function (done) {
 		request(app)
 			.get('/vary-method')
-			.expect('vary', 'ft-flags, ft-anonymous-user, test-vary')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device, test-vary')
 			.expect(200, done);
 	});
 
 	it('extend vary header using array of values', function (done) {
 		request(app)
 			.get('/array-vary')
-			.expect('vary', 'ft-flags, ft-anonymous-user, test-vary1, test-vary2')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device, test-vary1, test-vary2')
 			.expect(200, done);
 	});
 
 	it('won\'t duplicate vary headers', function (done) {
 		request(app)
 			.get('/duplicate-vary')
-			.expect('vary', 'ft-flags, ft-anonymous-user')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device')
 			.expect(200, done);
 	});
 
@@ -62,14 +62,14 @@ describe('vary middleware', function () {
 		request(app)
 			.get('/multiple-vary')
 			.expect('test-header', 'is-set')
-			.expect('vary', 'ft-flags, ft-anonymous-user, test-vary')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device, test-vary')
 			.expect(200, done);
 	});
 
 	it('unset single vary header', function (done) {
 		request(app)
 			.get('/unset-vary')
-			.expect('vary', 'ft-flags, ft-anonymous-user')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device')
 			.expect(200, done);
 	});
 
@@ -86,7 +86,7 @@ describe('vary middleware', function () {
 	it('unset all vary headers needed by the wrapper layout', function (done) {
 		request(app)
 			.get('/unset-all-vary?preset=wrapper')
-			.expect('vary', 'ft-flags')
+			.expect('vary', 'ft-flags, ft-force-opt-in-device')
 			.expect(200, done);
 	});
 
@@ -105,7 +105,7 @@ describe('vary middleware', function () {
 		request(app)
 			.get('/mixed-vary')
 			.expect('test-header', 'is-set')
-			.expect('vary', 'ft-flags, ft-anonymous-user, test-vary')
+			.expect('vary', 'ft-flags, ft-anonymous-user, ft-force-opt-in-device, test-vary')
 			.expect(200, done);
 	});
 
