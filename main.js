@@ -207,6 +207,7 @@ module.exports = function(options) {
 
 	if (options.withHandlebars) {
 		app.use(function (req, res, next) {
+			res.locals.forceOptInDevice = req.get('FT-Force-Opt-In-Device') === 'true';
 			res.vary('FT-Force-Opt-In-Device');
 			next();
 		});
