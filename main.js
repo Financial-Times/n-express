@@ -197,6 +197,7 @@ module.exports = function(options) {
 	}
 
 	if (options.withNavigation) {
+		flagsPromise.then(navigation.init);
 		app.use(navigation.middleware);
 	}
 
