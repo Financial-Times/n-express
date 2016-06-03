@@ -142,7 +142,7 @@ module.exports = function(options) {
 		res.set('Content-Type', 'application/json');
 		res.send(JSON.stringify({
 			schemaVersion: 1,
-			name: "Next FT " + app.locals.__name,
+			name: `Next FT.com ${app.locals.__name} in ${process.env.REGION || 'unknown region'}`,
 			systemCode: options.systemCode,
 			description: description,
 			checks: checks
