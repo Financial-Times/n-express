@@ -89,6 +89,22 @@ describe('simple app', function() {
 				.expect(200, done);
 		});
 
+		it('accepts any request with an older access key (1 older)', function (done) {
+			request(app)
+				.get('/')
+				.set('FT-Next-Backend-Key', 'test-backend-key-old')
+				.expect('FT-Backend-Authentication', /true/)
+				.expect(200, done);
+		});
+
+		it('accepts any request with an older access key (2 older)', function (done) {
+			request(app)
+				.get('/')
+				.set('FT-Next-Backend-Key', 'test-backend-key-oldest')
+				.expect('FT-Backend-Authentication', /true/)
+				.expect(200, done);
+		});
+
 		it('should be possible to disable backend authentication', function (done) {
 			sinon.stub(flags, 'init').returns(Promise.resolve(null));
 			const app = nextExpress({

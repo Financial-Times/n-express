@@ -18,6 +18,16 @@ const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
 const headCssMiddleware = require('./src/middleware/head-css');
+const backendKeys = [];
+if (process.env.FT_NEXT_BACKEND_KEY) {
+	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY);
+}
+if (process.env.FT_NEXT_BACKEND_KEY_OLD) {
+	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLD);
+}
+if (process.env.FT_NEXT_BACKEND_KEY_OLDEST) {
+	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLDEST);
+}
 
 module.exports = function(options) {
 
@@ -90,7 +100,7 @@ module.exports = function(options) {
 				// allow healthchecks etc. through
 				req.path.indexOf('/__') === 0) {
 				next();
-			} else if (req.get('FT-Next-Backend-Key') === process.env.FT_NEXT_BACKEND_KEY) {
+			} else if (backendKeys.indexOf(req.get('FT-Next-Backend-Key')) !== -1) {
 				res.set('FT-Backend-Authentication', true);
 				next();
 			} else {
