@@ -188,6 +188,19 @@ module.exports = function(options) {
 
 	let flagsPromise = Promise.resolve();
 
+	app.use((req, res) => {
+		setTimeout(() => {
+			nLogger.error('RESPONSE_TIMED_OUT', {
+				url: req.url
+			});
+			try {
+				res.sendStatus(504)
+			} catch (e) {
+				// avoids sending a 'headers already sent' error to sentry
+			}
+		}, 5000);
+	});
+
 	if (options.withFlags) {
 		flagsPromise = flags.init();
 		app.use(flags.middleware);
@@ -207,6 +220,8 @@ module.exports = function(options) {
 	const headCssPromise = options.hasHeadCss ? readFile(directory + '/public/head.css', 'utf-8') : Promise.resolve();
 	app.use(headCssMiddleware(headCssPromise));
 
+
+
 	if (options.withHandlebars) {
 		app.use(function (req, res, next) {
 			res.locals.forceOptInDevice = req.get('FT-Force-Opt-In-Device') === 'true';
@@ -219,6 +234,7 @@ module.exports = function(options) {
 
 	app.listen = function() {
 		const args = [].slice.apply(arguments);
+
 		app.use(raven.middleware);
 		const port = args[0];
 		const cb = args[1];
