@@ -24,6 +24,10 @@ module.exports = app => {
 		Object.keys(nMakefileAssets.assets.entry).forEach(key => {
 				if (!exists(join(app.__rootDirectory, key))) {
 					throw new Error(`${key} must exist otherwise this app will not be allowed to start`);
+
+					if (process.env.NODE_ENV !== 'production') {
+						logger.warn('if you\'re running in development mode please ensure "make build" has run successfully');
+					}
 				}
 				logger.info({ event: 'ASSERTED_EXISTS', file: key });
 			});
