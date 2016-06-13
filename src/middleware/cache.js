@@ -30,7 +30,9 @@ const presets = {
 
 function headerObjToString(obj) {
 	const parts = [];
-	if (obj['max-age']) {
+
+	// HACK: Use someething smarter than just an if (obj['max-age']) { because in JavaScrypt 0 is *falsey*
+	if ('max-age' in obj) {
 		parts.push(`max-age=${obj['max-age']}`);
 	}
 
