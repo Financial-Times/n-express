@@ -11,15 +11,15 @@ describe('cache helper', function () {
 	it('set no cache', function (done) {
 		request(app)
 			.get('/cache?length=no')
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
-			.expect('Surrogate-Control', 'no-cache, no-store, must-revalidate, private')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
+			.expect('Surrogate-Control', 'max-age=0, no-cache, no-store, must-revalidate, private')
 			.expect(200, done);
 	});
 
 	it('set short cache', function (done) {
 		request(app)
 			.get('/cache?length=short')
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=600, stale-while-revalidate=60, stale-if-error=86400, private')
 			.expect(200, done);
 	});
@@ -27,7 +27,7 @@ describe('cache helper', function () {
 	it('set hour cache', function (done) {
 		request(app)
 			.get('/cache?length=hour')
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400, private')
 			.expect(200, done);
 	});
@@ -35,7 +35,7 @@ describe('cache helper', function () {
 	it('set day cache', function (done) {
 		request(app)
 			.get('/cache?length=day')
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=86400, stale-while-revalidate=60, stale-if-error=86400, private')
 			.expect(200, done);
 	});
@@ -43,7 +43,7 @@ describe('cache helper', function () {
 	it('set long cache', function (done) {
 		request(app)
 			.get('/cache?length=long')
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=86400, stale-while-revalidate=60, stale-if-error=259200, private')
 			.expect(200, done);
 	});
@@ -57,7 +57,7 @@ describe('cache helper', function () {
 				'stale-while-revalidate': 2,
 				'stale-if-error': 3
 			}]))
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=1, stale-while-revalidate=2, stale-if-error=3, private')
 			.expect(200, done);
 	});
@@ -67,7 +67,7 @@ describe('cache helper', function () {
 			.post('/cache')
 			.set('Content-Type', 'application/json')
 			.send(JSON.stringify(['hour', {public: true}]))
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate, public')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate, public')
 			.expect('Surrogate-Control', 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400, public')
 			.expect(200, done);
 	});
@@ -77,7 +77,7 @@ describe('cache helper', function () {
 			.post('/cache')
 			.set('Content-Type', 'application/json')
 			.send(JSON.stringify(['hour', {conditions: 'never-ever-ever-ever=felt-so-bad'}]))
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400, never-ever-ever-ever=felt-so-bad, private')
 			.expect(200, done);
 	});
@@ -87,7 +87,7 @@ describe('cache helper', function () {
 			.post('/cache')
 			.set('Content-Type', 'application/json')
 			.send(JSON.stringify(['hour', {private: true}]))
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400, private')
 			.expect(200, done);
 	});
@@ -97,7 +97,7 @@ describe('cache helper', function () {
 			.post('/cache')
 			.set('Content-Type', 'application/json')
 			.send(JSON.stringify(['max-age=5']))
-			.expect('Cache-Control', 'no-cache, no-store, must-revalidate')
+			.expect('Cache-Control', 'max-age=0, no-cache, no-store, must-revalidate')
 			.expect('Surrogate-Control', 'max-age=5')
 			.expect(200, done);
 	});
