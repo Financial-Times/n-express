@@ -57,13 +57,13 @@ As next-metrics must be a singleton to ensure reliable reporting, it is exported
 
 # Health checks
 
-For an example set of health check results, see [next.ft.com/__health](https://next.ft.com/__health). For testing health checks, the [Health Status Formatter extension for Google Chrome](https://github.com/triblondon/health-status-formatter) is recommended.
+For an example set of health check results, see [ft-next-health-eu.herokuapp.com/__health](https://ft-next-health-eu.herokuapp.com/__health) and [ft-next-health-us.herokuapp.com/__health](https://ft-next-health-us.herokuapp.com/__health). For testing health checks, the [Health Status Formatter extension for Google Chrome](https://github.com/triblondon/health-status-formatter) is recommended.
 
 Health checks can be tested for failures of a specific degree of severity by appending the severity number to the health check URL. This is particularly useful for setting up fine-grained alerting. For example, if on next.ft.com a severity level 2 health check were failing:
 
-https://next.ft.com/__health.1 would return HTTP status 200
-https://next.ft.com/__health.2 would return HTTP status 500
-https://next.ft.com/__health.3 would return HTTP status 500
+https://ft-next-health-eu.herokuapp.com/__health.1 would return HTTP status 200
+https://ft-next-health-eu.herokuapp.com/__health.2 would return HTTP status 500
+https://ft-next-health-eu.herokuapp.com/__health.3 would return HTTP status 500
 
 Each health check must have a getStatus() property, which returns an object meeting the specifications of the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit) and the [FT Check Standard] (https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk#). This might look roughly like the following example:
 
