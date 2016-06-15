@@ -1,11 +1,18 @@
 'use strict';
 const path = require('path');
-let minorVersion = false;
+let version = false;
 try {
-	minorVersion = 'v' + require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json')).version.split(".").slice(0,2).join('.');
+	version = require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json')).version;
+
+	if (!/(beta|rc)/.test(version)) {
+		version = version.split(".").slice(0,2).join('.');
+	}
+
+	version = 'v' + version;
+
 } catch (e) {}
 
 module.exports = function(req, res, next) {
-	res.locals.nUiVersion = minorVersion;
+	res.locals.nUiVersion = version;
 	next()
 };
