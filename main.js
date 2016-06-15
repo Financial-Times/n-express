@@ -42,6 +42,7 @@ module.exports = function(options) {
 		withBackendAuthentication: false,
 		withRequestTracing: false,
 		hasHeadCss: false,
+		hasNUiBundle: false,
 		healthChecks: []
 	};
 
@@ -172,7 +173,10 @@ module.exports = function(options) {
 
 	app.use(cache);
 	app.use(vary);
-	app.use(nUi);
+
+	if (options.hasNUiBundle) {
+		app.use(nUi);
+	}
 
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
