@@ -17,6 +17,7 @@ const anon = require('./src/anon');
 const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
+const nUi = require('./src/middleware/n-ui');
 const headCssMiddleware = require('./src/middleware/head-css');
 const backendKeys = [];
 if (process.env.FT_NEXT_BACKEND_KEY) {
@@ -171,6 +172,7 @@ module.exports = function(options) {
 
 	app.use(cache);
 	app.use(vary);
+	app.use(nUi);
 
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
