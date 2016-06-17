@@ -174,6 +174,7 @@ module.exports = function(options) {
 	app.use(cache);
 	app.use(vary);
 
+	app.locals.assetsDirectory = '';
 	if (options.hasNUiBundle) {
 		app.use(nUi);
 	}
