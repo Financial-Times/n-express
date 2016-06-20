@@ -3,7 +3,6 @@
 
 require('isomorphic-fetch');
 
-const denodeify = require('denodeify');
 const express = require('express');
 const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
@@ -17,10 +16,8 @@ const anon = require('./src/anon');
 const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
-const nUi = require('@financial-times/n-ui');
-const verifyAssets = require('./src/lib/verify-assets');
+const builtAssets = require('./src/lib/built-assets');
 const backendAuthentication = require('./src/middleware/backend-authentication');
-const headCssMiddleware = require('./src/middleware/head-css');
 const healthChecks = require('./src/lib/health-checks');
 
 module.exports = function(options) {
@@ -77,13 +74,7 @@ module.exports = function(options) {
 		app.locals.__version = require(directory + '/public/__about.json').appVersion;
 	} catch (e) {}
 
-	// Only allow authorized upstream applications access
-	if (options.withBackendAuthentication) {
-		app.use(backendAuthentication(name));
-	} else {
-		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
-	}
-
+	// 100% public end points
 	if (!app.locals.__isProduction) {
 		app.use('/' + name, express.static(directory + '/public'));
 	}
@@ -92,10 +83,47 @@ module.exports = function(options) {
 	app.get('/__brew-coffee', function(req, res) {
 		res.sendStatus(418);
 	});
-
 	healthChecks(app, options, description);
+	app.get('/__about', function(req, res) {
+		res.set({ 'Cache-Control': 'no-cache' });
+		res.sendFile(directory + '/public/__about.json');
+	});
+
+	// metrics should be one of the first things as needs to be applied before any other middleware executes
+	metrics.init({ app: name, flushEvery: 40000 });
+	app.use(function(req, res, next) {
+		metrics.instrument(req, { as: 'express.http.req' });
+		metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
+
+	serviceMetrics.init(options.serviceDependencies);
 
 
+	// Only allow authorized upstream applications access
+	if (options.withBackendAuthentication) {
+		app.use(backendAuthentication(name));
+	} else {
+		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
+	}
+
+	// utility middleware
+	app.use(cache);
+	app.use(vary);
+
+	// feature flags
+	let flagsPromise = Promise.resolve();
+
+	if (options.withFlags) {
+		flagsPromise = flags.init();
+		app.use(flags.middleware);
+	}
+
+	// verification that expected assets exist and middleware to serve correctly
+	// (Note - must run after feature flags)
+	const assetsPromise = builtAssets(app, options, description, name);
+
+	// templating
 	let handlebarsPromise = Promise.resolve();
 
 	if (options.withHandlebars) {
@@ -114,57 +142,17 @@ module.exports = function(options) {
 		});
 	}
 
-	app.use(cache);
-	app.use(vary);
-
-
-
-	metrics.init({ app: name, flushEvery: 40000 });
-	app.use(function(req, res, next) {
-		metrics.instrument(req, { as: 'express.http.req' });
-		metrics.instrument(res, { as: 'express.http.res' });
-		next();
-	});
-
-	serviceMetrics.init(options.serviceDependencies);
-
-
-	app.get('/__about', function(req, res) {
-		res.set({ 'Cache-Control': 'no-cache' });
-		res.sendFile(directory + '/public/__about.json');
-	});
-
-	let flagsPromise = Promise.resolve();
-
-	if (options.withFlags) {
-		flagsPromise = flags.init();
-		app.use(flags.middleware);
-	}
-
-
-	verifyAssets.verify(app.locals);
-
-	if (options.hasNUiBundle) {
-		if (!options.withFlags) {
-			throw new Error('To use n-ui bundle please also enable flags by passing in `withFlags: true` as an option to n-express');
-		}
-		app.use(nUi.middleware);
-	}
-
-	// get head css
-	const readFile = denodeify(require('fs').readFile);
-	const headCssPromise = options.hasHeadCss ? readFile(directory + '/public/head.css', 'utf-8') : Promise.resolve();
-	app.use(headCssMiddleware(headCssPromise));
-
-	if (options.withAnonMiddleware) {
-		app.use(anon.middleware);
-	}
-
+	// add statutory metadata to construct the page
 	if (options.withNavigation) {
 		flagsPromise.then(navigation.init);
 		app.use(navigation.middleware);
 	}
 
+	if (options.withAnonMiddleware) {
+		app.use(anon.middleware);
+	}
+
+	// Handle th eakami -> fastly -> akamai etc. circular redirect bug
 	if (options.withHandlebars) {
 		app.use(function (req, res, next) {
 			res.locals.forceOptInDevice = req.get('FT-Force-Opt-In-Device') === 'true';
@@ -173,6 +161,7 @@ module.exports = function(options) {
 		});
 	}
 
+	// Start the app - Woo hoo!
 	const actualAppListen = app.listen;
 
 	app.listen = function() {
@@ -186,7 +175,7 @@ module.exports = function(options) {
 			return cb && cb.apply(this, arguments);
 		};
 
-		return Promise.all([flagsPromise, handlebarsPromise, headCssPromise])
+		return Promise.all([flagsPromise, handlebarsPromise, assetsPromise])
 			.then(function() {
 				metrics.count('express.start');
 				actualAppListen.apply(app, args);
@@ -202,6 +191,7 @@ module.exports = function(options) {
 	return app;
 };
 
+// expose internals the app may want access to
 module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.metrics = metrics;

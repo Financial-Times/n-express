@@ -4,14 +4,14 @@ const request = require('supertest');
 const nextExpress = require('../../main');
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const verifyAssets = require('../../src/lib/verify-assets');
+const verifyAssetsExist = require('../../src/lib/verify-assets-exist');
 
 describe('Anonymous Middleware', function() {
 	let app;
 	let locals;
 
 	beforeEach(function(){
-		sinon.stub(verifyAssets, 'verify');
+		sinon.stub(verifyAssetsExist, 'verify');
 		app = nextExpress({ withFlags:true, withHandlebars:false, withAnonMiddleware:true });
 		app.get('/', function(req, res){
 			locals = res.locals;
@@ -20,7 +20,7 @@ describe('Anonymous Middleware', function() {
 	});
 
 	afterEach(() => {
-		verifyAssets.verify.restore();
+		verifyAssetsExist.verify.restore();
 	});
 
 	it('Should set the res.locals.anon property', function(done){

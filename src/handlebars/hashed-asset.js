@@ -4,7 +4,6 @@ const logger = require('@financial-times/n-logger').default;
 
 module.exports = app => {
 	let assetHashes;
-	let nMakefileAssets;
 
 	try {
 		assetHashes = require(`${app.__rootDirectory}/public/asset-hashes.json`);

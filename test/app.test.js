@@ -10,7 +10,7 @@ const expect = require('chai').expect;
 const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
 const handlebars = require('@financial-times/n-handlebars');
-const verifyAssets = require('../src/lib/verify-assets');
+const verifyAssetsExist = require('../src/lib/verify-assets-exist');
 
 describe('simple app', function() {
 
@@ -108,7 +108,7 @@ describe('simple app', function() {
 
 		it('should be possible to disable backend authentication', function (done) {
 			sinon.stub(flags, 'init').returns(Promise.resolve(null));
-			sinon.stub(verifyAssets, 'verify');
+			sinon.stub(verifyAssetsExist, 'verify');
 			const app = nextExpress({
 				name: 'noBackendAuth',
 				directory: __dirname,
@@ -121,7 +121,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/let-me-in')
 				.expect(200, () => {
-					verifyAssets.verify.restore();
+					verifyAssetsExist.verify.restore();
 					done();
 				});
 		});
@@ -130,7 +130,7 @@ describe('simple app', function() {
 
 	it('should be possible to disable flags', function (done) {
 
-		sinon.stub(verifyAssets, 'verify');
+		sinon.stub(verifyAssetsExist, 'verify');
 		sinon.stub(flags, 'init').returns(Promise.resolve(null));
 		const app = nextExpress({
 			name: 'noflags',
@@ -146,14 +146,14 @@ describe('simple app', function() {
 			.get('/')
 			.expect(200, function () {
 				flags.init.restore();
-				verifyAssets.verify.restore();
+				verifyAssetsExist.verify.restore();
 				done();
 			});
 	});
 
 	it('should be possible to disable handlebars', function (done) {
 		sinon.stub(handlebars, 'handlebars');
-		sinon.stub(verifyAssets, 'verify');
+		sinon.stub(verifyAssetsExist, 'verify');
 		const app = nextExpress({
 			name: 'nohandles',
 			directory: __dirname,
@@ -167,7 +167,7 @@ describe('simple app', function() {
 			.get('/')
 			.expect(200, function () {
 				handlebars.handlebars.restore();
-				verifyAssets.verify.restore();
+				verifyAssetsExist.verify.restore();
 				done();
 			});
 	});
