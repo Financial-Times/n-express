@@ -31,7 +31,7 @@ module.exports = app => {
 
 	return function(options) {
 		const file = options.fn(this);
-		const fallback = `/${app.__name}/${file}`;
+		const fallback = `/${app.__name}/${options.data.root.assetsDirectory}${file}`;
 		const hash = assetHashes && assetHashes[file];
 
 		if (!app.__isProduction || !hash) {

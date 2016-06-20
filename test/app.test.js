@@ -12,7 +12,7 @@ const flags = require('next-feature-flags-client');
 const handlebars = require('@financial-times/n-handlebars');
 
 describe('simple app', function() {
-
+	before(() => app.listen);
 	it('should have its own route', function(done) {
 		request(app)
 			.get('/')
@@ -271,8 +271,8 @@ describe('simple app', function() {
 		});
 
 		//fixme - this test breaks on Travis
-		it.skip('should integrate with the image service', function(done) {
-			const expected = process.env.TRAVIS ?
+		it('should integrate with the image service', function(done) {
+			const expected = process.env.CIRCLE_BUILD_NUM?
 				/image\.webservices\.ft\.com\/v1\/images\/raw/ :
 				/next-geebee\.ft\.com\/image\/v1\/images\/raw/;
 			request(app)
@@ -297,6 +297,26 @@ describe('simple app', function() {
 				.get('/templated')
 				.expect(200, /on app demo-app/, done);
 		});
+
+		it('should serve assets from ./public by default', function (done) {
+			request(app)
+				.get('/templated')
+				.expect(200, /<script src="\/demo-app\/thing\.js"><\/script>/, done);
+		});
+
+		it('should serve assets from custom subdirectory', function (done) {
+			request(app)
+				.get('/templated?assetsDirectory=place/')
+				.expect(200, /<script src="\/demo-app\/place\/thing\.js"><\/script>/, done);
+		});
+
+		it.only('based on a n-ui flag, it should serve assets from n-ui subdirectory', function (done) {
+			request(app)
+				.get('/templated')
+				.set('FT-Flags', 'externalNUiBundle:on')
+				.expect(200, /<script src="\/demo-app\/external-n-ui\/thing\.js"><\/script>/, done);
+		});
+
 
 		describe('n-handlebars features', function () {
 

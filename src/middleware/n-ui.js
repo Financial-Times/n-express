@@ -14,5 +14,8 @@ try {
 
 module.exports = function(req, res, next) {
 	res.locals.nUiVersion = version;
+	if (res.locals.flags.externalNUiBundle) {
+		res.locals.assetsDirectory = 'external-n-ui/';
+	}
 	next()
 };
