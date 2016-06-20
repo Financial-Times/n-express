@@ -47,3 +47,4 @@ slice:{{#slice items limit='2' offset='2'}}{{this}}{{/slice}}:end
 {{usePartial 'dynamic-partial/test'}}
 {{/partial}}
 <div data-it='{{json obj}}'></div>
+<script src="{{#hashedAsset}}thing.js{{/hashedAsset}}"></script>
