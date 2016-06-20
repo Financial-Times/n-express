@@ -121,8 +121,7 @@ module.exports = function(options) {
 
 	// verification that expected assets exist and middleware to serve correctly
 	// (Note - must run after feature flags)
-	const assetsPromise = builtAssets(app, options, description, name);
-
+	const assetsPromise = builtAssets(app, options, directory, name);
 	// templating
 	let handlebarsPromise = Promise.resolve();
 

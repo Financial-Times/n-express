@@ -3,11 +3,9 @@
 const nUi = require('@financial-times/n-ui');
 const headCssMiddleware = require('../middleware/head-css');
 const verifyAssetsExist = require('./verify-assets-exist');
-const express = require('express');
 const denodeify = require('denodeify');
 
-module.exports = function (app, options, directory, name) {
-
+module.exports = function (app, options, directory) {
 	verifyAssetsExist.verify(app.locals);
 
 	if (options.hasNUiBundle) {

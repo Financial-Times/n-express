@@ -1,25 +1,35 @@
 'use strict';
-const exists = require('fs').existsSync;
+const fs = require('fs');
+const exists = fs.existsSync;
 const join = require('path').join;
 const logger = require('@financial-times/n-logger').default;
 
 module.exports = {
 	verify: app => {
-		let nMakefileAssets;
+		const gitignore = fs.readFileSync(`${app.__rootDirectory}/.gitignore`, 'utf8')
+			.split('\n');
 
-		try {
-			nMakefileAssets = require(`${app.__rootDirectory}/n-makefile.json`);
-		} catch(err) {
-			throw new Error('n-makefile.json must exist for n-express to start');
-		}
+		const expectedFiles = gitignore.filter(pattern => {
+			if (/^\/public\/(.*\/\*|\*|$)/.test(pattern)) {
+				throw new Error(`Wildcard pattern for public assets not allowed in your .gitignore. Please specify a path for each file`);
+			}
+			if (/^\/?public.*(css|js)$/.test(pattern)) {
+				if (!exists(join(app.__rootDirectory, pattern))) {
+					throw new Error(`${pattern} must exist otherwise this app will not be allowed to start`);
+				}
+				logger.info({ event: 'ASSERTED_EXISTS', file: pattern });
+				return pattern;
+			}
+		});
 
-		if (nMakefileAssets && nMakefileAssets.assets && nMakefileAssets.assets.entry) {
-			Object.keys(nMakefileAssets.assets.entry).forEach(key => {
-					if (!exists(join(app.__rootDirectory, key))) {
-						throw new Error(`${key} must exist otherwise this app will not be allowed to start`);
+		fs.readdirSync(`${app.__rootDirectory}/public`)
+			.forEach(file => {
+				console.log(file, expectedFiles)
+				if (/(css|js)$/.test(file)) {
+					if (expectedFiles.indexOf(`/public/${file}`) === -1) {
+						throw new Error(`Built file ${file} exists but is not in your .gitignore. Please add it or the app will not start`);
 					}
-					logger.info({ event: 'ASSERTED_EXISTS', file: key });
-				});
-		}
+				}
+			})
 	}
 }

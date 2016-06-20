@@ -4,3 +4,4 @@
 /.idea/
 .editorconfig
 .eslintrc.json
+/test/fixtures/bad-assets/public/
