@@ -18,6 +18,7 @@ const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
 const nUi = require('@financial-times/n-ui');
+const verifyAssets = require('./src/lib/verify-assets');
 
 const headCssMiddleware = require('./src/middleware/head-css');
 const backendKeys = [];
@@ -174,6 +175,8 @@ module.exports = function(options) {
 
 	app.use(cache);
 	app.use(vary);
+
+	verifyAssets.verify(app.locals);
 
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {

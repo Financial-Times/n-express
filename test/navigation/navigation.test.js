@@ -3,17 +3,24 @@
 const request = require('supertest');
 const nextExpress = require('../../main');
 const expect = require('chai').expect;
+const sinon = require('sinon');
+const verifyAssets = require('../../src/lib/verify-assets');
 
 describe('Navigation model', () => {
 	let app;
 	let locals;
 
 	beforeEach(() => {
+		sinon.stub(verifyAssets, 'verify');
 		app = nextExpress({ withNavigation: true, withAnonMiddleware: true, withFlags:true, withHandlebars:false });
 		app.get('/', (req, res) => {
 			locals = res.locals;
 			res.sendStatus(200).end();
 		});
+	});
+
+	afterEach(() => {
+		verifyAssets.verify.restore();
 	});
 
 	it('Should set the myFT property to an object if user is not anonymous', done => {
