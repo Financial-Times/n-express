@@ -17,7 +17,8 @@ const anon = require('./src/anon');
 const serviceMetrics = require('./src/service-metrics');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
-const nUi = require('./src/middleware/n-ui');
+const nUi = require('@financial-times/n-ui');
+
 const headCssMiddleware = require('./src/middleware/head-css');
 const backendKeys = [];
 if (process.env.FT_NEXT_BACKEND_KEY) {
@@ -174,10 +175,6 @@ module.exports = function(options) {
 	app.use(cache);
 	app.use(vary);
 
-	if (options.hasNUiBundle) {
-		app.use(nUi);
-	}
-
 	metrics.init({ app: name, flushEvery: 40000 });
 	app.use(function(req, res, next) {
 		metrics.instrument(req, { as: 'express.http.req' });
@@ -197,6 +194,13 @@ module.exports = function(options) {
 	if (options.withFlags) {
 		flagsPromise = flags.init();
 		app.use(flags.middleware);
+	}
+
+	if (options.hasNUiBundle) {
+		if (!options.withFlags) {
+			throw new Error('To use n-ui bundle please also enable flags by passing in `withFlags: true` as an option to n-express');
+		}
+		app.use(nUi.middleware);
 	}
 
 	if (options.withAnonMiddleware) {
