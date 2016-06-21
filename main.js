@@ -134,8 +134,8 @@ module.exports = function(options) {
 				directory + '/views/partials'
 			],
 			defaultLayout: false,
-			// The most common use case, n-layout is not bundled with tis package
-			layoutsDir: typeof options.layoutsDir !== 'undefined' ? options.layoutsDir : (directory + '/bower_components/n-layout/templates'),
+			// The most common use case, n-ui/layout is not bundled with this package
+			layoutsDir: typeof options.layoutsDir !== 'undefined' ? options.layoutsDir : (directory + '/bower_components/n-ui/layout'),
 			helpers: helpers,
 			directory: directory
 		});
