@@ -38,9 +38,30 @@ describe('built asset expectations', () => {
 		})
 
 	});
+
 	it('should start if assets and gitignore match', () => {
 		createGitignore('/public/main.js', '/public/main.css', '/public/about.json');
 		return shellpromise(`touch ${appPath}/public/about.json`)
 			.then(appStart);
 	});
+
+	it('should start if public directory in gitignore', () => {
+		createGitignore('/public/');
+		return shellpromise(`touch ${appPath}/public/about.json`)
+			.then(appStart);
+	});
+
+	it('should start if wildcarded public directory in gitignore', () => {
+		createGitignore('/public/*');
+		return shellpromise(`touch ${appPath}/public/about.json`)
+			.then(appStart);
+	});
+
+	it('should start if no mention of public in gitignore', () => {
+		createGitignore('cat', 'dog');
+		return shellpromise(`touch ${appPath}/public/about.json`)
+			.then(appStart);
+	});
+
+
 });
