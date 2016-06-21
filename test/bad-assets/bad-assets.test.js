@@ -18,35 +18,12 @@ function createGitignore () {
 describe('built asset expectations', () => {
 	before(() => shellpromise(`mkdir -p ${appPath}/public`, { verbose: true }));
 
+	// otherwise fails linting
+	after(() => shellpromise(`rm ${appPath}/.gitignore`, { verbose: true }));
 	beforeEach(() => Promise.all([
 		shellpromise(`touch ${appPath}/public/main.js`),
 		shellpromise(`touch ${appPath}/public/main.css`)
 	]))
-
-	describe('should fail to start if gitignore contains wildcards', () => {
-		['/public/', '/public/*', '/public/place/*']
-			.forEach(pattern => {
-				it(`should fail to start if the wildcard pattern ${pattern} is in .gitignore`, () => {
-					createGitignore(pattern);
-					return appStart()
-						.then(() => {
-							throw new Error('app should not have successfully started');
-						}, err => {
-							expect(err.toString()).to.contain('Wildcard pattern for public assets not allowed');
-						});
-				});
-			})
-	});
-
-	it('should fail to start if there is an unignored asset', () => {
-		createGitignore('/public/main.js');
-		return appStart()
-			.then(() => {
-				throw new Error('app should not have successfully started');
-			}, err => {
-				expect(err.toString()).to.contain('main.css');
-			});
-	});
 
 	it('should fail to start if there is a missing asset', () => {
 		createGitignore('/public/main.js', '/public/main.css');
@@ -61,18 +38,9 @@ describe('built asset expectations', () => {
 		})
 
 	});
-
-
-
-
 	it('should start if assets and gitignore match', () => {
-		createGitignore('/public/main.js', '/public/main.css');
-		return appStart();
-	});
-
-	it('shouldn\'t give a monkey\'s about non css or js files (for now)', () => {
-		createGitignore('/public/main.js', '/public/main.css', '/public/hat.json');
-		return shellpromise(`touch ${appPath}/public/coat.svg`, { verbose: true })
+		createGitignore('/public/main.js', '/public/main.css', '/public/about.json');
+		return shellpromise(`touch ${appPath}/public/about.json`)
 			.then(appStart);
 	});
 });
