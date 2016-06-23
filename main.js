@@ -19,6 +19,7 @@ const cache = require('./src/middleware/cache');
 const builtAssets = require('./src/lib/built-assets');
 const backendAuthentication = require('./src/middleware/backend-authentication');
 const healthChecks = require('./src/lib/health-checks');
+const concatHelper = require('./src/handlebars/concat')
 
 module.exports = function(options) {
 
@@ -128,6 +129,7 @@ module.exports = function(options) {
 	if (options.withHandlebars) {
 		const helpers = options.helpers || {};
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app.locals);
+		helpers.concat = concatHelper;
 
 		handlebarsPromise = handlebars(app, {
 			partialsDir: [
