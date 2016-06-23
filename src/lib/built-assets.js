@@ -1,9 +1,11 @@
 'use strict';
 
 const nUi = require('@financial-times/n-ui');
+const denodeify = require('denodeify');
+const fs = require('fs');
+
 const headCssMiddleware = require('../middleware/head-css');
 const verifyAssetsExist = require('./verify-assets-exist');
-const denodeify = require('denodeify');
 
 module.exports = function (app, options, directory) {
 	verifyAssetsExist.verify(app.locals);
@@ -15,10 +17,24 @@ module.exports = function (app, options, directory) {
 		app.use(nUi.middleware);
 	}
 
-	// get head css
-	const readFile = denodeify(require('fs').readFile);
-	const headCssPromise = options.hasHeadCss ? readFile(directory + '/public/head.css', 'utf-8') : Promise.resolve();
+	// get head css(es)
+	const readDir = denodeify(fs.readdir);
+	const readFile = denodeify(fs.readFile);
+	const headCssPromise = options.hasHeadCss ?
+		readDir(`${directory}/public`)
+			.then(files =>
+				Promise.all(
+					files
+						.filter(filename => /^head[\-a-z]*\.css$/.test(filename))
+						.map(headFilename =>
+							readFile(`${directory}/public/${headFilename}`, 'utf-8')
+								.then(data => [headFilename.replace('.css', ''), data])
+						)
+				)
+			) :
+		Promise.resolve([]);
+
 	app.use(headCssMiddleware(headCssPromise));
 
 	return headCssPromise;
-}
+};

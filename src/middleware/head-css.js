@@ -1,14 +1,14 @@
-module.exports = function(headCssPromise) {
-
-	return function(req, res, next) {
+module.exports = headCssPromise =>
+	(req, res, next) => {
 		headCssPromise
-			.then(function(headCss) {
-				res.locals.headCss = headCss;
+			.then(headCsses => {
+				res.locals.headCss = headCsses.reduce((headCss, currentHeadCss) => {
+					headCss[currentHeadCss[0]] = currentHeadCss[1];
+					return headCss;
+				}, {});
 				next();
 			})
-			.catch(function(err) {
+			.catch(err => {
 				next(err);
 			});
-	}
-
-};
+	};
