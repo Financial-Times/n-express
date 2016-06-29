@@ -26,7 +26,7 @@ module.exports = {
 
 		// check each ignored /public file has been built
 		gitignore.filter(pattern => {
-			if (/^\/?public.*(css|js|json)$/.test(pattern)) {
+			if (/^\/?public.*(css|js)$/.test(pattern)) {
 				if (!exists(join(app.__rootDirectory, pattern))) {
 					throw new Error(`${pattern} must exist otherwise this app will not be allowed to start`);
 				}
