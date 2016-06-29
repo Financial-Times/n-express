@@ -31,6 +31,13 @@ module.exports = function (app, options, directory) {
 								.then(data => [headFilename.replace('.css', ''), data])
 						)
 				)
+			)
+			.then(headCsses =>
+				// turn the array of arrays into an object, key the filename, value the data
+				headCsses.reduce((currentHeadCsses, currentHeadCss) => {
+					currentHeadCsses[currentHeadCss[0]] = currentHeadCss[1];
+					return currentHeadCsses;
+				}, {})
 			) :
 		Promise.resolve([]);
 
