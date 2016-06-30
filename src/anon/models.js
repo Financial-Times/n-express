@@ -8,6 +8,11 @@ function AnonymousModel(req){
 		this.userIsLoggedIn = true;
 		this.userIsAnonymous = false;
 	}
+
+	// HACK
+	if (req.get('FT-AB') && req.get('FT-AB').indexOf('brexitDiscountType') !== -1) {
+		this.brexitDiscountVariant = true;
+	}
 }
 
 function FirstClickFreeModel(){

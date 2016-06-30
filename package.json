@@ -1,6 +1,6 @@
 {
   "name": "@financial-times/n-express",
-  "version": "16.15.2",
+  "version": "16.15.5",
   "main": "main.js",
   "scripts": {
     "test": "make test"
