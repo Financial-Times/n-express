@@ -180,7 +180,7 @@ module.exports = function(options) {
 		return Promise.all([flagsPromise, handlebarsPromise, assetsPromise])
 			.then(function() {
 				metrics.count('express.start');
-				actualAppListen.apply(app, args);
+				return actualAppListen.apply(app, args);
 			})
 			.catch(function(err) {
 				// Crash app if flags or handlebars fail
