@@ -16,7 +16,8 @@ module.exports = app => {
 		const fallback = `/${app.__name}/${file}`;
 		const hash = assetHashes && assetHashes[file];
 
-		if (!app.__isProduction || !hash) {
+		// Use fallback if the environment is not production AND not a branch build OR if there is no hash available.
+		if ((!app.__isProduction && !app.__isBranch) || !hash) {
 			return fallback;
 		}
 
