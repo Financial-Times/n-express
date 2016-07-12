@@ -10,7 +10,8 @@ const app = module.exports = express({
 	helpers: { yell: yell },
 	withFlags: true,
 	withHandlebars: true,
-	withNavigation: false,
+	withNavigation: true,
+	withNavigationHierarchy: true,
 	withAnonMiddleware: true,
 	withBackendAuthentication: true,
 	layoutsDir: __dirname + '/views/'

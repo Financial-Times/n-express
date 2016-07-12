@@ -7,7 +7,7 @@ const express = require('express');
 const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
 const handlebars = require('@financial-times/n-handlebars');
-const navigation = require('@financial-times/n-navigation');
+const NavigationModel = require('./src/navigation/navigationModel');
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
 const robots = require('./src/express/robots');
@@ -29,6 +29,7 @@ module.exports = function(options) {
 		withFlags: false,
 		withHandlebars: false,
 		withNavigation: false,
+		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
 		withRequestTracing: false,
@@ -112,26 +113,27 @@ module.exports = function(options) {
 	app.use(cache);
 	app.use(vary);
 
+	let initPromises = [];
+
 	// feature flags
-	let flagsPromise = Promise.resolve();
+
 
 	if (options.withFlags) {
-		flagsPromise = flags.init();
+		initPromises.push(flags.init());
 		app.use(flags.middleware);
 	}
 
 	// verification that expected assets exist and middleware to serve correctly
 	// (Note - must run after feature flags)
-	const assetsPromise = builtAssets(app, options, directory, name);
-	// templating
-	let handlebarsPromise = Promise.resolve();
+	initPromises.push(builtAssets(app, options, directory, name));
 
+	// templating
 	if (options.withHandlebars) {
 		const helpers = options.helpers || {};
 		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app.locals);
 		helpers.concat = concatHelper;
 
-		handlebarsPromise = handlebars(app, {
+		initPromises.push(handlebars(app, {
 			partialsDir: [
 				directory + (options.viewsDirectory || '/views') + '/partials'
 			],
@@ -141,13 +143,14 @@ module.exports = function(options) {
 			helpers: helpers,
 			directory: directory,
 			viewsDirectory: options.viewsDirectory
-		});
+		}));
 	}
 
 	// add statutory metadata to construct the page
 	if (options.withNavigation) {
-		flagsPromise.then(navigation.init);
-		app.use(navigation.middleware);
+		let navigation = new NavigationModel({withNavigationHierarchy:options.withNavigationHierarchy});
+		initPromises.push(navigation.init());
+		app.use(navigation.middleware.bind(navigation));
 	}
 
 	if (options.withAnonMiddleware) {
@@ -177,7 +180,7 @@ module.exports = function(options) {
 			return cb && cb.apply(this, arguments);
 		};
 
-		return Promise.all([flagsPromise, handlebarsPromise, assetsPromise])
+		return Promise.all(initPromises)
 			.then(function() {
 				metrics.count('express.start');
 				return actualAppListen.apply(app, args);
