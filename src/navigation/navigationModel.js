@@ -54,7 +54,11 @@ module.exports = class NavigationModel {
 
 		// remove query string just in case
 		let currentUrl = req.path.replace(/\?.+$/, '');
-		for(let listName of Object.keys(this.poller.getData())){
+		let data = this.poller.getData();
+		if(!data){
+			next();
+		}
+		for(let listName of Object.keys(data)){
 
 			// not really a list
 			// tood: remove meganav from data returned by api
