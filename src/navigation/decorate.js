@@ -4,7 +4,7 @@ function isCurrentLink(item, currentUrl){
 	return (item.href && item.href === currentUrl) || (item.id && currentUrl.includes(item.id));
 }
 
-function decorateDrawerItem(item,  currentUrl){
+function decorateDrawerItem(item, currentUrl){
 	if(item.children){
 		let found = decorateDrawerItems(item.children, currentUrl);
 		if(found){

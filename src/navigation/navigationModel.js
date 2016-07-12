@@ -69,5 +69,3 @@ module.exports = class NavigationModel {
 		next();
 	}
 };
-
-

@@ -1,8 +1,8 @@
 /*global it, describe, beforeEach, before, after*/
 'use strict';
-
+const path = require('path');
 const request = require('supertest');
-const app = require('./../fixtures/app/main');
+const app = require('../fixtures/app/main');
 const metrics = require('next-metrics');
 const sinon = require('sinon');
 const nextExpress = require('../../main');
@@ -192,7 +192,7 @@ describe('simple app', function() {
 
 		function getApp (conf) {
 			conf = conf || {};
-			conf.directory = __dirname + '/fixtures/app/';
+			conf.directory = path.resolve(__dirname, '../fixtures/app/');
 			return nextExpress(conf);
 		}
 

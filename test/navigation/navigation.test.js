@@ -5,7 +5,7 @@ const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 const pollerStub = require('../stubs/poller.stub');
 const navigationListDataStub = require('../stubs/navigationListData.json');
 
-describe.only('Navigation Model', () => {
+describe('Navigation Model', () => {
 
 	let NavigationModel;
 	let exectedLists = ['drawer', 'footer', 'navbar_desktop', 'navbar_mobile'];
@@ -62,7 +62,7 @@ describe.only('Navigation Model', () => {
 			})
 	});
 
-	it.only('Should expose middleware which returns a navigation list with the correct link marked as selected', () => {
+	it('Should expose middleware which returns a navigation list with the correct link marked as selected', () => {
 		let worldSectionId = 'MQ==-U2VjdGlvbnM=';
 		let res = {locals: {}};
 		let req = {path: `/stream/sectionsId/${worldSectionId}`, get: () => 'uk'};
