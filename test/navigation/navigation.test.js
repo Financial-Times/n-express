@@ -86,4 +86,58 @@ describe('Navigation Model', () => {
 		})
 	});
 
+	describe('Hierarchy', () => {
+
+		it('Should instantiate the heirarchy mixin if withNavigationHierarchy:true', () => {
+			let model = new NavigationModel({withNavigationHierachy:true});
+			expect(model.hierarchy).to.exist;
+		});
+
+		it('Should add hierarchy properties to res.locals.navigation', () => {
+			let ukSectionUd = 'Ng==-U2VjdGlvbnM=';
+			let expectedChildren = [
+				{
+					"name": "UK Economy",
+					"id": "MTA5-U2VjdGlvbnM=",
+					"href": "/global-economy/uk"
+				},
+				{
+					"name": "UK Politics & Policy",
+					"id": "OA==-U2VjdGlvbnM=",
+					"href": "/world/uk/politics"
+				},
+				{
+					"name": "UK Companies",
+					"id": "NjM=-U2VjdGlvbnM=",
+					"href": "/companies/uk"
+				}
+			];
+
+			let expectedAncestors = [
+				{
+
+					"name": "World",
+					"id": "MQ==-U2VjdGlvbnM=",
+					"href": "/world"
+				}
+			];
+
+			let res = {locals: {}};
+			let req = {path: `/stream/sectionsId/${ukSectionUd}`, get: () => 'uk'};
+			let next = sinon.spy();
+			pollerStub.setup(navigationListDataStub);
+
+			let model = new NavigationModel({withNavigationHierachy:true});
+			return model.init().then(() => {
+				model.middleware(req, res, next);
+				expect(res.locals.navigation.currentItem).to.exist;
+				expect(res.locals.navigation.currentItem.id).to.equal(ukSectionUd);
+				expect(res.locals.navigation.ancestors).to.deep.equal(expectedAncestors);
+				expect(res.locals.navigation.children).to.deep.equal(expectedChildren);
+
+				sinon.assert.called(next);
+			})
+		});
+	})
+
 });
