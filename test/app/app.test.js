@@ -2,15 +2,15 @@
 'use strict';
 
 const request = require('supertest');
-const app = require('./fixtures/app/main');
+const app = require('./../fixtures/app/main');
 const metrics = require('next-metrics');
 const sinon = require('sinon');
-const nextExpress = require('../main');
+const nextExpress = require('../../main');
 const expect = require('chai').expect;
 const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
 const handlebars = require('@financial-times/n-handlebars');
-const verifyAssetsExist = require('../src/lib/verify-assets-exist');
+const verifyAssetsExist = require('../../src/lib/verify-assets-exist');
 
 describe('simple app', function() {
 

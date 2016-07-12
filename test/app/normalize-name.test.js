@@ -1,7 +1,7 @@
 /*global it, describe*/
 'use strict';
 
-const normalize = require('../src/normalize-name');
+const normalize = require('../../src/normalize-name');
 const assert = require('assert');
 
 describe('normalize', function() {

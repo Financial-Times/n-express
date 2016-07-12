@@ -2,7 +2,7 @@
 'use strict';
 
 const request = require('supertest');
-const app = require('./fixtures/app/main');
+const app = require('./../fixtures/app/main');
 
 describe('health', function() {
 
