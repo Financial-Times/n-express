@@ -11,12 +11,12 @@ function clone(obj){
 module.exports = class NavigationModel {
 
 	constructor(options){
-		this.options = Object.assign({}, {withNavigationHierachy:false}, options || {});
+		this.options = Object.assign({}, {withNavigationHierarchy:false}, options || {});
 		this.poller = new Poller({
 			url: 'http://next-navigation.ft.com/v1/lists',
 			refreshInterval: ms('15m')
 		});
-		if(this.options.withNavigationHierachy){
+		if(this.options.withNavigationHierarchy){
 			this.hierarchy = new HierarchyMixin();
 		}
 	}
@@ -25,7 +25,7 @@ module.exports = class NavigationModel {
 		let promises = [
 			this.poller.start({initialRequest:true})
 		];
-		if(this.options.withNavigationHierachy){
+		if(this.options.withNavigationHierarchy){
 			promises.push(this.hierarchy.init());
 		}
 
@@ -82,7 +82,8 @@ module.exports = class NavigationModel {
 			res.locals.navigationLists[listName] = listData;
 		}
 
-		if(this.options.withNavigationHierachy && currentUrl.includes('stream/')){
+		if(this.options.withNavigationHierarchy && currentUrl.includes('stream/')){
+
 			let regexResult = /stream\/(.+)Id\/(.+)/i.exec(currentUrl);
 			if(regexResult && regexResult.length === 3){
 				let id = regexResult[2];

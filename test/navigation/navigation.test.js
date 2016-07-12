@@ -89,7 +89,7 @@ describe('Navigation Model', () => {
 	describe('Hierarchy', () => {
 
 		it('Should instantiate the heirarchy mixin if withNavigationHierarchy:true', () => {
-			let model = new NavigationModel({withNavigationHierachy:true});
+			let model = new NavigationModel({withNavigationHierarchy:true});
 			expect(model.hierarchy).to.exist;
 		});
 
@@ -127,7 +127,7 @@ describe('Navigation Model', () => {
 			let next = sinon.spy();
 			pollerStub.setup(navigationListDataStub);
 
-			let model = new NavigationModel({withNavigationHierachy:true});
+			let model = new NavigationModel({withNavigationHierarchy:true});
 			return model.init().then(() => {
 				model.middleware(req, res, next);
 				expect(res.locals.navigation.currentItem).to.exist;
