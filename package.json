@@ -8,13 +8,14 @@
   "dependencies": {
     "@financial-times/n-handlebars": "^1.9.0",
     "@financial-times/n-logger": "^5.0.0",
-    "@financial-times/n-navigation": "^7.0.0",
     "@financial-times/n-raven": "^2.0.0",
     "@financial-times/n-ui": "^2.7.0",
     "debounce": "^1.0.0",
     "denodeify": "^1.2.1",
     "express": "^4.10.5",
+    "ft-poller": "^2.6.0",
     "isomorphic-fetch": "^2.0.0",
+    "ms": "^0.7.1",
     "next-feature-flags-client": "^8.4.0",
     "next-metrics": "^1.16.1"
   },
@@ -24,8 +25,9 @@
     "eslint": "^2.5.3",
     "lintspaces-cli": "^0.1.1",
     "mocha": "^2.0.1",
+    "proxyquire": "^1.7.10",
     "shellpromise": "^1.4.0",
-    "sinon": "^1.14.1",
+    "sinon": "^1.17.4",
     "supertest": "^1.0.0"
   },
   "engines": {
