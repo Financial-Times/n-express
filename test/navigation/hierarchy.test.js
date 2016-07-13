@@ -9,7 +9,8 @@ describe('Heirarchy Mixin', () => {
 
 	let HierarchyMixin;
 	const ukEconomyId = 'MTA5-U2VjdGlvbnM=';
-	const ukId = 'Ng==-U2VjdGlvbnM=';
+	const companiesId = 'Mjk=-U2VjdGlvbnM=';
+	//const ukId = 'Ng==-U2VjdGlvbnM=';
 
 	before(() => {
 		HierarchyMixin = proxyquire('../../src/navigation/hierarchyMixin', {'ft-poller':pollerStub.stub});
@@ -51,23 +52,53 @@ describe('Heirarchy Mixin', () => {
 		let mixin = new HierarchyMixin();
 		let expected = [
 			{
-				"name": "UK Economy",
-				"id": "MTA5-U2VjdGlvbnM=",
-				"href": "/global-economy/uk"
+				"name": "Energy",
+				"id": "MzA=-U2VjdGlvbnM=",
+				"href": "/companies/energy",
 			},
 			{
-				"name": "UK Politics & Policy",
-				"id": "OA==-U2VjdGlvbnM=",
-				"href": "/world/uk/politics"
+				"name": "Financials",
+				"id": "NTc=-U2VjdGlvbnM=",
+				"href": "/companies/financials",
 			},
 			{
-				"name": "UK Companies",
-				"id": "NjM=-U2VjdGlvbnM=",
-				"href": "/companies/uk"
+				"name": "Health",
+				"id": "NTA=-U2VjdGlvbnM=",
+				"href": "/companies/health",
+			},
+			{
+				"name": "Industrials",
+				"id": "MzQ=-U2VjdGlvbnM=",
+				"href": "/companies/industrials",
+			},
+			{
+				"name": "Media",
+				"id": "NTU=-U2VjdGlvbnM=",
+				"href": "/companies/media"
+			},
+			{
+				"name": "Retail & Consumer",
+				"id": "NDU=-U2VjdGlvbnM=",
+				"href": "/companies/retail-consumer",
+			},
+			{
+				"name": "Technology",
+				"id": "NTM=-U2VjdGlvbnM=",
+				"href": "/companies/technology"
+			},
+			{
+				"name": "Telecoms",
+				"id": "NTY=-U2VjdGlvbnM=",
+				"href": "/companies/telecoms"
+			},
+			{
+				"name": "Transport",
+				"id": "NDE=-U2VjdGlvbnM=",
+				"href": "/companies/transport",
 			}
-		];
+			];
 		return mixin.init().then(() => {
-			let children = mixin.children(ukId);
+			let children = mixin.children(companiesId);
 			expect(children).to.be.an.instanceOf(Array);
 			expect(children.length).to.equal(expected.length);
 			for(let i=0, l=children.length; i<l; i++){
