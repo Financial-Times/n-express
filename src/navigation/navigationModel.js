@@ -59,7 +59,7 @@ module.exports = class NavigationModel {
 			next();
 			return;
 		}
-		
+
 		for(let listName of Object.keys(data)){
 
 			// not really a list
