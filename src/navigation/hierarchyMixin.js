@@ -16,7 +16,10 @@ function findItem(data, id, parent){
 		}
 
 		if(item.children){
-			return findItem(item.children, id, item);
+			let result = findItem(item.children, id, item);
+			if(result.item){
+				return result;
+			}
 		}
 	}
 
