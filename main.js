@@ -148,7 +148,7 @@ module.exports = function(options) {
 
 	// add statutory metadata to construct the page
 	if (options.withNavigation) {
-		let navigation = new NavigationModel({withNavigationHierarchy:options.withNavigationHierarchy});
+		const navigation = new NavigationModel({withNavigationHierarchy:options.withNavigationHierarchy});
 		initPromises.push(navigation.init());
 		app.use(navigation.middleware.bind(navigation));
 	}
