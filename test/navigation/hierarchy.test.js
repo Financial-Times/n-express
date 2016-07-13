@@ -10,7 +10,7 @@ describe('Heirarchy Mixin', () => {
 	let HierarchyMixin;
 	const ukEconomyId = 'MTA5-U2VjdGlvbnM=';
 	const companiesId = 'Mjk=-U2VjdGlvbnM=';
-	const ukId = 'Ng==-U2VjdGlvbnM=';
+	//const ukId = 'Ng==-U2VjdGlvbnM=';
 
 	before(() => {
 		HierarchyMixin = proxyquire('../../src/navigation/hierarchyMixin', {'ft-poller':pollerStub.stub});
