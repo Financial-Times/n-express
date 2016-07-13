@@ -57,7 +57,9 @@ module.exports = class NavigationModel {
 		let data = this.poller.getData();
 		if(!data){
 			next();
+			return;
 		}
+		
 		for(let listName of Object.keys(data)){
 
 			// not really a list
