@@ -8,6 +8,7 @@ const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
 const handlebars = require('@financial-times/n-handlebars');
 const NavigationModel = require('./src/navigation/navigationModel');
+const EditionsModel = require('./src/navigation/editionsModel');
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
 const robots = require('./src/express/robots');
@@ -149,7 +150,9 @@ module.exports = function(options) {
 	// add statutory metadata to construct the page
 	if (options.withNavigation) {
 		const navigation = new NavigationModel({withNavigationHierarchy:options.withNavigationHierarchy});
+		const editions = new EditionsModel();
 		initPromises.push(navigation.init());
+		app.use(editions.middleware.bind(editions));
 		app.use(navigation.middleware.bind(navigation));
 	}
 

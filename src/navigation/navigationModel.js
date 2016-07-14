@@ -46,7 +46,7 @@ module.exports = class NavigationModel {
 	}
 
 	middleware(req, res, next){
-		let currentEdition = req.get('FT-Edition') || 'uk';
+		let currentEdition = res.locals.editions.current.id;
 		res.locals.navigation = {
 			lists: {}
 		};

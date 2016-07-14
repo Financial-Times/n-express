@@ -64,7 +64,7 @@ describe('Navigation Model', () => {
 
 	it('Should expose middleware which returns a navigation list with the correct link marked as selected', () => {
 		let worldSectionId = 'MQ==-U2VjdGlvbnM=';
-		let res = {locals: {}};
+		let res = {locals: {editions:{current:{id:'uk'}}}};
 		let req = {path: `/stream/sectionsId/${worldSectionId}`, get: () => 'uk'};
 		let next = sinon.spy();
 		pollerStub.setup(navigationListDataStub);
@@ -122,7 +122,7 @@ describe('Navigation Model', () => {
 				}
 			];
 
-			let res = {locals: {}};
+			let res = {locals: {editions:{current:{id:'uk'}}}};
 			let req = {path: `/stream/sectionsId/${ukSectionUd}`, get: () => 'uk'};
 			let next = sinon.spy();
 			pollerStub.setup(navigationListDataStub);
