@@ -12,7 +12,7 @@ describe('Editions', () => {
 
 	it('Should return available editions', () => {
 		let editions = new Editions();
-		let expected =  [
+		let expected = [
 			{
 				id: 'uk',
 				name: 'UK'
