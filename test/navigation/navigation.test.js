@@ -10,30 +10,11 @@ describe('Navigation Model', () => {
 	let NavigationModel;
 	let exectedLists = ['drawer', 'footer', 'navbar_desktop', 'navbar_mobile'];
 
-	function findItem(id, data, listName){
-		if(listName === 'footer'){
-			return null;
-		}
-
-		if(listName === 'drawer'){
-			for(let section of data){
-				for(let item of section){
-					if(item.item && item.item.id && item.item.id === id){
-						return item;
-					}
-				}
-			}
-		}else{
-			for(let item of data){
-				if(item.id === id){
-					return item;
-				}
-			}
-		}
-	}
-
 	before(() => {
-		NavigationModel = proxyquire('../../src/navigation/navigationModel', {'ft-poller': pollerStub.stub});
+		NavigationModel = proxyquire('../../src/navigation/navigationModel', {
+			'ft-poller': pollerStub.stub,
+			'./decorate':sinon.spy(data => data)
+		});
 	});
 
 	it('Should setup a poller to get the lists data', () => {
@@ -80,37 +61,14 @@ describe('Navigation Model', () => {
 			}
 		});
 
-		it('exposes middleware which returns a navigation list with the correct link marked as selected', () => {
+		it('exposes middleware which returns a navigation list', () => {
 			instance.middleware(req, res, next);
 
 			expect(res.locals.navigation).to.exist;
 			expect(res.locals.navigation.lists).to.exist;
-
-			for (const list of exectedLists) {
-				expect(res.locals.navigation.lists[list]).to.exist;
-
-				const item = findItem(SECTION_ID, res.locals.navigation.lists[list], list);
-				if (list === 'drawer' || list === 'navbar_desktop') {
-					expect((item.item || item).selected).to.be.true;
-				}
-			}
+			expect(res.locals.navigation.lists).to.be.an('object');
 
 			sinon.assert.called(next);
-		});
-
-		it('replaces any currentPath placeholders with the current path', () => {
-			req.url = 'current-path';
-
-			instance.middleware(req, res, next);
-
-			const login1 = res.locals.navigation.lists['navbar_right'].anon[0];
-			const login2 = res.locals.navigation.lists['account'].signin;
-
-			expect(login1.href).to.not.match(/\$\{\w+\}/);
-			expect(login2.href).to.not.match(/\$\{\w+\}/);
-
-			expect(login1.href).to.include('location=current-path');
-			expect(login2.href).to.include('location=current-path');
 		});
 	});
 
