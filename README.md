@@ -13,7 +13,8 @@ npm install -S @financial-times/n-express
 Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
 - `withHandlebars` - adds handlebars as the rendering engine
-- `withNavigation` - adds a data model for the navigation to each request
+- `withNavigation` - adds a data model for the navigation to each request (see below)
+- `withNavigationHierarchy` - adds additional data to the navigation model concerning the current page's ancestors and children
 - `withAnonMiddleware` - sets the user's signed in state in the data model, and varies the response accordingly
 - `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `withRequestTracing` - enables additional instrumentation of requests and responses to track performance
@@ -43,6 +44,32 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 
 ## next-metrics
 As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`
+
+## Navigation
+If you pass `withNavigation:true` in the init options, you will have navigation data available in `res.locals.navigation`.  this data comes from polling the [navigation API](https://github.com/Financial-Times/next-navigation-api).  This data is used to populate the various menus and naviation items on the apps.  The following data is available
+	
+	res.locals.navigation = {
+		lists: {
+			navbar_desktop: // data for the main nav in the header (only on large screens)
+			navbar_mobile: //data for the white strip that appears on the homepage and fastFT pages only on small screens
+			drawer: //data for the slide-out menu
+			footer: // data for the footer
+		}
+	}
+
+### Navigation Hierarchy
+If you also pass `withNavigationHierarchy: true` in the init options you get some additonal properties detailing the current page's position in the hierarchy.  This is only currently useful on stream pages.  The following properties are added:
+
+	res.locals.navigation.currentItem // the current item
+	res.locals.navigation.children //an array of the direct decendents of the current page
+	res.locals.navigation.ancestors // an array of the parent items of the current page (top level first)
+
+### Editions
+The navigation model also controls the edition switching logic.  The following properties are added
+
+	res.locals.editions.current // the currently selected edition
+	res.locals.editions.others //  and array of other possible editions
+
 
 # Other enhancements
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
