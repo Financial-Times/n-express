@@ -44,46 +44,67 @@ describe('Navigation Model', () => {
 		expect(options.url).to.equal(expectedUrl);
 	});
 
-	it('Should return a promise for the initial request when init is called', () => {
-		let model = new NavigationModel();
-		let result = model.init();
-		expect(result).to.be.an.instanceOf(Promise);
-	});
+	describe('link decoration', () => {
+		let instance;
+		let result;
 
-	it('Should expose the required navigation lists', () => {
 
-		pollerStub.setup(navigationListDataStub);
-		let model = new NavigationModel();
-		return model.init()
-			.then(() => {
-				for(let list of exectedLists){
-					expect(model.list(list)).to.exist;
-				}
-			})
-	});
+		beforeEach(() => {
+			pollerStub.setup(navigationListDataStub);
+			instance = new NavigationModel();
+			result = instance.init();
+			return result;
+		});
 
-	it('Should expose middleware which returns a navigation list with the correct link marked as selected', () => {
-		let worldSectionId = 'MQ==-U2VjdGlvbnM=';
-		let res = {locals: {editions:{current:{id:'uk'}}}};
-		let req = {path: `/stream/sectionsId/${worldSectionId}`, get: () => 'uk'};
-		let next = sinon.spy();
-		pollerStub.setup(navigationListDataStub);
+		it('returns a promise for the initial request when init is called', () => {
+			expect(result).to.be.an.instanceOf(Promise);
+		});
 
-		let model = new NavigationModel();
-		return model.init().then(() => {
-			model.middleware(req, res, next);
+		it('exposes the required navigation lists', () => {
+			for (const list of exectedLists) {
+				expect(instance.list(list)).to.exist;
+			}
+		});
+
+		it('exposes middleware which returns a navigation list with the correct link marked as selected', () => {
+			const worldSectionId = 'MQ==-U2VjdGlvbnM=';
+			const res = { locals: { editions: { current: { id: 'uk' } } } };
+			const req = { path: `/stream/sectionsId/${worldSectionId}`, get: () => 'uk' };
+			const next = sinon.spy();
+
+			instance.middleware(req, res, next);
+
 			expect(res.locals.navigation).to.exist;
 			expect(res.locals.navigation.lists).to.exist;
-			for(let list of exectedLists){
+
+			for (const list of exectedLists){
 				expect(res.locals.navigation.lists[list]).to.exist;
-				let item = findItem(worldSectionId, res.locals.navigation.lists[list], list);
-				if(list === 'drawer' || list === 'navbar_desktop'){
+
+				const item = findItem(worldSectionId, res.locals.navigation.lists[list], list);
+				if (list === 'drawer' || list === 'navbar_desktop') {
 					expect((item.item || item).selected).to.be.true;
 				}
 			}
 
 			sinon.assert.called(next);
-		})
+		});
+
+		it('replaces any currentPath placeholders with the current path', () => {
+			const res = { locals: { editions: { current: { id: 'uk' } } } };
+			const req = { path: '/foobar', get: () => 'uk' };
+			const next = sinon.spy();
+
+			instance.middleware(req, res, next);
+
+			const login1 = res.locals.navigation.lists['navbar_right'].anon[0];
+			const login2 = res.locals.navigation.lists['account'].signin;
+
+			expect(login1.href).to.not.match(/\$\{\w+\}/);
+			expect(login2.href).to.not.match(/\$\{\w+\}/);
+
+			expect(login1.href).to.include('location=%2Ffoobar');
+			expect(login2.href).to.include('location=%2Ffoobar');
+		});
 	});
 
 	describe('Hierarchy', () => {
