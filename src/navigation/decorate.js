@@ -28,34 +28,41 @@ function decorateDrawer(items, currentUrl){
 	items.some(section => decorateDrawerItems(section, currentUrl));
 }
 
-function decorateItem(item, currentUrl){
-	if(item.children){
-		if(decorateItemArray(item.children, currentUrl)){
-			return true;
-		}
+function decorateItem (item, currentUrl) {
+	if (Array.isArray(item)) {
+		return decorateItems.apply(null, Array.prototype.slice.call(arguments, 0));
 	}
 
-	if(isCurrentLink(item, currentUrl)){
+	if (item.children) {
+		decorateItems(item.children, currentUrl);
+	}
+
+	if (isCurrentLink(item, currentUrl)) {
 		item.selected = true;
-		return true;
 	}
 
-	return false;
+	if (item.href && item.href.includes('${currentPath}')) {
+		item.href = item.href.replace('${currentPath}', encodeURIComponent(currentUrl));
+	}
 }
 
-function decorateItemArray(items, currentUrl){
-	items.some(item => decorateItem(item, currentUrl));
+function decorateItems(items, currentUrl){
+	const mapFunc = item => decorateItem(item, currentUrl);
+
+	if (Array.isArray(items)) {
+		items.forEach(mapFunc);
+	} else {
+		Object.keys(items).forEach(key => mapFunc(items[key]));
+	}
 }
 
-module.exports = function decorate(items, listName, currentUrl){
-	switch(listName){
+module.exports = function decorate(items, listName, currentUrl) {
+	switch (listName) {
 		case "footer":
-		case "account":
-		case "navbar_right":
 			return;
 		case "drawer":
 			return decorateDrawer(items, currentUrl);
 		default:
-			return decorateItemArray(items, currentUrl);
+			return decorateItems(items, currentUrl);
 	}
 };
