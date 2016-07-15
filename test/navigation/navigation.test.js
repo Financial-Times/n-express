@@ -45,12 +45,26 @@ describe('Navigation Model', () => {
 	});
 
 	describe('link decoration', () => {
+		const SECTION_ID = 'MQ==-U2VjdGlvbnM=';
+
 		let instance;
 		let result;
-
+		let res;
+		let req;
+		let next;
 
 		beforeEach(() => {
+			res = { locals: { editions: { current: { id: 'uk' } } } };
+			req = { url: `/stream/sectionsId/${SECTION_ID}` };
+			next = sinon.stub();
+
+			req.get = sinon.stub()
+				.withArgs('FT-Edition').returns('uk')
+				.withArgs('ft-blocked-url').returns(null)
+				.withArgs('FT-Vanity-Url').returns(null);
+
 			pollerStub.setup(navigationListDataStub);
+
 			instance = new NavigationModel();
 			result = instance.init();
 			return result;
@@ -67,20 +81,15 @@ describe('Navigation Model', () => {
 		});
 
 		it('exposes middleware which returns a navigation list with the correct link marked as selected', () => {
-			const worldSectionId = 'MQ==-U2VjdGlvbnM=';
-			const res = { locals: { editions: { current: { id: 'uk' } } } };
-			const req = { path: `/stream/sectionsId/${worldSectionId}`, get: () => 'uk' };
-			const next = sinon.spy();
-
 			instance.middleware(req, res, next);
 
 			expect(res.locals.navigation).to.exist;
 			expect(res.locals.navigation.lists).to.exist;
 
-			for (const list of exectedLists){
+			for (const list of exectedLists) {
 				expect(res.locals.navigation.lists[list]).to.exist;
 
-				const item = findItem(worldSectionId, res.locals.navigation.lists[list], list);
+				const item = findItem(SECTION_ID, res.locals.navigation.lists[list], list);
 				if (list === 'drawer' || list === 'navbar_desktop') {
 					expect((item.item || item).selected).to.be.true;
 				}
@@ -90,9 +99,7 @@ describe('Navigation Model', () => {
 		});
 
 		it('replaces any currentPath placeholders with the current path', () => {
-			const res = { locals: { editions: { current: { id: 'uk' } } } };
-			const req = { path: '/foobar', get: () => 'uk' };
-			const next = sinon.spy();
+			req.url = 'current-path';
 
 			instance.middleware(req, res, next);
 
@@ -102,8 +109,8 @@ describe('Navigation Model', () => {
 			expect(login1.href).to.not.match(/\$\{\w+\}/);
 			expect(login2.href).to.not.match(/\$\{\w+\}/);
 
-			expect(login1.href).to.include('location=%2Ffoobar');
-			expect(login2.href).to.include('location=%2Ffoobar');
+			expect(login1.href).to.include('location=current-path');
+			expect(login2.href).to.include('location=current-path');
 		});
 	});
 
