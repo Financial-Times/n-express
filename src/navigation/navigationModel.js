@@ -52,8 +52,7 @@ module.exports = class NavigationModel {
 		};
 		res.locals.navigationLists = {};
 
-		// remove query string just in case
-		let currentUrl = req.path.replace(/\?.+$/, '');
+		const currentUrl = req.get('ft-blocked-url') || req.get('FT-Vanity-Url') || req.url;
 		let data = this.poller.getData();
 		if(!data){
 			next();
@@ -84,9 +83,9 @@ module.exports = class NavigationModel {
 			res.locals.navigationLists[listName] = listData;
 		}
 
-		if(this.options.withNavigationHierarchy && currentUrl.includes('stream/')){
-
-			let regexResult = /stream\/(.+)Id\/(.+)/i.exec(currentUrl);
+		// take the actual path rather than a vanity
+		if (this.options.withNavigationHierarchy && /^\/stream\//.test(req.path)) {
+			const regexResult = /stream\/(.+)Id\/(.+)/i.exec(req.path);
 			if(regexResult && regexResult.length === 3){
 				let id = regexResult[2];
 				res.locals.navigation.currentItem = this.hierarchy.find(id).item;
