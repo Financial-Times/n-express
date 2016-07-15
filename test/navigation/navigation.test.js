@@ -81,7 +81,6 @@ describe('Navigation Model', () => {
 				expect(res.locals.navigation.lists[list]).to.exist;
 
 				const item = findItem(worldSectionId, res.locals.navigation.lists[list], list);
-
 				if (list === 'drawer' || list === 'navbar_desktop') {
 					expect((item.item || item).selected).to.be.true;
 				}
