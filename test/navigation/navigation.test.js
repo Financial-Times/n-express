@@ -3,48 +3,34 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 const pollerStub = require('../stubs/poller.stub');
+const decorateSpy = sinon.spy(data => data);
 const navigationListDataStub = require('../stubs/navigationListData.json');
 
-describe('Navigation Model', () => {
-
+describe('Navigation middleware', () => {
 	let NavigationModel;
-	let exectedLists = ['drawer', 'footer', 'navbar_desktop', 'navbar_mobile'];
 
-	function findItem(id, data, listName){
-		if(listName === 'footer'){
-			return null;
-		}
-
-		if(listName === 'drawer'){
-			for(let section of data){
-				for(let item of section){
-					if(item.item && item.item.id && item.item.id === id){
-						return item;
-					}
-				}
-			}
-		}else{
-			for(let item of data){
-				if(item.id === id){
-					return item;
-				}
-			}
-		}
-	}
-
-	before(() => {
-		NavigationModel = proxyquire('../../src/navigation/navigationModel', {'ft-poller': pollerStub.stub});
+	beforeEach(() => {
+		NavigationModel = proxyquire('../../src/navigation/navigationModel', {
+			'ft-poller': pollerStub.stub,
+			'./decorate': decorateSpy
+		});
 	});
 
-	it('Should setup a poller to get the lists data', () => {
-		const expectedUrl = `http://next-navigation.ft.com/v1/lists`;
-		new NavigationModel();
-		sinon.assert.called(pollerStub.stub);
-		let options = pollerStub.stub.lastCall.args[0];
-		expect(options.url).to.equal(expectedUrl);
+	afterEach(() => {
+		pollerStub.stub.reset();
+		decorateSpy.reset();
 	});
 
-	describe('link decoration', () => {
+	describe('data polling', () => {
+		it('Should setup a poller to get the lists data', () => {
+			const url = `http://next-navigation.ft.com/v1/lists`;
+			new NavigationModel();
+			sinon.assert.called(pollerStub.stub);
+			sinon.assert.calledWith(pollerStub.stub, sinon.match({ url }));
+		});
+	});
+
+	describe('internals', () => {
 		const SECTION_ID = 'MQ==-U2VjdGlvbnM=';
 
 		let instance;
@@ -58,59 +44,51 @@ describe('Navigation Model', () => {
 			req = { url: `/stream/sectionsId/${SECTION_ID}` };
 			next = sinon.stub();
 
-			req.get = sinon.stub()
-				.withArgs('FT-Edition').returns('uk')
-				.withArgs('ft-blocked-url').returns(null)
-				.withArgs('FT-Vanity-Url').returns(null);
+			req.get = sinon.stub();
+
+			req.get.withArgs('FT-Edition').returns('uk');
+			req.get.withArgs('FT-Vanity-Url').returns(null);
+			req.get.withArgs('ft-blocked-url').returns(null);
 
 			pollerStub.setup(navigationListDataStub);
 
 			instance = new NavigationModel();
 			result = instance.init();
+
 			return result;
 		});
 
 		it('returns a promise for the initial request when init is called', () => {
 			expect(result).to.be.an.instanceOf(Promise);
+			expect(result.then).to.be.a('function');
 		});
 
 		it('exposes the required navigation lists', () => {
-			for (const list of exectedLists) {
+			['drawer', 'footer', 'navbar_desktop', 'navbar_mobile'].forEach(list => {
 				expect(instance.list(list)).to.exist;
-			}
+			});
 		});
 
-		it('exposes middleware which returns a navigation list with the correct link marked as selected', () => {
+		it('exposes middleware which returns a navigation list', () => {
 			instance.middleware(req, res, next);
 
 			expect(res.locals.navigation).to.exist;
 			expect(res.locals.navigation.lists).to.exist;
-
-			for (const list of exectedLists) {
-				expect(res.locals.navigation.lists[list]).to.exist;
-
-				const item = findItem(SECTION_ID, res.locals.navigation.lists[list], list);
-				if (list === 'drawer' || list === 'navbar_desktop') {
-					expect((item.item || item).selected).to.be.true;
-				}
-			}
+			expect(res.locals.navigation.lists).to.be.an('object');
 
 			sinon.assert.called(next);
 		});
 
-		it('replaces any currentPath placeholders with the current path', () => {
-			req.url = 'current-path';
-
+		it('recognises vanity URLs', () => {
+			req.get.withArgs('FT-Vanity-Url').returns('/vanity');
 			instance.middleware(req, res, next);
+			sinon.assert.calledWith(decorateSpy, sinon.match.any, sinon.match.string, sinon.match('/vanity'));
+		});
 
-			const login1 = res.locals.navigation.lists['navbar_right'].anon[0];
-			const login2 = res.locals.navigation.lists['account'].signin;
-
-			expect(login1.href).to.not.match(/\$\{\w+\}/);
-			expect(login2.href).to.not.match(/\$\{\w+\}/);
-
-			expect(login1.href).to.include('location=current-path');
-			expect(login2.href).to.include('location=current-path');
+		it('recognises blocked URLs', () => {
+			req.get.withArgs('ft-blocked-url').returns('/blocked');
+			instance.middleware(req, res, next);
+			sinon.assert.calledWith(decorateSpy, sinon.match.any, sinon.match.string, sinon.match('/blocked'));
 		});
 	});
 
