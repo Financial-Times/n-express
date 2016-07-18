@@ -3,7 +3,7 @@ machine:
     version: 4.4.2
 deployment:
   release:
-      tag: /^v[0-9]+(\.[0-9]+)*/
-      owner: Financial-Times
-      commands:
-          - make npm-publish
+    tag: /^v/
+    owner: Financial-Times
+    commands:
+      - make npm-publish
