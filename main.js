@@ -100,6 +100,13 @@ module.exports = function(options) {
 		next();
 	});
 
+	// set the edition so it can be added to the html tag and used for tracking
+	app.use(function(req, res, next) {
+		const edition = req.get('ft-edition') || '';
+		app.locals.__edition = edition;
+		next();
+	});
+
 	serviceMetrics.init(options.serviceDependencies);
 
 
