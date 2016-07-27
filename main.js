@@ -138,7 +138,7 @@ module.exports = function(options) {
 	// templating
 	if (options.withHandlebars) {
 		const helpers = options.helpers || {};
-		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app.locals);
+		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app);
 		helpers.concat = concatHelper;
 
 		initPromises.push(handlebars(app, {
@@ -152,6 +152,15 @@ module.exports = function(options) {
 			directory: directory,
 			viewsDirectory: options.viewsDirectory
 		}));
+
+		app.use((req, res, next) => {
+			const originalRender = res.render;
+			res.render = function () {
+				res.set('Link', app.locals.hashedAssetPaths.map(blahblah))
+				return originalRender.call(res, slice.call(arguments));
+			}
+			next();
+		})
 	}
 
 	// add statutory metadata to construct the page
