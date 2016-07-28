@@ -34,6 +34,9 @@ app.get('/', express.cacheMiddleware('short', {'max-age': 5}), myController);
 
 ```
 
+## Preload assets
+Add link headers to enable service workers to preload assets. Headers for `main.css` and `main.js` are added by default e.g `res.preload('comments.css', {rel: 'stylesheet'})`
+
 
 ## Cache varying
 Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition, Accept-Encoding as of Apr 2016 ) as they are required for most responses - the user experience will break if they are not. To control these a few additional methods are provided
@@ -47,7 +50,7 @@ As next-metrics must be a singleton to ensure reliable reporting, it is exported
 
 ## Navigation
 If you pass `withNavigation:true` in the init options, you will have navigation data available in `res.locals.navigation`.  this data comes from polling the [navigation API](https://github.com/Financial-Times/next-navigation-api).  This data is used to populate the various menus and naviation items on the apps.  The following data is available
-	
+
 	res.locals.navigation = {
 		lists: {
 			navbar_desktop: // data for the main nav in the header (only on large screens)

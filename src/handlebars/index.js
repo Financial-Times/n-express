@@ -20,15 +20,27 @@ module.exports = function (conf) {
 			const header = [];
 			header.push(`<${hashedAssetUtils.getPath(file)}>`);
 			Object.keys(meta).forEach(key => {
-				header.push(`key="${meta[key]}"`)
+				header.push(`${key}="${meta[key]}"`)
 			});
+
+			if (!meta.rel) {
+				header.push('rel="preload"')
+			}
+
+			header.push('nopush');
 			linkedAssets.push(header.join('; '))
 		}
 
-		res.preload('main.css', {rel: 'stylesheet'});
-		res.preload('main.js');
-
-		res.render = function () {
+		res.render = function (template, templateData) {
+			if (req.accepts('text/html')) {
+				const cssVariant = templateData.cssVariant || res.locals.cssVariant;
+				res.preload(`main${cssVariant ? '-' + cssVariant : ''}.css`, {
+					as: 'style'
+				});
+				res.preload('main.js', {
+					as: 'script'
+				});
+			}
 			res.set('Link', linkedAssets.join(', '))
 			return originalRender.apply(res, [].slice.call(arguments));
 		}
