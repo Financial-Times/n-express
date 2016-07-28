@@ -12,7 +12,7 @@
     "@financial-times/n-ui": "^2.7.0",
     "debounce": "^1.0.0",
     "denodeify": "^1.2.1",
-    "express": "^4.10.5",
+    "express": "^4.14.0",
     "ft-poller": "^2.6.0",
     "isomorphic-fetch": "^2.0.0",
     "ms": "^0.7.1",
