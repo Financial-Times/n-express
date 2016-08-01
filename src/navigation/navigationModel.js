@@ -19,6 +19,7 @@ module.exports = class NavigationModel {
 		if(this.options.withNavigationHierarchy){
 			this.hierarchy = new HierarchyMixin();
 		}
+
 	}
 
 	init(){
@@ -45,6 +46,16 @@ module.exports = class NavigationModel {
 		return clone(data[name]);
 	}
 
+	static showMobileNav(currentUrl, navData){
+		for(let item of navData){
+			if(currentUrl === item.href || (item.id && currentUrl.includes(item.id))){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	middleware(req, res, next){
 		let currentEdition = res.locals.editions.current.id;
 		res.locals.navigation = {
@@ -64,6 +75,11 @@ module.exports = class NavigationModel {
 			// not really a list
 			// tood: remove meganav from data returned by api
 			if(listName === 'meganav'){
+				continue;
+			}
+
+			// mobile nav only on homepage
+			if(listName === 'navbar_mobile' && !NavigationModel.showMobileNav(currentUrl, data[listName][currentEdition])){
 				continue;
 			}
 
