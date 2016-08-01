@@ -45,7 +45,7 @@ module.exports = class NavigationModel {
 
 		return clone(data[name]);
 	}
-	
+
 	static showMobileNav(currentUrl, navData){
 		for(let item of navData){
 			if(currentUrl === item.href || (item.id && currentUrl.includes(item.id))){
