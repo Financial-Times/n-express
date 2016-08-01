@@ -79,6 +79,31 @@ describe('Navigation middleware', () => {
 			sinon.assert.called(next);
 		});
 
+
+		it('Should not include the mobile nav data if not on a page it links to', () => {
+			const cases = {
+				'/' : true,
+				'/fastft' : true,
+				'/stream/brandId/NTlhNzEyMzMtZjBjZi00Y2U1LTg0ODUtZWVjNmEyYmU1NzQ2-QnJhbmRz' : true,
+				'/world': false,
+				'/content/80125fd4-57a9-11e6-9f70-badea1b336d4' : false
+			};
+
+			Object.keys(cases).forEach(url => {
+				let shouldHaveNav = cases[url];
+				req.url = url;
+				instance.middleware(req, res, next);
+				if(shouldHaveNav){
+					expect(res.locals.navigation.lists.navbar_mobile).to.exist;
+					expect(res.locals.navigation.lists.navbar_mobile).to.be.an('array');
+				}else{
+					expect(res.locals.navigation.lists.navbar_mobile).not.to.exist;
+				}
+			})
+		});
+
+
+
 		it('recognises vanity URLs', () => {
 			req.get.withArgs('FT-Vanity-Url').returns('/vanity');
 			instance.middleware(req, res, next);
