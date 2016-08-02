@@ -34,8 +34,10 @@ app.get('/', express.cacheMiddleware('short', {'max-age': 5}), myController);
 
 ```
 
-## Preload assets
-Add link headers to enable service workers to preload assets. Headers for `main.css` and `main.js` are added by default e.g `res.preload('comments.css', {rel: 'stylesheet'})`
+## Linked assets (preload)
+Add link headers to enable service workers to optimise requests for assets. Link headers for `main.css` and `main.js` are added by default to any `text/html` request. By default teh `rel` attribute is set to `preload`
+
+e.g `res.link('comments.css', {as: 'style', rel: 'prefetch'})`
 
 
 ## Cache varying

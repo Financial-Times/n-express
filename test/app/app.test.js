@@ -337,4 +337,39 @@ describe('simple app', function() {
 
 	});
 
+	describe('hashed assets and preloading', () => {
+
+		it('should preload main.css and main.js by default', done => {
+			request(app)
+				.get('/templated')
+				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
+		});
+
+		it('should not preload anything by default on non text/html requests', done => {
+			request(app)
+				.get('/non-html')
+				.end((err, res) => {
+					expect(res.headers.link).to.not.exist;
+					done();
+				})
+		});
+
+		it.skip('should preload a hashed url if exists', () => {
+
+		});
+
+		it('should preload main-variant.css as appropriate', done => {
+			request(app)
+				.get('/templated?cssVariant=variant')
+				.expect('Link', '</demo-app/main-variant.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
+		});
+
+		it('should be possible to preload any file on any request', done => {
+			request(app)
+				.get('/non-html?preload=true')
+				.expect('Link', '</demo-app/it.js>; rel="preload"; as="script"; nopush', done)
+		});
+
+	})
+
 });

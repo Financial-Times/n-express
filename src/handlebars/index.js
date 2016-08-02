@@ -15,7 +15,7 @@ module.exports = function (conf) {
 	app.use((req, res, next) => {
 		const originalRender = res.render;
 		const linkedAssets = [];
-		res.preload = (file, meta) => {
+		res.link = (file, meta) => {
 			meta = meta || {};
 			const header = [];
 			header.push(`<${hashedAssetUtils.getPath(file)}>`);
@@ -28,20 +28,19 @@ module.exports = function (conf) {
 			}
 
 			header.push('nopush');
-			linkedAssets.push(header.join('; '))
+			res.append('Link', header.join('; '))
 		}
 
 		res.render = function (template, templateData) {
 			if (req.accepts('text/html')) {
 				const cssVariant = templateData.cssVariant || res.locals.cssVariant;
-				res.preload(`main${cssVariant ? '-' + cssVariant : ''}.css`, {
+				res.link(`main${cssVariant ? '-' + cssVariant : ''}.css`, {
 					as: 'style'
 				});
-				res.preload('main.js', {
+				res.link('main.js', {
 					as: 'script'
 				});
 			}
-			res.set('Link', linkedAssets.join(', '))
 			return originalRender.apply(res, [].slice.call(arguments));
 		}
 		next();

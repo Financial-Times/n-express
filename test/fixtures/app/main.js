@@ -26,7 +26,7 @@ app.get('/__flags.json', function(req, res) {
 });
 
 app.get('/templated', function(req, res) {
-	res.render('main', {
+	res.render('main', Object.assign({
 		title: 'FT',
 		image: 'https://avatars0.githubusercontent.com/u/3502508?v=3',
 		date: new Date('Fri Aug 01 2014 00:00:00 GMT'),
@@ -41,7 +41,7 @@ app.get('/templated', function(req, res) {
 		obj: {prop: 'val'},
 		partial: 'partial',
 		rootVar: 'iamroot'
-	});
+	}, req.query || {}));
 });
 
 app.get('/with-layout', function(req, res) {
@@ -137,6 +137,21 @@ app.post('/cache', require('body-parser').json(), (req, res) => {
 	res.cache(req.body[0], req.body[1]);
 	res.sendStatus(200);
 });
+
+app.get('/non-html', (req, res) => {
+	res.set('Content-Type', 'application/json')
+	if (req.query.preload) {
+		res.link('it.js', {
+			rel: 'preload',
+			as: 'script'
+		})
+	}
+	res.sendStatus(200);
+});
+
+
+
+
 
 const router = new express.Router();
 
