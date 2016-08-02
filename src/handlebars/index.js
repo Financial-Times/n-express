@@ -14,8 +14,8 @@ module.exports = function (conf) {
 
 	app.use((req, res, next) => {
 		const originalRender = res.render;
-		const linkedAssets = [];
-		res.link = (file, meta) => {
+
+		res.linkResource = (file, meta) => {
 			meta = meta || {};
 			const header = [];
 			header.push(`<${hashedAssetUtils.getPath(file)}>`);
@@ -34,10 +34,10 @@ module.exports = function (conf) {
 		res.render = function (template, templateData) {
 			if (req.accepts('text/html')) {
 				const cssVariant = templateData.cssVariant || res.locals.cssVariant;
-				res.link(`main${cssVariant ? '-' + cssVariant : ''}.css`, {
+				res.linkResource(`main${cssVariant ? '-' + cssVariant : ''}.css`, {
 					as: 'style'
 				});
-				res.link('main.js', {
+				res.linkResource('main.js', {
 					as: 'script'
 				});
 			}

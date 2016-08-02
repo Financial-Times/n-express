@@ -141,17 +141,13 @@ app.post('/cache', require('body-parser').json(), (req, res) => {
 app.get('/non-html', (req, res) => {
 	res.set('Content-Type', 'application/json')
 	if (req.query.preload) {
-		res.link('it.js', {
+		res.linkResource('it.js', {
 			rel: 'preload',
 			as: 'script'
 		})
 	}
 	res.sendStatus(200);
 });
-
-
-
-
 
 const router = new express.Router();
 
