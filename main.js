@@ -6,7 +6,7 @@ require('isomorphic-fetch');
 const express = require('express');
 const raven = require('@financial-times/n-raven');
 const flags = require('next-feature-flags-client');
-const handlebars = require('@financial-times/n-handlebars');
+const handlebars = require('./src/handlebars');
 const NavigationModel = require('./src/navigation/navigationModel');
 const EditionsModel = require('./src/navigation/editionsModel');
 const metrics = require('next-metrics');
@@ -20,7 +20,6 @@ const cache = require('./src/middleware/cache');
 const builtAssets = require('./src/lib/built-assets');
 const backendAuthentication = require('./src/middleware/backend-authentication');
 const healthChecks = require('./src/lib/health-checks');
-const concatHelper = require('./src/handlebars/concat')
 
 module.exports = function(options) {
 
@@ -124,8 +123,6 @@ module.exports = function(options) {
 	let initPromises = [];
 
 	// feature flags
-
-
 	if (options.withFlags) {
 		initPromises.push(flags.init());
 		app.use(flags.middleware);
@@ -137,20 +134,10 @@ module.exports = function(options) {
 
 	// templating
 	if (options.withHandlebars) {
-		const helpers = options.helpers || {};
-		helpers.hashedAsset = require('./src/handlebars/hashed-asset')(app.locals);
-		helpers.concat = concatHelper;
-
-		initPromises.push(handlebars(app, {
-			partialsDir: [
-				directory + (options.viewsDirectory || '/views') + '/partials'
-			],
-			defaultLayout: false,
-			// The most common use case, n-ui/layout is not bundled with this package
-			layoutsDir: typeof options.layoutsDir !== 'undefined' ? options.layoutsDir : (directory + '/bower_components/n-ui/layout'),
-			helpers: helpers,
+		initPromises.push(handlebars({
+			app: app,
 			directory: directory,
-			viewsDirectory: options.viewsDirectory
+			options: options
 		}));
 	}
 
