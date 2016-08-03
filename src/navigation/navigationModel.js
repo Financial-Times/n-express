@@ -1,6 +1,7 @@
 'use strict';
 const Poller = require('ft-poller');
 const ms = require('ms');
+const url = require('url');
 const decorateSelectedLink = require('./decorate');
 const HierarchyMixin = require('./hierarchyMixin');
 
@@ -47,8 +48,9 @@ module.exports = class NavigationModel {
 	}
 
 	static showMobileNav(currentUrl, navData){
+		const currentPathName = url.parse(currentUrl).pathname;
 		for(let item of navData){
-			if(currentUrl === item.href || (item.id && currentUrl.includes(item.id))){
+			if(currentPathName === item.href || (item.id && currentUrl.includes(item.id))){
 				return true;
 			}
 		}

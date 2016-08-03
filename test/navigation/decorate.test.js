@@ -41,6 +41,11 @@ describe('Navigation middleware: decorate', () => {
 		expect(clone.drawer.uk[0][2].item.selected).to.be.true;
 	});
 
+	it('ignores query strings in urls when selecting the current item', () => {
+		subject(clone.navbar_mobile.uk, 'navbar_mobile', '/?edition=international');
+		expect(clone.navbar_mobile.uk[0].selected).to.be.true;
+	});
+
 	it('replaces any ${currentPath} placeholders with the given path', () => {
 		subject(clone.account, 'account', '/current-path');
 		expect(clone.account.signin.href).to.not.match(/\$\{\w\}/);

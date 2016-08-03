@@ -1,7 +1,9 @@
 "use strict";
+const url = require('url');
 
 function isCurrentLink(item, currentUrl){
-	return (item.href && item.href === currentUrl) || (item.id && currentUrl.includes(item.id));
+	const currentPathName = url.parse(currentUrl).pathname;
+	return (item.href && item.href === currentPathName) || (item.id && currentUrl.includes(item.id));
 }
 
 function decorateItem (item, currentUrl) {
