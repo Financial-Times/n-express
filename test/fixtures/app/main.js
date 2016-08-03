@@ -11,6 +11,7 @@ const app = module.exports = express({
 	withFlags: true,
 	withHandlebars: true,
 	withNavigation: true,
+	hasNUiBundle: true,
 	withNavigationHierarchy: true,
 	withAnonMiddleware: true,
 	withBackendAuthentication: true,
@@ -142,6 +143,10 @@ app.get('/non-html', (req, res) => {
 	res.set('Content-Type', 'application/json')
 	if (req.query.preload) {
 		res.linkResource('it.js', {
+			rel: 'preload',
+			as: 'script'
+		}, {hashed: true}),
+		res.linkResource('https://place.com/it.js', {
 			rel: 'preload',
 			as: 'script'
 		})

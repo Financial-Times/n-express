@@ -34,8 +34,14 @@ app.get('/', express.cacheMiddleware('short', {'max-age': 5}), myController);
 
 ```
 
-## Linked assets (preload)
-Add link headers to enable service workers to optimise requests for assets. Link headers for `main.css` and `main.js` are added by default to any `text/html` request. By default the `rel` attribute is set to `preload`
+## Linked Resources (preload)
+Adds link headers to enable service workers to optimise requests for assets, defaulting to preload behaviour
+e.g:
+- res.linkResource('//path/to/file.css', {as: 'style'}) => adds a link header to `//path/to/file.css` with `as="style"` and `rel="preload"`
+- res.linkResource('//path/to/file.js', {rel: 'prefetch', as: 'script'}) => adds a link header to `//path/to/file.js` with `as="script"` and `rel="prefetch"`
+- res.linkResource('main.css', {as: 'style'}, {hashed: true}) => adds a link header to the hashed asset path generated for the app's `main.css` file
+
+Link headers for `main.css` and `main.js` are added by default to any `text/html` request.
 
 e.g `res.linkResource('comments.css', {as: 'style', rel: 'prefetch'})`
 

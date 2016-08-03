@@ -345,6 +345,13 @@ describe('simple app', function() {
 				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
 		});
 
+		it('should preload n-ui bundles if flag is on', done => {
+			request(app)
+				.get('/templated')
+				.set('FT-Flags', 'nUiBundle:on')
+				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/vfalse/es5-core-js.js>; as="script"; rel="preload"; nopush', done)
+		});
+
 		it('should not preload anything by default on non text/html requests', done => {
 			request(app)
 				.get('/non-html')
@@ -367,7 +374,7 @@ describe('simple app', function() {
 		it('should be possible to preload any file on any request', done => {
 			request(app)
 				.get('/non-html?preload=true')
-				.expect('Link', '</demo-app/it.js>; rel="preload"; as="script"; nopush', done)
+				.expect('Link', '</demo-app/it.js>; rel="preload"; as="script"; nopush, <https://place.com/it.js>; rel="preload"; as="script"; nopush', done)
 		});
 
 	})

@@ -15,10 +15,11 @@ module.exports = function (conf) {
 	app.use((req, res, next) => {
 		const originalRender = res.render;
 
-		res.linkResource = (file, meta) => {
+		res.linkResource = (file, meta, opts) => {
 			meta = meta || {};
+			opts = opts || {};
 			const header = [];
-			header.push(`<${hashedAssetUtils.getPath(file)}>`);
+			header.push(`<${opts.hashed ? hashedAssetUtils.getPath(file) : file }>`);
 			Object.keys(meta).forEach(key => {
 				header.push(`${key}="${meta[key]}"`)
 			});
@@ -36,10 +37,20 @@ module.exports = function (conf) {
 				const cssVariant = templateData.cssVariant || res.locals.cssVariant;
 				res.linkResource(`main${cssVariant ? '-' + cssVariant : ''}.css`, {
 					as: 'style'
-				});
-				res.linkResource('main.js', {
-					as: 'script'
-				});
+				}, {hashed: true});
+				if (res.locals.nUiVersion) {
+					res.linkResource('main-without-n-ui.js', {
+						as: 'script'
+					}, {hashed: true});
+					res.linkResource(`//next-geebee.ft.com/n-ui/no-cache/${res.locals.nUiVersion}/es5-core-js${res.locals.flags.nUiBundleUnminified ? '.min' : ''}.js`, {
+						as: 'script'
+					});
+				} else {
+					res.linkResource('main.js', {
+						as: 'script'
+					}, {hashed: true});
+				}
+
 			}
 			return originalRender.apply(res, [].slice.call(arguments));
 		}
