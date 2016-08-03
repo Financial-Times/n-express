@@ -83,6 +83,7 @@ describe('Navigation middleware', () => {
 		it('Should not include the mobile nav data if not on a page it links to', () => {
 			const cases = {
 				'/' : true,
+				'/?edition=international' : true,
 				'/fastft' : true,
 				'/stream/brandId/NTlhNzEyMzMtZjBjZi00Y2U1LTg0ODUtZWVjNmEyYmU1NzQ2-QnJhbmRz' : true,
 				'/world': false,
