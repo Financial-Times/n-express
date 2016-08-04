@@ -42,7 +42,7 @@ module.exports = function (conf) {
 					res.linkResource('main-without-n-ui.js', {
 						as: 'script'
 					}, {hashed: true});
-					res.linkResource(`//next-geebee.ft.com/n-ui/no-cache/${res.locals.nUiVersion}/es5-core-js${res.locals.flags.nUiBundleUnminified ? '.min' : ''}.js`, {
+					res.linkResource(`//next-geebee.ft.com/n-ui/no-cache/${res.locals.nUiVersion}/es5-core-js${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`, {
 						as: 'script'
 					});
 				} else {
