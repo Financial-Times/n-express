@@ -78,7 +78,7 @@ module.exports = function(options) {
 
 	// 100% public end points
 	if (!app.locals.__isProduction) {
-		app.use('/' + name, express.static(directory + '/public'));
+		app.use('/' + name, express.static(directory + '/public', { redirect: false }));
 	}
 
 	app.get('/robots.txt', robots);
