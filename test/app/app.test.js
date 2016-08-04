@@ -2,7 +2,17 @@
 'use strict';
 const path = require('path');
 const request = require('supertest');
+
+// stub the setup api calls
+const fetchMock = require('fetch-mock');
+fetchMock
+	.mock(/next-flags-api\.ft\.com/, [])
+	.catch(200);
+
 const app = require('../fixtures/app/main');
+
+fetchMock.restore();
+
 const metrics = require('next-metrics');
 const sinon = require('sinon');
 const nextExpress = require('../../main');
@@ -349,7 +359,18 @@ describe('simple app', function() {
 			request(app)
 				.get('/templated')
 				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/vfalse/es5-core-js.js>; as="script"; rel="preload"; nopush', done)
+				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/vfalse/es5-core-js.min.js>; as="script"; rel="preload"; nopush', done)
+		});
+
+		it('expect effect of flag not to leak', done => {
+			request(app)
+				.get('/templated')
+				.set('FT-Flags', 'nUiBundle:on')
+				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/vfalse/es5-core-js.min.js>; as="script"; rel="preload"; nopush', () => {
+					request(app)
+						.get('/templated')
+						.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
+				})
 		});
 
 		it('should not preload anything by default on non text/html requests', done => {
