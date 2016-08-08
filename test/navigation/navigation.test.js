@@ -129,28 +129,28 @@ describe('Navigation middleware', () => {
 			let ukSectionUd = 'Ng==-U2VjdGlvbnM=';
 			let expectedChildren = [
 				{
-					"name": "UK Economy",
-					"id": "MTA5-U2VjdGlvbnM=",
-					"href": "/global-economy/uk"
+					'name': 'UK Economy',
+					'id': 'MTA5-U2VjdGlvbnM=',
+					'href': '/global-economy/uk'
 				},
 				{
-					"name": "UK Politics & Policy",
-					"id": "OA==-U2VjdGlvbnM=",
-					"href": "/world/uk/politics"
+					'name': 'UK Politics & Policy',
+					'id': 'OA==-U2VjdGlvbnM=',
+					'href': '/world/uk/politics'
 				},
 				{
-					"name": "UK Companies",
-					"id": "NjM=-U2VjdGlvbnM=",
-					"href": "/companies/uk"
+					'name': 'UK Companies',
+					'id': 'NjM=-U2VjdGlvbnM=',
+					'href': '/companies/uk'
 				}
 			];
 
 			let expectedAncestors = [
 				{
 
-					"name": "World",
-					"id": "MQ==-U2VjdGlvbnM=",
-					"href": "/world"
+					'name': 'World',
+					'id': 'MQ==-U2VjdGlvbnM=',
+					'href': '/world'
 				}
 			];
 

@@ -4,22 +4,34 @@
 require('isomorphic-fetch');
 
 const express = require('express');
-const raven = require('@financial-times/n-raven');
+
 const flags = require('next-feature-flags-client');
-const handlebars = require('./src/handlebars');
+const backendAuthentication = require('./src/middleware/backend-authentication');
+
+// Models
 const NavigationModel = require('./src/navigation/navigationModel');
 const EditionsModel = require('./src/navigation/editionsModel');
+const anon = require('./src/anon');
+
+// Logging and monitoring
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
-const robots = require('./src/express/robots');
-const normalizeName = require('./src/normalize-name');
-const anon = require('./src/anon');
 const serviceMetrics = require('./src/service-metrics');
+const raven = require('@financial-times/n-raven');
+const healthChecks = require('./src/lib/health-checks');
+
+// utils
+const normalizeName = require('./src/normalize-name');
+const robots = require('./src/express/robots');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
-const builtAssets = require('./src/lib/built-assets');
-const backendAuthentication = require('./src/middleware/backend-authentication');
-const healthChecks = require('./src/lib/health-checks');
+
+// templating and assets
+const handlebars = require('./src/handlebars');
+const hashedAssets = require('./src/lib/hashed-assets');
+const assetsMiddleware = require('./src/middleware/assets');
+const headCssMiddleware = require('./src/middleware/head-css');
+const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
 module.exports = function(options) {
 
@@ -135,18 +147,9 @@ module.exports = function(options) {
 		app.use(flags.middleware);
 	}
 
-	// verification that expected assets exist and middleware to serve correctly
-	// (Note - must run after feature flags)
-	initPromises.push(builtAssets(app, options, directory, name));
-
-	// templating
-	if (options.withHandlebars) {
-		initPromises.push(handlebars({
-			app: app,
-			directory: directory,
-			options: options
-		}));
-	}
+	// verification that expected assets exist
+	verifyAssetsExist.verify(app.locals);
+	hashedAssets.init(app.locals);
 
 	// add statutory metadata to construct the page
 	if (options.withNavigation) {
@@ -161,8 +164,22 @@ module.exports = function(options) {
 		app.use(anon.middleware);
 	}
 
-	// Handle th eakami -> fastly -> akamai etc. circular redirect bug
 	if (options.withHandlebars) {
+
+		// Set up handlebars as the templating engine
+		initPromises.push(handlebars({
+			app: app,
+			directory: directory,
+			options: options
+		}));
+
+		// Decorate responses with which head css variants are available
+		app.use(headCssMiddleware(options, directory));
+
+		// Decorate responses with data about which assets the page needs
+		app.use(assetsMiddleware(options));
+
+		// Handle the akamai -> fastly -> akamai etc. circular redirect bug
 		app.use(function (req, res, next) {
 			res.locals.forceOptInDevice = req.get('FT-Force-Opt-In-Device') === 'true';
 			res.vary('FT-Force-Opt-In-Device');

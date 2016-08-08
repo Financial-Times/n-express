@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
@@ -29,12 +29,12 @@ describe('Heirarchy Mixin', () => {
 		let mixin = new HierarchyMixin();
 		let expected = [
 			{
-				"name": "World",
-				"id": "MQ==-U2VjdGlvbnM="
+				'name': 'World',
+				'id': 'MQ==-U2VjdGlvbnM='
 			},
 			{
-				"name": "UK",
-				"id": "Ng==-U2VjdGlvbnM="
+				'name': 'UK',
+				'id': 'Ng==-U2VjdGlvbnM='
 			}
 		];
 		return mixin.init().then(() => {
@@ -52,49 +52,49 @@ describe('Heirarchy Mixin', () => {
 		let mixin = new HierarchyMixin();
 		let expected = [
 			{
-				"name": "Energy",
-				"id": "MzA=-U2VjdGlvbnM=",
-				"href": "/companies/energy",
+				'name': 'Energy',
+				'id': 'MzA=-U2VjdGlvbnM=',
+				'href': '/companies/energy',
 			},
 			{
-				"name": "Financials",
-				"id": "NTc=-U2VjdGlvbnM=",
-				"href": "/companies/financials",
+				'name': 'Financials',
+				'id': 'NTc=-U2VjdGlvbnM=',
+				'href': '/companies/financials',
 			},
 			{
-				"name": "Health",
-				"id": "NTA=-U2VjdGlvbnM=",
-				"href": "/companies/health",
+				'name': 'Health',
+				'id': 'NTA=-U2VjdGlvbnM=',
+				'href': '/companies/health',
 			},
 			{
-				"name": "Industrials",
-				"id": "MzQ=-U2VjdGlvbnM=",
-				"href": "/companies/industrials",
+				'name': 'Industrials',
+				'id': 'MzQ=-U2VjdGlvbnM=',
+				'href': '/companies/industrials',
 			},
 			{
-				"name": "Media",
-				"id": "NTU=-U2VjdGlvbnM=",
-				"href": "/companies/media"
+				'name': 'Media',
+				'id': 'NTU=-U2VjdGlvbnM=',
+				'href': '/companies/media'
 			},
 			{
-				"name": "Retail & Consumer",
-				"id": "NDU=-U2VjdGlvbnM=",
-				"href": "/companies/retail-consumer",
+				'name': 'Retail & Consumer',
+				'id': 'NDU=-U2VjdGlvbnM=',
+				'href': '/companies/retail-consumer',
 			},
 			{
-				"name": "Technology",
-				"id": "NTM=-U2VjdGlvbnM=",
-				"href": "/companies/technology"
+				'name': 'Technology',
+				'id': 'NTM=-U2VjdGlvbnM=',
+				'href': '/companies/technology'
 			},
 			{
-				"name": "Telecoms",
-				"id": "NTY=-U2VjdGlvbnM=",
-				"href": "/companies/telecoms"
+				'name': 'Telecoms',
+				'id': 'NTY=-U2VjdGlvbnM=',
+				'href': '/companies/telecoms'
 			},
 			{
-				"name": "Transport",
-				"id": "NDE=-U2VjdGlvbnM=",
-				"href": "/companies/transport",
+				'name': 'Transport',
+				'id': 'NDE=-U2VjdGlvbnM=',
+				'href': '/companies/transport',
 			}
 			];
 		return mixin.init().then(() => {

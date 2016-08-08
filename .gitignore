@@ -3,6 +3,6 @@
 /bower_components/
 /.idea/
 .editorconfig
-.eslintrc.json
+.eslintrc.js
 /test/fixtures/bad-assets/public/
 /test/fixtures/bad-assets/.gitignore

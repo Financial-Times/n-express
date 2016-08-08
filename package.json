@@ -6,10 +6,9 @@
     "test": "make test"
   },
   "dependencies": {
-    "@financial-times/n-handlebars": "^1.9.0",
+    "@financial-times/n-handlebars": "^1.12.0",
     "@financial-times/n-logger": "^5.0.0",
     "@financial-times/n-raven": "^2.0.0",
-    "@financial-times/n-ui": "^2.7.0",
     "debounce": "^1.0.0",
     "denodeify": "^1.2.1",
     "express": "^4.14.0",
