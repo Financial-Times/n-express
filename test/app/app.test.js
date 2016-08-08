@@ -191,6 +191,13 @@ describe('simple app', function() {
 			.expect(200, 'Hello world', done);
 	});
 
+	it('should add the AB test state to locals', function (done) {
+		request(app)
+			.get('/templated')
+			.set('FT-AB', 'someAbTest:variant')
+			.expect(200, /<div id="ab-state">someAbTest\:variant<\/div>/, done);
+	});
+
 	describe('metrics', function () {
 
 		beforeEach(function () {
