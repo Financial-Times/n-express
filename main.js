@@ -106,6 +106,13 @@ module.exports = function(options) {
 		next();
 	});
 
+	// set the ab test state so it can be added to the html tag and used by client code
+	app.use(function(req, res, next) {
+		const abState = req.get('ft-ab') || '';
+		app.locals.__abState = abState;
+		next();
+	});
+
 	serviceMetrics.init(options.serviceDependencies);
 
 
