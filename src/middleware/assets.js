@@ -55,6 +55,7 @@ module.exports = function (options) {
 		if (req.accepts('text/html')) {
 			res.locals.javascriptBundles = [];
 			res.locals.cssBundles = [];
+			res.locals.inlineCss;
 
 			// work out which assets will be required by the page
 			if (res.locals.flags.nUiBundle && options.hasNUiBundle) {
@@ -73,9 +74,12 @@ module.exports = function (options) {
 
 				const cssVariant = templateData.cssVariant || res.locals.cssVariant;
 				res.locals.cssBundles = [
-					hashedAssets.get(`main${cssVariant ? '-' + cssVariant : ''}.css`)
+					{
+						path: hashedAssets.get(`main${cssVariant ? '-' + cssVariant : ''}.css`),
+						isMain: true
+					}
 				];
-				res.locals.cssBundles.forEach(file => res.linkResource(file, {as: 'style'}));
+				res.locals.cssBundles.forEach(file => res.linkResource(file.path, {as: 'style'}));
 				res.locals.javascriptBundles.forEach(file => res.linkResource(file, {as: 'script'}));
 				return originalRender.apply(res, [].slice.call(arguments));
 			}
