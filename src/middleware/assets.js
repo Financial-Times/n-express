@@ -1,23 +1,24 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
 
-let version = false;
-let majorVersion;
+let nUiSpecificVersion = false;
+let nUiMajorVersion;
 let versionType = 'none';
 let nUiConfig;
 
 // Attempt to get information about which major and minor versions of n-ui are installed
 try {
-	version = require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json')).version;
+	nUiSpecificVersion = require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json')).version;
 
-	if (/(beta|rc)/.test(version)) {
+	if (/(beta|rc)/.test(nUiSpecificVersion)) {
 		versionType = 'beta';
 	} else {
 		versionType = 'semver';
-		version = version.split(".").slice(0,2).join('.');
-		majorVersion = version.split('.').slice(0,1)[0];
+		nUiSpecificVersion = nUiSpecificVersion.split(".").slice(0,2).join('.');
+		nUiMajorVersion = nUiSpecificVersion.split('.').slice(0,1)[0];
 	}
 
 } catch (e) {}
@@ -45,24 +46,34 @@ function constructLinkHeader (file, meta, opts) {
 	this.append('Link', header.join('; '))
 }
 
-module.exports = function (options) {
+module.exports = function (options, directory) {
+
+	const headCsses = options.hasHeadCss ? fs.readdirSync(`${directory}/public`)
+		.filter(name => /^head[\-a-z]*\.css$/.test(name))
+		.map(name => [name, fs.readFileSync(`${directory}/public/${name}`, 'utf-8')])
+		.reduce((currentHeadCsses, currentHeadCss) => {
+			currentHeadCsses[currentHeadCss[0].replace('.css', '')] = currentHeadCss[1];
+			return currentHeadCsses;
+		}, {}) : {};
+
 	return (req, res, next) => {
 
 		// define a helper for adding a link header
 		res.linkResource = constructLinkHeader;
 
-
+		// backwards compatible - can remove once n-ui templates updated everywhere
+		res.locals.headCsses = headCsses;
 		if (req.accepts('text/html')) {
 			res.locals.javascriptBundles = [];
 			res.locals.cssBundles = [];
-			res.locals.inlineCss;
+			res.locals.criticalCss = [];
 
 			// work out which assets will be required by the page
 			if (res.locals.flags.nUiBundle && options.hasNUiBundle) {
 				//backwards compatibility
-				const nUiVersion = 'v' + ((versionType === 'semver' && res.locals.flags.nUiBundleMajorVersion) ? majorVersion : version);
+				const nUiActiveVersion = 'v' + ((versionType === 'semver' && res.locals.flags.nUiBundleMajorVersion) ? nUiMajorVersion : nUiSpecificVersion);
 				res.locals.nUiConfig = nUiConfig;
-				res.locals.javascriptBundles.push(`//next-geebee.ft.com/n-ui/no-cache/${nUiVersion}/es5-core-js${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
+				res.locals.javascriptBundles.push(`//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/es5-core-js${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 			} else {
 				res.locals.javascriptBundles.push(hashedAssets.get('main.js'));
@@ -72,10 +83,20 @@ module.exports = function (options) {
 			const originalRender = res.render;
 			res.render = function (template, templateData) {
 
-				const cssVariant = templateData.cssVariant || res.locals.cssVariant;
+				let cssVariant = templateData.cssVariant || res.locals.cssVariant;
+				cssVariant = cssVariant ? '-' + cssVariant : '';
+
+				// define which css to output in the critical path
+				if (options.hasHeadCss) {
+					if ((`head${cssVariant}-n-ui-core`) in headCsses) {
+						res.locals.criticalCss.push(headCsses[`head${cssVariant}-n-ui-core`])
+					}
+					res.locals.criticalCss.push(headCsses[`head${cssVariant}`]);
+				}
+
 				res.locals.cssBundles = [
 					{
-						path: hashedAssets.get(`main${cssVariant ? '-' + cssVariant : ''}.css`),
+						path: hashedAssets.get(`main${cssVariant}.css`),
 						isMain: true
 					}
 				];
