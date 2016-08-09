@@ -30,7 +30,6 @@ const cache = require('./src/middleware/cache');
 const handlebars = require('./src/handlebars');
 const hashedAssets = require('./src/lib/hashed-assets');
 const assetsMiddleware = require('./src/middleware/assets');
-const headCssMiddleware = require('./src/middleware/head-css');
 const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
 module.exports = function(options) {
@@ -173,11 +172,8 @@ module.exports = function(options) {
 			options: options
 		}));
 
-		// Decorate responses with which head css variants are available
-		app.use(headCssMiddleware(options, directory));
-
 		// Decorate responses with data about which assets the page needs
-		app.use(assetsMiddleware(options));
+		app.use(assetsMiddleware(options, directory));
 
 		// Handle the akamai -> fastly -> akamai etc. circular redirect bug
 		app.use(function (req, res, next) {
