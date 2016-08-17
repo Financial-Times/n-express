@@ -73,7 +73,10 @@ module.exports = function (options, directory) {
 				//backwards compatibility
 				const nUiActiveVersion = 'v' + ((versionType === 'semver' && res.locals.flags.nUiBundleMajorVersion) ? nUiMajorVersion : nUiSpecificVersion);
 				res.locals.nUiConfig = nUiConfig;
-				res.locals.javascriptBundles.push(`//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/es5-core-js${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
+				res.locals.javascriptBundles.push(`\
+//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/\
+es5-${res.locals.flags.polyfillSymbol ? 'polyfill-io' : 'core-js'}\
+${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 			} else {
 				res.locals.javascriptBundles.push(hashedAssets.get('main.js'));
