@@ -57,7 +57,7 @@ module.exports = function (options, directory) {
 		}, {}) : {};
 
 	return (req, res, next) => {
-
+		const swCriticalCss = req.get('ft-next-sw') && res.locals.flags.swCriticalCss;
 		// define a helper for adding a link header
 		res.linkResource = constructLinkHeader;
 
@@ -68,10 +68,9 @@ module.exports = function (options, directory) {
 			res.locals.cssBundles = [];
 			res.locals.criticalCss = [];
 
+			const nUiActiveVersion = 'v' + ((versionType === 'semver' && res.locals.flags.nUiBundleMajorVersion) ? nUiMajorVersion : nUiSpecificVersion);
 			// work out which assets will be required by the page
 			if (res.locals.flags.nUiBundle && options.hasNUiBundle) {
-				//backwards compatibility
-				const nUiActiveVersion = 'v' + ((versionType === 'semver' && res.locals.flags.nUiBundleMajorVersion) ? nUiMajorVersion : nUiSpecificVersion);
 				res.locals.nUiConfig = nUiConfig;
 				res.locals.javascriptBundles.push(`\
 //next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/\
@@ -92,17 +91,28 @@ ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 				// define which css to output in the critical path
 				if (options.hasHeadCss) {
 					if ((`head${cssVariant}-n-ui-core`) in headCsses) {
-						res.locals.criticalCss.push(headCsses[`head${cssVariant}-n-ui-core`])
+						if (swCriticalCss) {
+							res.locals.cssBundles.push({
+								path: `//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/main.css`
+							});
+						} else {
+							// even if the page hasn't been loaded via sw, we still want to encourage the browser to preload
+							// this shared critical css file for the next visit. Support for prefetch is wider than for preload too
+							if (res.locals.flags.swCriticalCss) {
+								res.linkResource(`//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/main.css`, {as: 'style', rel: 'prefetch'});
+							}
+							res.locals.criticalCss.push(headCsses[`head${cssVariant}-n-ui-core`])
+						}
 					}
 					res.locals.criticalCss.push(headCsses[`head${cssVariant}`]);
 				}
 
-				res.locals.cssBundles = [
-					{
-						path: hashedAssets.get(`main${cssVariant}.css`),
-						isMain: true
-					}
-				];
+				res.locals.cssBundles.push({
+					path: hashedAssets.get(`main${cssVariant}.css`),
+					isMain: true,
+					isLazy: true
+				});
+
 				res.locals.cssBundles.forEach(file => res.linkResource(file.path, {as: 'style'}));
 				res.locals.javascriptBundles.forEach(file => res.linkResource(file, {as: 'script'}));
 				return originalRender.apply(res, [].slice.call(arguments));
