@@ -1,6 +1,5 @@
 'use strict';
 const anonModels = require('./models');
-const NavigationModel = require('../navigation/navigationModel');
 
 function showFirstClickFree(req, res){
 	return res.locals.flags && res.locals.flags.firstClickFree &&
@@ -14,10 +13,7 @@ function anonymousMiddleware(req, res, next){
 		showFirstClickFree(req, res) ?
 			new anonModels.FirstClickFreeModel() :
 			null;
-	const currentUrl = req.get('ft-blocked-url')
-		|| req.get('FT-Vanity-Url')
-		|| req.url;
-	res.locals.navigationModel = new NavigationModel(res.locals.flags, res.locals.anon.userIsAnonymous, currentUrl);
+
 	res.vary('FT-Anonymous-User');
 	next();
 }
