@@ -3,15 +3,25 @@
 const path = require('path');
 const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
+const semver = require('semver');
 
-let nUiSpecificVersion = false;
-let nUiMajorVersion;
-let versionType = 'none';
-let nUiConfig;
+let versions = [];
+
 
 // Attempt to get information about which major and minor versions of n-ui are installed
 try {
-	nUiSpecificVersion = require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json')).version;
+	const nUiRelease = require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json'))._release;
+
+	if (!semver.valid(nUiRelease)) {
+		versions = [nUiRelease, nUiRelease];
+	}	else if (/(beta|rc)/.test(nUiRelease)) {
+		versions = ['v' + nUiRelease, 'v' + nUiRelease];
+	} else {
+		versions = [
+			'v' + nUiRelease.split('.').slice(0,2).join('.'),
+			'v' + nUiRelease.split('.').slice(0,1).join('.')
+		]
+	}
 
 	if (/(beta|rc)/.test(nUiSpecificVersion)) {
 		versionType = 'beta';
@@ -23,7 +33,11 @@ try {
 
 } catch (e) {}
 
+const nUiSpecificVersion = versions[0];
+const nUiMajorVersion = versions[1];
+
 // Attempt to retrieve the json file used to configure n-ui
+let nUiConfig;
 try {
 	nUiConfig = Object.assign({}, require(path.join(process.cwd(), 'client/n-ui-config')), {preload: true})
 } catch (e) {}
@@ -68,7 +82,7 @@ module.exports = function (options, directory) {
 			res.locals.cssBundles = [];
 			res.locals.criticalCss = [];
 
-			const nUiActiveVersion = 'v' + ((versionType === 'semver' && res.locals.flags.nUiBundleMajorVersion) ? nUiMajorVersion : nUiSpecificVersion);
+			const nUiActiveVersion = res.locals.flags.nUiBundleMajorVersion ? nUiMajorVersion : nUiSpecificVersion;
 			// work out which assets will be required by the page
 			if (res.locals.flags.nUiBundle && options.hasNUiBundle) {
 				res.locals.nUiConfig = nUiConfig;
