@@ -366,7 +366,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/templated')
 				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/vfalse/es5-core-js.min.js>; as="script"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush', done)
+				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/v1.1/es5-core-js.min.js>; as="script"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush', done)
 		});
 
 
