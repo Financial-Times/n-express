@@ -5,43 +5,6 @@ const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
 const semver = require('semver');
 
-let versions = [];
-
-
-// Attempt to get information about which major and minor versions of n-ui are installed
-try {
-	const nUiRelease = require(path.join(process.cwd(), 'bower_components/n-ui/.bower.json'))._release;
-
-	if (!semver.valid(nUiRelease)) {
-		versions = [nUiRelease, nUiRelease];
-	}	else if (/(beta|rc)/.test(nUiRelease)) {
-		versions = ['v' + nUiRelease, 'v' + nUiRelease];
-	} else {
-		versions = [
-			'v' + nUiRelease.split('.').slice(0,2).join('.'),
-			'v' + nUiRelease.split('.').slice(0,1).join('.')
-		]
-	}
-
-	if (/(beta|rc)/.test(nUiSpecificVersion)) {
-		versionType = 'beta';
-	} else {
-		versionType = 'semver';
-		nUiSpecificVersion = nUiSpecificVersion.split(".").slice(0,2).join('.');
-		nUiMajorVersion = nUiSpecificVersion.split('.').slice(0,1)[0];
-	}
-
-} catch (e) {}
-
-const nUiSpecificVersion = versions[0];
-const nUiMajorVersion = versions[1];
-
-// Attempt to retrieve the json file used to configure n-ui
-let nUiConfig;
-try {
-	nUiConfig = Object.assign({}, require(path.join(process.cwd(), 'client/n-ui-config')), {preload: true})
-} catch (e) {}
-
 
 function constructLinkHeader (file, meta, opts) {
 	meta = meta || {};
@@ -61,6 +24,36 @@ function constructLinkHeader (file, meta, opts) {
 }
 
 module.exports = function (options, directory) {
+
+
+	let versions = [];
+
+	// Attempt to get information about which major and minor versions of n-ui are installed
+	try {
+		const nUiRelease = require(path.join(directory, 'bower_components/n-ui/.bower.json'))._release;
+
+		if (!semver.valid(nUiRelease)) {
+			versions = [nUiRelease, nUiRelease];
+		}	else if (/(beta|rc)/.test(nUiRelease)) {
+			versions = ['v' + nUiRelease, 'v' + nUiRelease];
+		} else {
+			versions = [
+				'v' + nUiRelease.split('.').slice(0,2).join('.'),
+				'v' + nUiRelease.split('.').slice(0,1).join('.')
+			]
+		}
+
+	} catch (e) {}
+
+	const nUiSpecificVersion = versions[0];
+	const nUiMajorVersion = versions[1];
+
+	// Attempt to retrieve the json file used to configure n-ui
+	let nUiConfig;
+	try {
+		nUiConfig = Object.assign({}, require(path.join(directory, 'client/n-ui-config')), {preload: true})
+	} catch (e) {}
+
 
 	const headCsses = options.hasHeadCss ? fs.readdirSync(`${directory}/public`)
 		.filter(name => /^head[\-a-z]*\.css$/.test(name))
