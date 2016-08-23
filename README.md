@@ -22,16 +22,13 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 
 ## Cache control
-Define Cache-Control and Surrogate-Control headers for your response in a way that plays nicely with our CDN
-- `no`, `short`, `hour`, `day` or `long` presets can be used e.g. `res.cache('long')`
-- the above can have parts overridden e.g. `res.cache('long', {'stale-on-revalidate': 15000000000000})`
-- can also be passed one or two Cache-Control header strings, which are used for `Surrogate-Control` and outbound `Cache-Control` respectively
-- The above can also be invoked using the middleware pattern e.g.
+Several useful cache control header values are available as constants on responses:
 ```
-const express  = require('@financial-times/n-express');
-const app = express();
-app.get('/', express.cacheMiddleware('short', {'max-age': 5}), myController);
-
+	res.FT_NO_CACHE = 'max-age=0, no-cache, no-store, must-revalidate';
+	res.FT_SHORT_CACHE = 'max-age=600, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_HOUR_CACHE = 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_DAY_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_LONG_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=259200';
 ```
 
 ## Linked Resources (preload)
