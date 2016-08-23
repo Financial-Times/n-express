@@ -130,14 +130,14 @@ app.get('/mixed-vary', function (req, res) {
 });
 
 app.get('/cache', (req, res) => {
-	res.cache(req.query.length)
+	res.set('FT_NO_CACHE', res.FT_NO_CACHE);
+	res.set('FT_SHORT_CACHE', res.FT_SHORT_CACHE);
+	res.set('FT_HOUR_CACHE', res.FT_HOUR_CACHE);
+	res.set('FT_DAY_CACHE', res.FT_DAY_CACHE);
+	res.set('FT_LONG_CACHE', res.FT_LONG_CACHE);
 	res.sendStatus(200);
 });
 
-app.post('/cache', require('body-parser').json(), (req, res) => {
-	res.cache(req.body[0], req.body[1]);
-	res.sendStatus(200);
-});
 
 app.get('/non-html', (req, res) => {
 	res.set('Content-Type', 'application/json')
