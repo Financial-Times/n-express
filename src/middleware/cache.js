@@ -99,7 +99,15 @@ function setCacheHeaders (setter, surrogate, cache) {
 }
 
 function nextCache (preset, overrides) {
+	console.warn(`res.cache is deprecated. Use cache preset constants instead:
+	res.FT_NO_CACHE = 'max-age=0, no-cache, no-store, must-revalidate';
+	res.FT_SHORT_CACHE = 'max-age=600, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_HOUR_CACHE = 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_DAY_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_LONG_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=259200';
 
+	e.g. res.set('Surrogate-Control', res.FT_HOUR_CACHE).set('Cache-Control', res.FT_NO_CACHE)
+`)
 	// allow total flexibility, while still enforcing a few conditions
 	if (isHeaderString(preset)) {
 		return setCacheHeaders(this.set, preset, overrides || outboundCacheControl);
@@ -125,6 +133,13 @@ function nextCache (preset, overrides) {
 module.exports = function(req, res, next) {
 
 	res.cache = nextCache;
+
+	res.FT_NO_CACHE = 'max-age=0, no-cache, no-store, must-revalidate';
+	res.FT_SHORT_CACHE = 'max-age=600, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_HOUR_CACHE = 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_DAY_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=86400';
+	res.FT_LONG_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=259200';
+
 
 	next();
 };

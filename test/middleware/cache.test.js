@@ -6,7 +6,32 @@ const app = require('../fixtures/app/main');
 const sinon = require('sinon');
 const expect = require('chai').expect;
 
+describe('cache constants', function () {
+
+	it('define cache preset constants on the response object', function (done) {
+		request(app)
+			.get('/cache-constants')
+			.expect('FT_NO_CACHE', 'max-age=0, no-cache, no-store, must-revalidate')
+			.expect('FT_SHORT_CACHE', 'max-age=600, stale-while-revalidate=60, stale-if-error=86400')
+			.expect('FT_HOUR_CACHE', 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400')
+			.expect('FT_DAY_CACHE', 'max-age=86400, stale-while-revalidate=60, stale-if-error=86400')
+			.expect('FT_LONG_CACHE', 'max-age=86400, stale-while-revalidate=60, stale-if-error=259200')
+			.expect(200, done);
+	});
+});
+
+
 describe('cache helper', function () {
+
+	if (process.env.CIRCLE_TAG && Number(process.env.CIRCLE_TAG.split('.')[0].substr(1)) > 17) {
+		describe('deprecation', () => {
+			it('deprecate res.cache() in version 18', () => {
+				const res = {};
+				require('../../src/middleware/cache')({}, res, () => null)
+				expect(res.cache).to.not.exist
+			})
+		})
+	}
 
 	it('set no cache', function (done) {
 		request(app)
