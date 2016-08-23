@@ -407,5 +407,4 @@ describe('simple app', function() {
 		});
 
 	})
-
 });
