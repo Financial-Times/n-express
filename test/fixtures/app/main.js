@@ -144,6 +144,7 @@ app.get('/cache-constants', (req, res) => {
 	res.set('FT_SHORT_CACHE', res.FT_SHORT_CACHE);
 	res.set('FT_HOUR_CACHE', res.FT_HOUR_CACHE);
 	res.set('FT_DAY_CACHE', res.FT_DAY_CACHE);
+	res.set('FT_WEEK_CACHE', res.FT_WEEK_CACHE);
 	res.set('FT_LONG_CACHE', res.FT_LONG_CACHE);
 	res.sendStatus(200);
 });
