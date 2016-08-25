@@ -54,7 +54,7 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`
 
 ## Navigation
-If you pass `withNavigation:true` in the init options, you will have navigation data available in `res.locals.navigation`.  this data comes from polling the [navigation API](https://github.com/Financial-Times/next-navigation-api).  This data is used to populate the various menus and naviation items on the apps.  The following data is available
+If you pass `withNavigation:true` in the init options, you will have navigation data available in `res.locals.navigation`.  this data comes from polling the [navigation API](https://github.com/Financial-Times/next-navigation-api).  This data is used to populate the various menus and navigation items on the apps.  The following data is available
 
 	res.locals.navigation = {
 		lists: {
