@@ -43,7 +43,6 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
-		withRequestTracing: false,
 		hasHeadCss: false,
 		hasNUiBundle: false,
 		healthChecks: []
