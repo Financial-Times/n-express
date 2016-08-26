@@ -1,7 +1,22 @@
 /*jshint node:true*/
 "use strict";
 
-require('isomorphic-fetch');
+const basicFetch = require('isomorphic-fetch');
+
+const agents = {};
+const http = require('http');
+
+global.fetch = (url, opts) {
+	if (!opts.agent && !opts.noSharedAgent) {
+		const host = URL.split('/')[0];
+		if (!agents[host]) {
+			agents[host] = new http.Agent({keepAlive: true});
+		}
+		opts = Object.assign({agent: agents[host]}, opts)
+	}
+	return basicFetch(url, opts);
+}
+
 
 const express = require('express');
 
