@@ -5,6 +5,10 @@ const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
 const semver = require('semver');
 
+function hasLinkedNUi (directory) {
+	const stat = fs.lstatSync(path.join(directory, './bower_components/n-ui'));
+	return stat.isSymbolicLink();
+}
 
 function constructLinkHeader (file, meta, opts) {
 	meta = meta || {};
@@ -26,27 +30,42 @@ function constructLinkHeader (file, meta, opts) {
 module.exports = function (options, directory) {
 
 
-	let versions = [];
+	let versionUrls = [];
 
-	// Attempt to get information about which major and minor versions of n-ui are installed
+	// Attempt to get information about which major and minor versionUrls of n-ui are installed
 	try {
-		const nUiRelease = require(path.join(directory, 'bower_components/n-ui/.bower.json'))._release;
 
-		if (!semver.valid(nUiRelease)) {
-			versions = [nUiRelease, nUiRelease];
-		}	else if (/(beta|rc)/.test(nUiRelease)) {
-			versions = ['v' + nUiRelease, 'v' + nUiRelease];
+		if (hasLinkedNUi(directory)) {
+			console.warn(`
+/*********** n-ui warning ************/
+
+It looks like you're bower linking n-ui.
+Be sure to also \`make run\` in your n-ui directory
+
+/*********** n-ui warning ************/
+`);
+			versionUrls = [
+				'//local.ft.com:3456/',
+				'//local.ft.com:3456/'
+			];
 		} else {
-			versions = [
-				'v' + nUiRelease.split('.').slice(0,2).join('.'),
-				'v' + nUiRelease.split('.').slice(0,1).join('.')
-			]
+			const nUiRelease = require(path.join(directory, 'bower_components/n-ui/.bower.json'))._release;
+			if (!semver.valid(nUiRelease)) {
+				versionUrls = [nUiRelease, nUiRelease];
+			}	else if (/(beta|rc)/.test(nUiRelease)) {
+				versionUrls = ['v' + nUiRelease, 'v' + nUiRelease];
+			} else {
+				versionUrls = [
+					'v' + nUiRelease.split('.').slice(0,2).join('.'),
+					'v' + nUiRelease.split('.').slice(0,1).join('.')
+				]
+			}
+			versionUrls = versionUrls.map(v => `//next-geebee.ft.com/n-ui/no-cache/${v}/`)
 		}
 
 	} catch (e) {}
-
-	const nUiSpecificVersion = versions[0];
-	const nUiMajorVersion = versions[1];
+	const nUiSpecificVersionUrlRoot = versionUrls[0];
+	const nUiMajorVersionUrlRoot = versionUrls[1];
 
 	// Attempt to retrieve the json file used to configure n-ui
 	let nUiConfig;
@@ -75,12 +94,12 @@ module.exports = function (options, directory) {
 			res.locals.cssBundles = [];
 			res.locals.criticalCss = [];
 
-			const nUiActiveVersion = res.locals.flags.nUiBundleMajorVersion ? nUiMajorVersion : nUiSpecificVersion;
+			const nUiUrlRoot = res.locals.flags.nUiBundleMajorVersion ? nUiMajorVersionUrlRoot : nUiSpecificVersionUrlRoot;
 			// work out which assets will be required by the page
 			if (res.locals.flags.nUiBundle && options.hasNUiBundle) {
 				res.locals.nUiConfig = nUiConfig;
 				res.locals.javascriptBundles.push(`\
-//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/\
+${nUiUrlRoot}\
 es5-${res.locals.flags.polyfillSymbol ? 'polyfill-io' : 'core-js'}\
 ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
@@ -100,13 +119,13 @@ ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 					if ((`head${cssVariant}-n-ui-core`) in headCsses) {
 						if (swCriticalCss) {
 							res.locals.cssBundles.push({
-								path: `//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/main.css`
+								path: `${nUiUrlRoot}main.css`
 							});
 						} else {
 							// even if the page hasn't been loaded via sw, we still want to encourage the browser to preload
 							// this shared critical css file for the next visit. Support for prefetch is wider than for preload too
 							if (res.locals.flags.swCriticalCss) {
-								res.linkResource(`//next-geebee.ft.com/n-ui/no-cache/${nUiActiveVersion}/main.css`, {as: 'style', rel: 'prefetch'});
+								res.linkResource(`${nUiUrlRoot}main.css`, {as: 'style', rel: 'prefetch'});
 							}
 							res.locals.criticalCss.push(headCsses[`head${cssVariant}-n-ui-core`])
 						}
