@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
 const semver = require('semver');
+const nPolyfillIo = require('@financial-times/n-polyfill-io');
 
 function hasLinkedNUi (directory) {
 	const stat = fs.lstatSync(path.join(directory, './bower_components/n-ui'));
@@ -28,7 +29,6 @@ function constructLinkHeader (file, meta, opts) {
 }
 
 module.exports = function (options, directory) {
-
 
 	let versionUrls = [];
 
@@ -109,6 +109,25 @@ ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 
 			// output the default link headers just before rendering
 			const originalRender = res.render;
+			const polyfillHost = res.locals.flags.polyfillQA ? 'qa.polyfill.io' : 'next-geebee.ft.com/polyfill';
+			res.locals.polyfillUrls = {
+				enhanced: nPolyfillIo({
+					host: polyfillHost,
+					type: 'enhanced',
+					qs: {
+						callback: 'ftNextPolyfillServiceCallback',
+						rum: res.locals.flags.polyfillsRUM ? 1 : 0,
+						excludes: res.locals.flags.polyfillSymbol ? [] : ['Symbol', 'Symbol.iterator', 'Symbol.species', 'Map', 'Set']
+					}
+				}),
+				core: nPolyfillIo({
+					host: polyfillHost,
+					type: 'core'
+				})
+			}
+
+			res.locals.javascriptBundles.push(res.locals.polyfillUrls.enhanced);
+
 			res.render = function (template, templateData) {
 
 				let cssVariant = templateData.cssVariant || res.locals.cssVariant;
