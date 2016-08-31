@@ -110,12 +110,14 @@ ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 			// output the default link headers just before rendering
 			const originalRender = res.render;
 			const polyfillHost = res.locals.flags.polyfillQA ? 'qa.polyfill.io' : 'next-geebee.ft.com/polyfill';
+
+			res.locals.polyfillCallbackName = 'ftNextPolyfillServiceCallback';
 			res.locals.polyfillUrls = {
 				enhanced: nPolyfillIo({
 					host: polyfillHost,
 					type: 'enhanced',
 					qs: {
-						callback: 'ftNextPolyfillServiceCallback',
+						callback: res.locals.polyfillCallbackName,
 						rum: res.locals.flags.polyfillsRUM ? 1 : 0,
 						excludes: res.locals.flags.polyfillSymbol ? [] : ['Symbol', 'Symbol.iterator', 'Symbol.species', 'Map', 'Set']
 					}
