@@ -356,17 +356,20 @@ describe('simple app', function() {
 
 	describe('hashed assets and preloading', () => {
 
-		it('should preload main.css and main.js by default', done => {
+		it('should preload main.css, main.js and polyfill by default', done => {
 			request(app)
 				.get('/templated')
-				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
+				.expect('Link', /<\/demo-app\/main\.css>; as="style"; rel="preload"; nopush/)
+				.expect('Link', /<\/demo-app\/main\.js>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/\/next-geebee\.ft\.com\/polyfill\/v2\/polyfill\.min\.js\?features=default.*>; as="script"; rel="preload"; nopush/, done)
 		});
 
 		it('should preload n-ui bundles if flag is on', done => {
 			request(app)
 				.get('/templated')
 				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/v1.1/es5-core-js.min.js>; as="script"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush', done)
+				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/no-cache\/v1\.1\/es5-core-js\.min\.js>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, done)
 		});
 
 
@@ -374,10 +377,10 @@ describe('simple app', function() {
 			request(app)
 				.get('/templated')
 				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main-without-n-ui.js>; as="script"; rel="preload"; nopush, <//next-geebee.ft.com/n-ui/no-cache/vfalse/es5-core-js.min.js>; as="script"; rel="preload"; nopush', () => {
+				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, () => {
 					request(app)
 						.get('/templated')
-						.expect('Link', '</demo-app/main.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
+						.expect('Link', /<\/demo-app\/main\.js>; as="script"; rel="preload"; nopush/, done)
 				})
 		});
 
@@ -397,7 +400,7 @@ describe('simple app', function() {
 		it('should preload main-variant.css as appropriate', done => {
 			request(app)
 				.get('/templated?cssVariant=variant')
-				.expect('Link', '</demo-app/main-variant.css>; as="style"; rel="preload"; nopush, </demo-app/main.js>; as="script"; rel="preload"; nopush', done)
+				.expect('Link', /<\/demo-app\/main-variant\.css>; as="style"; rel="preload"; nopush/, done)
 		});
 
 		it('should be possible to preload any file on any request', done => {
