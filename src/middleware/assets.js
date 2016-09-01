@@ -40,7 +40,8 @@ module.exports = function (options, directory) {
 /*********** n-ui warning ************/
 
 It looks like you're bower linking n-ui.
-Be sure to also \`make run\` in your n-ui directory
+Be sure to also \`make -j2 watch run\` in your n-ui directory
+Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer working on n-ui
 
 /*********** n-ui warning ************/
 `);
@@ -109,22 +110,17 @@ ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 
 			// output the default link headers just before rendering
 			const originalRender = res.render;
-			const polyfillHost = res.locals.flags.polyfillQA ? 'qa.polyfill.io' : 'next-geebee.ft.com/polyfill';
+			const polyfillRoot = `//${res.locals.flags.polyfillQA ? 'qa.polyfill.io' : 'next-geebee.ft.com/polyfill'}/v2/polyfill.min.js`;
 
-			res.locals.polyfillCallbackName = 'ftNextPolyfillServiceCallback';
+			res.locals.polyfillCallbackName = nPolyfillIo.callbackName;
 			res.locals.polyfillUrls = {
-				enhanced: nPolyfillIo({
-					host: polyfillHost,
-					type: 'enhanced',
-					qs: {
-						callback: res.locals.polyfillCallbackName,
-						rum: res.locals.flags.polyfillsRUM ? 1 : 0,
-						excludes: res.locals.flags.polyfillSymbol ? [] : ['Symbol', 'Symbol.iterator', 'Symbol.species', 'Map', 'Set']
-					}
+				enhanced: polyfillRoot + nPolyfillIo.getQueryString({
+					enhanced: true,
+					withRum: res.locals.flags.polyfillsRUM ? 1 : 0,
+					excludeSymbol: !res.locals.flags.polyfillSymbol
 				}),
-				core: nPolyfillIo({
-					host: polyfillHost,
-					type: 'core'
+				core: polyfillRoot + nPolyfillIo.getQueryString({
+					enhanced: false
 				})
 			}
 
