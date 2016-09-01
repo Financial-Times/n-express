@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
 const semver = require('semver');
+const nPolyfillIo = require('@financial-times/n-polyfill-io');
 
 function hasLinkedNUi (directory) {
 	const stat = fs.lstatSync(path.join(directory, './bower_components/n-ui'));
@@ -29,7 +30,6 @@ function constructLinkHeader (file, meta, opts) {
 
 module.exports = function (options, directory) {
 
-
 	let versionUrls = [];
 
 	// Attempt to get information about which major and minor versionUrls of n-ui are installed
@@ -40,7 +40,8 @@ module.exports = function (options, directory) {
 /*********** n-ui warning ************/
 
 It looks like you're bower linking n-ui.
-Be sure to also \`make run\` in your n-ui directory
+Be sure to also \`make -j2 watch run\` in your n-ui directory
+Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer working on n-ui
 
 /*********** n-ui warning ************/
 `);
@@ -109,6 +110,22 @@ ${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
 
 			// output the default link headers just before rendering
 			const originalRender = res.render;
+			const polyfillRoot = `//${res.locals.flags.polyfillQA ? 'qa.polyfill.io' : 'next-geebee.ft.com/polyfill'}/v2/polyfill.min.js`;
+
+			res.locals.polyfillCallbackName = nPolyfillIo.callbackName;
+			res.locals.polyfillUrls = {
+				enhanced: polyfillRoot + nPolyfillIo.getQueryString({
+					enhanced: true,
+					withRum: res.locals.flags.polyfillsRUM ? 1 : 0,
+					excludeSymbol: !res.locals.flags.polyfillSymbol
+				}),
+				core: polyfillRoot + nPolyfillIo.getQueryString({
+					enhanced: false
+				})
+			}
+
+			res.locals.javascriptBundles.push(res.locals.polyfillUrls.enhanced);
+
 			res.render = function (template, templateData) {
 
 				let cssVariant = templateData.cssVariant || res.locals.cssVariant;
