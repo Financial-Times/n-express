@@ -1,5 +1,9 @@
+'use strict';
+
 module.exports = function (app, options, description) {
 	const healthChecks = options.healthChecks;
+	const defaultAppName = `Next FT.com ${app.locals.__name} in ${process.env.REGION || 'unknown region'}`;
+
 	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
 		const checks = healthChecks.map(function(check) {
@@ -27,7 +31,7 @@ module.exports = function (app, options, description) {
 		res.set('Content-Type', 'application/json');
 		res.send(JSON.stringify({
 			schemaVersion: 1,
-			name: `Next FT.com ${app.locals.__name} in ${process.env.REGION || 'unknown region'}`,
+			name: options.healthChecksAppName || defaultAppName,
 			systemCode: options.systemCode,
 			description: description,
 			checks: checks

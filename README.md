@@ -19,6 +19,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `hasHeadCss` - if the app outputs a `head.css` file, read it (assumes it's in the `public` dir) and store in the `res.locals.headCss`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
+- `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
 
 ## Cache control
 Several useful cache control header values are available as constants on responses:
