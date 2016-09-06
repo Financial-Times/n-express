@@ -61,7 +61,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 					'v' + nUiRelease.split('.').slice(0,1).join('.')
 				]
 			}
-			versionUrls = versionUrls.map(v => `//next-geebee.ft.com/n-ui/no-cache/${v}/`)
+			versionUrls = versionUrls.map(v => `//next-geebee.ft.com/n-ui/cached/${v}/`)
 		}
 
 	} catch (e) {}

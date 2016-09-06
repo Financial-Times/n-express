@@ -368,7 +368,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/templated')
 				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/no-cache\/v1\.1\/es5-core-js\.min\.js>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/cached\/v1\.1\/es5-core-js\.min\.js>; as="script"; rel="preload"; nopush/)
 				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, done)
 		});
 
@@ -391,10 +391,6 @@ describe('simple app', function() {
 					expect(res.headers.link).to.not.exist;
 					done();
 				})
-		});
-
-		it.skip('should preload a hashed url if exists', () => {
-
 		});
 
 		it('should preload main-variant.css as appropriate', done => {
