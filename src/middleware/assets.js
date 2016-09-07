@@ -31,11 +31,11 @@ function constructLinkHeader (file, meta, opts) {
 module.exports = function (options, directory) {
 
 	let versionUrls = [];
-
+	let nUiIsLinked = false;
 	// Attempt to get information about which major and minor versionUrls of n-ui are installed
 	try {
-
-		if (hasLinkedNUi(directory)) {
+		nUiIsLinked = hasLinkedNUi(directory)
+		if (nUiIsLinked) {
 			console.warn(`
 /*********** n-ui warning ************/
 
@@ -102,7 +102,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 				res.locals.javascriptBundles.push(`\
 ${nUiUrlRoot}\
 es5-${res.locals.flags.polyfillSymbol ? 'polyfill-io' : 'core-js'}\
-${res.locals.flags.nUiBundleUnminified ? '' : '.min'}.js`);
+${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 			} else {
 				res.locals.javascriptBundles.push(hashedAssets.get('main.js'));
