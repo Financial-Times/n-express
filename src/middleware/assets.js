@@ -84,6 +84,11 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 		}, {}) : {};
 
 	return (req, res, next) => {
+		// This middleware relies on the presence of res.locals.flags.
+		// In some scenarios (e.g. using handlebars but not flags) this
+		// won't be present
+		res.locals.flags = res.locals.flags || {};
+
 		const swCriticalCss = req.get('ft-next-sw') && res.locals.flags.swCriticalCss;
 		// define a helper for adding a link header
 		res.linkResource = constructLinkHeader;
