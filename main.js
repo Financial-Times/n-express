@@ -43,6 +43,7 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
+		withAssets: options.withHandlebars || false, // TODO always default to false for next major version
 		hasHeadCss: false,
 		hasNUiBundle: false,
 		healthChecks: []
@@ -172,7 +173,9 @@ module.exports = function(options) {
 		}));
 
 		// Decorate responses with data about which assets the page needs
-		app.use(assetsMiddleware(options, directory));
+		if (options.withAssets) {
+			app.use(assetsMiddleware(options, directory));
+		}
 
 		// Handle the akamai -> fastly -> akamai etc. circular redirect bug
 		app.use(function (req, res, next) {
