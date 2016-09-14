@@ -5,6 +5,7 @@ const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 const pollerStub = require('../stubs/poller.stub');
 const decorateSpy = sinon.spy(data => data);
 const navigationListDataStub = require('../stubs/navigationListData.json');
+const fetchMock = require('fetch-mock');
 
 describe('Navigation middleware', () => {
 	let NavigationModel;
@@ -170,6 +171,46 @@ describe('Navigation middleware', () => {
 				sinon.assert.called(next);
 			})
 		});
-	})
+	});
+
+	describe('Fallback', () => {
+
+		function apiDownS3Up(){
+			fetchMock.restore();
+			fetchMock.mock(/next-navigation\.ft\.com/, 500);
+			fetchMock.mock(/ft-next-navigation\.s3-website-eu-west-1\.amazonaws\.com/, require('../fixtures/navigationLists.json'), {name:'s3bucket'});
+		}
+
+		function apiDownS3Down(){
+			fetchMock.restore();
+			fetchMock.mock(/next-navigation\.ft\.com/, 500);
+			fetchMock.mock(/ft-next-navigation\.s3-website-eu-west-1\.amazonaws\.com/, 500, {name:'s3bucket'});
+		}
+
+		beforeEach(() => {
+			NavigationModel = require('../../src/navigation/navigationModel');
+		});
+
+		it('Should get data from the s3 bucket if the api is down', () => {
+			apiDownS3Up();
+			const navigation = new NavigationModel();
+			return navigation.init().then(() => {
+				expect(fetchMock.called('s3bucket')).to.be.true;
+			});
+		});
+
+		it('Should use the hardcoded default data if s3 is also down', () => {
+			apiDownS3Down();
+			const defaultData = require('../../src/navigation/defaultData.json');
+			const navigation = new NavigationModel();
+			return navigation.init().then(() => {
+				for(let list of ['drawer', 'navbar_desktop', 'footer']){
+					expect(navigation.list(list)).to.deep.equal(defaultData[list]);
+				}
+
+			});
+		});
+
+	});
 
 });
