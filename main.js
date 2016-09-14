@@ -43,12 +43,11 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
-		withAssets: options.withHandlebars || false, // TODO always default to false for next major version
+		// TODO always default to false for next major version
+		withAssets: options.withHandlebars || false,
 		hasHeadCss: false,
-		hasNUiBundle: false,
 		healthChecks: []
 	};
-
 
 	Object.keys(defaults).forEach(function (prop) {
 		if (typeof options[prop] === 'undefined') {

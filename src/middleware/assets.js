@@ -101,17 +101,14 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			res.locals.criticalCss = [];
 
 			const nUiUrlRoot = res.locals.flags.nUiBundleMajorVersion ? nUiMajorVersionUrlRoot : nUiSpecificVersionUrlRoot;
+
 			// work out which assets will be required by the page
-			if (res.locals.flags.nUiBundle && options.hasNUiBundle) {
-				res.locals.nUiConfig = nUiConfig;
-				res.locals.javascriptBundles.push(`\
+			res.locals.nUiConfig = nUiConfig;
+			res.locals.javascriptBundles.push(`\
 ${nUiUrlRoot}\
 es5-${res.locals.flags.polyfillSymbol ? 'polyfill-io' : 'core-js'}\
 ${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`);
-				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
-			} else {
-				res.locals.javascriptBundles.push(hashedAssets.get('main.js'));
-			}
+			res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 
 			// output the default link headers just before rendering
 			const originalRender = res.render;
@@ -138,7 +135,7 @@ ${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`);
 
 				// define which css to output in the critical path
 				if (options.hasHeadCss) {
-					if ((`head${cssVariant}-n-ui-core`) in headCsses) {
+					if (`head${cssVariant}-n-ui-core` in headCsses) {
 						if (swCriticalCss) {
 							res.locals.cssBundles.push({
 								path: `${nUiUrlRoot}main.css`
