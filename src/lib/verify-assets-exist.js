@@ -28,7 +28,11 @@ module.exports = {
 		gitignore.filter(pattern => {
 			if (/^\/?public.*(css|js)$/.test(pattern)) {
 				if (!exists(join(app.__rootDirectory, pattern))) {
-					throw new Error(`${pattern} must exist otherwise this app will not be allowed to start`);
+					if (process.env.NODE_ENV.toUpperCase() === 'PRODUCTION') {
+						throw new Error(`${pattern} must exist otherwise this app will not be allowed to start`);
+					} else {
+						logger.warn(`${pattern} must exist otherwise this app will not be allowed to start in production`)
+					}
 				}
 				logger.info({ event: 'ASSERTED_EXISTS', file: pattern });
 				return pattern;
