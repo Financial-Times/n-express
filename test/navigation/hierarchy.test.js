@@ -4,6 +4,10 @@ const sinon = require('sinon');
 const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 const pollerStub = require('../stubs/poller.stub');
 const navigationTaxonomyDataStub = require('../stubs/navigationTaxonomyData.json');
+const fetchMock = require('fetch-mock');
+
+const UK_STREAM_ID = 'Ng==-U2VjdGlvbnM=';
+
 
 describe('Heirarchy Mixin', () => {
 
@@ -107,4 +111,47 @@ describe('Heirarchy Mixin', () => {
 		})
 	});
 
+	describe('Fallback', () => {
+
+		function apiDownS3Up(){
+			fetchMock.restore();
+			fetchMock.mock(/next-navigation\.ft\.com/, 500);
+			fetchMock.mock(/ft-next-navigation\.s3-website-eu-west-1\.amazonaws\.com/, require('../fixtures/navigationLists.json'), {name:'s3bucket'});
+		}
+
+		function apiDownS3Down(){
+			fetchMock.restore();
+			fetchMock.mock(/next-navigation\.ft\.com/, 500);
+			fetchMock.mock(/ft-next-navigation\.s3-website-eu-west-1\.amazonaws\.com/, 500, {name:'s3bucket'});
+		}
+
+		before(() => {
+			HierarchyMixin = require('../../src/navigation/hierarchyMixin');
+		});
+
+		after(() => {
+			fetchMock.restore();
+		});
+
+		it('Should use the s3 bucket on startup if the navigation api is down', () => {
+			apiDownS3Up();
+			let mixin = new HierarchyMixin();
+			return mixin.init().then(() => {
+				expect(fetchMock.called('s3bucket')).to.be.true;
+			})
+		});
+
+		it('Should return empty results if both requests fail', () => {
+			apiDownS3Down();
+			let mixin = new HierarchyMixin();
+			return mixin.init().then(() => {
+				let findResult = mixin.find(UK_STREAM_ID);
+				let ancestors = mixin.ancestors(UK_STREAM_ID);
+				let children = mixin.children(UK_STREAM_ID);
+				expect(findResult).to.deep.equal({item:null,parent:null});
+				expect(ancestors).to.be.empty;
+				expect(children).to.be.empty;
+			});
+		});
+	});
 });
