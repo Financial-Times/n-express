@@ -32,6 +32,11 @@ const hashedAssets = require('./src/lib/hashed-assets');
 const assetsMiddleware = require('./src/middleware/assets');
 const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
+// Health check failure simulation
+const checkFailing = require('./src/lib/check-failing');
+
+checkFailing.init();
+
 module.exports = function(options) {
 
 	options = options || {};
@@ -43,6 +48,7 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
+		withAssets: options.withHandlebars || false, // TODO always default to false for next major version
 		hasHeadCss: false,
 		hasNUiBundle: false,
 		healthChecks: []
@@ -172,7 +178,9 @@ module.exports = function(options) {
 		}));
 
 		// Decorate responses with data about which assets the page needs
-		app.use(assetsMiddleware(options, directory));
+		if (options.withAssets) {
+			app.use(assetsMiddleware(options, directory));
+		}
 
 		// Handle the akamai -> fastly -> akamai etc. circular redirect bug
 		app.use(function (req, res, next) {

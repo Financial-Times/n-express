@@ -1,5 +1,7 @@
 'use strict';
 
+var checkFailing = require('./check-failing');
+
 module.exports = function (app, options, description) {
 	const healthChecks = options.healthChecks;
 	const defaultAppName = `Next FT.com ${app.locals.__name} in ${process.env.REGION || 'unknown region'}`;
@@ -27,6 +29,8 @@ module.exports = function (app, options, description) {
 				}
 			});
 		}
+
+		checkFailing.fakeCheckFailuresIfApplicable(options.systemCode, checks, res); // TODO: Remove res
 
 		res.set('Content-Type', 'application/json');
 		res.send(JSON.stringify({

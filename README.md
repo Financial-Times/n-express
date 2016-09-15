@@ -13,6 +13,7 @@ npm install -S @financial-times/n-express
 Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
 - `withHandlebars` - adds handlebars as the rendering engine
+- `withAssets` - adds asset handling middleware, see [Linked Resources (preload)](#linked-resources-preload). Ignored if `withHandlebars` is not `true`
 - `withNavigation` - adds a data model for the navigation to each request (see below)
 - `withNavigationHierarchy` - adds additional data to the navigation model concerning the current page's ancestors and children
 - `withAnonMiddleware` - sets the user's signed in state in the data model, and varies the response accordingly
