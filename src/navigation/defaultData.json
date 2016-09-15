@@ -60,27 +60,6 @@
             "id": "MTQ4-U2VjdGlvbnM=",
             "href": "/life-arts"
           }
-        },
-        {
-          "item": {
-            "name": "Personal Finance",
-            "id": "MTQw-U2VjdGlvbnM=",
-            "href": "/personal-finance"
-          }
-        },
-        {
-          "item": {
-            "name": "Special Reports",
-            "id": "special-reports",
-            "href": "/special-reports"
-          }
-        },
-        {
-          "item": {
-            "name": "Science & Environment",
-            "id": "NTQ=-U2VjdGlvbnM=",
-            "href": "/science-environment"
-          }
         }
       ]
     ],
@@ -142,27 +121,6 @@
             "name": "Life & Arts",
             "id": "MTQ4-U2VjdGlvbnM=",
             "href": "/life-arts"
-          }
-        },
-        {
-          "item": {
-            "name": "Personal Finance",
-            "id": "MTQw-U2VjdGlvbnM=",
-            "href": "/personal-finance"
-          }
-        },
-        {
-          "item": {
-            "name": "Special Reports",
-            "id": "special-reports",
-            "href": "/special-reports"
-          }
-        },
-        {
-          "item": {
-            "name": "Science & Environment",
-            "id": "NTQ=-U2VjdGlvbnM=",
-            "href": "/science-environment"
           }
         }
       ]
