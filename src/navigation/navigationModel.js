@@ -42,7 +42,7 @@ module.exports = class NavigationModel {
 
 	getInitialData(){
 		return this.poller.start({initialRequest:true}).catch(err => {
-			log.error(err);
+			log.error({event:'NAVIGATION_API_DOWN', message:err.message});
 			return this.fallback();
 		})
 	}
@@ -55,19 +55,24 @@ module.exports = class NavigationModel {
 					return defaultData;
 				}
 
+				log.info({event:'NAVIGATION_LISTS_USING_S3_BUCKET'});
 				return response.json();
 			})
 			.then(data => {
 				this.fallbackData = data;
 			})
 			.catch(err => {
-				log.error(err);
+				log.error({event:'FALLBACK_URL_FAILURE', url:FALLBACK_URL, error:err.message, stack:err.stack.replace(/\n/g, '; ')});
 				this.fallbackData = defaultData;
 			})
 	}
 
+	getData(){
+		return this.poller.getData() || this.fallbackData;
+	}
+
 	list(name){
-		let data = this.poller.getData() || this.fallbackData;
+		let data = this.getData();
 		if(!data){
 			throw new Error('No lists data loaded');
 		}
@@ -98,7 +103,7 @@ module.exports = class NavigationModel {
 		res.locals.navigationLists = {};
 
 		const currentUrl = req.get('ft-blocked-url') || req.get('FT-Vanity-Url') || req.url;
-		let data = this.poller.getData();
+		let data = this.getData();
 		if(!data){
 			next();
 			return;

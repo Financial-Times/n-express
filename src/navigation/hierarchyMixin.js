@@ -46,7 +46,7 @@ module.exports = class HierarchyMixin {
 	init(){
 		return this.poller.start({initialRequest:true})
 			.catch(err => {
-				log.error(err);
+				log.error({event:'NAVIGATION_API_DOWN', error:err.message});
 				return this.fallback();
 			});
 	}
@@ -58,6 +58,7 @@ module.exports = class HierarchyMixin {
 					log.error({event:'S3_FALLBACK_FAIL', url:FALLBACK_URL, status:response.status});
 					return null;
 				}else{
+					log.info({event:'NAVIGATION_HIERARCHY_USING_S3_BUCKET'});
 					return response.json();
 				}
 
@@ -66,7 +67,7 @@ module.exports = class HierarchyMixin {
 				this.fallbackData = data;
 			})
 			.catch(err => {
-				log.error(err);
+				log.error({event:'S3_FALLBACK_FAIL', url:FALLBACK_URL, error:err.message, stack:err.stack.replace(/\n/g, '; ')});
 				this.fallbackData = null;
 			})
 	}
