@@ -26,11 +26,11 @@ module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, res
 
 		checks.forEach(function (check) {
 
-			if(!alreadyProcessedSeverities[check.severity]) {
+			if (!alreadyProcessedSeverities[check.severity]) {
 
 				the.failures.forEach(function (failure) {
 
-					if(failure.systemCode === systemCode && failure.severity === check.severity) {
+					if (failure.systemCode === systemCode && failure.severity === check.severity) {
 
 						const checkShouldBeMarkedAsFailing = isWithinRange(new Date(), failure.startTime, failure.endTime);
 
@@ -46,30 +46,25 @@ module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, res
 	}
 };
 
-const items = [ // TODO: Remove
-	{
-		systemCode: 'next-front-page',
-		startTime: addSeconds(new Date(), 10),
-		endTime: addSeconds(new Date(), 15),
-		severity: 2
-	},
-	{
-		systemCode: 'next-router',
-		startTime: addSeconds(new Date(), 5),
-		endTime: addSeconds(new Date(), 6),
-		severity: 2
-	},
-	{
-		systemCode: 'next-front-page',
-		startTime: addSeconds(new Date(), 20),
-		endTime: addSeconds(new Date(), 25),
-		severity: 1
-	}
-];
-
 function fetchFailureToSimulate () {
-    // TODO: Implement
-	return Promise.resolve(items);
+	const request = {
+		url: 'http://ft-next-health-eu.herokuapp.com/failure-simulation-config'
+	};
+
+	return fetch(request.url)
+		.then(function (response) {
+			if (response.status !== 200) {
+				return Promise.reject(new Error('status: ' + response.status));
+			}
+			return response.json();
+		})
+		.then(function (config) {
+			return config.failures;
+		})
+		.catch(function (error) {
+			error.message = 'Failed to fetch health check failures simulation config ---> ' + error;
+			return Promise.reject(error);
+		});
 }
 
 function fetchAndCacheFailureToSimulate () {
@@ -80,13 +75,12 @@ function fetchAndCacheFailureToSimulate () {
 }
 
 function periodically (func) {
-   return function () {
-		 setInterval(func, the.fetchInterval);
-	 };
+	return function () {
+		setInterval(func, the.fetchInterval);
+	};
 }
-
-
-
 
 // TODO: Fail silently
 // TODO: Add error handler for failure fetch
+// TODO: Remove unused methods
+// TODO: Consistently use function instead of () => {}

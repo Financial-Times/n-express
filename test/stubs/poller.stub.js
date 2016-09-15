@@ -11,10 +11,17 @@ const stubInstance = {
 
 };
 
+const failingStubInstance = {
+	start: sinon.stub().returns(Promise.reject(null)),
+	getData: () => null
+};
+
 const stub = sinon.stub().returns(stubInstance);
+const failingStub = sinon.stub().returns(failingStubInstance);
 
 module.exports = {
 	stub,
+	failingStub,
 	instance: stubInstance,
 	setup: d => data = d
 };
