@@ -16,10 +16,20 @@ function createGitignore () {
 }
 
 describe('built asset expectations', () => {
+	let initialEnv;
+
 	before(() => shellpromise(`mkdir -p ${appPath}/public`, { verbose: true }));
+	before(() => {
+		initialEnv = process.env.NODE_ENV;
+		process.env.NODE_ENV = 'production';
+	})
 
 	// otherwise fails linting
 	after(() => shellpromise(`rm ${appPath}/.gitignore`, { verbose: true }));
+	after(() => {
+		process.env.NODE_ENV = initialEnv;
+	})
+
 	beforeEach(() => Promise.all([
 		shellpromise(`touch ${appPath}/public/main.js`),
 		shellpromise(`touch ${appPath}/public/main.css`)
@@ -30,11 +40,11 @@ describe('built asset expectations', () => {
 		return shellpromise(`rm -rf ${appPath}/public/main.js`, { verbose: true })
 		.then(() => {
 			return appStart()
-			.then(() => {
-				throw new Error('app should not have successfully started');
-			}, err => {
-				expect(err.toString()).to.contain('main.js');
-			});
+				.then(() => {
+					throw new Error('app should not have successfully started');
+				}, err => {
+					expect(err.toString()).to.contain('main.js');
+				})
 		})
 
 	});

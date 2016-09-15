@@ -33,8 +33,9 @@ module.exports = {
 					} else {
 						logger.warn(`${pattern} must exist otherwise this app will not be allowed to start in production`)
 					}
+				} else {
+					logger.info({ event: 'ASSERTED_EXISTS', file: pattern });
 				}
-				logger.info({ event: 'ASSERTED_EXISTS', file: pattern });
 				return pattern;
 			}
 		});
