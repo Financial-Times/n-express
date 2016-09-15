@@ -110,6 +110,11 @@ module.exports = function(options) {
 		next();
 	});
 
+	app.use((req, res, next) => {
+		res.set('FT-Backend-Timestamp', new Date().toISOString());
+		next();
+	});
+
 	// set the edition so it can be added to the html tag and used for tracking
 	app.use(function(req, res, next) {
 		const edition = req.get('ft-edition') || '';
