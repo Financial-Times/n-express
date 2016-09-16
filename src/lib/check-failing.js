@@ -1,8 +1,7 @@
-const isAfter = require('date-fns/is_after');
-const addSeconds = require('date-fns/add_seconds');
-const addMinutes = require('date-fns/add_minutes');
+"use strict";
+
+const time = require('time');
 const isWithinRange = require('date-fns/is_within_range');
-const differenceInMilliseconds = require('date-fns/difference_in_milliseconds');
 
 const the = {
 	fetchInterval: 1000,
@@ -18,31 +17,40 @@ module.exports.init = function () {
 		});
 };
 
-module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, res) { //   TODO:  Remove res
+module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks) {
 
-	if (systemCode) {
+	try {
 
-		let alreadyProcessedSeverities = {};
+		if (systemCode) {
 
-		checks.forEach(function (check) {
+			let alreadyProcessedSeverities = {};
 
-			if (!alreadyProcessedSeverities[check.severity]) {
+			checks.forEach(function (check) {
 
-				the.failures.forEach(function (failure) {
+				if (!alreadyProcessedSeverities[check.severity]) {
 
-					if (failure.systemCode === systemCode && failure.severity === check.severity) {
+					the.failures.forEach(function (failure) {
 
-						const checkShouldBeMarkedAsFailing = isWithinRange(new Date(), failure.startTime, failure.endTime);
+						if (failure.systemCode === systemCode && failure.severity === check.severity) {
 
-						if (checkShouldBeMarkedAsFailing) {
-							check.ok = false;
+							const checkShouldBeMarkedAsFailing = isWithinRange(toUTC(new Date()), failure.startTime, failure.endTime);
+
+							if (checkShouldBeMarkedAsFailing) {
+								check.ok = false;
+							}
+
+							alreadyProcessedSeverities[check.severity] = check.severity;
 						}
+					});
+				}
+			});
+		}
 
-						alreadyProcessedSeverities[check.severity] = check.severity;
-					}
-				});
-			}
-		});
+	}
+	catch (error) {
+		error.message = 'Problem with the `fakeCheckFailuresIfApplicable()` ' +
+			'method of the chec-failing module --> ' + error.message;
+		console.error(error);
 	}
 };
 
@@ -69,7 +77,7 @@ function fetchFailureToSimulate () {
 
 function fetchAndCacheFailureToSimulate () {
 	return fetchFailureToSimulate()
-		.then(failures => {
+		.then(function (failures) {
 			the.failures = failures;
 		});
 }
@@ -80,7 +88,8 @@ function periodically (func) {
 	};
 }
 
-// TODO: Fail silently
-// TODO: Add error handler for failure fetch
-// TODO: Remove unused methods
-// TODO: Consistently use function instead of () => {}
+function toUTC (date) {
+	time.extend(date);
+	date.setTimezone('UTC', true);
+	return date;
+}

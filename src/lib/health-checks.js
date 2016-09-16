@@ -30,7 +30,7 @@ module.exports = function (app, options, description) {
 			});
 		}
 
-		checkFailing.fakeCheckFailuresIfApplicable(options.systemCode, checks, res); // TODO: Remove res
+		checkFailing.fakeCheckFailuresIfApplicable(options.systemCode, checks);
 
 		res.set('Content-Type', 'application/json');
 		res.send(JSON.stringify({
