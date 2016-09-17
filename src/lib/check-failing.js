@@ -4,6 +4,7 @@ const time = require('time');
 const isWithinRange = require('date-fns/is_within_range');
 
 const the = {
+	currentDate: new Date(),
 	fetchInterval: 1000,
 	allFailures: [],
 };
@@ -17,7 +18,18 @@ module.exports.init = function () {
 		});
 };
 
-module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks) {
+module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, req, res) {
+
+	if (req.query.dump === '1') {
+		res.send({
+			systemCode,
+			server: {
+				timezone: new time.Date().getTimezone(),
+			},
+			state: the,
+			checks
+		});
+	}
 
 	try {
 
@@ -33,7 +45,7 @@ module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks) {
 
 						if (failure.systemCode === systemCode && failure.severity === check.severity) {
 
-							const checkShouldBeMarkedAsFailing = isWithinRange(toUTC(new Date()), failure.startTime, failure.endTime);
+							const checkShouldBeMarkedAsFailing = isWithinRange(new Date(), failure.startTime, failure.endTime);
 
 							if (checkShouldBeMarkedAsFailing) {
 								check.ok = false;
@@ -86,10 +98,4 @@ function periodically (func) {
 	return function () {
 		setInterval(func, the.fetchInterval);
 	};
-}
-
-function toUTC (date) {
-	time.extend(date);
-	date.setTimezone('UTC', true);
-	return date;
 }
