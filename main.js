@@ -32,6 +32,11 @@ const hashedAssets = require('./src/lib/hashed-assets');
 const assetsMiddleware = require('./src/middleware/assets');
 const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
+// Health check failure simulation
+const checkFailing = require('./src/lib/check-failing');
+
+checkFailing.init();
+
 module.exports = function(options) {
 
 	options = options || {};
