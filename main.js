@@ -49,6 +49,7 @@ module.exports = function(options) {
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
 		// TODO always default to false for next major version
+		hasNUiBundle: true,
 		withAssets: options.withHandlebars || false,
 		hasHeadCss: false,
 		healthChecks: []
