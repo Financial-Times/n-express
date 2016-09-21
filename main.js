@@ -48,8 +48,8 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
-		// TODO always default to false for next major version
 		hasNUiBundle: true,
+		// TODO always default to false for next major version
 		withAssets: options.withHandlebars || false,
 		hasHeadCss: false,
 		healthChecks: []
