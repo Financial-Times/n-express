@@ -35,9 +35,9 @@ const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
 
-checkFailing.init();
-
 module.exports = function(options) {
+	
+	checkFailing.init();
 
 	options = options || {};
 
