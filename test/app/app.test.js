@@ -359,7 +359,7 @@ describe('simple app', function() {
 		it('should preload main.css, main-with-n-ui.js and polyfill', done => {
 			request(app)
 				.get('/templated')
-				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/cached\/v1\.1\/es5-core-js\.min\.js>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/cached\/v1\.1\/es5-polyfill-io\.min\.js>; as="script"; rel="preload"; nopush/)
 				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, done)
 		});
 
