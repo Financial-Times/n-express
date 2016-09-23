@@ -5,8 +5,8 @@ const isWithinRange = require('date-fns/is_within_range');
 
 const the = {
 	currentDate: new Date(),
-	fetchInterval: 1000,
-	allFailures: [],
+	fetchInterval: 60000 * 5,
+	failures: []
 };
 
 module.exports.init = function () {
@@ -24,7 +24,7 @@ module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, req
 		res.send({
 			systemCode,
 			server: {
-				timezone: new time.Date().getTimezone(),
+				timezone: new time.Date().getTimezone()
 			},
 			state: the,
 			checks
