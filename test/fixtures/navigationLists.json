@@ -14,7 +14,7 @@
     },
     "myaccount": {
       "name": "My Account",
-      "href": "https://registration.ft.com/registration/selfcare/"
+      "href": "https://myaccount.ft.com/details/core/view"
     },
     "myft": {
       "name": "myFT",
@@ -3024,7 +3024,7 @@
       },
       {
         "name": "My Account",
-        "href": "https://registration.ft.com/registration/selfcare/"
+        "href": "https://myaccount.ft.com/details/core/view"
       }
     ],
     "anon": [
