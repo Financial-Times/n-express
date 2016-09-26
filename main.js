@@ -36,6 +36,8 @@ const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 const checkFailing = require('./src/lib/check-failing');
 
 module.exports = function(options) {
+	
+	checkFailing.init();
 
 	checkFailing.init();
 
