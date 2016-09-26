@@ -3,6 +3,7 @@ const Poller = require('ft-poller');
 const ms = require('ms');
 const url = require('url');
 const decorateSelectedLink = require('./decorate');
+const optOutFooter = require('./optOutFooter'); // temporary while next is phased in
 const HierarchyMixin = require('./hierarchyMixin');
 const log = require('@financial-times/n-logger').default;
 
@@ -103,11 +104,13 @@ module.exports = class NavigationModel {
 		res.locals.navigationLists = {};
 
 		const currentUrl = req.get('ft-blocked-url') || req.get('FT-Vanity-Url') || req.url;
+
 		let data = this.getData();
 		if(!data){
 			next();
 			return;
 		}
+
 
 		for(let listName of Object.keys(data)){
 
@@ -129,7 +132,12 @@ module.exports = class NavigationModel {
 				listData = listData[currentEdition] || listData;
 			}
 
-			decorateSelectedLink(listData, listName, currentUrl);
+			if(listName !== 'footer') {
+				decorateSelectedLink(listData, listName, currentUrl);
+			} else {
+				optOutFooter(listData, currentUrl);
+			}
+
 			res.locals.navigation.lists[listName] = listData;
 
 			// I think the form above is better as it keeps things in a "navigation" namespace
