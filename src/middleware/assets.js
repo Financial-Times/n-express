@@ -106,7 +106,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			if (options.hasNUiBundle) {
 				res.locals.nUiConfig = nUiConfig;
 				res.locals.javascriptBundles.push(
-					`${nUiUrlRoot}es5-polyfill-io${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`
+					`${nUiUrlRoot}es5${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`
 				);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 			}
