@@ -113,6 +113,7 @@ https://ft-next-health-eu.herokuapp.com/__health.3 would return HTTP status 500
 
 Each health check must have a getStatus() property, which returns an object meeting the specifications of the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit) and the [FT Check Standard] (https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk#). This might look roughly like the following example:
 
+Note also that it is now required for the JSON returned at the `/__health` endpoint to contain the system code. To ensure that this happens, please ensure that the `systemCode` property of the express app init options has been supplied. See the 'App init options' section above.
 
 ```js
 var exampleHealthCheck = {

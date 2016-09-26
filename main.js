@@ -32,7 +32,12 @@ const hashedAssets = require('./src/lib/hashed-assets');
 const assetsMiddleware = require('./src/middleware/assets');
 const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
+// Health check failure simulation
+const checkFailing = require('./src/lib/check-failing');
+
 module.exports = function(options) {
+
+	checkFailing.init();
 
 	options = options || {};
 
@@ -43,12 +48,12 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
-		withAssets: options.withHandlebars || false, // TODO always default to false for next major version
+		hasNUiBundle: true,
+		// TODO always default to false for next major version
+		withAssets: options.withHandlebars || false,
 		hasHeadCss: false,
-		hasNUiBundle: false,
 		healthChecks: []
 	};
-
 
 	Object.keys(defaults).forEach(function (prop) {
 		if (typeof options[prop] === 'undefined') {
@@ -111,6 +116,11 @@ module.exports = function(options) {
 	app.use(function(req, res, next) {
 		metrics.instrument(req, { as: 'express.http.req' });
 		metrics.instrument(res, { as: 'express.http.res' });
+		next();
+	});
+
+	app.use((req, res, next) => {
+		res.set('FT-Backend-Timestamp', new Date().toISOString());
 		next();
 	});
 

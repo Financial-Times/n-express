@@ -356,32 +356,12 @@ describe('simple app', function() {
 
 	describe('hashed assets and preloading', () => {
 
-		it('should preload main.css, main.js and polyfill by default', done => {
+		it('should preload main.css, main-with-n-ui.js and polyfill', done => {
 			request(app)
 				.get('/templated')
-				.expect('Link', /<\/demo-app\/main\.css>; as="style"; rel="preload"; nopush/)
-				.expect('Link', /<\/demo-app\/main\.js>; as="script"; rel="preload"; nopush/)
-				.expect('Link', /<\/\/next-geebee\.ft\.com\/polyfill\/v2\/polyfill\.min\.js\?features=default.*>; as="script"; rel="preload"; nopush/, done)
-		});
-
-		it('should preload n-ui bundles if flag is on', done => {
-			request(app)
-				.get('/templated')
-				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/cached\/v1\.1\/es5-core-js\.min\.js>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/\/next-geebee\.ft\.com\/.*polyfill.min\.js.*>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/cached\/v1\.1\/es5\.min\.js>; as="script"; rel="preload"; nopush/)
 				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, done)
-		});
-
-
-		it('expect effect of flag not to leak', done => {
-			request(app)
-				.get('/templated')
-				.set('FT-Flags', 'nUiBundle:on')
-				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, () => {
-					request(app)
-						.get('/templated')
-						.expect('Link', /<\/demo-app\/main\.js>; as="script"; rel="preload"; nopush/, done)
-				})
 		});
 
 		it('should not preload anything by default on non text/html requests', done => {

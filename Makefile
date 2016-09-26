@@ -13,3 +13,6 @@ run:
 
 run-bad-assets:
 	node test/fixtures/bad-assets/main.js
+
+fixtures:
+	curl http://ft-next-navigation.s3-website-eu-west-1.amazonaws.com/json/lists.json > test/fixtures/navigationLists.json
