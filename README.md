@@ -14,9 +14,9 @@ npm install -S @financial-times/n-express
 
 Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
 
-### Madatory
+### Mandatory
 
-- `systemCode` - allows the application to communicate it's [CMDB](https://cmdb.ft.com) to other services.
+- `systemCode` - allows the application to communicate its [CMDB](https://cmdb.ft.com) to other services.
 
 ### Optional
 
