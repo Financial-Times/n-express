@@ -4,7 +4,8 @@
 module.exports = function (items, currentUrl) {
 	const optOutLink = {
 		name: 'Old FT.com',
-		href: `/opt-out-confirm?location=${encodeURIComponent(currentUrl)}`
+		href: `/opt-out-confirm?location=${encodeURIComponent(currentUrl)}`,
+		trackableName: 'Old FT.com'
 	};
 	const supportBlock = items.find(i => {
 		return i.title === 'Support';
