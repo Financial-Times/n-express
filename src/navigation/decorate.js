@@ -36,11 +36,6 @@ function decorateItems(items, currentUrl){
 	}
 }
 
-module.exports = function decorate(items, listName, currentUrl) {
-	switch (listName) {
-		case "footer":
-			return;
-		default:
-			return decorateItems(items, currentUrl);
-	}
+module.exports = function decorate(items, currentUrl) {
+	return decorateItems(items, currentUrl);
 };

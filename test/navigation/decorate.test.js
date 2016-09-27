@@ -14,44 +14,44 @@ describe('Navigation middleware: decorate', () => {
 	});
 
 	it('can handle an array of items', () => {
-		expect(() => subject(clone.navbar_desktop.uk, 'navbar_desktop', '')).to.not.throw();
+		expect(() => subject(clone.navbar_desktop.uk, '')).to.not.throw();
 	});
 
 	it('can handle a map of items', () => {
-		expect(() => subject(clone.account, 'account', '')).to.not.throw();
+		expect(() => subject(clone.account, '')).to.not.throw();
 	});
 
 	it('can handle nested items', () => {
-		expect(() => subject(clone.drawer.uk, 'drawer', '')).to.not.throw();
+		expect(() => subject(clone.drawer.uk, '')).to.not.throw();
 	});
 
 	it('selects the current item based on the given vanity', () => {
-		subject(clone.navbar_desktop.uk, 'navbar_desktop', '/world');
+		subject(clone.navbar_desktop.uk, '/world');
 		expect(clone.navbar_desktop.uk[1].selected).to.be.true;
 
-		subject(clone.drawer.uk, 'drawer', '/world');
+		subject(clone.drawer.uk, '/world');
 		expect(clone.drawer.uk[0][2].item.selected).to.be.true;
 	});
 
 	it('selects the current item based on the given path', () => {
-		subject(clone.navbar_desktop.uk, 'navbar_desktop', '/stream/sectionId/MQ==-U2VjdGlvbnM=');
+		subject(clone.navbar_desktop.uk, '/stream/sectionId/MQ==-U2VjdGlvbnM=');
 		expect(clone.navbar_desktop.uk[1].selected).to.be.true;
 
-		subject(clone.drawer.uk, 'drawer', '/world');
+		subject(clone.drawer.uk, '/world');
 		expect(clone.drawer.uk[0][2].item.selected).to.be.true;
 	});
 
 	it('ignores query strings in urls when selecting the current item', () => {
-		subject(clone.navbar_mobile.uk, 'navbar_mobile', '/?edition=international');
+		subject(clone.navbar_mobile.uk, '/?edition=international');
 		expect(clone.navbar_mobile.uk[0].selected).to.be.true;
 	});
 
 	it('replaces any ${currentPath} placeholders with the given path', () => {
-		subject(clone.account, 'account', '/current-path');
+		subject(clone.account, '/current-path');
 		expect(clone.account.signin.href).to.not.match(/\$\{\w\}/);
 		expect(clone.account.signin.href).to.match(/current-path/);
 
-		subject(clone.navbar_right, 'navbar_right', '/current-path');
+		subject(clone.navbar_right, '/current-path');
 		expect(clone.navbar_right.anon[0].href).to.not.match(/\$\{\w\}/);
 		expect(clone.navbar_right.anon[0].href).to.match(/current-path/);
 	});
