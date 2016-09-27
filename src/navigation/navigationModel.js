@@ -133,7 +133,7 @@ module.exports = class NavigationModel {
 			}
 
 			if(listName !== 'footer') {
-				decorateSelectedLink(listData, listName, currentUrl);
+				decorateSelectedLink(listData, currentUrl);
 			} else {
 				optOutFooter(listData, currentUrl);
 			}

@@ -36,6 +36,6 @@ function decorateItems(items, currentUrl){
 	}
 }
 
-module.exports = function decorate(items, listName, currentUrl) {
+module.exports = function decorate(items, currentUrl) {
 	return decorateItems(items, currentUrl);
 };
