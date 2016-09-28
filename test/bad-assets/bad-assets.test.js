@@ -5,47 +5,44 @@ const expect = require('chai').expect;
 const join = require('path').join;
 const appPath = join(__dirname, '../fixtures/bad-assets');
 
-function appStart () {
-	return shellpromise(`node -e "require('${appPath}/main').listen.then(() => { console.log('event=SUCCESS'); process.exit(); });"`
-		//, { verbose: true } // to debug tests, uncomment this line
-	);
-}
-
-function createGitignore () {
-	require('fs').writeFileSync(`${appPath}/.gitignore`, [].slice.call(arguments).join('\n'));
-}
-
 describe('built asset expectations', () => {
 	let initialEnv;
 
+	function appStart () {
+		return shellpromise(
+			`node --harmony -e "require('${appPath}/main').listen.then(() => { process.exit(); },	err => {process.exit(2); });"`,
+			{
+				env: {
+					NODE_ENV: 'production'
+				},
+				// verbose: true // to debug tests, uncomment this line
+			}
+		);
+	}
+
+	function createGitignore () {
+		require('fs').writeFileSync(`${appPath}/.gitignore`, [].slice.call(arguments).join('\n'));
+	}
+
 	before(() => shellpromise(`mkdir -p ${appPath}/public`, { verbose: true }));
-	before(() => {
-		initialEnv = process.env.NODE_ENV;
-		process.env.NODE_ENV = 'production';
-	})
 
 	// otherwise fails linting
 	after(() => shellpromise(`rm ${appPath}/.gitignore`, { verbose: true }));
-	after(() => {
-		process.env.NODE_ENV = initialEnv;
-	})
 
 	beforeEach(() => Promise.all([
 		shellpromise(`touch ${appPath}/public/main.js`),
 		shellpromise(`touch ${appPath}/public/main.css`)
 	]))
 
-	it('should fail to start if there is a missing asset', () => {
+	it.only('should fail to start if there is a missing asset', () => {
 		createGitignore('/public/main.js', '/public/main.css');
 		return shellpromise(`rm -rf ${appPath}/public/main.js`, { verbose: true })
-		.then(() => {
-			return appStart()
-				.then(() => {
-					throw new Error('app should not have successfully started');
-				}, err => {
-					expect(err.toString()).to.contain('main.js');
-				})
-		})
+			.then(appStart)
+			.then(() => {
+				throw new Error('app should not have successfully started');
+			}, err => {
+				expect(err.toString()).to.contain('main.js');
+			})
 
 	});
 
