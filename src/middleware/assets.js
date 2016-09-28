@@ -30,9 +30,9 @@ function constructLinkHeader (file, meta, opts) {
 
 module.exports = function (options, directory) {
 
-	let versionUrls = [];
+	let nUiUrlRoot;
 	let nUiIsLinked = false;
-	// Attempt to get information about which major and minor versionUrls of n-ui are installed
+	// Attempt to get information about which version of n-ui is installed
 	try {
 		nUiIsLinked = hasLinkedNUi(directory)
 		if (nUiIsLinked) {
@@ -45,29 +45,23 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 
 /*********** n-ui warning ************/
 `);
-			versionUrls = [
-				'//local.ft.com:3456/',
-				'//local.ft.com:3456/'
-			];
+			nUiUrlRoot = '//local.ft.com:3456/';
 		} else {
 			const nUiRelease = require(path.join(directory, 'bower_components/n-ui/.bower.json'))._release;
 			if (!semver.valid(nUiRelease)) {
-				versionUrls = [nUiRelease, nUiRelease];
+				// for non semver releases, use the tag in its entirety
+				nUiUrlRoot = nUiRelease;
 			}	else if (/(beta|rc)/.test(nUiRelease)) {
-				versionUrls = ['v' + nUiRelease, 'v' + nUiRelease];
+				// for beta releases, prepend a v
+				nUiUrlRoot = 'v' + nUiRelease;
 			} else {
-				versionUrls = [
-					'v' + nUiRelease.split('.').slice(0,2).join('.'),
-					'v' + nUiRelease.split('.').slice(0,1).join('.')
-				]
+				// for normal semver releases prepend a v to the major version
+				nUiUrlRoot = 'v' + nUiRelease.split('.').slice(0,1)[0]
 			}
-			versionUrls = versionUrls.map(v => `//next-geebee.ft.com/n-ui/cached/${v}/`)
+			nUiUrlRoot = `//next-geebee.ft.com/n-ui/cached/${nUiUrlRoot}/`;
 		}
 
 	} catch (e) {}
-	const nUiSpecificVersionUrlRoot = versionUrls[0];
-	const nUiMajorVersionUrlRoot = versionUrls[1];
-
 	// Attempt to retrieve the json file used to configure n-ui
 	let nUiConfig;
 	try {
@@ -99,8 +93,6 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			res.locals.javascriptBundles = [];
 			res.locals.cssBundles = [];
 			res.locals.criticalCss = [];
-
-			const nUiUrlRoot = res.locals.flags.nUiBundleMajorVersion ? nUiMajorVersionUrlRoot : nUiSpecificVersionUrlRoot;
 
 			// work out which assets will be required by the page
 			if (options.hasNUiBundle) {
