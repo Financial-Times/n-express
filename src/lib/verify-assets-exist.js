@@ -23,9 +23,12 @@ module.exports = {
 		})) {
 			return;
 		}
-
+		if (process.env.NODE_ENV && (process.env.NODE_ENV !== 'production')) {
+			logger.info("skipping asset verification as NODE_ENV is not production");
+			return;
+		}
 		// check each ignored /public file has been built
-		gitignore.filter(pattern => {
+		gitignore.forEach(pattern => {
 			if (/^\/?public.*(css|js)$/.test(pattern)) {
 				if (!exists(join(app.__rootDirectory, pattern))) {
 					throw new Error(`${pattern} must exist otherwise this app will not be allowed to start`);
