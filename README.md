@@ -11,6 +11,7 @@ npm install -S @financial-times/n-express
 
 ## App init options
 Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
+- `systemCode` - ensures that the system code is present in the JSON that is returned at the `/__health` endpoint. Note that the value of this property must correspond with the `systemCode` property of the [service registry](http://next-registry.ft.com/) entry of the app in question
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
 - `withHandlebars` - adds handlebars as the rendering engine
 - `withAssets` - adds asset handling middleware, see [Linked Resources (preload)](#linked-resources-preload). Ignored if `withHandlebars` is not `true`
@@ -103,6 +104,7 @@ https://ft-next-health-eu.herokuapp.com/__health.3 would return HTTP status 500
 
 Each health check must have a getStatus() property, which returns an object meeting the specifications of the [FT Health Check Standard](https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit) and the [FT Check Standard] (https://docs.google.com/document/edit?id=1ftlkDj1SUXvKvKJGvoMoF1GnSUInCNPnNGomqTpJaFk#). This might look roughly like the following example:
 
+Note also that it is now required for the JSON returned at the `/__health` endpoint to contain the system code. To ensure that this happens, please ensure that the `systemCode` property of the express app init options has been supplied. See the 'App init options' section above.
 
 ```js
 var exampleHealthCheck = {

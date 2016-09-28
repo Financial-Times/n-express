@@ -32,7 +32,12 @@ const hashedAssets = require('./src/lib/hashed-assets');
 const assetsMiddleware = require('./src/middleware/assets');
 const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
+// Health check failure simulation
+const checkFailing = require('./src/lib/check-failing');
+
 module.exports = function(options) {
+
+	checkFailing.init();
 
 	options = options || {};
 
@@ -43,6 +48,7 @@ module.exports = function(options) {
 		withNavigationHierarchy: false,
 		withAnonMiddleware: false,
 		withBackendAuthentication: false,
+		hasNUiBundle: true,
 		// TODO always default to false for next major version
 		withAssets: options.withHandlebars || false,
 		hasHeadCss: false,

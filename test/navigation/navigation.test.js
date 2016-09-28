@@ -109,13 +109,13 @@ describe('Navigation middleware', () => {
 		it('recognises vanity URLs', () => {
 			req.get.withArgs('FT-Vanity-Url').returns('/vanity');
 			instance.middleware(req, res, next);
-			sinon.assert.calledWith(decorateSpy, sinon.match.any, sinon.match.string, sinon.match('/vanity'));
+			sinon.assert.calledWith(decorateSpy, sinon.match.any, sinon.match('/vanity'));
 		});
 
 		it('recognises blocked URLs', () => {
 			req.get.withArgs('ft-blocked-url').returns('/blocked');
 			instance.middleware(req, res, next);
-			sinon.assert.calledWith(decorateSpy, sinon.match.any, sinon.match.string, sinon.match('/blocked'));
+			sinon.assert.calledWith(decorateSpy, sinon.match.any, sinon.match('/blocked'));
 		});
 	});
 
