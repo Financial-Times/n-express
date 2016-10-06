@@ -3,6 +3,8 @@
 
 require('isomorphic-fetch');
 
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 
 const flags = require('next-feature-flags-client');
@@ -34,6 +36,7 @@ const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
+const teapot = fs.readFileSync(path.join(__dirname, 'src/teapot.ascii'), 'utf8');
 
 module.exports = function(options) {
 
@@ -99,7 +102,9 @@ module.exports = function(options) {
 
 	app.get('/robots.txt', robots);
 	app.get('/__brew-coffee', function(req, res) {
-		res.sendStatus(418);
+		res.status(418);
+		res.send(teapot);
+		res.end();
 	});
 	healthChecks(app, options, description);
 	app.get('/__about', function(req, res) {
