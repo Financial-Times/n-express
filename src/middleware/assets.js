@@ -1,3 +1,4 @@
+/* eslint strict: 0 */
 'use strict';
 
 const path = require('path');
@@ -5,6 +6,7 @@ const fs = require('fs');
 const hashedAssets = require('../lib/hashed-assets');
 const semver = require('semver');
 const nPolyfillIo = require('@financial-times/n-polyfill-io');
+const chokidar = require('chokidar');
 
 function hasLinkedNUi (directory) {
 	const stat = fs.lstatSync(path.join(directory, './bower_components/n-ui'));
@@ -36,6 +38,7 @@ module.exports = function (options, directory) {
 	try {
 		nUiIsLinked = hasLinkedNUi(directory)
 		if (nUiIsLinked) {
+			/* eslint no-console: 0 */
 			console.warn(`
 /*********** n-ui warning ************/
 
@@ -76,6 +79,20 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			currentHeadCsses[currentHeadCss[0].replace('.css', '')] = currentHeadCss[1];
 			return currentHeadCsses;
 		}, {}) : {};
+
+	if (process.argv.indexOf('--dev') !== 0) {
+		const paths = Object.keys(headCsses).map(css => `${directory}/public/${css}.css`);
+		chokidar.watch(paths).on('change', (path) => {
+			fs.readFile(path, 'utf-8', (err, content) => {
+				if (content) {
+					const name = path.match(/\/(head.*).css$/)[1];
+					headCsses[name] = content;
+					/* eslint no-console: 0 */
+					console.log(`Reloaded head CSS: ${name}`);
+				}
+			});
+		});
+	}
 
 	return (req, res, next) => {
 		// This middleware relies on the presence of res.locals.flags.
