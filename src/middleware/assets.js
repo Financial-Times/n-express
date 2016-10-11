@@ -80,7 +80,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			return currentHeadCsses;
 		}, {}) : {};
 
-	if (process.argv.indexOf('--dev') !== 0) {
+	if (process.NODE_ENV !== 'production') {
 		const paths = Object.keys(headCsses).map(css => `${directory}/public/${css}.css`);
 		chokidar.watch(paths).on('change', (path) => {
 			fs.readFile(path, 'utf-8', (err, content) => {
