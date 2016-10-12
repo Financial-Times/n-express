@@ -1,8 +1,11 @@
 /* eslint strict: 0 */
 'use strict';
 
+const logger = require('@financial-times/n-logger').default;
+const denodeify = require('denodeify');
 const path = require('path');
 const fs = require('fs');
+const readFile = denodeify(fs.readFile);
 const hashedAssets = require('../lib/hashed-assets');
 const semver = require('semver');
 const nPolyfillIo = require('@financial-times/n-polyfill-io');
@@ -38,8 +41,7 @@ module.exports = function (options, directory) {
 	try {
 		nUiIsLinked = hasLinkedNUi(directory)
 		if (nUiIsLinked) {
-			/* eslint no-console: 0 */
-			console.warn(`
+			logger.warn(`
 /*********** n-ui warning ************/
 
 It looks like you're bower linking n-ui.
@@ -82,16 +84,20 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 
 	if (process.NODE_ENV !== 'production') {
 		const paths = Object.keys(headCsses).map(css => `${directory}/public/${css}.css`);
-		chokidar.watch(paths).on('change', (path) => {
-			fs.readFile(path, 'utf-8', (err, content) => {
-				if (content) {
+		chokidar.watch(paths)
+			.on('change', (path) => {
+				readFile(path, 'utf-8').then((content) => {
 					const name = path.match(/\/(head.*).css$/)[1];
 					headCsses[name] = content;
-					/* eslint no-console: 0 */
-					console.log(`Reloaded head CSS: ${name}`);
-				}
+					logger.info(`Reloaded head CSS: ${name}`);
+				});
+			})
+			.on('unlink', (path) => {
+				const name = path.match(/\/(head.*).css$/)[1];
+				delete headCsses[name];
+				logger.info(`Deleted head CSS: ${name}`);
+				logger.warn('Please note you will need to restart app if you add new head CSS files');
 			});
-		});
 	}
 
 	return (req, res, next) => {
