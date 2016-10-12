@@ -26,6 +26,7 @@
   "devDependencies": {
     "body-parser": "^1.15.0",
     "chai": "^3.0.0",
+    "chokidar": "^1.6.0",
     "eslint": "^2.5.3",
     "fetch-mock": "^5.1.2",
     "lintspaces-cli": "^0.1.1",
