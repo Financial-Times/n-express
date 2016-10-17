@@ -15,8 +15,7 @@ const app = module.exports = express({
 	withNavigationHierarchy: true,
 	withAnonMiddleware: true,
 	withBackendAuthentication: true,
-	layoutsDir: __dirname + '/views/',
-	systemCode: 'test-app'
+	layoutsDir: __dirname + '/views/'
 });
 
 app.get('/', function(req, res) {

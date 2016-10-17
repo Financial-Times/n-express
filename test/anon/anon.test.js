@@ -12,7 +12,7 @@ describe('Anonymous Middleware', function() {
 
 	beforeEach(function(){
 		sinon.stub(verifyAssetsExist, 'verify');
-		app = nextExpress({ withFlags:true, withHandlebars:false, withAnonMiddleware:true, systemCode: 'test' });
+		app = nextExpress({ withFlags:true, withHandlebars:false, withAnonMiddleware:true });
 		app.get('/', function(req, res){
 			locals = res.locals;
 			res.sendStatus(200).end();

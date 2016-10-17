@@ -10,16 +10,8 @@ npm install -S @financial-times/n-express
 # API extensions
 
 ## App init options
-
-
 Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
-
-### Mandatory
-
-- `systemCode` - allows the application to communicate its [CMDB](https://cmdb.ft.com) to other services.
-
-### Optional
-
+- `systemCode` - ensures that the system code is present in the JSON that is returned at the `/__health` endpoint. Note that the value of this property must correspond with the `systemCode` property of the [service registry](http://next-registry.ft.com/) entry of the app in question
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
 - `withHandlebars` - adds handlebars as the rendering engine
 - `withAssets` - adds asset handling middleware, see [Linked Resources (preload)](#linked-resources-preload). Ignored if `withHandlebars` is not `true`
@@ -30,7 +22,6 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `hasHeadCss` - if the app outputs a `head.css` file, read it (assumes it's in the `public` dir) and store in the `res.locals.headCss`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
-
 
 ## Cache control
 Several useful cache control header values are available as constants on responses:
