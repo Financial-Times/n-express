@@ -64,10 +64,6 @@ module.exports = function(options) {
 		}
 	});
 
-	if (!options.systemCode) {
-		throw new Error('All applications must specify a CMDB `systemCode` to the express() function. See the README for more details.');
-	}
-
 	let packageJson = {};
 	let name = options.name;
 	let description = '';

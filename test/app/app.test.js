@@ -123,8 +123,7 @@ describe('simple app', function() {
 				name: 'noBackendAuth',
 				directory: __dirname,
 				withHandlebars: false,
-				withBackendAuthentication: false,
-				systemCode: 'test-app'
+				withBackendAuthentication: false
 			});
 			app.get('/let-me-in', function (req, res) {
 				res.end('', 200);
@@ -147,8 +146,7 @@ describe('simple app', function() {
 			name: 'noflags',
 			directory: __dirname,
 			withHandlebars: false,
-			withFlags: false,
-			systemCode: 'test-app'
+			withFlags: false
 		});
 		app.get('/', function (req, res) {
 			res.end('', 200);
@@ -169,8 +167,7 @@ describe('simple app', function() {
 		const app = nextExpress({
 			name: 'nohandles',
 			directory: __dirname,
-			withHandlebars: false,
-			systemCode: 'test-app'
+			withHandlebars: false
 		});
 		app.get('/', function (req, res) {
 			res.end('', 200);
@@ -213,7 +210,6 @@ describe('simple app', function() {
 		function getApp (conf) {
 			conf = conf || {};
 			conf.directory = path.resolve(__dirname, '../fixtures/app/');
-			conf.systemCode = 'test-app';
 			return nextExpress(conf);
 		}
 
