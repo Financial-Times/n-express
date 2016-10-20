@@ -204,7 +204,7 @@ module.exports = function(options) {
 	}
 
 	// Start the app - Woo hoo!
-	const actualAppListen = () => {
+	const actualAppListen = function () {
 		let serverPromise;
 		if (process.argv.indexOf('--https') > -1) {
 			const readFile = denodeify(fs.readFile);
@@ -212,7 +212,7 @@ module.exports = function(options) {
 					readFile(path.resolve(__dirname, 'key.pem')),
 					readFile(path.resolve(__dirname, 'cert.pem'))
 				])
-				.then(([key, cert]) => https.createServer({ key, cert }, this));
+				.then(results => https.createServer({ key: results[0], cert: results[1] }, this));
 		} else {
 			serverPromise = Promise.resolve(http.createServer(this));
 		}
