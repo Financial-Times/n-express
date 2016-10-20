@@ -6,6 +6,9 @@ require('isomorphic-fetch');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const http = require('http');
+const https = require('https');
+const denodeify = require('denodeify');
 
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
@@ -201,7 +204,21 @@ module.exports = function(options) {
 	}
 
 	// Start the app - Woo hoo!
-	const actualAppListen = app.listen;
+	const actualAppListen = () => {
+		let serverPromise;
+		if (process.argv.indexOf('--https') > -1) {
+			const readFile = denodeify(fs.readFile);
+			serverPromise = Promise.all([
+					readFile(path.resolve(__dirname, 'key.pem')),
+					readFile(path.resolve(__dirname, 'cert.pem'))
+				])
+				.then(([key, cert]) => https.createServer({ key, cert }, this));
+		} else {
+			serverPromise = Promise.resolve(http.createServer(this));
+		}
+
+		return serverPromise.then(server => server.listen.apply(server, arguments));
+	};
 
 	app.listen = function() {
 		const args = [].slice.apply(arguments);
