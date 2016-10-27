@@ -57,6 +57,7 @@ module.exports = function(options) {
 		hasNUiBundle: true,
 		// TODO always default to false for next major version
 		withAssets: options.withHandlebars || false,
+		withServiceMetrics: true,
 		hasHeadCss: false,
 		healthChecks: []
 	};
@@ -142,8 +143,9 @@ module.exports = function(options) {
 		next();
 	});
 
-	serviceMetrics.init(options.serviceDependencies);
-
+	if (options.withServiceMetrics) {
+		serviceMetrics.init(options.serviceDependencies);
+	}
 
 	// Only allow authorized upstream applications access
 	if (options.withBackendAuthentication) {
