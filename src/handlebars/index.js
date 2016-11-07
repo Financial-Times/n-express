@@ -13,7 +13,8 @@ module.exports = function (conf) {
 
 	return handlebars(app, {
 		partialsDir: [
-			directory + (options.viewsDirectory || '/views') + '/partials'
+			directory + (options.viewsDirectory || '/views') + '/partials',
+			directory + ('/node_modules/@financial-times')
 		],
 		defaultLayout: false,
 		// The most common use case, n-ui/layout is not bundled with this package
