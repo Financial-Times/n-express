@@ -63,7 +63,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 				// for normal semver releases prepend a v to the major version
 				nUiUrlRoot = 'v' + nUiRelease.split('.').slice(0,1)[0]
 			}
-			nUiUrlRoot = `//next-geebee.ft.com/n-ui/cached/${nUiUrlRoot}/`;
+			nUiUrlRoot = `//www.ft.com/__assets/n-ui/cached/${nUiUrlRoot}/`;
 		}
 
 	} catch (e) {}

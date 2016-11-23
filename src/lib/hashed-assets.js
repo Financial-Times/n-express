@@ -19,5 +19,5 @@ module.exports.init = locals => {
 module.exports.get = file => {
 	const fallback = `/${appLocals.__name}/${file}`;
 	const hash = assetHashes[file];
-	return (!appLocals.__isProduction || !hash) ? fallback : `https://next-geebee.ft.com/hashed-assets/${appLocals.__name}/${hash}`;
+	return (!appLocals.__isProduction || !hash) ? fallback : `//www.ft.com/__assets/hashed/${appLocals.__name}/${hash}`;
 }

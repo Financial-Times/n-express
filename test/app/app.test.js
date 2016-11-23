@@ -360,7 +360,7 @@ describe('simple app', function() {
 			request(app)
 				.get('/templated')
 				.expect('Link', /<\/\/next-geebee\.ft\.com\/.*polyfill.min\.js.*>; as="script"; rel="preload"; nopush/)
-				.expect('Link', /<\/\/next-geebee\.ft\.com\/n-ui\/cached\/v1\/es5\.min\.js>; as="script"; rel="preload"; nopush/)
+				.expect('Link', /<\/\/www\.ft\.com\/__assets\/n-ui\/cached\/v1\/es5\.min\.js>; as="script"; rel="preload"; nopush/)
 				.expect('Link', /<\/demo-app\/main-without-n-ui\.js>; as="script"; rel="preload"; nopush/, done)
 		});
 
