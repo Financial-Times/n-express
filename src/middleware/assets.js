@@ -178,6 +178,12 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 
 				res.locals.cssBundles.forEach(file => res.linkResource(file.path, {as: 'style'}));
 				res.locals.javascriptBundles.forEach(file => res.linkResource(file, {as: 'script'}));
+
+				if (templateData.withAssetPrecache) {
+					res.locals.cssBundles.forEach(file => res.linkResource(file.path, {as: 'style', rel: 'precache'}));
+					res.locals.javascriptBundles.forEach(file => res.linkResource(file, {as: 'script', rel: 'precache'}));
+				}
+
 				return originalRender.apply(res, [].slice.call(arguments));
 			}
 		}
