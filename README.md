@@ -23,6 +23,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `hasHeadCss` - if the app outputs a `head.css` file, read it (assumes it's in the `public` dir) and store in the `res.locals.headCss`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
+- `partialsDirectory` String - a path to load partials from, this in addition to the standard `views/partials` that is set for every app
 
 ## Cache control
 Several useful cache control header values are available as constants on responses:
