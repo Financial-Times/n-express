@@ -1,6 +1,5 @@
-'use strict';
 
-const express = require('../../..');
+const express = require('../../../main');
 const app = module.exports = express({
 	name: 'bad-assets',
 	directory: __dirname,

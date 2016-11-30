@@ -41,7 +41,7 @@ const verifyAssetsExist = require('./src/lib/verify-assets-exist');
 const checkFailing = require('./src/lib/check-failing');
 const teapot = fs.readFileSync(path.join(__dirname, 'src/teapot.ascii'), 'utf8');
 
-module.exports = function(options) {
+module.exports = function (options) {
 
 	checkFailing.init();
 
