@@ -15,7 +15,31 @@ function anonymousMiddleware(req, res, next){
 			null;
 
 	res.vary('FT-Anonymous-User');
-	next();
+
+	if (res.locals.flags.brexitDiscount && res.locals.flags.brexitDiscountType) {
+		getBarrierData(req).then(function (response) {
+			res.brexitOfferBasePrice = response.viewData.subscriptionOptions.STANDARD.price.weekly;
+			next();
+		});
+	}
+	else {
+		next();
+	}
+}
+
+function getBarrierData (req) {
+
+	const headers = {
+		'Content-Classification': req.query['ft-content-classification'] || req.get('FT-Content-Classification') || 'CONDITIONAL_STANDARD',
+		'Country-Code': req.query['country-code'] || req.get('country-code') || 'GBR',
+	};
+
+	if (headers['Content-Classification'] === '-') {
+		headers['Content-Classification'] = 'CONDITIONAL_STANDARD';
+	}
+
+	return fetch('https://barrier-app.memb.ft.com/memb/barrier/v1/barrier-data', { headers: headers, timeout: 2000 })
+		.then(res => res.json())
 }
 
 module.exports = anonymousMiddleware;
