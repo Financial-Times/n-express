@@ -39,21 +39,23 @@ module.exports = function (conf) {
 		viewsDirectory: options.viewsDirectory
 	})
 		.then(instance => {
-			new Poller({
-				url: 'http://ft-next-n-ui-prod.s3-website-eu-west-1.amazonaws.com/n-ui/layouts/wrapper-precompiled.js',
-				refreshInterval: 60000,
-				parseData: tpl => {
+			if (process.env.N_UI !== 'linked') {
+				new Poller({
+					url: 'http://ft-next-n-ui-prod.s3-website-eu-west-1.amazonaws.com/n-ui/layouts/wrapper-precompiled.js',
+					refreshInterval: 60000,
+					parseData: tpl => {
 
-					tpl = tpl
-						.replace('</body>', `<div style=\\"background: white;position: absolute;top: 0;left:0;color:red;font-size:50px\\">${Date.now()}</div></body>`)
+						tpl = tpl
+							.replace('</body>', `<div style=\\"background: white;position: absolute;top: 0;left:0;color:red;font-size:50px\\">${Date.now()}</div></body>`)
 
-					const script = new vm.Script('(' + tpl + ')');
-				  const tplAsObj = script.runInNewContext();
+						const script = new vm.Script('(' + tpl + ')');
+					  const tplAsObj = script.runInNewContext();
 
-					instance.compiled[layoutsDir + '/wrapper.html'] = instance.handlebars.template(tplAsObj);
-				},
-				autostart: true
-			})
+						instance.compiled[layoutsDir + '/wrapper.html'] = instance.handlebars.template(tplAsObj);
+					},
+					autostart: true
+				})
+			}
 			return instance;
 		});
 }
