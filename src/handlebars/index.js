@@ -39,7 +39,7 @@ module.exports = function (conf) {
 		viewsDirectory: options.viewsDirectory
 	})
 		.then(instance => {
-			if (process.env.N_UI !== 'linked') {
+			if (process.env.NEXT_APP_SHELL !== 'local') {
 				new Poller({
 					url: 'http://ft-next-n-ui-prod.s3-website-eu-west-1.amazonaws.com/n-ui/layouts/wrapper-precompiled.js',
 					refreshInterval: 60000,

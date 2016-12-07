@@ -36,21 +36,18 @@ function constructLinkHeader (file, meta, opts) {
 module.exports = function (options, directory) {
 
 	let nUiUrlRoot;
-	let nUiIsLinked = false;
+	let localAppShell = process.env.NEXT_APP_SHELL === 'local';
 	// Attempt to get information about which version of n-ui is installed
 	try {
-		nUiIsLinked = hasLinkedNUi(directory)
-		if (nUiIsLinked) {
+		if (localAppShell) {
 			logger.warn(`
 /*********** n-ui warning ************/
 
-It looks like you're bower linking n-ui.
-Be sure to also \`make -j2 watch run\` in your n-ui directory
-Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer working on n-ui
+WRITE A NEW WARNING RHYS
 
 /*********** n-ui warning ************/
 `);
-			nUiUrlRoot = '//local.ft.com:3456/';
+			nUiUrlRoot = hashedAssets.get('n-ui/');
 		} else {
 			const nUiRelease = require(path.join(directory, 'bower_components/n-ui/.bower.json'))._release;
 			if (!semver.valid(nUiRelease)) {
@@ -121,7 +118,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			if (options.hasNUiBundle) {
 				res.locals.nUiConfig = nUiConfig;
 				res.locals.javascriptBundles.push(
-					`${nUiUrlRoot}es5${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`
+					`${nUiUrlRoot}es5${(res.locals.flags.nUiBundleUnminified || localAppShell ) ? '' : '.min'}.js`
 				);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 			}
