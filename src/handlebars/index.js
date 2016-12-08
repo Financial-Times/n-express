@@ -1,6 +1,5 @@
 const handlebars = require('@financial-times/n-handlebars');
 const hashedAssets = require('../lib/hashed-assets');
-const Poller = require('ft-poller');
 
 module.exports = function (conf) {
 	const app = conf.app;

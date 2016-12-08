@@ -12,7 +12,7 @@ module.exports = {
 		// if there's a wildcard pattern for public assume don't need to check for
 		// built assets existence
 		if (gitignore.some(pattern => {
-			return /^\/?public\/(.*\/\*|\*|$)/.test(pattern);
+			return /^\/?public\/(.*\/\*|\*|$)/.test(pattern) && pattern !== '/public/n-ui/';
 		})) {
 			return;
 		}
