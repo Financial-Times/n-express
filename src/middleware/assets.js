@@ -11,11 +11,6 @@ const semver = require('semver');
 const nPolyfillIo = require('@financial-times/n-polyfill-io');
 const chokidar = require('chokidar');
 
-function hasLinkedNUi (directory) {
-	const stat = fs.lstatSync(path.join(directory, './bower_components/n-ui'));
-	return stat.isSymbolicLink();
-}
-
 function constructLinkHeader (file, meta, opts) {
 	meta = meta || {};
 	opts = opts || {};
@@ -36,7 +31,7 @@ function constructLinkHeader (file, meta, opts) {
 module.exports = function (options, directory) {
 
 	let nUiUrlRoot;
-	let localAppShell = process.env.NEXT_APP_SHELL === 'local';
+	const localAppShell = process.env.NEXT_APP_SHELL === 'local';
 	// Attempt to get information about which version of n-ui is installed
 	try {
 		if (localAppShell) {

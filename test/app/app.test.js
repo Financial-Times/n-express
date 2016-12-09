@@ -5,14 +5,6 @@ const request = require('supertest');
 
 // stub the setup api calls
 const fetchMock = require('fetch-mock');
-fetchMock
-	.mock(/next-flags-api\.ft\.com/, [])
-	.catch(200);
-
-const app = require('../fixtures/app/main');
-
-fetchMock.restore();
-
 const metrics = require('next-metrics');
 const sinon = require('sinon');
 const nextExpress = require('../../main');
@@ -22,7 +14,22 @@ const flags = require('next-feature-flags-client');
 const handlebars = require('@financial-times/n-handlebars');
 const verifyAssetsExist = require('../../src/lib/verify-assets-exist');
 
-describe('simple app', function() {
+let app;
+
+
+describe('simple app', function () {
+
+	before(() => {
+
+		fetchMock
+			.mock(/next-flags-api\.ft\.com/, [])
+			.mock('http://ft-next-health-eu.herokuapp.com/failure-simulation-config', {failures: []})
+			.catch(200);
+
+		app = require('../fixtures/app/main');
+
+		fetchMock.restore();
+	});
 
 	it('should have its own route', function(done) {
 		request(app)
