@@ -27,5 +27,5 @@ module.exports = function (conf) {
 		helpers: helpers,
 		directory: directory,
 		viewsDirectory: options.viewsDirectory
-	});
+	})
 }
