@@ -31,10 +31,19 @@ Self-initialising healthchecks will be deprecated in n-express@18
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
 
 		Promise.all(checks)
+			.then(checks => checks.map(check => check.getStatus())
+			.catch(err => {
+				return [{
+					name: 'App healthchecks failed to initialise',
+					ok: false,
+					severity: 3,
+					businessImpact: 'If this application encounters any problems, nobody will be alerted and it probably will not get fixed.',
+					technicalSummary: 'This app had problems initialising its healthchecks',
+					panicGuide: 'Don\'t Panic',
+					lastUpdated: new Date()
+				}];
+			})
 			.then(checks => {
-				checks = checks.map(function(check) {
-					return check.getStatus();
-				});
 
 				if (checks.length === 0) {
 					checks.push({
@@ -68,6 +77,7 @@ Self-initialising healthchecks will be deprecated in n-express@18
 					checks: checks
 				}, undefined, 2));
 			})
+
 
 	});
 
