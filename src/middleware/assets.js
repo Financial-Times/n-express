@@ -11,11 +11,6 @@ const semver = require('semver');
 const nPolyfillIo = require('@financial-times/n-polyfill-io');
 const chokidar = require('chokidar');
 
-function hasLinkedNUi (directory) {
-	const stat = fs.lstatSync(path.join(directory, './bower_components/n-ui'));
-	return stat.isSymbolicLink();
-}
-
 function constructLinkHeader (file, meta, opts) {
 	meta = meta || {};
 	opts = opts || {};
@@ -36,21 +31,26 @@ function constructLinkHeader (file, meta, opts) {
 module.exports = function (options, directory) {
 
 	let nUiUrlRoot;
-	let nUiIsLinked = false;
+	const localAppShell = process.env.NEXT_APP_SHELL === 'local';
 	// Attempt to get information about which version of n-ui is installed
 	try {
-		nUiIsLinked = hasLinkedNUi(directory)
-		if (nUiIsLinked) {
+		if (localAppShell) {
 			logger.warn(`
-/*********** n-ui warning ************/
+/*********** n-express warning ************/
 
-It looks like you're bower linking n-ui.
-Be sure to also \`make -j2 watch run\` in your n-ui directory
-Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer working on n-ui
+You have set the environment variable NEXT_APP_SHELL=local
+This should only be used if you are actively developing
+n-ui/n-html-app within the context of an app (by bower linking
+or similar). It will slow down your build A LOT and be a slightly
+less accurate approximation of the production app!!!!
 
-/*********** n-ui warning ************/
+If you do not need this behaviour run
+
+			unset NEXT_APP_SHELL
+
+/*********** n-express warning ************/
 `);
-			nUiUrlRoot = '//local.ft.com:3456/';
+			nUiUrlRoot = hashedAssets.get('n-ui/');
 		} else {
 			const nUiRelease = require(path.join(directory, 'bower_components/n-ui/.bower.json'))._release;
 			if (!semver.valid(nUiRelease)) {
@@ -63,7 +63,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 				// for normal semver releases prepend a v to the major version
 				nUiUrlRoot = 'v' + nUiRelease.split('.').slice(0,1)[0]
 			}
-			nUiUrlRoot = `//next-geebee.ft.com/n-ui/cached/${nUiUrlRoot}/`;
+			nUiUrlRoot = `//www.ft.com/__assets/n-ui/cached/${nUiUrlRoot}/`;
 		}
 
 	} catch (e) {}
@@ -121,7 +121,7 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 			if (options.hasNUiBundle) {
 				res.locals.nUiConfig = nUiConfig;
 				res.locals.javascriptBundles.push(
-					`${nUiUrlRoot}es5${(res.locals.flags.nUiBundleUnminified || nUiIsLinked ) ? '' : '.min'}.js`
+					`${nUiUrlRoot}es5${(res.locals.flags.nUiBundleUnminified || localAppShell ) ? '' : '.min'}.js`
 				);
 				res.locals.javascriptBundles.push(hashedAssets.get('main-without-n-ui.js'));
 			}
@@ -178,6 +178,12 @@ Or \`rm -rf bower_components/n-ui && bower install n-ui\` if you're no longer wo
 
 				res.locals.cssBundles.forEach(file => res.linkResource(file.path, {as: 'style'}));
 				res.locals.javascriptBundles.forEach(file => res.linkResource(file, {as: 'script'}));
+
+				if (templateData.withAssetPrecache) {
+					res.locals.cssBundles.forEach(file => res.linkResource(file.path, {as: 'style', rel: 'precache'}));
+					res.locals.javascriptBundles.forEach(file => res.linkResource(file, {as: 'script', rel: 'precache'}));
+				}
+
 				return originalRender.apply(res, [].slice.call(arguments));
 			}
 		}

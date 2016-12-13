@@ -10,16 +10,16 @@ describe('Anonymous Middleware', function() {
 	let app;
 	let locals;
 
-	beforeEach(function(){
+	before(function(){
 		sinon.stub(verifyAssetsExist, 'verify');
 		app = nextExpress({ withFlags:true, withHandlebars:false, withAnonMiddleware:true, systemCode: 'test' });
-		app.get('/', function(req, res){
+		app.get('/', function(req, res) {
 			locals = res.locals;
 			res.sendStatus(200).end();
 		});
 	});
 
-	afterEach(() => {
+	after(() => {
 		verifyAssetsExist.verify.restore();
 	});
 

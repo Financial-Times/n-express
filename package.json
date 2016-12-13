@@ -6,7 +6,7 @@
     "test": "make test"
   },
   "dependencies": {
-    "@financial-times/n-handlebars": "^1.12.0",
+    "@financial-times/n-handlebars": "^1.15.0",
     "@financial-times/n-logger": "^5.0.0",
     "@financial-times/n-polyfill-io": "^1.0.0",
     "@financial-times/n-raven": "^2.0.0",
@@ -15,7 +15,7 @@
     "debounce": "^1.0.0",
     "denodeify": "^1.2.1",
     "express": "^4.14.0",
-    "ft-poller": "^2.6.0",
+    "ft-poller": "^2.8.1",
     "isomorphic-fetch": "^2.0.0",
     "ms": "^0.7.1",
     "next-feature-flags-client": "^8.4.0",
@@ -38,6 +38,6 @@
     "supertest": "^1.0.0"
   },
   "engines": {
-    "node": "4.4.2"
+    "node": ">=4.4.2"
   }
 }

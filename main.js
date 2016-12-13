@@ -6,6 +6,9 @@ require('isomorphic-fetch');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const http = require('http');
+const https = require('https');
+const denodeify = require('denodeify');
 
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
@@ -14,6 +17,7 @@ const backendAuthentication = require('./src/middleware/backend-authentication')
 const NavigationModel = require('./src/navigation/navigationModel');
 const EditionsModel = require('./src/navigation/editionsModel');
 const anon = require('./src/anon');
+const welcomeBannerModelFactory = require('./src/welcome-banner/model');
 
 // Logging and monitoring
 const metrics = require('next-metrics');
@@ -54,6 +58,7 @@ module.exports = function(options) {
 		hasNUiBundle: true,
 		// TODO always default to false for next major version
 		withAssets: options.withHandlebars || false,
+		withServiceMetrics: true,
 		hasHeadCss: false,
 		healthChecks: []
 	};
@@ -143,8 +148,9 @@ module.exports = function(options) {
 		next();
 	});
 
-	serviceMetrics.init(options.serviceDependencies);
-
+	if (options.withServiceMetrics) {
+		serviceMetrics.init(options.serviceDependencies);
+	}
 
 	// Only allow authorized upstream applications access
 	if (options.withBackendAuthentication) {
@@ -202,10 +208,26 @@ module.exports = function(options) {
 			res.vary('FT-Force-Opt-In-Device');
 			next();
 		});
+
+		app.use(welcomeBannerModelFactory);
 	}
 
 	// Start the app - Woo hoo!
-	const actualAppListen = app.listen;
+	const actualAppListen = function () {
+		let serverPromise;
+		if (process.argv.indexOf('--https') > -1) {
+			const readFile = denodeify(fs.readFile);
+			serverPromise = Promise.all([
+					readFile(path.resolve(__dirname, 'key.pem')),
+					readFile(path.resolve(__dirname, 'cert.pem'))
+				])
+				.then(results => https.createServer({ key: results[0], cert: results[1] }, this));
+		} else {
+			serverPromise = Promise.resolve(http.createServer(this));
+		}
+
+		return serverPromise.then(server => server.listen.apply(server, arguments));
+	};
 
 	app.listen = function() {
 		const args = [].slice.apply(arguments);
