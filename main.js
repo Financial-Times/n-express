@@ -256,6 +256,14 @@ module.exports.metrics = metrics;
 module.exports.flags = flags;
 module.exports.cacheMiddleware = cache.middleware;
 
-// log https://devcenter.heroku.com/articles/dynos#shutdown
-process.on('SIGTERM', () => metrics.count('system.process.terminate'));
-process.on('exit', () => metrics.count('system.process.exit'));
+// log & flush the metrics https://devcenter.heroku.com/articles/dynos#shutdown
+
+process.on('SIGTERM', () => {
+	metrics.count('system.process.terminate');
+	metrics.flush();
+});
+
+process.on('exit', () => {
+	metrics.count('system.process.exit')
+	metrics.flush();
+});
