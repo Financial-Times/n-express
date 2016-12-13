@@ -26,7 +26,7 @@ const compactViewWelcomeBannerModel = {
 };
 
 function welcomeBannerModelFactory (req, res, next){
-	let model;
+	var model;
 	if(res.locals.flags.compactView && req.path === '/' && req.get('FT-Cookie-ft-homepage-view') === 'compact'){
 		model = compactViewWelcomeBannerModel;
 	}else{
