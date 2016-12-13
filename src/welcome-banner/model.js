@@ -1,6 +1,7 @@
 'use strict';
 
 const defaultWelcomeBannerModel = {
+	name: 'default',
 	title: 'Welcome to the new FT.com',
 	strapline: 'The same global insight. Faster than ever before on all your devices.',
 	ctas : {
@@ -14,6 +15,7 @@ const defaultWelcomeBannerModel = {
 };
 
 const compactViewWelcomeBannerModel = {
+	name: 'compact-ad',
 	title: 'Try the new compact homepage',
 	strapline: 'A list view of today\'s homepage, with less images',
 	ctas : {
