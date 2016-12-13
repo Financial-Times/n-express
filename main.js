@@ -17,6 +17,7 @@ const backendAuthentication = require('./src/middleware/backend-authentication')
 const NavigationModel = require('./src/navigation/navigationModel');
 const EditionsModel = require('./src/navigation/editionsModel');
 const anon = require('./src/anon');
+const welcomeBannerModelFactory = require('./src/welcome-banner/model');
 
 // Logging and monitoring
 const metrics = require('next-metrics');
@@ -203,6 +204,8 @@ module.exports = function(options) {
 			res.vary('FT-Force-Opt-In-Device');
 			next();
 		});
+
+		app.use(welcomeBannerModelFactory);
 	}
 
 	// Start the app - Woo hoo!
