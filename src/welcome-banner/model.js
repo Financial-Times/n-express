@@ -8,7 +8,7 @@ const defaultWelcomeBannerModel = {
 			text: 'View tips',
 			href: '/tour',
 			trackable: 'tour-page',
-			component: 'cta-take-tour'
+			'component-attr': 'cta-take-tour'
 		}
 	}
 };
@@ -27,7 +27,7 @@ const compactViewWelcomeBannerModel = {
 
 function welcomeBannerModelFactory (req, res, next){
 	var model;
-	if(res.locals.flags.compactView && req.path === '/' && req.get('FT-Cookie-ft-homepage-view') === 'compact'){
+	if(res.locals.flags.compactView && req.path === '/' && req.get('FT-Cookie-ft-homepage-view') !== 'compact'){
 		model = compactViewWelcomeBannerModel;
 	}else{
 		model = defaultWelcomeBannerModel;
