@@ -255,7 +255,3 @@ module.exports.static = express.static;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
 module.exports.cacheMiddleware = cache.middleware;
-
-// log https://devcenter.heroku.com/articles/dynos#shutdown
-process.on('SIGTERM', () => metrics.count('express.terminate'));
-process.on('exit', () => metrics.count('express.exit'));
