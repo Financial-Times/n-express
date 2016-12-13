@@ -257,5 +257,5 @@ module.exports.flags = flags;
 module.exports.cacheMiddleware = cache.middleware;
 
 // log https://devcenter.heroku.com/articles/dynos#shutdown
-process.on('SIGTERM', () => metrics.count('express.terminate'));
-process.on('exit', () => metrics.count('express.exit'));
+process.on('SIGTERM', () => metrics.count('system.process.terminate'));
+process.on('exit', () => metrics.count('system.process.exit'));
