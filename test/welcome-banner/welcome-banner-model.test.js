@@ -35,9 +35,9 @@ describe('Welcome Banner Model', () => {
 		})
 	});
 
-	it('Should provide the compact view model if the compactView flag is on AND we are on the homepage AND the FT-Cookie-ft-homepage-view is set to "compact"', () => {
+	it('Should provide the compact view model if the compactView flag is on AND we are on the homepage AND the FT-Cookie-ft-homepage-view is not set to "compact"', () => {
 		const res = {locals:{flags:{compactView:true}}};
-		const req = {path:'/', get: () => 'compact'};
+		const req = {path:'/', get: () => 'standard'};
 		const next = sinon.spy();
 		welcomeBannerModelFactory(req, res, next);
 		return wait(0).then(() => {
