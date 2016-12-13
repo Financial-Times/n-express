@@ -1,3 +1,4 @@
+'use strict';
 
 const defaultWelcomeBannerModel = {
 	title: 'Welcome to the new FT.com',
