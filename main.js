@@ -9,6 +9,7 @@ const express = require('express');
 const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
+const onExit = require('signal-exit');
 
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
@@ -258,12 +259,8 @@ module.exports.cacheMiddleware = cache.middleware;
 
 // log & flush the metrics https://devcenter.heroku.com/articles/dynos#shutdown
 
-process.on('SIGTERM', () => {
+onExit((code, signal) => {
+	nLogger.warn({ event: 'SYSTEM_EXIT', app: name, code: code, signal: signal });
 	metrics.count('system.process.terminate');
 	metrics.flush();
-});
-
-process.on('exit', () => {
-	metrics.count('system.process.exit')
-	metrics.flush();
-});
+})
