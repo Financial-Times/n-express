@@ -9,6 +9,7 @@ const express = require('express');
 const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
+const nextJsonLd = require('next-json-ld');
 
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
@@ -60,6 +61,7 @@ module.exports = function(options) {
 		withAssets: options.withHandlebars || false,
 		withServiceMetrics: true,
 		hasHeadCss: false,
+		withJsonLd: false,
 		healthChecks: []
 	};
 
@@ -143,6 +145,13 @@ module.exports = function(options) {
 		app.locals.__abState = abState;
 		next();
 	});
+
+	if (options.withJsonLd) {
+		app.use(function(req, res, next) {
+			res.locals.jsonLd = [nextJsonLd.webSite()];
+			next();
+		});
+	}
 
 	if (options.withServiceMetrics) {
 		serviceMetrics.init(options.serviceDependencies);
