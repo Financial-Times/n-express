@@ -14,7 +14,7 @@ const defaultWelcomeBannerModel = {
 	}
 };
 
-const compactViewWelcomeBannerModel = {
+const compactAdvertWelcomeBannerModel = {
 	name: 'compact-ad',
 	title: 'Try the new compact homepage',
 	strapline: 'A list view of today\'s homepage, with less images',
@@ -27,9 +27,24 @@ const compactViewWelcomeBannerModel = {
 	}
 };
 
+const compactViewWelcomeBannerModel = {
+	name: 'compact-view',
+	title: 'You\'ve enabled the compact homepage',
+	strapline: 'A list view of today\'s homepage, with fewer images',
+	ctas : {
+		primary : {
+			text: 'Return to full view',
+			href: '/viewtoggle/standard',
+			trackable: 'compact-view'
+		}
+	}
+};
+
 function welcomeBannerModelFactory (req, res, next){
-	var model;
-	if(res.locals.flags.compactView && req.path === '/' && req.get('FT-Cookie-ft-homepage-view') !== 'compact'){
+	let model;
+	if(res.locals.flags.compactView && req.path === '/' && req.get('FT-Cookie-ft-homepage-view') !== 'compact') {
+		model = compactAdvertWelcomeBannerModel;
+	}else if(res.locals.flags.compactView && req.path === '/' && req.get('FT-Cookie-ft-homepage-view') === 'compact'){
 		model = compactViewWelcomeBannerModel;
 	}else{
 		model = defaultWelcomeBannerModel;
@@ -40,4 +55,4 @@ function welcomeBannerModelFactory (req, res, next){
 }
 
 module.exports = welcomeBannerModelFactory;
-module.exports._banners = {defaultWelcomeBannerModel, compactViewWelcomeBannerModel};
+module.exports._banners = {defaultWelcomeBannerModel, compactAdvertWelcomeBannerModel, compactViewWelcomeBannerModel};
