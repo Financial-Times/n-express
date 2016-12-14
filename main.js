@@ -148,7 +148,7 @@ module.exports = function(options) {
 
 	if (options.withJsonLd) {
 		app.use(function(req, res, next) {
-			res.locals.jsonLd = [nextJsonLd.webSite()];
+			res.locals.jsonLd = [nextJsonLd.webPage()];
 			next();
 		});
 	}
