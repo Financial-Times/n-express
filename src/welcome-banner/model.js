@@ -2,7 +2,7 @@
 
 const defaultWelcomeBannerModel = {
 	name: 'default',
-	title: 'Welcome to the new FT.com',
+	title: 'Welcome to the new FT.com.',
 	strapline: 'The same global insight. Faster than ever before on all your devices.',
 	ctas : {
 		primary : {
@@ -16,8 +16,8 @@ const defaultWelcomeBannerModel = {
 
 const compactAdvertWelcomeBannerModel = {
 	name: 'compact-ad',
-	title: 'Try the new compact homepage',
-	strapline: 'A list view of today\'s homepage, with less images',
+	title: 'Try the new compact homepage.',
+	strapline: 'A list view of today\'s homepage, with fewer images',
 	ctas : {
 		primary : {
 			text: 'Try it now',
@@ -29,7 +29,7 @@ const compactAdvertWelcomeBannerModel = {
 
 const compactViewWelcomeBannerModel = {
 	name: 'compact-view',
-	title: 'You\'ve enabled the compact homepage',
+	title: 'You\'ve enabled the compact homepage.',
 	strapline: 'A list view of today\'s homepage, with fewer images',
 	ctas : {
 		primary : {
