@@ -16,7 +16,7 @@ const defaultWelcomeBannerModel = {
 
 const compactAdvertWelcomeBannerModel = {
 	name: 'compact-ad',
-	title: 'Try the new compact homepage',
+	title: 'Try the new compact homepage.',
 	strapline: 'A list view of today\'s homepage, with less images',
 	ctas : {
 		primary : {
@@ -29,7 +29,7 @@ const compactAdvertWelcomeBannerModel = {
 
 const compactViewWelcomeBannerModel = {
 	name: 'compact-view',
-	title: 'You\'ve enabled the compact homepage',
+	title: 'You\'ve enabled the compact homepage. ',
 	strapline: 'A list view of today\'s homepage, with fewer images',
 	ctas : {
 		primary : {
