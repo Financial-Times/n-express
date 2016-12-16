@@ -146,13 +146,6 @@ module.exports = function(options) {
 		next();
 	});
 
-	if (options.withJsonLd) {
-		app.use(function(req, res, next) {
-			res.locals.jsonLd = [nextJsonLd.webPage()];
-			next();
-		});
-	}
-
 	if (options.withServiceMetrics) {
 		serviceMetrics.init(options.serviceDependencies);
 	}
@@ -174,6 +167,15 @@ module.exports = function(options) {
 	if (options.withFlags) {
 		initPromises.push(flags.init());
 		app.use(flags.middleware);
+	}
+
+	if (options.withJsonLd) {
+		app.use(function(req, res, next) {
+			if (res.locals.flags && res.locals.flags.newSchema) {
+				res.locals.jsonLd = [nextJsonLd.webPage()];
+			}
+			next();
+		});
 	}
 
 	// verification that expected assets exist
