@@ -22,7 +22,7 @@ const compactAdvertWelcomeBannerModel = {
 		primary : {
 			text: 'Try it now',
 			href: '/viewtoggle/compact',
-			trackable: 'compact-view'
+			trackable: 'viewtoggle | compact'
 		}
 	}
 };
@@ -35,7 +35,7 @@ const compactViewWelcomeBannerModel = {
 		primary : {
 			text: 'Return to full view',
 			href: '/viewtoggle/standard',
-			trackable: 'compact-view'
+			trackable: 'viewtoggle | standard'
 		}
 	}
 };
