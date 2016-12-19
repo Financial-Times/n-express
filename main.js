@@ -9,7 +9,7 @@ const express = require('express');
 const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
-const nextJsonLd = require('next-json-ld');
+const nextJsonLd = require('@financial-times/next-json-ld');
 
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
