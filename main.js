@@ -14,12 +14,6 @@ const nextJsonLd = require('@financial-times/next-json-ld');
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
 
-// Models
-const NavigationModel = require('./src/navigation/navigationModel');
-const EditionsModel = require('./src/navigation/editionsModel');
-const anon = require('./src/anon');
-const welcomeBannerModelFactory = require('./src/welcome-banner/model');
-
 // Logging and monitoring
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
@@ -33,44 +27,11 @@ const robots = require('./src/express/robots');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
 
-// templating and assets
-const handlebars = require('./src/handlebars');
-const hashedAssets = require('./src/lib/hashed-assets');
-const assetsMiddleware = require('./src/middleware/assets');
-const verifyAssetsExist = require('./src/lib/verify-assets-exist');
-
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
 const teapot = fs.readFileSync(path.join(__dirname, 'src/teapot.ascii'), 'utf8');
 
-module.exports = function(options) {
-
-	checkFailing.init();
-
-	options = options || {};
-
-	const defaults = {
-		withFlags: false,
-		withHandlebars: false,
-		withNavigation: false,
-		withNavigationHierarchy: false,
-		withAnonMiddleware: false,
-		withBackendAuthentication: false,
-		hasNUiBundle: true,
-		// TODO always default to false for next major version
-		withAssets: options.withHandlebars || false,
-		withServiceMetrics: true,
-		hasHeadCss: false,
-		withJsonLd: false,
-		healthChecks: []
-	};
-
-	Object.keys(defaults).forEach(function (prop) {
-		if (typeof options[prop] === 'undefined') {
-			options[prop] = defaults[prop];
-		}
-	});
-
+const guessAppDetails = options => {
 	let packageJson = {};
 	let name = options.name;
 	let description = '';
@@ -88,138 +49,18 @@ module.exports = function(options) {
 
 	if (!name) throw new Error('Please specify an application name');
 
+	name = name && normalizeName(name);
+
+	return {name, description, directory};
+}
+
+
+function chain () {
+	checkFailing.init();
+
 	const app = express();
-
-	app.locals.__name = name = normalizeName(name);
-	app.locals.__environment = process.env.NODE_ENV || '';
-	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
-	app.locals.__rootDirectory = directory;
-
-	//Remove x-powered-by header
-	app.set('x-powered-by', false);
-
-	try {
-		app.locals.__version = require(directory + '/public/__about.json').appVersion;
-	} catch (e) {}
-
-	// 100% public end points
-	if (!app.locals.__isProduction) {
-		app.use('/' + name, express.static(directory + '/public', { redirect: false }));
-	}
-
-	app.get('/robots.txt', robots);
-	app.get('/__brew-coffee', function(req, res) {
-		res.status(418);
-		res.send(teapot);
-		res.end();
-	});
-	healthChecks(app, options, description);
-	app.get('/__about', function(req, res) {
-		res.set({ 'Cache-Control': 'no-cache' });
-		res.sendFile(directory + '/public/__about.json');
-	});
-
-	// metrics should be one of the first things as needs to be applied before any other middleware executes
-	metrics.init({ app: name, flushEvery: 40000 });
-	app.use(function(req, res, next) {
-		metrics.instrument(req, { as: 'express.http.req' });
-		metrics.instrument(res, { as: 'express.http.res' });
-		next();
-	});
-
-	app.use((req, res, next) => {
-		res.set('FT-Backend-Timestamp', new Date().toISOString());
-		next();
-	});
-
-	// set the edition so it can be added to the html tag and used for tracking
-	app.use(function(req, res, next) {
-		const edition = req.get('ft-edition') || '';
-		app.locals.__edition = edition;
-		next();
-	});
-
-	// set the ab test state so it can be added to the html tag and used by client code
-	app.use(function(req, res, next) {
-		const abState = req.get('ft-ab') || '';
-		app.locals.__abState = abState;
-		next();
-	});
-
-	if (options.withServiceMetrics) {
-		serviceMetrics.init(options.serviceDependencies);
-	}
-
-	// Only allow authorized upstream applications access
-	if (options.withBackendAuthentication) {
-		app.use(backendAuthentication(name));
-	} else {
-		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
-	}
-
-	// utility middleware
-	app.use(cache);
-	app.use(vary);
-
-	let initPromises = [];
-
-	// feature flags
-	if (options.withFlags) {
-		initPromises.push(flags.init());
-		app.use(flags.middleware);
-	}
-
-	if (options.withJsonLd) {
-		app.use(function(req, res, next) {
-			if (res.locals.flags && res.locals.flags.newSchema) {
-				res.locals.jsonLd = [nextJsonLd.webPage()];
-			}
-			next();
-		});
-	}
-
-	// verification that expected assets exist
-	verifyAssetsExist.verify(app.locals);
-	hashedAssets.init(app.locals);
-
-	// add statutory metadata to construct the page
-	if (options.withNavigation) {
-		const navigation = new NavigationModel({withNavigationHierarchy:options.withNavigationHierarchy});
-		const editions = new EditionsModel();
-		initPromises.push(navigation.init());
-		app.use(editions.middleware.bind(editions));
-		app.use(navigation.middleware.bind(navigation));
-	}
-
-	if (options.withAnonMiddleware) {
-		app.use(anon.middleware);
-	}
-
-	if (options.withHandlebars) {
-
-		// Set up handlebars as the templating engine
-		initPromises.push(handlebars({
-			app: app,
-			directory: directory,
-			options: options
-		}));
-
-		// Decorate responses with data about which assets the page needs
-		if (options.withAssets) {
-			app.use(assetsMiddleware(options, directory));
-		}
-
-		// Handle the akamai -> fastly -> akamai etc. circular redirect bug
-		app.use(function (req, res, next) {
-			res.locals.forceOptInDevice = req.get('FT-Force-Opt-In-Device') === 'true';
-			res.vary('FT-Force-Opt-In-Device');
-			next();
-		});
-
-		app.use(welcomeBannerModelFactory);
-	}
-
-	// Start the app - Woo hoo!
+	const initPromises = [];
+		// Start the app - Woo hoo!
 	const actualAppListen = function () {
 		let serverPromise;
 		if (process.argv.indexOf('--https') > -1) {
@@ -260,12 +101,139 @@ module.exports = function(options) {
 			});
 	};
 
+	return Object.create(chainConstructor, {
+		app: {value: app},
+		addInitPromise: {value: function (promise) {
+			initPromises.push(promise);
+		}}
+	});
+}
+
+module.exports.chain = chain;
+
+const chainConstructor = {
+	config: function (options) {
+		//Remove x-powered-by header
+		this.app.set('x-powered-by', false);
+
+		this.app.get('/robots.txt', robots);
+
+		this.app.get('/__brew-coffee', function(req, res) {
+			res.status(418);
+			res.send(teapot);
+			res.end();
+		});
+
+		// utility middleware
+		this.app.use(cache);
+		this.app.use(vary);
+
+		return Object.assign(this, {
+			meta: guessAppDetails(options)
+		})
+	},
+
+	healthChecks: function (systemCode, checks) {
+		healthChecks(this.app, {systemCode, healthChecks: checks}, this.meta.description)
+		return this;
+	},
+
+	about: function () {
+		this.app.get('/__about', function(req, res) {
+			res.set({ 'Cache-Control': 'no-cache' });
+			res.sendFile(this.meta.directory + '/public/__about.json');
+		});
+		return this;
+	},
+
+	metrics: function (downstreamMetrics) {
+		// metrics should be one of the first things as needs to be applied before any other middleware executes
+		metrics.init({ app: this.meta.name, flushEvery: 40000 });
+		this.app.use(function(req, res, next) {
+			metrics.instrument(req, { as: 'express.http.req' });
+			metrics.instrument(res, { as: 'express.http.res' });
+			next();
+		});
+
+		if (downstreamMetrics) {
+			serviceMetrics.init();
+		}
+		return this;
+	},
+
+	timestamp: function () {
+		this.app.use((req, res, next) => {
+			res.set('FT-Backend-Timestamp', new Date().toISOString());
+			next();
+		});
+
+		return this;
+	},
+
+	backendAuth: function (withAuth) {
+		// Only allow authorized upstream applications access
+		if (withAuth) {
+			this.app.use(backendAuthentication(this.meta.name));
+		} else {
+			nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
+		}
+		return this;
+	},
+
+	flags: function (withFlags) {
+		// feature flags
+		if (withFlags) {
+			this.addInitPromise(flags.init());
+			this.app.use(flags.middleware);
+		}
+		return this;
+	},
+
+	withEverything: function () {
+		return this
+			.about()
+			.metrics(true)
+			.timestamp()
+			.backendAuth(true)
+			.flags(true)
+	}
+}
+
+module.exports = function (options) {
+	options = options || {};
+
+	const defaults = {
+		withFlags: false,
+		withBackendAuthentication: false,
+		withServiceMetrics: true,
+		healthChecks: []
+	};
+
+	Object.keys(defaults).forEach(function (prop) {
+		if (typeof options[prop] === 'undefined') {
+			options[prop] = defaults[prop];
+		}
+	});
+
+	// When adding to the chain below please consider whether n-ui
+	// (Which wraps n-express and calls these methods in a different order)
+	// needs to be updated too
+	const app = chain()
+		.config(options)
+		.healthChecks(options.systemCode, options.healthChecks)
+		.about()
+		.metrics(options.withServiceMetrics)
+		.timestamp()
+		.backendAuth(options.withBackendAuthentication)
+		.flags(options.withFlags)
+		.app;
+
 	return app;
 };
+
 
 // expose internals the app may want access to
 module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
-module.exports.cacheMiddleware = cache.middleware;
