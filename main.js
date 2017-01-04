@@ -216,7 +216,10 @@ module.exports = function(options) {
 			next();
 		});
 
-		app.use(welcomeBannerModelFactory);
+		if (options.withFlags) {
+			app.use(welcomeBannerModelFactory);		
+		}
+		
 	}
 
 	// Start the app - Woo hoo!
