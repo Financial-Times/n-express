@@ -217,9 +217,8 @@ module.exports = function(options) {
 		});
 
 		if (options.withFlags) {
-			app.use(welcomeBannerModelFactory);		
+			app.use(welcomeBannerModelFactory);
 		}
-		
 	}
 
 	// Start the app - Woo hoo!
