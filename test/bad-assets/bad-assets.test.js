@@ -6,8 +6,11 @@ const join = require('path').join;
 const appPath = join(__dirname, '../fixtures/bad-assets');
 
 function appStart () {
-	return shellpromise(`node -e "require('${appPath}/main').listen.then(() => { console.log('event=SUCCESS'); process.exit(); });"`
-		//, { verbose: true } // to debug tests, uncomment this line
+	return shellpromise(`which node && node -e "require('${appPath}/main').listen.then(() => { console.log('event=SUCCESS'); process.exit(); }, err => { console.log('event=ERROR', err); process.exit(2); });"`
+		, {
+			env: Object.assign({}, process.env, {NODE_ENV: 'production'}),
+			verbose: true // to debug tests, uncomment this line
+		}
 	);
 }
 
