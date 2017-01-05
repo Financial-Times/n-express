@@ -13,7 +13,6 @@ const flags = require('next-feature-flags-client');
 
 let app;
 
-
 describe('simple app', function () {
 
 	before(() => {

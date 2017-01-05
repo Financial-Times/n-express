@@ -15,7 +15,7 @@ const alerter = debounce(function () {
 
 module.exports = {
 	init: () => metrics.fetch.instrument({
-		onUninstrumented: function(url) {
+		onUninstrumented: function (url) {
 			unregisteredServices[url.split('?')[0]] = true;
 			alerter();
 		}
