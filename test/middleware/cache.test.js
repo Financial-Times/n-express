@@ -3,8 +3,6 @@
 
 const request = require('supertest');
 const app = require('../fixtures/app/main');
-const sinon = require('sinon');
-const expect = require('chai').expect;
 
 describe('cache constants', function () {
 
@@ -20,4 +18,3 @@ describe('cache constants', function () {
 			.expect(200, done);
 	});
 });
-

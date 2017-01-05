@@ -48,6 +48,8 @@ module.exports = function(req, res, next) {
 
 	res.unvaryAll = function (preset) {
 		if (preset === 'wrapper') {
+			// TODO need to port this to n-ui ,and rename as n-ui.
+			// Not sure if it's ever used
 			res.unVary('ft-anonymous-user', 'ft-edition');
 		} else {
 			varyOn.clear()

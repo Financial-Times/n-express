@@ -9,7 +9,6 @@ const express = require('express');
 const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
-const nextJsonLd = require('@financial-times/next-json-ld');
 
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
@@ -84,7 +83,7 @@ function chain () {
 		const cb = args[1];
 		args[1] = function () {
 			// HACK: Use warn so that it gets into Splunk logs
-			nLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
+			nLogger.warn({ event: 'EXPRESS_START', app: app.nextMeta.name, port: port, nodeVersion: process.version });
 			return cb && cb.apply(this, arguments);
 		};
 
@@ -127,29 +126,27 @@ const chainConstructor = {
 		// utility middleware
 		this.app.use(cache);
 		this.app.use(vary);
-
-		return Object.assign(this, {
-			meta: guessAppDetails(options)
-		})
+		this.app.nextMeta = guessAppDetails(options)
+		return this;
 	},
 
 	healthChecks: function (systemCode, checks) {
-		healthChecks(this.app, {systemCode, healthChecks: checks}, this.meta.description)
+		healthChecks(this.app, {systemCode, healthChecks: checks}, this.app.nextMeta.description)
 		return this;
 	},
 
 	about: function () {
-		this.app.get('/__about', function(req, res) {
+		this.app.get('/__about', (req, res) => {
 			res.set({ 'Cache-Control': 'no-cache' });
-			res.sendFile(this.meta.directory + '/public/__about.json');
+			res.sendFile(this.app.nextMeta.directory + '/public/__about.json');
 		});
 		return this;
 	},
 
 	metrics: function (downstreamMetrics) {
 		// metrics should be one of the first things as needs to be applied before any other middleware executes
-		metrics.init({ app: this.meta.name, flushEvery: 40000 });
-		this.app.use(function(req, res, next) {
+		metrics.init({ app: this.app.nextMeta.name, flushEvery: 40000 });
+		this.app.use((req, res, next) => {
 			metrics.instrument(req, { as: 'express.http.req' });
 			metrics.instrument(res, { as: 'express.http.res' });
 			next();
@@ -173,7 +170,7 @@ const chainConstructor = {
 	backendAuth: function (withAuth) {
 		// Only allow authorized upstream applications access
 		if (withAuth) {
-			this.app.use(backendAuthentication(this.meta.name));
+			this.app.use(backendAuthentication(this.app.nextMeta.name));
 		} else {
 			nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
 		}
