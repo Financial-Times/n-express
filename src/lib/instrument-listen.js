@@ -5,6 +5,7 @@ const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = (app, meta, initPromises) => {
 
