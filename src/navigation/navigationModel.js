@@ -3,7 +3,6 @@ const Poller = require('ft-poller');
 const ms = require('ms');
 const url = require('url');
 const decorateSelectedLink = require('./decorate');
-const optOutFooter = require('./optOutFooter'); // temporary while next is phased in
 const HierarchyMixin = require('./hierarchyMixin');
 const log = require('@financial-times/n-logger').default;
 
@@ -134,8 +133,6 @@ module.exports = class NavigationModel {
 
 			if(listName !== 'footer') {
 				decorateSelectedLink(listData, currentUrl);
-			} else {
-				optOutFooter(listData, currentUrl);
 			}
 
 			res.locals.navigation.lists[listName] = listData;
