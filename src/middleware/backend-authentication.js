@@ -1,5 +1,3 @@
-'use strict';
-
 const backendKeys = [];
 if (process.env.FT_NEXT_BACKEND_KEY) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY);
@@ -11,9 +9,10 @@ if (process.env.FT_NEXT_BACKEND_KEY_OLDEST) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLDEST);
 }
 
-module.exports = function (appName) {
+module.exports = appName => {
 
-	return function (req, res, next) {
+	return (req, res, next) => {
+		// TODO - change how all this works in order to use __assets/app/{appname}
 		// allow static assets through
 		if (req.path.indexOf('/' + appName) === 0 ||
 			// allow healthchecks etc. through

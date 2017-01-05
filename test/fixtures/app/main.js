@@ -1,6 +1,4 @@
 /*jshint node:true*/
-'use strict';
-
 const PORT = process.env.PORT || 3000;
 const express = require('../../..');
 
@@ -10,11 +8,11 @@ const app = module.exports = express({
 	withBackendAuthentication: true
 });
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
 	res.send('Hello world');
 });
 
-app.get('/__flags.json', function(req, res) {
+app.get('/__flags.json', function (req, res) {
 	res.send(res.locals.flags);
 });
 app.get('/single-header', function (req, res) {
@@ -115,7 +113,7 @@ const router = new express.Router();
 
 app.use('/router', router);
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
 	res.send('Hello router');
 });
 

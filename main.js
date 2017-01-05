@@ -1,6 +1,3 @@
-/*jshint node:true*/
-"use strict";
-
 require('isomorphic-fetch');
 
 const fs = require('fs');
@@ -16,19 +13,19 @@ const backendAuthentication = require('./src/middleware/backend-authentication')
 // Logging and monitoring
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
-const serviceMetrics = require('./src/service-metrics');
+const serviceMetrics = require('./src/lib/service-metrics');
 const raven = require('@financial-times/n-raven');
 const healthChecks = require('./src/lib/health-checks');
 
 // utils
-const normalizeName = require('./src/normalize-name');
-const robots = require('./src/express/robots');
+const normalizeName = require('./src/lib/normalize-name');
+const robots = require('./src/middleware/robots');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
 
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
-const teapot = fs.readFileSync(path.join(__dirname, 'src/teapot.ascii'), 'utf8');
+const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
 
 const guessAppDetails = options => {
 	let packageJson = {};
@@ -59,15 +56,15 @@ function chain () {
 
 	const app = express();
 	const initPromises = [];
-		// Start the app - Woo hoo!
+
 	const actualAppListen = function () {
 		let serverPromise;
 		if (process.argv.indexOf('--https') > -1) {
 			const readFile = denodeify(fs.readFile);
 			serverPromise = Promise.all([
-					readFile(path.resolve(__dirname, 'key.pem')),
-					readFile(path.resolve(__dirname, 'cert.pem'))
-				])
+				readFile(path.resolve(__dirname, 'key.pem')),
+				readFile(path.resolve(__dirname, 'cert.pem'))
+			])
 				.then(results => https.createServer({ key: results[0], cert: results[1] }, this));
 		} else {
 			serverPromise = Promise.resolve(http.createServer(this));
@@ -76,7 +73,7 @@ function chain () {
 		return serverPromise.then(server => server.listen.apply(server, arguments));
 	};
 
-	app.listen = function() {
+	app.listen = function () {
 		const args = [].slice.apply(arguments);
 		app.use(raven.middleware);
 		const port = args[0];
@@ -88,27 +85,21 @@ function chain () {
 		};
 
 		return Promise.all(initPromises)
-			.then(function() {
+			.then(() => {
 				metrics.count('express.start');
 				return actualAppListen.apply(app, args);
 			})
-			.catch(function(err) {
-				// Crash app if flags or handlebars fail
-				setTimeout(function() {
-					throw err;
-				}, 0);
-			});
+			// Crash app if initPromises fail
+			.catch(err => setTimeout(() => {
+				throw err;
+			}));
 	};
 
 	return Object.create(chainConstructor, {
 		app: {value: app},
-		addInitPromise: {value: function (promise) {
-			initPromises.push(promise);
-		}}
+		addInitPromise: {value: initPromises.push.bind(initPromises)}
 	});
 }
-
-module.exports.chain = chain;
 
 const chainConstructor = {
 	config: function (options) {
@@ -117,7 +108,7 @@ const chainConstructor = {
 
 		this.app.get('/robots.txt', robots);
 
-		this.app.get('/__brew-coffee', function(req, res) {
+		this.app.get('/__brew-coffee', (req, res) => {
 			res.status(418);
 			res.send(teapot);
 			res.end();
@@ -196,7 +187,7 @@ const chainConstructor = {
 	}
 }
 
-module.exports = function (options) {
+module.exports = options => {
 	options = options || {};
 
 	const defaults = {
@@ -206,7 +197,7 @@ module.exports = function (options) {
 		healthChecks: []
 	};
 
-	Object.keys(defaults).forEach(function (prop) {
+	Object.keys(defaults).forEach(prop => {
 		if (typeof options[prop] === 'undefined') {
 			options[prop] = defaults[prop];
 		}
@@ -228,9 +219,9 @@ module.exports = function (options) {
 	return app;
 };
 
-
 // expose internals the app may want access to
 module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
+module.exports.chain = chain;

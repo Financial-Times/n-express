@@ -1,6 +1,4 @@
 /*global it, describe, beforeEach, before, after*/
-'use strict';
-
 const request = require('supertest');
 const app = require('../fixtures/app/main');
 

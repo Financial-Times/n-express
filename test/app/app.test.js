@@ -1,5 +1,4 @@
 /*global it, describe, beforeEach, before, after*/
-'use strict';
 const path = require('path');
 const request = require('supertest');
 
@@ -29,27 +28,27 @@ describe('simple app', function () {
 		fetchMock.restore();
 	});
 
-	it('should have its own route', function(done) {
+	it('should have its own route', function (done) {
 		request(app)
 			.get('/')
 			.expect('Vary', /FT-Flags/i)
 			.expect(200, 'Hello world', done);
 	});
 
-	it('should be possible to add routers', function(done) {
+	it('should be possible to add routers', function (done) {
 		request(app)
 			.get('/router/')
 			.expect('Vary', /FT-Flags/i)
 			.expect(200, 'Hello router', done);
 	});
 
-	it('should have a robots.txt', function(done) {
+	it('should have a robots.txt', function (done) {
 		request(app)
 			.get('/robots.txt')
 			.expect(200, done);
 	});
 
-	it('should have an about json', function(done) {
+	it('should have an about json', function (done) {
 		request(app)
 			.get('/__about')
 			.expect(200, done);

@@ -1,4 +1,4 @@
-module.exports = function(req, res, next) {
+module.exports = (req, res, next) => {
 	res.FT_NO_CACHE = 'max-age=0, no-cache, no-store, must-revalidate';
 	res.FT_SHORT_CACHE = 'max-age=600, stale-while-revalidate=60, stale-if-error=86400';
 	res.FT_HOUR_CACHE = 'max-age=3600, stale-while-revalidate=60, stale-if-error=86400';

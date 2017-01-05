@@ -1,16 +1,12 @@
-'use strict';
+const checkFailing = require('./check-failing');
 
-var checkFailing = require('./check-failing');
-
-module.exports = function (app, options, description) {
+module.exports = (app, options, description) => {
 	const healthChecks = options.healthChecks;
 	const defaultAppName = `Next FT.com ${app.locals.__name} in ${process.env.REGION || 'unknown region'}`;
 
-	app.get(/\/__health(?:\.([123]))?$/, function(req, res) {
+	app.get(/\/__health(?:\.([123]))?$/, (req, res) => {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
-		const checks = healthChecks.map(function(check) {
-			return check.getStatus();
-		});
+		const checks = healthChecks.map(check => check.getStatus());
 		if (checks.length === 0) {
 			checks.push({
 				name: 'App has no healthchecks',
@@ -23,7 +19,7 @@ module.exports = function (app, options, description) {
 			});
 		}
 		if (req.params[0]) {
-			checks.forEach(function(check) {
+			checks.forEach(check => {
 				if (check.severity <= Number(req.params[0]) && check.ok === false) {
 					res.status(500);
 				}

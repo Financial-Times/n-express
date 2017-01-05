@@ -1,11 +1,9 @@
 /*global it, describe, beforeEach, before, after*/
-'use strict';
-
 const request = require('supertest');
 const app = require('../fixtures/app/main');
 const expect = require('chai').expect;
 
-describe.only('vary middleware', function () {
+describe('vary middleware', function () {
 
 	it('set single headers', function (done) {
 		request(app)
