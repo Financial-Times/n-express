@@ -121,6 +121,10 @@ const chainConstructor = {
 		return this;
 	},
 
+	apply: function (func) {
+		return func.call(this);
+	},
+
 	healthChecks: function (systemCode, checks) {
 		healthChecks(this.app, {systemCode, healthChecks: checks}, this.app.nextMeta.description)
 		return this;
