@@ -1,273 +1,107 @@
-/*jshint node:true*/
-"use strict";
-
 require('isomorphic-fetch');
 
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const http = require('http');
-const https = require('https');
-const denodeify = require('denodeify');
-const nextJsonLd = require('@financial-times/next-json-ld');
-
 const flags = require('next-feature-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
-
-// Models
-const NavigationModel = require('./src/navigation/navigationModel');
-const EditionsModel = require('./src/navigation/editionsModel');
-const anon = require('./src/anon');
-const welcomeBannerModelFactory = require('./src/welcome-banner/model');
 
 // Logging and monitoring
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
-const serviceMetrics = require('./src/service-metrics');
-const raven = require('@financial-times/n-raven');
-const healthChecks = require('./src/lib/health-checks');
+const serviceMetrics = require('./src/lib/service-metrics');
+
 
 // utils
-const normalizeName = require('./src/normalize-name');
-const robots = require('./src/express/robots');
+const healthChecks = require('./src/lib/health-checks');
+const instrumentListen = require('./src/lib/instrument-listen');
+const guessAppDetails = require('./src/lib/guess-app-details');
+
+const robots = require('./src/middleware/robots');
 const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
 
-// templating and assets
-const handlebars = require('./src/handlebars');
-const hashedAssets = require('./src/lib/hashed-assets');
-const assetsMiddleware = require('./src/middleware/assets');
-const verifyAssetsExist = require('./src/lib/verify-assets-exist');
-
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
-const teapot = fs.readFileSync(path.join(__dirname, 'src/teapot.ascii'), 'utf8');
 
-module.exports = function(options) {
+const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
+
+
+const getAppContainer = options => {
 
 	checkFailing.init();
 
-	options = options || {};
-
-	const defaults = {
+	options = Object.assign({}, {
 		withFlags: false,
-		withHandlebars: false,
-		withNavigation: false,
-		withNavigationHierarchy: false,
-		withAnonMiddleware: false,
 		withBackendAuthentication: false,
-		hasNUiBundle: true,
-		// TODO always default to false for next major version
-		withAssets: options.withHandlebars || false,
 		withServiceMetrics: true,
-		hasHeadCss: false,
-		withJsonLd: false,
 		healthChecks: []
-	};
+	}, options || {});
 
-	Object.keys(defaults).forEach(function (prop) {
-		if (typeof options[prop] === 'undefined') {
-			options[prop] = defaults[prop];
-		}
-	});
-
-	let packageJson = {};
-	let name = options.name;
-	let description = '';
-	let directory = options.directory || process.cwd();
-
-	if (!name) {
-		try {
-			packageJson = require(directory + '/package.json');
-			name = packageJson.name;
-			description = packageJson.description || '';
-		} catch(e) {
-			// Safely ignorable error
-		}
-	}
-
-	if (!name) throw new Error('Please specify an application name');
-
-	const app = express();
-
-	app.locals.__name = name = normalizeName(name);
-	app.locals.__environment = process.env.NODE_ENV || '';
-	app.locals.__isProduction = app.locals.__environment.toUpperCase() === 'PRODUCTION';
-	app.locals.__rootDirectory = directory;
+	const meta = guessAppDetails(options);
+	const initPromises = [];
+	const app = instrumentListen(express(), meta, initPromises);
+	const addInitPromise = initPromises.push.bind(initPromises)
 
 	//Remove x-powered-by header
 	app.set('x-powered-by', false);
 
-	try {
-		app.locals.__version = require(directory + '/public/__about.json').appVersion;
-	} catch (e) {}
-
-	// 100% public end points
-	if (!app.locals.__isProduction) {
-		app.use('/' + name, express.static(directory + '/public', { redirect: false }));
-	}
-
 	app.get('/robots.txt', robots);
-	app.get('/__brew-coffee', function(req, res) {
+
+	app.get('/__brew-coffee', (req, res) => {
 		res.status(418);
 		res.send(teapot);
 		res.end();
 	});
-	healthChecks(app, options, description);
-	app.get('/__about', function(req, res) {
-		res.set({ 'Cache-Control': 'no-cache' });
-		res.sendFile(directory + '/public/__about.json');
-	});
 
-	// metrics should be one of the first things as needs to be applied before any other middleware executes
-	metrics.init({ app: name, flushEvery: 40000 });
-	app.use(function(req, res, next) {
-		metrics.instrument(req, { as: 'express.http.req' });
-		metrics.instrument(res, { as: 'express.http.res' });
-		next();
-	});
+	// utility middleware
+	app.use(cache);
+	app.use(vary);
+
+	healthChecks(app, options, meta.description)
 
 	app.use((req, res, next) => {
 		res.set('FT-Backend-Timestamp', new Date().toISOString());
 		next();
 	});
 
-	// set the edition so it can be added to the html tag and used for tracking
-	app.use(function(req, res, next) {
-		const edition = req.get('ft-edition') || '';
-		app.locals.__edition = edition;
-		next();
-	});
-
-	// set the ab test state so it can be added to the html tag and used by client code
-	app.use(function(req, res, next) {
-		const abState = req.get('ft-ab') || '';
-		app.locals.__abState = abState;
+	// metrics should be one of the first things as needs to be applied before any other middleware executes
+	metrics.init({ app: meta.name, flushEvery: 40000 });
+	app.use((req, res, next) => {
+		metrics.instrument(req, { as: 'express.http.req' });
+		metrics.instrument(res, { as: 'express.http.res' });
 		next();
 	});
 
 	if (options.withServiceMetrics) {
-		serviceMetrics.init(options.serviceDependencies);
+		serviceMetrics.init();
 	}
 
-	// Only allow authorized upstream applications access
+	app.get('/__about', (req, res) => {
+		res.set({ 'Cache-Control': 'no-cache' });
+		res.sendFile(meta.directory + '/public/__about.json');
+	});
+
 	if (options.withBackendAuthentication) {
-		app.use(backendAuthentication(name));
+		app.use(backendAuthentication(meta.name));
 	} else {
 		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
 	}
 
-	// utility middleware
-	app.use(cache);
-	app.use(vary);
-
-	let initPromises = [];
-
 	// feature flags
 	if (options.withFlags) {
-		initPromises.push(flags.init());
+		addInitPromise(flags.init());
 		app.use(flags.middleware);
 	}
 
-	if (options.withJsonLd) {
-		app.use(function(req, res, next) {
-			if (res.locals.flags && res.locals.flags.newSchema) {
-				res.locals.jsonLd = [nextJsonLd.webPage()];
-			}
-			next();
-		});
-	}
-
-	// verification that expected assets exist
-	verifyAssetsExist.verify(app.locals);
-	hashedAssets.init(app.locals);
-
-	// add statutory metadata to construct the page
-	if (options.withNavigation) {
-		const navigation = new NavigationModel({withNavigationHierarchy:options.withNavigationHierarchy});
-		const editions = new EditionsModel();
-		initPromises.push(navigation.init());
-		app.use(editions.middleware.bind(editions));
-		app.use(navigation.middleware.bind(navigation));
-	}
-
-	if (options.withAnonMiddleware) {
-		app.use(anon.middleware);
-	}
-
-	if (options.withHandlebars) {
-
-		// Set up handlebars as the templating engine
-		initPromises.push(handlebars({
-			app: app,
-			directory: directory,
-			options: options
-		}));
-
-		// Decorate responses with data about which assets the page needs
-		if (options.withAssets) {
-			app.use(assetsMiddleware(options, directory));
-		}
-
-		// Handle the akamai -> fastly -> akamai etc. circular redirect bug
-		app.use(function (req, res, next) {
-			res.locals.forceOptInDevice = req.get('FT-Force-Opt-In-Device') === 'true';
-			res.vary('FT-Force-Opt-In-Device');
-			next();
-		});
-
-		if (options.withFlags) {
-			app.use(welcomeBannerModelFactory);
-		}
-	}
-
-	// Start the app - Woo hoo!
-	const actualAppListen = function () {
-		let serverPromise;
-		if (process.argv.indexOf('--https') > -1) {
-			const readFile = denodeify(fs.readFile);
-			serverPromise = Promise.all([
-					readFile(path.resolve(__dirname, 'key.pem')),
-					readFile(path.resolve(__dirname, 'cert.pem'))
-				])
-				.then(results => https.createServer({ key: results[0], cert: results[1] }, this));
-		} else {
-			serverPromise = Promise.resolve(http.createServer(this));
-		}
-
-		return serverPromise.then(server => server.listen.apply(server, arguments));
-	};
-
-	app.listen = function() {
-		const args = [].slice.apply(arguments);
-		app.use(raven.middleware);
-		const port = args[0];
-		const cb = args[1];
-		args[1] = function () {
-			// HACK: Use warn so that it gets into Splunk logs
-			nLogger.warn({ event: 'EXPRESS_START', app: name, port: port, nodeVersion: process.version });
-			return cb && cb.apply(this, arguments);
-		};
-
-		return Promise.all(initPromises)
-			.then(function() {
-				metrics.count('express.start');
-				return actualAppListen.apply(app, args);
-			})
-			.catch(function(err) {
-				// Crash app if flags or handlebars fail
-				setTimeout(function() {
-					throw err;
-				}, 0);
-			});
-	};
-
-	return app;
+	return { app,	meta,	addInitPromise };
 };
+
+module.exports = options => getAppContainer(options).app
 
 // expose internals the app may want access to
 module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
-module.exports.cacheMiddleware = cache.middleware;
+module.exports.getAppContainer = getAppContainer;

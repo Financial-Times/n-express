@@ -1,5 +1,3 @@
-"use strict";
-
 const time = require('time');
 const isWithinRange = require('date-fns/is_within_range');
 
@@ -14,7 +12,7 @@ module.exports.init = function () {
 	fetchAndCacheFailureToSimulate()
 		.then(periodically(fetchAndCacheFailureToSimulate))
 		.catch(function (error) {
-			console.error('Error occurred when initialising the `check-failing` module', error);
+			console.error('Error occurred when initialising the `check-failing` module', error); //eslint-disable-line
 		});
 };
 
@@ -62,7 +60,7 @@ module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, req
 	catch (error) {
 		error.message = 'Problem with the `fakeCheckFailuresIfApplicable()` ' +
 			'method of the chec-failing module --> ' + error.message;
-		console.error(error);
+		console.error(error); //eslint-disable-line
 	}
 };
 
