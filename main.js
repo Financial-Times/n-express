@@ -31,20 +31,12 @@ const getAppContainer = options => {
 
 	checkFailing.init();
 
-	options = options || {};
-
-	const defaults = {
+	options = Object.assign({}, {
 		withFlags: false,
 		withBackendAuthentication: false,
 		withServiceMetrics: true,
 		healthChecks: []
-	};
-
-	Object.keys(defaults).forEach(prop => {
-		if (typeof options[prop] === 'undefined') {
-			options[prop] = defaults[prop];
-		}
-	});
+	}, options || {});
 
 	const meta = guessAppDetails(options);
 	const initPromises = [];
