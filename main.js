@@ -38,6 +38,10 @@ const getAppContainer = options => {
 		healthChecks: []
 	}, options || {});
 
+	if (!options.systemCode) {
+		throw new Error('All applications must specify a CMDB `systemCode` to the express() function. See the README for more details.');
+	}
+
 	const meta = guessAppDetails(options);
 	const initPromises = [];
 	const app = instrumentListen(express(), meta, initPromises);

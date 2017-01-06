@@ -12,8 +12,16 @@ npm install -S @financial-times/n-express
 # API extensions
 
 ## App init options
+
+
 Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
-- `systemCode` - ensures that the system code is present in the JSON that is returned at the `/__health` endpoint. Note that the value of this property must correspond with the `systemCode` property of the [service registry](http://next-registry.ft.com/) entry of the app in question
+
+### Mandatory
+
+- `systemCode` - allows the application to communicate its [CMDB](https://cmdb.ft.com) to other services.
+
+### Optional
+
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
 - `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
@@ -29,6 +37,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 	-	app: the express app instance
 	-	meta: object containig the name, description and directory of the app
 	- addInitPromise(): function for adding additional promises to wait for before allowing the app to accept traffic
+
 
 ## Cache control
 Several useful cache control header values are available as constants on responses:

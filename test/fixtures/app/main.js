@@ -5,6 +5,7 @@ const express = require('../../..');
 const app = module.exports = express({
 	directory: __dirname,
 	withFlags: true,
+	systemCode: 'test-app',
 	withBackendAuthentication: true
 });
 
