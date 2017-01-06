@@ -1,6 +1,4 @@
-'use strict';
-
-function extendVary (val, set) {
+const extendVary = (val, set) => {
 	val = Array.isArray(val) ? val : val.split(',');
 	val.forEach(header => {
 		set.add(header.trim().toLowerCase())
@@ -8,7 +6,7 @@ function extendVary (val, set) {
 	return Array.from(set).join(', ');
 }
 
-module.exports = function(req, res, next) {
+module.exports = (req, res, next) => {
 	const resSet = res.set;
 	const varyOn = new Set([]);
 
@@ -48,6 +46,8 @@ module.exports = function(req, res, next) {
 
 	res.unvaryAll = function (preset) {
 		if (preset === 'wrapper') {
+			// TODO need to port this to n-ui ,and rename as n-ui.
+			// Not sure if it's ever used
 			res.unVary('ft-anonymous-user', 'ft-edition');
 		} else {
 			varyOn.clear()

@@ -3,6 +3,8 @@ n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/m
 
 Slightly enhanced Express.
 
+This module is now mainly aimed at APIs. For the full box of features aimed at building a user-facing page use `@financial-times/n-ui` instead
+
 ```
 npm install -S @financial-times/n-express
 ```
@@ -21,17 +23,20 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 ### Optional
 
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
-- `withHandlebars` - adds handlebars as the rendering engine
-- `withAssets` - adds asset handling middleware, see [Linked Resources (preload)](#linked-resources-preload). Ignored if `withHandlebars` is not `true`
-- `withNavigation` - adds a data model for the navigation to each request (see below)
-- `withNavigationHierarchy` - adds additional data to the navigation model concerning the current page's ancestors and children
-- `withAnonMiddleware` - sets the user's signed in state in the data model, and varies the response accordingly
 - `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
-- `hasHeadCss` - if the app outputs a `head.css` file, read it (assumes it's in the `public` dir) and store in the `res.locals.headCss`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
-- `partialsDirectory` String - a path to load partials from, this in addition to the standard `views/partials` that is set for every app
+
+## Static properties and methods
+- `Router` - `express.Router`
+- `static` - `express.static` middleware
+- `metrics` - `next-metrics` instance
+- `flags` - `next-feature-flags-client` instance
+- `getAppContainer()` - returns an object:
+	-	app: the express app instance
+	-	meta: object containig the name, description and directory of the app
+	- addInitPromise(): function for adding additional promises to wait for before allowing the app to accept traffic
 
 
 ## Cache control
@@ -44,18 +49,6 @@ Several useful cache control header values are available as constants on respons
 	res.FT_LONG_CACHE = 'max-age=86400, stale-while-revalidate=60, stale-if-error=259200';
 ```
 
-## Linked Resources (preload)
-Adds link headers to enable service workers to optimise requests for assets, defaulting to preload behaviour
-e.g:
-- res.linkResource('//path/to/file.css', {as: 'style'}) => adds a link header to `//path/to/file.css` with `as="style"` and `rel="preload"`
-- res.linkResource('//path/to/file.js', {rel: 'prefetch', as: 'script'}) => adds a link header to `//path/to/file.js` with `as="script"` and `rel="prefetch"`
-- res.linkResource('main.css', {as: 'style'}, {hashed: true}) => adds a link header to the hashed asset path generated for the app's `main.css` file
-
-Link headers for `main.css` and `main.js` are added by default to any `text/html` request.
-
-e.g `res.linkResource('comments.css', {as: 'style', rel: 'prefetch'})`
-
-
 ## Cache varying
 Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition, Accept-Encoding as of Apr 2016 ) as they are required for most responses - the user experience will break if they are not. To control these a few additional methods are provided
 - `res.unvary('My-Header')` - use if your response definitely doesn't need to vary on one of the standard vary headers e.g. .rss probably doesn't need to vary on ft-edition
@@ -66,39 +59,11 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 ## next-metrics
 As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`
 
-## Navigation
-If you pass `withNavigation:true` in the init options, you will have navigation data available in `res.locals.navigation`.  this data comes from polling the [navigation API](https://github.com/Financial-Times/next-navigation-api).  This data is used to populate the various menus and navigation items on the apps.  The following data is available
-
-	res.locals.navigation = {
-		lists: {
-			navbar_desktop: // data for the main nav in the header (only on large screens)
-			navbar_mobile: //data for the white strip that appears on the homepage and fastFT pages only on small screens
-			drawer: //data for the slide-out menu
-			footer: // data for the footer
-		}
-	}
-
-### Navigation Hierarchy
-If you also pass `withNavigationHierarchy: true` in the init options you get some additonal properties detailing the current page's position in the hierarchy.  This is only currently useful on stream pages.  The following properties are added:
-
-	res.locals.navigation.currentItem // the current item
-	res.locals.navigation.children //an array of the direct decendents of the current page
-	res.locals.navigation.ancestors // an array of the parent items of the current page (top level first)
-
-### Editions
-The navigation model also controls the edition switching logic.  The following properties are added
-
-	res.locals.editions.current // the currently selected edition
-	res.locals.editions.others //  and array of other possible editions
-
-
 # Other enhancements
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
-- Our [Handlebars](http://handlebarsjs.com/) engine loads partials from `bower_components` and has a number of [additional helpers](https://github.com/Financial-Times/n-handlebars). It also points to [n-layout](https://github.com/Financial-Times/n-layout) to provide a vanilla and 'wrapper' layout
 - Errors are sent to sentry using [n-raven](https://github.com/Financial-Times/n-raven)
 - Instrumentation of system and http (incoming and outgoing) performance using [Next Metrics](https://github.com/Financial-Times/next-metrics)
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
-- Exposes everything in the app's `./public` folder via `./{{name-of-app}}` (only in non-production environments, please use [next-assets](https://github.com/Financial-Times/next-assets) or hashed-assets in production)
 - Exposes various bits of metadata about the app (e.g. name, version, env, isProduction) to templates (via `res.locals`) and the outside world (via `{appname}/__about.json`)
 
 
