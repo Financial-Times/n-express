@@ -66,7 +66,11 @@ describe('simple app', function () {
 			request(app)
 				.get('/')
 				.expect('FT-Backend-Authentication', /false/)
-				.expect(401, done);
+				.end((err, res) => {
+					expect(res.status).to.equal(401)
+					expect(res.text).to.equal('Invalid Backend Key')
+					done()
+				});
 		});
 
 		it('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
@@ -74,7 +78,23 @@ describe('simple app', function () {
 				.get('/')
 				.set('FT-Next-Backend-Key', 'as-if')
 				.expect('ft-backend-authentication', /false/)
-				.expect(401, done);
+				.end((err, res) => {
+					expect(res.status).to.equal(401)
+					expect(res.text).to.equal('Invalid Backend Key')
+					done()
+				});
+		});
+
+		it('should 401 for arbitrary route with incorrect old backend access key in production', function (done) {
+			request(app)
+				.get('/')
+				.set('FT-Next-Backend-Key-old', 'as-if')
+				.expect('ft-backend-authentication', /false/)
+				.end((err, res) => {
+					expect(res.status).to.equal(401)
+					expect(res.text).to.equal('Invalid Backend Key')
+					done()
+				});
 		});
 
 		it('should allow double-underscorey routes through without backend access key', function (done) {
@@ -103,6 +123,30 @@ describe('simple app', function () {
 			request(app)
 				.get('/')
 				.set('FT-Next-Backend-Key', 'test-backend-key-oldest')
+				.expect('FT-Backend-Authentication', /true/)
+				.expect(200, done);
+		});
+
+		it('should accept any request with backend access key in \'old\' header', function (done) {
+			request(app)
+				.get('/')
+				.set('FT-Next-Backend-Key-Old', 'test-backend-key')
+				.expect('FT-Backend-Authentication', /true/)
+				.expect(200, done);
+		});
+
+		it('accepts any request with an older access key in \'old\' header (1 older)', function (done) {
+			request(app)
+				.get('/')
+				.set('FT-Next-Backend-Key-Old', 'test-backend-key-old')
+				.expect('FT-Backend-Authentication', /true/)
+				.expect(200, done);
+		});
+
+		it('accepts any request with an older access key in \'old\' header (2 older)', function (done) {
+			request(app)
+				.get('/')
+				.set('FT-Next-Backend-Key-Old', 'test-backend-key-oldest')
 				.expect('FT-Backend-Authentication', /true/)
 				.expect(200, done);
 		});
