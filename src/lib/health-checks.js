@@ -1,8 +1,8 @@
 const checkFailing = require('./check-failing');
 
-module.exports = (app, options, description) => {
+module.exports = (app, options, meta) => {
 	const healthChecks = options.healthChecks;
-	const defaultAppName = `Next FT.com ${app.locals.__name} in ${process.env.REGION || 'unknown region'}`;
+	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
 
 	app.get(/\/__health(?:\.([123]))?$/, (req, res) => {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
@@ -33,7 +33,7 @@ module.exports = (app, options, description) => {
 			schemaVersion: 1,
 			name: options.healthChecksAppName || defaultAppName,
 			systemCode: options.systemCode,
-			description: description,
+			description:meta. description,
 			checks: checks
 		}, undefined, 2));
 	});
