@@ -8,7 +8,7 @@ if (process.env.FT_NEXT_BACKEND_KEY_OLD) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLD);
 }
 
-module.exports = appName => {
+module.exports = (app, appName) => {
 
 	if (!backendKeys.length) {
 
@@ -17,10 +17,10 @@ module.exports = appName => {
 			message: 'Backend authentication is disabled, this app is exposed directly to the internet. To enable, add keys in config-vars'
 		});
 
-		return (req, res, next) => next();
+		return;
 	}
 
-	return (req, res, next) => {
+	app.use((req, res, next) => {
 		// TODO - change how all this works in order to use __assets/app/{appname}
 		// allow static assets through               allow healthchecks etc. through
 		if (req.path.indexOf('/' + appName) === 0 || req.path.indexOf('/__') === 0) {
@@ -41,5 +41,5 @@ module.exports = appName => {
 				next();
 			}
 		}
-	};
+	});
 };

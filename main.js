@@ -83,7 +83,7 @@ const getAppContainer = options => {
 		res.sendFile(meta.directory + '/public/__about.json');
 	});
 
-	app.use(backendAuthentication(meta.name));
+	backendAuthentication(app, meta.name)
 
 	// feature flags
 	if (options.withFlags) {
