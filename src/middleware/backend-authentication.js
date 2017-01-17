@@ -1,22 +1,29 @@
+const nLogger = require('@financial-times/n-logger').default;
 const backendKeys = [];
+
 if (process.env.FT_NEXT_BACKEND_KEY) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY);
 }
 if (process.env.FT_NEXT_BACKEND_KEY_OLD) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLD);
 }
-if (process.env.FT_NEXT_BACKEND_KEY_OLDEST) {
-	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLDEST);
-}
 
 module.exports = appName => {
 
+	if (!backendKeys.length) {
+
+		nLogger.warn({
+			event: 'BACKEND_AUTHENTICATION_DISABLED',
+			message: 'Backend authentication is disabled, this app is exposed directly to the internet. To enable, add keys in config-vars'
+		});
+
+		return (req, res, next) => next();
+	}
+
 	return (req, res, next) => {
 		// TODO - change how all this works in order to use __assets/app/{appname}
-		// allow static assets through
-		if (req.path.indexOf('/' + appName) === 0 ||
-			// allow healthchecks etc. through
-			req.path.indexOf('/__') === 0) {
+		// allow static assets through               allow healthchecks etc. through
+		if (req.path.indexOf('/' + appName) === 0 || req.path.indexOf('/__') === 0) {
 			next();
 		} else if (
 			backendKeys.indexOf(req.get('FT-Next-Backend-Key')) > -1 ||

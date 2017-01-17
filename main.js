@@ -8,9 +8,7 @@ const backendAuthentication = require('./src/middleware/backend-authentication')
 
 // Logging and monitoring
 const metrics = require('next-metrics');
-const nLogger = require('@financial-times/n-logger').default;
 const serviceMetrics = require('./src/lib/service-metrics');
-
 
 // utils
 const healthChecks = require('./src/lib/health-checks');
@@ -33,7 +31,6 @@ const getAppContainer = options => {
 
 	options = Object.assign({}, {
 		withFlags: false,
-		withBackendAuthentication: false,
 		withServiceMetrics: true,
 		healthChecks: []
 	}, options || {});
@@ -86,11 +83,7 @@ const getAppContainer = options => {
 		res.sendFile(meta.directory + '/public/__about.json');
 	});
 
-	if (options.withBackendAuthentication) {
-		app.use(backendAuthentication(meta.name));
-	} else {
-		nLogger.warn({ event: 'BACKEND_AUTHENTICATION_DISABLED', message: 'Backend authentication is disabled, this app is exposed directly to the internet' });
-	}
+	app.use(backendAuthentication(meta.name));
 
 	// feature flags
 	if (options.withFlags) {
