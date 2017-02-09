@@ -14,8 +14,7 @@
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.0.0",
     "next-feature-flags-client": "^8.4.0",
-    "next-metrics": "^1.16.1",
-    "time": "^0.11.4"
+    "next-metrics": "^1.16.1"
   },
   "devDependencies": {
     "body-parser": "^1.15.0",
