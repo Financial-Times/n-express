@@ -62,13 +62,13 @@ describe('simple app', function () {
 			process.env.NODE_ENV = '';
 		});
 
-		it('should 401 for arbitrary route without a backend access key in production', function (done) {
+		it('should 401 for arbitrary route without a backend access authentication in production', function (done) {
 			request(app)
 				.get('/')
 				.expect('FT-Backend-Authentication', /false/)
 				.end((err, res) => {
 					expect(res.status).to.equal(401)
-					expect(res.text).to.equal('Invalid Backend Key')
+					expect(res.text).to.equal('Invalid Backend Authentication')
 					done()
 				});
 		});
@@ -80,7 +80,7 @@ describe('simple app', function () {
 				.expect('ft-backend-authentication', /false/)
 				.end((err, res) => {
 					expect(res.status).to.equal(401)
-					expect(res.text).to.equal('Invalid Backend Key')
+					expect(res.text).to.equal('Invalid Backend Authentication')
 					done()
 				});
 		});
@@ -92,7 +92,7 @@ describe('simple app', function () {
 				.expect('ft-backend-authentication', /false/)
 				.end((err, res) => {
 					expect(res.status).to.equal(401)
-					expect(res.text).to.equal('Invalid Backend Key')
+					expect(res.text).to.equal('Invalid Backend Authentication')
 					done()
 				});
 		});

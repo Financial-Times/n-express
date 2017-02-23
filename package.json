@@ -12,6 +12,7 @@
     "debounce": "^1.0.0",
     "denodeify": "^1.2.1",
     "express": "^4.14.0",
+    "ip": "^1.1.4",
     "isomorphic-fetch": "^2.0.0",
     "next-feature-flags-client": "^8.4.0",
     "next-metrics": "^1.16.1",
@@ -28,6 +29,7 @@
     "proxyquire": "^1.7.10",
     "shellpromise": "^1.4.0",
     "sinon": "^1.17.4",
+    "sinon-chai": "^2.8.0",
     "supertest": "^1.0.0"
   },
   "engines": {
