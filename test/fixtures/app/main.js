@@ -4,9 +4,8 @@ const express = require('../../..');
 
 const app = module.exports = express({
 	directory: __dirname,
-	withFlags: true,
-	systemCode: 'test-app',
-	withBackendAuthentication: true
+	withFlags: !process.env.DISABLE_FLAGS,
+	systemCode: 'test-app'
 });
 
 app.get('/', function (req, res) {
@@ -16,9 +15,14 @@ app.get('/', function (req, res) {
 app.get('/__flags.json', function (req, res) {
 	res.send(res.locals.flags);
 });
+
 app.get('/single-header', function (req, res) {
 	res.set('test-header', 'is-set');
 	res.sendStatus(200);
+});
+
+app.get('/let-me-in', function (req, res) {
+	res.end('', 200);
 });
 
 app.get('/multiple-header', function (req, res) {

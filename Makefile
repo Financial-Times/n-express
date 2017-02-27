@@ -1,12 +1,16 @@
 include n.Makefile
 
-test: unit-test verify
+test: unit-test auth-test verify
 
-unit-test: export FT_NEXT_BACKEND_KEY=test-backend-key
-unit-test: export FT_NEXT_BACKEND_KEY_OLD=test-backend-key-old
-unit-test: export FT_NEXT_BACKEND_KEY_OLDEST=test-backend-key-oldest
 unit-test:
-	mocha test/**/*.test.js --recursive
+	unset FT_NEXT_BACKEND_KEY && mocha test/**/*.test.js --recursive
+
+auth-test: export FT_NEXT_BACKEND_KEY=test-backend-key
+auth-test: export FT_NEXT_BACKEND_KEY_OLD=test-backend-key-old
+auth-test: export DISABLE_FLAGS=true
+auth-test:
+	mocha test/**/backend-auth.test.js --recursive
+
 
 run:
 	node test/fixtures/app/main.js
