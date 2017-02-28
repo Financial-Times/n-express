@@ -1,26 +1,32 @@
+const nLogger = require('@financial-times/n-logger').default;
 const IpWhitelist = require('../lib/ip-whitelist');
-
 const backendKeys = [];
+
 if (process.env.FT_NEXT_BACKEND_KEY) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY);
 }
 if (process.env.FT_NEXT_BACKEND_KEY_OLD) {
 	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLD);
 }
-if (process.env.FT_NEXT_BACKEND_KEY_OLDEST) {
-	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLDEST);
-}
 
-module.exports = appName => {
+module.exports = (app, appName) => {
+
+	if (!backendKeys.length) {
+
+		nLogger.warn({
+			event: 'BACKEND_AUTHENTICATION_DISABLED',
+			message: 'Backend authentication is disabled, this app is exposed directly to the internet. To enable, add keys in config-vars'
+		});
+
+		return;
+	}
 
 	const ipWhitelist = new IpWhitelist();
 
-	return (req, res, next) => {
+	app.use((req, res, next) => {
 		// TODO - change how all this works in order to use __assets/app/{appname}
-		// allow static assets through
-		if (req.path.indexOf('/' + appName) === 0 ||
-			// allow healthchecks etc. through
-			req.path.indexOf('/__') === 0) {
+		// allow static assets, healthchecks etc. through
+		if (req.path.indexOf('/' + appName) === 0 || req.path.indexOf('/__') === 0) {
 			next();
 		} else if (
 			// try keys first, falling back to IP whitelist
@@ -40,5 +46,5 @@ module.exports = appName => {
 				next();
 			}
 		}
-	};
+	});
 };
