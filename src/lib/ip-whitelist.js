@@ -1,4 +1,5 @@
 const logger = require('@financial-times/n-logger').default;
+const metrics = require('next-metrics');
 const fetchres = require('fetchres');
 const ip = require('ip');
 
@@ -17,15 +18,21 @@ IpWhitelist.prototype.poll = function () {
 		.then(fetchres.json)
 		.then(resp => {
 			if (Array.isArray(resp.addresses) && resp.addresses.length > 0) {
+				metrics.count('express.ip_whitelist.fetch_success');
 				if (JSON.stringify(this.fetchedWhitelist) !== JSON.stringify(resp.addresses)) {
 					logger.info({ event: 'IP_WHITELIST_UPDATE', oldSize: Array.isArray(this.fetchedWhitelist) ? this.fetchedWhitelist.length : 0, newSize: resp.addresses.length });
+					metrics.count('express.ip_whitelist.update');
 					this.fetchedWhitelist = resp.addresses;
 				}
 			} else {
 				logger.error({ event: 'IP_WHITELIST_UNRECOGNISED', response: JSON.stringify(resp) });
+				metrics.count('express.ip_whitelist.unrecognised');
 			}
 		})
-		.catch(err => logger.error({ event: 'IP_WHITELIST_FETCH_FAIL' }, err));
+		.catch(err => {
+			logger.error({ event: 'IP_WHITELIST_FETCH_FAIL' }, err);
+			metrics.count('express.ip_whitelist.fetch_fail');
+		});
 }
 
 IpWhitelist.prototype.validate = function (ipAddress) {
