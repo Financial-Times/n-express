@@ -14,8 +14,8 @@ module.exports = (app, meta, initPromises) => {
 		if (process.argv.indexOf('--https') > -1) {
 			const readFile = denodeify(fs.readFile);
 			serverPromise = Promise.all([
-				readFile(path.resolve(__dirname, 'key.pem')),
-				readFile(path.resolve(__dirname, 'cert.pem'))
+				readFile(path.resolve(__dirname, '../../key.pem')),
+				readFile(path.resolve(__dirname, '../../cert.pem'))
 			])
 				.then(results => https.createServer({ key: results[0], cert: results[1] }, this));
 		} else {
