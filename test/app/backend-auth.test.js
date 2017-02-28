@@ -30,43 +30,43 @@ if (process.env.FT_NEXT_BACKEND_KEY) {
 				process.env.NODE_ENV = '';
 			});
 
-			it('should 401 for arbitrary route without a backend access key in production', function (done) {
+			it('should 401 for arbitrary route without any authentication in production', function (done) {
 				request(app)
 					.get('/')
 					.expect('FT-Backend-Authentication', /false/)
 					.end((err, res) => {
 						// console.log(res);
 						expect(res.status).to.equal(401)
-						expect(res.text).to.equal('Invalid Backend Key')
+						expect(res.text).to.equal('Invalid Backend Authentication')
 						done()
 					});
 			});
 
-			it('should 401 for arbitrary route with incorrect backend access key in production', function (done) {
+			it('should 401 for arbitrary route with incorrect backend key & no whitelisted IP address in production', function (done) {
 				request(app)
 					.get('/')
 					.set('FT-Next-Backend-Key', 'as-if')
 					.expect('ft-backend-authentication', /false/)
 					.end((err, res) => {
 						expect(res.status).to.equal(401)
-						expect(res.text).to.equal('Invalid Backend Key')
+						expect(res.text).to.equal('Invalid Backend Authentication')
 						done()
 					});
 			});
 
-			it('should 401 for arbitrary route with incorrect old backend access key in production', function (done) {
+			it('should 401 for arbitrary route with incorrect old backend access key & no whitelisted IP address in production', function (done) {
 				request(app)
 					.get('/')
 					.set('FT-Next-Backend-Key-old', 'as-if')
 					.expect('ft-backend-authentication', /false/)
 					.end((err, res) => {
 						expect(res.status).to.equal(401)
-						expect(res.text).to.equal('Invalid Backend Key')
+						expect(res.text).to.equal('Invalid Backend Authentication')
 						done()
 					});
 			});
 
-			it('should allow double-underscorey routes through without backend access key', function (done) {
+			it('should allow double-underscorey routes through without any authentication', function (done) {
 				request(app)
 					.get('/__about')
 					.expect(200, done);

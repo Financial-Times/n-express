@@ -1,4 +1,5 @@
 const nLogger = require('@financial-times/n-logger').default;
+const metrics = require('next-metrics');
 const IpWhitelist = require('../lib/ip-whitelist');
 const backendKeys = [];
 
@@ -28,15 +29,20 @@ module.exports = (app, appName) => {
 		// allow static assets, healthchecks etc. through
 		if (req.path.indexOf('/' + appName) === 0 || req.path.indexOf('/__') === 0) {
 			next();
-		} else if (
-			// try keys first, falling back to IP whitelist
-			backendKeys.indexOf(req.get('FT-Next-Backend-Key')) > -1 ||
-			backendKeys.indexOf(req.get('FT-Next-Backend-Key-Old')) > -1 ||
-			ipWhitelist.validate(req.connection.remoteAddress)
-		) {
+		} else if (backendKeys.indexOf(req.get('FT-Next-Backend-Key')) > -1) {
+			metrics.count('express.backend_authentication.backend_key');
+			res.set('FT-Backend-Authentication', true);
+			next();
+		} else if (backendKeys.indexOf(req.get('FT-Next-Backend-Key-Old')) > -1) {
+			metrics.count('express.backend_authentication.old_backend_key');
+			res.set('FT-Backend-Authentication', true);
+			next();
+		} else if (ipWhitelist.validate(req.connection.remoteAddress)) {
+			metrics.count('express.backend_authentication.ip_whitelist');
 			res.set('FT-Backend-Authentication', true);
 			next();
 		} else {
+			metrics.count('express.backend_authentication.fail');
 			res.set('FT-Backend-Authentication', false);
 			if (process.env.NODE_ENV === 'production') {
 				// NOTE - setting the status text is very important as it's used by the CDN
