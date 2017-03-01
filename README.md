@@ -23,7 +23,6 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 ### Optional
 
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
-- `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
@@ -34,9 +33,9 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `metrics` - `next-metrics` instance
 - `flags` - `next-feature-flags-client` instance
 - `getAppContainer()` - returns an object:
-	-	app: the express app instance
-	-	meta: object containig the name, description and directory of the app
-	- addInitPromise(): function for adding additional promises to wait for before allowing the app to accept traffic
+	- `app`: the express app instance
+	- `meta`: object containing the name, description and directory of the app
+	- `addInitPromise()`: function for adding additional promises to wait for before allowing the app to accept traffic
 
 
 ## Cache control
