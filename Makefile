@@ -13,14 +13,7 @@ coverage-report: ## coverage-report: Run the unit tests with code coverage enabl
 	unset FT_NEXT_BACKEND_KEY && istanbul cover node_modules/.bin/_mocha --report=$(if $(CIRCLECI),lcovonly,lcov) 'test/**/*.test.js'
 
 unit-test:
-	unset FT_NEXT_BACKEND_KEY && mocha test/**/*.test.js --recursive
-
-auth-test: export FT_NEXT_BACKEND_KEY=test-backend-key
-auth-test: export FT_NEXT_BACKEND_KEY_OLD=test-backend-key-old
-auth-test: export DISABLE_FLAGS=true
-auth-test:
-	mocha test/**/backend-auth.test.js --recursive
-
+	unset FT_NEXT_BACKEND_KEY && mocha test/**/*.test.js
 
 run:
 	node test/fixtures/app/main.js

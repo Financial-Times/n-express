@@ -1,14 +1,15 @@
 const nLogger = require('@financial-times/n-logger').default;
-const backendKeys = [];
 
-if (process.env.FT_NEXT_BACKEND_KEY) {
-	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY);
-}
-if (process.env.FT_NEXT_BACKEND_KEY_OLD) {
-	backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLD);
-}
 
 module.exports = (app, appName) => {
+	const backendKeys = [];
+
+	if (process.env.FT_NEXT_BACKEND_KEY) {
+		backendKeys.push(process.env.FT_NEXT_BACKEND_KEY);
+	}
+	if (process.env.FT_NEXT_BACKEND_KEY_OLD) {
+		backendKeys.push(process.env.FT_NEXT_BACKEND_KEY_OLD);
+	}
 
 	if (!backendKeys.length) {
 
