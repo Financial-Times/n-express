@@ -1,6 +1,16 @@
 include n.Makefile
 
-test: unit-test auth-test verify
+test:
+	make verify
+ifeq ($(CIRCLECI),true)
+	make coverage-report && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+else
+	make unit-test
+endif
+	make auth-test
+
+coverage-report: ## coverage-report: Run the unit tests with code coverage enabled.
+	unset FT_NEXT_BACKEND_KEY && istanbul cover node_modules/.bin/_mocha --report=$(if $(CIRCLECI),lcovonly,lcov) 'test/**/*.test.js --recursive'
 
 unit-test:
 	unset FT_NEXT_BACKEND_KEY && mocha test/**/*.test.js --recursive
