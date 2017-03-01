@@ -24,7 +24,6 @@ const checkFailing = require('./src/lib/check-failing');
 
 const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
 
-
 const getAppContainer = options => {
 
 	checkFailing.init();
