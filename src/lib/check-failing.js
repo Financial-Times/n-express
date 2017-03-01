@@ -1,5 +1,5 @@
-const time = require('time');
 const isWithinRange = require('date-fns/is_within_range');
+const fs = require('fs');
 
 const the = {
 	currentDate: new Date(),
@@ -7,8 +7,23 @@ const the = {
 	failures: []
 };
 
-module.exports.init = function () {
+let getTimezone = () => {
+	if (process.env.TZ) {
+		return process.env.TZ;
+	}
 
+	if (fs.existsSync('/etc/timezone')) {
+		return fs.readFileSync('/etc/timezone');
+	}
+
+	if (fs.lstatSync('/etc/localtime').isSymbolicLink()) {
+		return fs.readlinkSync('/etc/localtime').replace('/usr/share/zoneinfo/', '');
+	}
+
+	console.error('Error occurred when evaluating the systems timezone'); // eslint-disable-line
+};
+
+module.exports.init = function () {
 	fetchAndCacheFailureToSimulate()
 		.then(periodically(fetchAndCacheFailureToSimulate))
 		.catch(function (error) {
@@ -17,12 +32,11 @@ module.exports.init = function () {
 };
 
 module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, req, res) {
-
 	if (req.query.dump === '1') {
 		res.send({
 			systemCode,
 			server: {
-				timezone: new time.Date().getTimezone()
+				timezone: getTimezone(),
 			},
 			state: the,
 			checks
