@@ -1,5 +1,6 @@
-const isWithinRange = require('date-fns/is_within_range');
 const fs = require('fs');
+const isWithinRange = require('date-fns/is_within_range');
+const logger = require('@financial-times/n-logger').default;
 
 const the = {
 	currentDate: new Date(),
@@ -7,20 +8,31 @@ const the = {
 	failures: []
 };
 
-let getTimezone = () => {
+const getTimezone = () => {
 	if (process.env.TZ) {
 		return process.env.TZ;
 	}
 
 	if (fs.existsSync('/etc/timezone')) {
-		return fs.readFileSync('/etc/timezone');
+		let timezone = fs.readFileSync('/etc/timezone');
+
+		if (timezone) {
+			return timezone;
+		}
 	}
 
 	if (fs.lstatSync('/etc/localtime').isSymbolicLink()) {
-		return fs.readlinkSync('/etc/localtime').replace('/usr/share/zoneinfo/', '');
+		let timezone = fs.readlinkSync('/etc/localtime').replace('/usr/share/zoneinfo/', '');
+
+		if (timezone) {
+			return timezone;
+		}
 	}
 
-	console.error('Error occurred when evaluating the systems timezone'); // eslint-disable-line
+	logger.error({ event: 'EXPRESS_GET_TIMEZONE_FAIL' });
+
+	// Fallback to a number representation of the timezone.
+	return new Date().getTimezone();
 };
 
 module.exports.init = function () {
