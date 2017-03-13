@@ -3,6 +3,7 @@ const PORT = process.env.PORT || 3001;
 const express = require('../../..');
 
 const app = module.exports = express({
+	name: 'test-auth',
 	directory: __dirname,
 	withFlags: !process.env.DISABLE_FLAGS,
 	systemCode: 'test-auth-app'
