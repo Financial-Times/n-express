@@ -2,8 +2,12 @@ include n.Makefile
 
 test:
 	make verify
-ifeq ($(CIRCLECI),true)
+ifneq ($(CIRCLECI),)
+ifeq ($(CIRCLE_TAG),)
 	make coverage-report && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+else
+	make unit-test
+endif
 else
 	make unit-test
 endif
@@ -16,3 +20,5 @@ unit-test:
 
 run:
 	node test/fixtures/app/main.js
+
+
