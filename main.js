@@ -47,7 +47,7 @@ const getAppContainer = options => {
 	app.set('x-powered-by', false);
 
 	app.get('/robots.txt', robots);
-
+	/*istanbul ignore next */
 	app.get('/__brew-coffee', (req, res) => {
 		res.status(418);
 		res.send(teapot);

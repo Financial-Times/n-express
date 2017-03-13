@@ -34,6 +34,7 @@ module.exports = (app, appName) => {
 			next();
 		} else {
 			res.set('FT-Backend-Authentication', false);
+			/* istanbul ignore else */
 			if (process.env.NODE_ENV === 'production') {
 				// NOTE - setting the status text is very important as it's used by the CDN
 				// to trigger stale-if-error if we mess up the key synchronisation again
