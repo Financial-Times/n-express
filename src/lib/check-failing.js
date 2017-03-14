@@ -1,4 +1,3 @@
-const time = require('time');
 const isWithinRange = require('date-fns/is_within_range');
 
 const the = {
@@ -22,7 +21,7 @@ module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, req
 		res.send({
 			systemCode,
 			server: {
-				timezone: new time.Date().getTimezone()
+				timezone: new Date().getTimezoneOffset()
 			},
 			state: the,
 			checks
