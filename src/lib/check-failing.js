@@ -95,7 +95,9 @@ function fetchFailureToSimulate () {
 		url: 'http://ft-next-health-eu.herokuapp.com/failure-simulation-config'
 	};
 
-	return fetch(request.url)
+	return fetch(request.url, {
+		timeout: 1000
+	})
 		.then(function (response) {
 			if (response.status !== 200) {
 				return Promise.reject(new Error('status: ' + response.status));
