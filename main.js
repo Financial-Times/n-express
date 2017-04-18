@@ -66,7 +66,10 @@ const getAppContainer = options => {
 	});
 
 	// metrics should be one of the first things as needs to be applied before any other middleware executes
-	metrics.init({ app: meta.name, flushEvery: 40000 });
+	metrics.init({
+		app: process.env.NEXT_APP_VARIANT ? `${meta.name}_${process.env.NEXT_APP_VARIANT} + : meta.name,
+		flushEvery: 40000
+	});
 	app.use((req, res, next) => {
 		metrics.instrument(req, { as: 'express.http.req' });
 		metrics.instrument(res, { as: 'express.http.res' });
