@@ -56,7 +56,7 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 - `res.vary('My-Header')` - add to the list of vary headers
 
 ## next-metrics
-As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`
+As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`. To send metrics under a variant app name (e.g. a canary app) set the environment variable `FT_APP_VARIANT`.
 
 # Other enhancements
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)

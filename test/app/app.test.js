@@ -95,6 +95,15 @@ describe('simple app', function () {
 			metrics.init.restore();
 		});
 
+		it('should initialise metrics for variant apps', function () {
+			sinon.stub(metrics, 'init');
+			process.env.FT_APP_VARIANT = 'testing'
+			getApp();
+			expect(metrics.init.calledWith({app: 'demo-app_testing', flushEvery: 40000 })).to.be.true;
+			metrics.init.restore();
+			delete process.env.FT_APP_VARIANT;
+		});
+
 		it('should count application starts', function (done) {
 			sinon.stub(metrics, 'count');
 			const app = getApp();
