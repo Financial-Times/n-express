@@ -5,7 +5,8 @@ const express = require('../../..');
 const app = module.exports = express({
 	directory: __dirname,
 	withFlags: !process.env.DISABLE_FLAGS,
-	systemCode: 'test-app'
+	systemCode: 'test-app',
+	skipDefaultErrorRateCheck: true
 });
 
 app.get('/', function (req, res) {

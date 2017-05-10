@@ -1,13 +1,20 @@
 const checkFailing = require('./check-failing');
+const errorRateCheck = require('./error-rate-check');
 
 module.exports = (app, options, meta) => {
-	const healthChecks = options.healthChecks;
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
+
+	const defaultChecks = [];
+	if (!options.skipDefaultErrorRateCheck) {
+		defaultChecks.push(errorRateCheck(meta.name));
+	}
+
+	const healthChecks = options.healthChecks.concat(defaultChecks);
 
 	app.get(/\/__health(?:\.([123]))?$/, (req, res) => {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
 		const checks = healthChecks.map(check => check.getStatus());
-		if (checks.length === 0) {
+		if (checks.length === 0 || checks.length === defaultChecks.length) {
 			checks.push({
 				name: 'App has no healthchecks',
 				ok: false,
@@ -33,9 +40,9 @@ module.exports = (app, options, meta) => {
 			schemaVersion: 1,
 			name: options.healthChecksAppName || defaultAppName,
 			systemCode: options.systemCode,
-			description:meta. description,
+			description: meta.description,
 			checks: checks
 		}, undefined, 2));
 	});
 
-}
+};
