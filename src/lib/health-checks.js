@@ -4,10 +4,9 @@ const errorRateCheck = require('./error-rate-check');
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
 
-	const defaultChecks = [];
-	if (!options.skipDefaultErrorRateCheck) {
-		defaultChecks.push(errorRateCheck(meta.name));
-	}
+	const defaultChecks = [
+		errorRateCheck(meta.name, options.errorRateHealthcheck)
+	];
 
 	const healthChecks = options.healthChecks.concat(defaultChecks);
 

@@ -6,7 +6,10 @@ const app = module.exports = express({
 	directory: __dirname,
 	withFlags: !process.env.DISABLE_FLAGS,
 	systemCode: 'test-app',
-	skipDefaultErrorRateCheck: true
+	errorRateHealthcheck: {
+		threshold: 1,
+		severity: 3
+	}
 });
 
 app.get('/', function (req, res) {
