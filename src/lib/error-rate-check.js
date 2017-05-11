@@ -1,7 +1,7 @@
 const nHealth = require('n-health');
 
 const DEFAULT_THRESHOLD = 0.04;
-const DEFAULT_SEVERITY = 1;
+const DEFAULT_SEVERITY = 3; // TODO: see how flaky this is and consider raising to severity 1 (Theo)
 
 module.exports = (appName, opts) => {
 	opts = opts || {};
