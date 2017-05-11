@@ -6,10 +6,10 @@ module.exports = (appName) => (
 		metric: `
 			divideSeries(
 				sumSeries(
-					next.heroku.${appName}.web_*_${process.env.REGION || '*'}.express.default_route_GET.res.status.500.count
+					next.heroku.${appName}.web_*${ process.env.REGION ? '_' + process.env.REGION : '' }.express.default_route_GET.res.status.500.count
 				),
 				sumSeries(
-					next.heroku.${appName}.web_*_${process.env.REGION || '*'}.express.default_route_GET.res.status.*.count
+					next.heroku.${appName}.web_*${ process.env.REGION ? '_' + process.env.REGION : '' }.express.default_route_GET.res.status.*.count
 				)
 			)
 		`.replace(/\t|\n/g, ''),

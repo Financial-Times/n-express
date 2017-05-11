@@ -30,6 +30,7 @@
     "proxyquire": "^1.7.10",
     "shellpromise": "^1.4.0",
     "sinon": "^1.17.4",
+    "sinon-chai": "^2.10.0",
     "supertest": "^1.0.0"
   },
   "engines": {
