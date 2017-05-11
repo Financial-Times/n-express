@@ -1,11 +1,12 @@
 /*jshint node:true*/
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 const express = require('../../..');
 
 const app = module.exports = express({
 	directory: __dirname,
 	withFlags: !process.env.DISABLE_FLAGS,
-	systemCode: 'test-app'
+	systemCode: 'test-app',
+	skipDefaultErrorRateCheck: true
 });
 
 app.get('/', function (req, res) {
