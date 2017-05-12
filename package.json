@@ -13,6 +13,7 @@
     "denodeify": "^1.2.1",
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.0.0",
+    "n-health": "^2.0.18",
     "next-feature-flags-client": "^8.4.0",
     "next-metrics": "^1.16.1"
   },
@@ -29,6 +30,7 @@
     "proxyquire": "^1.7.10",
     "shellpromise": "^1.4.0",
     "sinon": "^1.17.4",
+    "sinon-chai": "^2.10.0",
     "supertest": "^1.0.0"
   },
   "engines": {
