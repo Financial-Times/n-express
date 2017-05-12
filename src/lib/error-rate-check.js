@@ -22,8 +22,8 @@ module.exports = (appName, opts) => {
 		threshold,
 		name: `500 rate for ${appName} is acceptable`,
 		severity,
-		businessImpact: `Error rate for the ${appName} app is higher than the acceptable threshold of ${threshold}.`,
-		technicalSummary: `The proportion of 500 responses for the ${appName} application requests across all heroku dynos vs all responses is higher than a threshold of ${threshold}`,
+		businessImpact: `Error rate for the ${appName} app is higher than the acceptable threshold of ${threshold*100}%.`,
+		technicalSummary: `The proportion of 500 responses for the ${appName} application requests across all heroku dynos vs all responses is higher than a threshold of ${threshold*100}%`,
 		panicGuide: 'Consult errors in sentry, application logs in splunk and run the application locally to identify errors'
 	});
 };
