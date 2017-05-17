@@ -58,7 +58,9 @@ const getAppContainer = options => {
 	app.use(cache);
 	app.use(vary);
 
-	healthChecks(app, options, meta)
+	if (!options.demo) {
+		healthChecks(app, options, meta);
+	}
 
 	app.use((req, res, next) => {
 		res.set('FT-Backend-Timestamp', new Date().toISOString());
