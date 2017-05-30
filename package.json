@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "main.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "commit": "commit-wizard"
   },
   "dependencies": {
     "@financial-times/n-logger": "^5.0.0",
@@ -18,6 +19,7 @@
     "next-metrics": "^1.16.1"
   },
   "devDependencies": {
+    "@financial-times/n-gage": "^1.1.7",
     "body-parser": "^1.15.0",
     "chai": "^3.0.0",
     "coveralls": "^2.11.16",
@@ -35,5 +37,10 @@
   },
   "engines": {
     "node": ">=6.0.0"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": []
+    }
   }
 }
