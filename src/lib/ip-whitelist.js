@@ -3,26 +3,27 @@ const metrics = require('next-metrics');
 const fetchres = require('fetchres');
 const ip = require('ip');
 
-const backupWhitelist = require('./ip-whitelist-backup.json').addresses;
+const backupFastlyWhitelist = require('./fastly-ip-whitelist-backup.json').addresses;
+const ftWhitelist = require('./ft-ip-whitelist.json');
 
-const whitelistUrl = 'https://api.fastly.com/public-ip-list';
+const fastlyWhitelistUrl = 'https://api.fastly.com/public-ip-list';
 
 function IpWhitelist () {
-	this.fetchedWhitelist = null;
+	this.fetchedFastlyWhitelist = null;
 	this.poll();
 	setInterval(() => this.poll(), 10000); // every 10 seconds
 };
 
 IpWhitelist.prototype.poll = function () {
-	return fetch(whitelistUrl)
+	return fetch(fastlyWhitelistUrl)
 		.then(fetchres.json)
 		.then(resp => {
 			if (Array.isArray(resp.addresses) && resp.addresses.length > 0) {
 				metrics.count('express.ip_whitelist.fetch_success');
-				if (JSON.stringify(this.fetchedWhitelist) !== JSON.stringify(resp.addresses)) {
-					logger.info({ event: 'IP_WHITELIST_UPDATE', oldSize: Array.isArray(this.fetchedWhitelist) ? this.fetchedWhitelist.length : 0, newSize: resp.addresses.length });
+				if (JSON.stringify(this.fetchedFastlyWhitelist) !== JSON.stringify(resp.addresses)) {
+					logger.info({ event: 'IP_WHITELIST_UPDATE', oldSize: Array.isArray(this.fetchedFastlyWhitelist) ? this.fetchedFastlyWhitelist.length : 0, newSize: resp.addresses.length });
 					metrics.count('express.ip_whitelist.update');
-					this.fetchedWhitelist = resp.addresses;
+					this.fetchedFastlyWhitelist = resp.addresses;
 				}
 			} else {
 				logger.error({ event: 'IP_WHITELIST_UNRECOGNISED', response: JSON.stringify(resp) });
@@ -36,7 +37,7 @@ IpWhitelist.prototype.poll = function () {
 }
 
 IpWhitelist.prototype.validate = function (ipAddress) {
-	const ranges = this.fetchedWhitelist || backupWhitelist;
+	const ranges = (this.fetchedFastlyWhitelist || backupFastlyWhitelist).concat(ftWhitelist);
 	let i;
 	for (i = 0; i < ranges.length; i++) {
 		if (ip.cidrSubnet(ranges[i]).contains(ipAddress)) {

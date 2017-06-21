@@ -11,6 +11,7 @@ module.exports = {
 	strings: {
 		deny: [],
 		denyOverrides: [
+			// all these up to END are in the .pem files
 			'dWcviesUB03w7mltofQp7fiOpPkzoNyI',
 			'g1Lz9joDwspGf9NmymwGWZTWm1YnDMNAJsvDMBFs',
 			'9S5AYP21OmG2Ed45\\+MCf5PJSGjevnc7aqvg8rGp\\+',
@@ -21,6 +22,7 @@ module.exports = {
 			'wvvSnjBi0lHELEhDDEjdH/IDrumlgykr4aRa4Guw',
 			'RHWRFPG6rVH1YDP7xIX0q',
 			'/AoGAEVfE\\+pHlAlbEo\\+DtbRcig4qmf1Ja\\+kX7dwI'
+			// END
 		]
 	}
 };

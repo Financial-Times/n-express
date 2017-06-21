@@ -14,7 +14,8 @@ const IpWhitelist = proxyquire('../../src/lib/ip-whitelist', {
 	'@financial-times/n-logger': { default: { info: info, error: error } }
 });
 
-const WHITELISTED_IP_ADDRESS = '104.156.80.5';
+const WHITELISTED_FASTLY_IP_ADDRESS = '104.156.80.5';
+//const WHITELISTED_FT_IP_ADDRESS = '';
 
 describe('IP whitelist', () => {
 
@@ -78,13 +79,24 @@ describe('IP whitelist', () => {
 		}, 0);
 	});
 
-	it('allows whitelisted IP address from backup list', (done) => {
+	it('allows whitelisted Fastly IP address from backup list', (done) => {
 		fetchMock.get('https://api.fastly.com/public-ip-list', 404);
 		const ipWhitelist = new IpWhitelist();
 		setTimeout(() => {
-			expect(ipWhitelist.validate(WHITELISTED_IP_ADDRESS)).to.equal(true);
+			expect(ipWhitelist.validate(WHITELISTED_FASTLY_IP_ADDRESS)).to.equal(true);
 			done();
 		}, 0);
 	});
+
+/*
+	it('allows whitelisted FT IP address from backup list', (done) => {
+		fetchMock.get('https://api.fastly.com/public-ip-list', 404);
+		const ipWhitelist = new IpWhitelist();
+		setTimeout(() => {
+			expect(ipWhitelist.validate(WHITELISTED_FT_IP_ADDRESS)).to.equal(true);
+			done();
+		}, 0);
+	});
+*/
 
 });
