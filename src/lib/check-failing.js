@@ -1,5 +1,6 @@
-const time = require('time');
+const fs = require('fs');
 const isWithinRange = require('date-fns/is_within_range');
+const logger = require('@financial-times/n-logger').default;
 
 const the = {
 	currentDate: new Date(),
@@ -7,8 +8,34 @@ const the = {
 	failures: []
 };
 
-module.exports.init = function () {
+const getTimezone = () => {
+	if (process.env.TZ) {
+		return process.env.TZ;
+	}
 
+	if (fs.existsSync('/etc/timezone')) {
+		let timezone = fs.readFileSync('/etc/timezone');
+
+		if (timezone) {
+			return timezone;
+		}
+	}
+
+	if (fs.lstatSync('/etc/localtime').isSymbolicLink()) {
+		let timezone = fs.readlinkSync('/etc/localtime').replace('/usr/share/zoneinfo/', '');
+
+		if (timezone) {
+			return timezone;
+		}
+	}
+
+	logger.error({ event: 'EXPRESS_GET_TIMEZONE_FAIL' });
+
+	// Fallback to a number representation of the timezone.
+	return new Date().getTimezone();
+};
+
+module.exports.init = function () {
 	fetchAndCacheFailureToSimulate()
 		.then(periodically(fetchAndCacheFailureToSimulate))
 		.catch(function (error) {
@@ -17,12 +44,11 @@ module.exports.init = function () {
 };
 
 module.exports.fakeCheckFailuresIfApplicable = function (systemCode, checks, req, res) {
-
 	if (req.query.dump === '1') {
 		res.send({
 			systemCode,
 			server: {
-				timezone: new time.Date().getTimezone()
+				timezone: getTimezone(),
 			},
 			state: the,
 			checks
@@ -69,7 +95,9 @@ function fetchFailureToSimulate () {
 		url: 'http://ft-next-health-eu.herokuapp.com/failure-simulation-config'
 	};
 
-	return fetch(request.url)
+	return fetch(request.url, {
+		timeout: 1000
+	})
 		.then(function (response) {
 			if (response.status !== 200) {
 				return Promise.reject(new Error('status: ' + response.status));

@@ -1,4 +1,4 @@
-n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/master)
+n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/master)[![Coverage Status](https://coveralls.io/repos/github/Financial-Times/n-express/badge.svg)](https://coveralls.io/github/Financial-Times/n-express)
 ============
 
 Slightly enhanced Express.
@@ -23,7 +23,6 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 ### Optional
 
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
-- `withBackendAuthentication` - will reject requests not decorated with an `FT-Next-Backend-Key`. *Must be true for any apps accessed via our CDN and router*
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
@@ -34,9 +33,9 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `metrics` - `next-metrics` instance
 - `flags` - `next-feature-flags-client` instance
 - `getAppContainer()` - returns an object:
-	-	app: the express app instance
-	-	meta: object containig the name, description and directory of the app
-	- addInitPromise(): function for adding additional promises to wait for before allowing the app to accept traffic
+	- `app`: the express app instance
+	- `meta`: object containing the name, description and directory of the app
+	- `addInitPromise()`: function for adding additional promises to wait for before allowing the app to accept traffic
 
 
 ## Cache control
@@ -57,7 +56,7 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 - `res.vary('My-Header')` - add to the list of vary headers
 
 ## next-metrics
-As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`
+As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`. To send metrics under a variant app name (e.g. a canary app) set the environment variable `FT_APP_VARIANT`.
 
 # Other enhancements
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)

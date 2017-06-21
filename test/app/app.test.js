@@ -72,28 +72,6 @@ describe('simple app', function () {
 
 	});
 
-	it('should be possible to disable flags', function (done) {
-
-		sinon.stub(flags, 'init').returns(Promise.resolve(null));
-		const app = nextExpress({
-			name: 'noflags',
-			directory: __dirname,
-			withFlags: false,
-			systemCode: 'test-app',
-			withFlags: false
-		});
-		app.get('/', function (req, res) {
-			res.end('', 200);
-		});
-		expect(flags.init.called).to.be.false;
-			request(app)
-			.get('/')
-			.expect(200, function () {
-				flags.init.restore();
-				done();
-			});
-	});
-
 	describe('metrics', function () {
 
 		beforeEach(function () {
@@ -115,6 +93,15 @@ describe('simple app', function () {
 			getApp();
 			expect(metrics.init.calledWith({app: 'demo-app', flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
+		});
+
+		it('should initialise metrics for variant apps', function () {
+			sinon.stub(metrics, 'init');
+			process.env.FT_APP_VARIANT = 'testing'
+			getApp();
+			expect(metrics.init.calledWith({app: 'demo-app_testing', flushEvery: 40000 })).to.be.true;
+			metrics.init.restore();
+			delete process.env.FT_APP_VARIANT;
 		});
 
 		it('should count application starts', function (done) {
@@ -172,4 +159,35 @@ describe('simple app', function () {
 		});
 
 	});
+	describe('config', () => {
+		it('should be possible to disable flags', function (done) {
+
+			sinon.stub(flags, 'init').returns(Promise.resolve(null));
+			const app = nextExpress({
+				name: 'noflags',
+				directory: __dirname,
+				systemCode: 'test-app',
+				withFlags: false
+			});
+			app.get('/', function (req, res) {
+				res.end('', 200);
+			});
+			expect(flags.init.called).to.be.false;
+				request(app)
+				.get('/')
+				.expect(200, function () {
+					flags.init.restore();
+					done();
+				});
+		});
+
+		it('should expect a system code', () => {
+			expect(() => nextExpress({
+				name: 'nosystem',
+				directory: __dirname,
+				withFlags: false
+			})).to.throw('All applications must specify a CMDB `systemCode` to the express() function. See the README for more details.');
+		})
+	})
+
 });

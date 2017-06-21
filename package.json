@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "main.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "commit": "commit-wizard"
   },
   "dependencies": {
     "@financial-times/n-logger": "^5.0.0",
@@ -14,25 +15,33 @@
     "express": "^4.14.0",
     "ip": "^1.1.4",
     "isomorphic-fetch": "^2.0.0",
+    "n-health": "^2.0.18",
     "next-feature-flags-client": "^8.4.0",
-    "next-metrics": "^1.16.1",
-    "time": "^0.11.4"
+    "next-metrics": "^1.16.1"
   },
   "devDependencies": {
+    "@financial-times/n-gage": "^1.1.7",
     "body-parser": "^1.15.0",
     "chai": "^3.0.0",
+    "coveralls": "^2.11.16",
     "eslint": "^2.5.3",
     "fetch-mock": "^5.1.2",
+    "istanbul": "^0.4.5",
     "lintspaces-cli": "^0.1.1",
-    "mocha": "^2.0.1",
+    "mocha": "^3.2.0",
     "npm-prepublish": "^1.2.1",
     "proxyquire": "^1.7.10",
     "shellpromise": "^1.4.0",
     "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0",
+    "sinon-chai": "^2.10.0",
     "supertest": "^1.0.0"
   },
   "engines": {
     "node": ">=6.0.0"
+  },
+  "config": {
+    "pre-git": {
+      "pre-commit": []
+    }
   }
 }

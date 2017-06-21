@@ -24,7 +24,6 @@ const checkFailing = require('./src/lib/check-failing');
 
 const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
 
-
 const getAppContainer = options => {
 
 	checkFailing.init();
@@ -48,7 +47,7 @@ const getAppContainer = options => {
 	app.set('x-powered-by', false);
 
 	app.get('/robots.txt', robots);
-
+	/*istanbul ignore next */
 	app.get('/__brew-coffee', (req, res) => {
 		res.status(418);
 		res.send(teapot);
@@ -59,7 +58,9 @@ const getAppContainer = options => {
 	app.use(cache);
 	app.use(vary);
 
-	healthChecks(app, options, meta)
+	if (!options.demo) {
+		healthChecks(app, options, meta);
+	}
 
 	app.use((req, res, next) => {
 		res.set('FT-Backend-Timestamp', new Date().toISOString());
@@ -67,7 +68,10 @@ const getAppContainer = options => {
 	});
 
 	// metrics should be one of the first things as needs to be applied before any other middleware executes
-	metrics.init({ app: meta.name, flushEvery: 40000 });
+	metrics.init({
+		app: process.env.FT_APP_VARIANT ? `${meta.name}_${process.env.FT_APP_VARIANT}` : meta.name,
+		flushEvery: 40000
+	});
 	app.use((req, res, next) => {
 		metrics.instrument(req, { as: 'express.http.req' });
 		metrics.instrument(res, { as: 'express.http.res' });
