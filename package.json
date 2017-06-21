@@ -39,9 +39,11 @@
   "engines": {
     "node": ">=6.0.0"
   },
-  "config": {
-    "pre-git": {
-      "pre-commit": []
-    }
-  }
+	"config": {
+		"pre-git": {
+			"pre-commit": [
+				"node_modules/.bin/secret-squirrel"
+			]
+		}
+	}
 }
