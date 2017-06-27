@@ -29,6 +29,7 @@ const getAppContainer = options => {
 	checkFailing.init();
 
 	options = Object.assign({}, {
+		withBackendAuthentication: true,
 		withFlags: false,
 		withServiceMetrics: true,
 		healthChecks: []
@@ -87,7 +88,9 @@ const getAppContainer = options => {
 		res.sendFile(meta.directory + '/public/__about.json');
 	});
 
-	backendAuthentication(app, meta.name)
+	if (options.withBackendAuthentication) {
+		backendAuthentication(app, meta.name);
+	}
 
 	// feature flags
 	if (options.withFlags) {

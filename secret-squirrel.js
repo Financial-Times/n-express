@@ -11,18 +11,16 @@ module.exports = {
 	strings: {
 		deny: [],
 		denyOverrides: [
-			// all these up to END are in the .pem files
-			'dWcviesUB03w7mltofQp7fiOpPkzoNyI',
-			'g1Lz9joDwspGf9NmymwGWZTWm1YnDMNAJsvDMBFs',
-			'9S5AYP21OmG2Ed45\\+MCf5PJSGjevnc7aqvg8rGp\\+',
-			'Obukg5ifDAUyHBkItzGbc',
-			'2bWCDsmgyILTIL2ejjfZz79JmWr28\\+U/FQOJSqEb',
-			'HTfDuaW2h9Cnt\\+I6k\\+TOg3Ij5vbh/rxNLwTQmzOW',
-			'/V5CwimQKBgB\\+F8ywd5zQhrTZzz7M6ARUQP7j9b/',
-			'wvvSnjBi0lHELEhDDEjdH/IDrumlgykr4aRa4Guw',
-			'RHWRFPG6rVH1YDP7xIX0q',
-			'/AoGAEVfE\\+pHlAlbEo\\+DtbRcig4qmf1Ja\\+kX7dwI'
-			// END
+			'dWcviesUB03w7mltofQp7fiOpPkzoNyI', // cert.pem:12
+			'g1Lz9joDwspGf9NmymwGWZTWm1YnDMNAJsvDMBFs', // cert.pem:13|13
+			'Obukg5ifDAUyHBkItzGbc', // cert.pem:18
+			'2bWCDsmgyILTIL2ejjfZz79JmWr28\\+U/FQOJSqEb', // key.pem:3
+			'HTfDuaW2h9Cnt\\+I6k\\+TOg3Ij5vbh/rxNLwTQmzOW', // key.pem:5
+			'/V5CwimQKBgB\\+F8ywd5zQhrTZzz7M6ARUQP7j9b/', // key.pem:21
+			'wvvSnjBi0lHELEhDDEjdH/IDrumlgykr4aRa4Guw', // key.pem:22
+			'RHWRFPG6rVH1YDP7xIX0q', // key.pem:22
+			'/AoGAEVfE\\+pHlAlbEo\\+DtbRcig4qmf1Ja\\+kX7dwI', // key.pem:24
+			'9S5AYP21OmG2Ed45\\+MCf5PJSGjevnc7aqvg8rGp\\+'
 		]
 	}
 };

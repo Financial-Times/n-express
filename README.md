@@ -22,6 +22,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 
 ### Optional
 
+- `withBackendAuthentication` - Boolean, defaults to `true` - if there is a `FT_NEXT_BACKEND_KEY[_OLD]` env variable, the app will expect requests to have an equivalent `FT-Next-Backend-Key[-Old]` header; this turns off that functionality
 - `withFlags` - decorates each request with feature flags as `res.locals.flags`
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
