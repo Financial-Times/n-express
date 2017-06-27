@@ -40,7 +40,10 @@
   },
   "config": {
     "pre-git": {
-      "pre-commit": []
+      "pre-commit": [
+        "make verify",
+        "node_modules/.bin/secret-squirrel"
+      ]
     }
   }
 }
