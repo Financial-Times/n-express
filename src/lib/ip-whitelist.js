@@ -37,7 +37,10 @@ IpWhitelist.prototype.poll = function () {
 }
 
 IpWhitelist.prototype.validate = function (ipAddress) {
-	const ranges = (this.fetchedFastlyWhitelist || backupFastlyWhitelist).concat(ftWhitelist);
+	if (ipAddress.match(/^::ffff:/)) {
+		ipAddress = ipAddress.replace(/^::ffff:/, '');
+	}
+	const ranges = [].concat(this.fetchedFastlyWhitelist || backupFastlyWhitelist, ftWhitelist);
 	let i;
 	for (i = 0; i < ranges.length; i++) {
 		if (ip.cidrSubnet(ranges[i]).contains(ipAddress)) {
