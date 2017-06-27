@@ -98,7 +98,7 @@ const getAppContainer = options => {
 		app.use(flags.middleware);
 	}
 
-	return { app,	meta,	addInitPromise };
+	return { app, meta, addInitPromise };
 };
 
 module.exports = options => getAppContainer(options).app
