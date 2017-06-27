@@ -1,5 +1,6 @@
 const nLogger = require('@financial-times/n-logger').default;
-
+const IpWhitelist = require('../lib/ip-whitelist');
+const metrics = require('next-metrics');
 
 module.exports = (app, appName) => {
 	const backendKeys = [];
@@ -21,18 +22,27 @@ module.exports = (app, appName) => {
 		return;
 	}
 
+	const ipWhitelist = new IpWhitelist();
+
 	app.use((req, res, next) => {
 		// TODO - change how all this works in order to use __assets/app/{appname}
-		// allow static, healthchecks, assets, etc., through
+		// allow static assets, healthchecks, etc., through
 		if (req.path.indexOf('/' + appName) === 0 || req.path.indexOf('/__') === 0) {
 			next();
-		} else if (
-			backendKeys.indexOf(req.get('FT-Next-Backend-Key')) > -1 ||
-			backendKeys.indexOf(req.get('FT-Next-Backend-Key-Old')) > -1
-		) {
+		} else if (backendKeys.indexOf(req.get('FT-Next-Backend-Key')) > -1) {
+			metrics.count('express.backend_authentication.backend_key');
+			res.set('FT-Backend-Authentication', true);
+			next();
+		} else if (backendKeys.indexOf(req.get('FT-Next-Backend-Key-Old')) > -1) {
+			metrics.count('express.backend_authentication.old_backend_key');
+			res.set('FT-Backend-Authentication', true);
+			next();
+		} else if (ipWhitelist.validate(req.connection.remoteAddress)) {
+			metrics.count('express.backend_authentication.ip_whitelist');
 			res.set('FT-Backend-Authentication', true);
 			next();
 		} else {
+			metrics.count('express.backend_authentication.fail');
 			res.set('FT-Backend-Authentication', false);
 			/* istanbul ignore else */
 			if (process.env.NODE_ENV === 'production') {

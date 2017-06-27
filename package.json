@@ -13,6 +13,7 @@
     "debounce": "^1.0.0",
     "denodeify": "^1.2.1",
     "express": "^4.14.0",
+    "ip": "^1.1.4",
     "isomorphic-fetch": "^2.0.0",
     "n-health": "^2.0.18",
     "next-feature-flags-client": "^8.4.0",
