@@ -26,7 +26,7 @@ module.exports = (app, appName) => {
 
 	app.use((req, res, next) => {
 		// TODO - change how all this works in order to use __assets/app/{appname}
-		// allow static assets through							 allow healthchecks etc. through
+		// allow static assets, healthchecks, etc., through
 		if (req.path.indexOf('/' + appName) === 0 || req.path.indexOf('/__') === 0) {
 			next();
 		} else if (backendKeys.indexOf(req.get('FT-Next-Backend-Key')) > -1) {
