@@ -1,7 +1,7 @@
 {
-  "description": "ft-next-demo-app-v002",
-  "support": "next.team@ft.com",
-  "supportStatus": "active",
-  "appVersion": "i-am-at-version-x",
-  "buildCompletionTime": "2015-05-22T16:24:15.069Z"
+	"description": "ft-next-demo-app-v002",
+	"support": "next.team@ft.com",
+	"supportStatus": "active",
+	"appVersion": "i-am-at-version-x",
+	"buildCompletionTime": "2015-05-22T16:24:15.069Z"
 }
