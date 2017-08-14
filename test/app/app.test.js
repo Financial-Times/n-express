@@ -9,7 +9,7 @@ const sinon = require('sinon');
 const nextExpress = require('../../main');
 const expect = require('chai').expect;
 const raven = require('@financial-times/n-raven');
-const flags = require('next-feature-flags-client');
+const flags = require('@financial-times/n-flags-client');
 
 let app;
 

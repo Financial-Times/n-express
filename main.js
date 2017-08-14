@@ -3,7 +3,7 @@ require('isomorphic-fetch');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const flags = require('next-feature-flags-client');
+const flags = require('@financial-times/n-flags-client');
 const backendAuthentication = require('./src/middleware/backend-authentication');
 
 // Logging and monitoring

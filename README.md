@@ -23,7 +23,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 ### Optional
 
 - `withBackendAuthentication` - Boolean, defaults to `true` - if there is a `FT_NEXT_BACKEND_KEY[_OLD]` env variable, the app will expect requests to have an equivalent `FT-Next-Backend-Key[-Old]` header; this turns off that functionality
-- `withFlags` - decorates each request with feature flags as `res.locals.flags`
+- `withFlags` - decorates each request with [flags](https://github.com/Financial-Times/n-flags-client) as `res.locals.flags`
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
@@ -32,7 +32,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `Router` - `express.Router`
 - `static` - `express.static` middleware
 - `metrics` - `next-metrics` instance
-- `flags` - `next-feature-flags-client` instance
+- `flags` - `n-flags-client` instance
 - `getAppContainer()` - returns an object:
 	- `app`: the express app instance
 	- `meta`: object containing the name, description and directory of the app
