@@ -7,6 +7,7 @@
     "commit": "commit-wizard"
   },
   "dependencies": {
+    "@financial-times/n-flags-client": "^9.0.0",
     "@financial-times/n-logger": "^5.0.0",
     "@financial-times/n-raven": "^2.0.0",
     "date-fns": "^1.3.0",
@@ -16,7 +17,6 @@
     "ip": "^1.1.4",
     "isomorphic-fetch": "^2.0.0",
     "n-health": "^2.0.18",
-    "next-feature-flags-client": "^8.4.0",
     "next-metrics": "^1.16.1"
   },
   "devDependencies": {
