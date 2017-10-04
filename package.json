@@ -4,7 +4,10 @@
   "main": "main.js",
   "scripts": {
     "test": "make test",
-    "commit": "commit-wizard"
+    "commit": "commit-wizard",
+    "precommit": "node_modules/.bin/secret-squirrel",
+    "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
+    "prepush": "make verify -j3"
   },
   "dependencies": {
     "@financial-times/n-flags-client": "^9.0.0",
@@ -20,7 +23,7 @@
     "next-metrics": "^1.16.1"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^1.1.7",
+    "@financial-times/n-gage": "^1.9.5",
     "body-parser": "^1.15.0",
     "chai": "^3.0.0",
     "coveralls": "^2.11.16",
@@ -39,12 +42,5 @@
   "engines": {
     "node": ">=6.0.0"
   },
-  "config": {
-    "pre-git": {
-      "pre-commit": [
-        "make verify",
-        "node_modules/.bin/secret-squirrel"
-      ]
-    }
-  }
+  "config": {}
 }
