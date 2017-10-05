@@ -21,4 +21,4 @@ module.exports = options => {
 	name = name && normalizeName(name);
 
 	return {name, description, directory};
-}
+};

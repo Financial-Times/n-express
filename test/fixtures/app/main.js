@@ -71,7 +71,7 @@ app.get('/multiple-vary', function (req, res) {
 });
 
 app.get('/unset-vary', function (req, res) {
-	res.unVary('Country-Code')
+	res.unVary('Country-Code');
 	res.sendStatus(200);
 });
 
@@ -88,14 +88,14 @@ app.get('/no-empty-vary', function (req, res) {
 });
 
 app.get('/mixed-vary', function (req, res) {
-	res.unVary('Country-code')
+	res.unVary('Country-code');
 	res.set('Vary', 'test-vary');
 	res.set({'test-header': 'is-set'});
 	res.sendStatus(200);
 });
 
 app.get('/cache', (req, res) => {
-	res.cache(req.query.length)
+	res.cache(req.query.length);
 	res.sendStatus(200);
 });
 

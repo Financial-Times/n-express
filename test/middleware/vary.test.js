@@ -85,7 +85,7 @@ describe('vary middleware', function () {
 		request(app)
 			.get('/unset-all-vary?preset=wrapper')
 			.expect('vary', 'ft-flags')
-			.expect(200, done)
+			.expect(200, done);
 	});
 
 	it('not attempt empty string as vary header', function (done) {
