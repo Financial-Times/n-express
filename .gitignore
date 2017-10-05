@@ -7,3 +7,6 @@
 /test/fixtures/bad-assets/public/
 /test/fixtures/bad-assets/.gitignore
 /coverage
+
+*.env*
+package-lock.json
