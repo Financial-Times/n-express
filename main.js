@@ -9,6 +9,7 @@ const backendAuthentication = require('./src/middleware/backend-authentication')
 // Logging and monitoring
 const metrics = require('next-metrics');
 const serviceMetrics = require('./src/lib/service-metrics');
+const raven = require('@financial-times/n-raven');
 
 // utils
 const healthChecks = require('./src/lib/health-checks');
@@ -43,6 +44,9 @@ const getAppContainer = options => {
 	const initPromises = [];
 	const app = instrumentListen(express(), meta, initPromises);
 	const addInitPromise = initPromises.push.bind(initPromises);
+
+	// must be the first middleware
+	app.use(raven.requestHandler());
 
 	//Remove x-powered-by header
 	app.set('x-powered-by', false);
