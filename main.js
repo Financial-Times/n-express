@@ -42,7 +42,7 @@ const getAppContainer = options => {
 	const meta = guessAppDetails(options);
 	const initPromises = [];
 	const app = instrumentListen(express(), meta, initPromises);
-	const addInitPromise = initPromises.push.bind(initPromises)
+	const addInitPromise = initPromises.push.bind(initPromises);
 
 	//Remove x-powered-by header
 	app.set('x-powered-by', false);
@@ -106,7 +106,7 @@ const getAppContainer = options => {
 	return { app, meta, addInitPromise };
 };
 
-module.exports = options => getAppContainer(options).app
+module.exports = options => getAppContainer(options).app;
 
 // expose internals the app may want access to
 module.exports.Router = express.Router;
