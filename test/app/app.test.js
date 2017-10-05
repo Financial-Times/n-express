@@ -97,7 +97,7 @@ describe('simple app', function () {
 
 		it('should initialise metrics for variant apps', function () {
 			sinon.stub(metrics, 'init');
-			process.env.FT_APP_VARIANT = 'testing'
+			process.env.FT_APP_VARIANT = 'testing';
 			getApp();
 			expect(metrics.init.calledWith({app: 'demo-app_testing', flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
@@ -187,7 +187,7 @@ describe('simple app', function () {
 				directory: __dirname,
 				withFlags: false
 			})).to.throw('All applications must specify a CMDB `systemCode` to the express() function. See the README for more details.');
-		})
-	})
+		});
+	});
 
 });

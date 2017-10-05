@@ -48,4 +48,4 @@ module.exports = (app, meta, initPromises) => {
 	};
 
 	return app;
-}
+};

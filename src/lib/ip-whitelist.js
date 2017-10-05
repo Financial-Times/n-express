@@ -34,7 +34,7 @@ IpWhitelist.prototype.poll = function () {
 			logger.error({ event: 'IP_WHITELIST_FETCH_FAIL' }, err);
 			metrics.count('express.ip_whitelist.fetch_fail');
 		});
-}
+};
 
 IpWhitelist.prototype.validate = function (ipAddress) {
 	if (ipAddress.match(/^::ffff:/)) {
@@ -48,6 +48,6 @@ IpWhitelist.prototype.validate = function (ipAddress) {
 		}
 	}
 	return false;
-}
+};
 
 module.exports = IpWhitelist;

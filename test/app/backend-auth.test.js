@@ -27,7 +27,7 @@ describe('simple app', function () {
 		process.env.FT_NEXT_BACKEND_KEY = undefined;
 		process.env.FT_NEXT_BACKEND_KEY_OLD = undefined;
 		process.env.DISABLE_FLAGS = undefined;
-	})
+	});
 
 	describe('backend access', function () {
 		before(function () {
@@ -44,9 +44,9 @@ describe('simple app', function () {
 				.expect('FT-Backend-Authentication', /false/)
 				.end((err, res) => {
 					// console.log(res);
-					expect(res.status).to.equal(401)
-					expect(res.text).to.equal('Invalid Backend Key')
-					done()
+					expect(res.status).to.equal(401);
+					expect(res.text).to.equal('Invalid Backend Key');
+					done();
 				});
 		});
 
@@ -56,9 +56,9 @@ describe('simple app', function () {
 				.set('FT-Next-Backend-Key', 'as-if')
 				.expect('ft-backend-authentication', /false/)
 				.end((err, res) => {
-					expect(res.status).to.equal(401)
-					expect(res.text).to.equal('Invalid Backend Key')
-					done()
+					expect(res.status).to.equal(401);
+					expect(res.text).to.equal('Invalid Backend Key');
+					done();
 				});
 		});
 
@@ -68,9 +68,9 @@ describe('simple app', function () {
 				.set('FT-Next-Backend-Key-old', 'as-if')
 				.expect('ft-backend-authentication', /false/)
 				.end((err, res) => {
-					expect(res.status).to.equal(401)
-					expect(res.text).to.equal('Invalid Backend Key')
-					done()
+					expect(res.status).to.equal(401);
+					expect(res.text).to.equal('Invalid Backend Key');
+					done();
 				});
 		});
 
