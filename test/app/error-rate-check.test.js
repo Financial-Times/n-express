@@ -28,27 +28,22 @@ describe('Default error rate check', () => {
 	it('should compose correct graphite metric with region', () => {
 		process.env.REGION = 'US';
 
-		const expectedNumerator = 'next.heroku.app-name.web_*_US.express.*.res.status.{500,503,504}.count';
-		const expectedDivisor = 'next.heroku.app-name.web_*_US.express.*.res.status.*.count';
+		const metric = 'asPercent(summarize(sumSeries(next.heroku.app-name.web_*_US.express.*.res.status.{500,503,504}.count), \'10min\', \'sum\', true), summarize(sumSeries(next.heroku.app-name.web_*_US.express.*.res.status.*.count), \'10min\', \'sum\', true))';
 
 		subject('app-name');
 		expect(nHealthStub.runCheck).calledWithMatch({
-			numerator: expectedNumerator,
-			divisor: expectedDivisor
+			metric
 		});
 	});
 
 	it('should compose correct graphite metric without region', () => {
 		delete process.env.REGION;
 
-		const expectedNumerator = 'next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count';
-		const expectedDivisor = 'next.heroku.app-name.web_*.express.*.res.status.*.count';
+		const metric = 'asPercent(summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count), \'10min\', \'sum\', true), summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.*.count), \'10min\', \'sum\', true))';
 
 		subject('app-name');
-
 		expect(nHealthStub.runCheck).calledWithMatch({
-			numerator: expectedNumerator,
-			divisor: expectedDivisor
+			metric
 		});
 	});
 
