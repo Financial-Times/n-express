@@ -16,9 +16,10 @@ const healthChecks = require('./src/lib/health-checks');
 const instrumentListen = require('./src/lib/instrument-listen');
 const guessAppDetails = require('./src/lib/guess-app-details');
 
-const robots = require('./src/middleware/robots');
-const vary = require('./src/middleware/vary');
 const cache = require('./src/middleware/cache');
+const robots = require('./src/middleware/robots');
+const security = require('./src/middleware/security');
+const vary = require('./src/middleware/vary');
 
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
@@ -48,9 +49,6 @@ const getAppContainer = options => {
 	// must be the first middleware
 	app.use(raven.requestHandler());
 
-	//Remove x-powered-by header
-	app.set('x-powered-by', false);
-
 	app.get('/robots.txt', robots);
 	/*istanbul ignore next */
 	app.get('/__brew-coffee', (req, res) => {
@@ -58,6 +56,10 @@ const getAppContainer = options => {
 		res.send(teapot);
 		res.end();
 	});
+
+	// Security related headers, see https://securityheaders.io/?q=https%3A%2F%2Fwww.ft.com&hide=on.
+	app.set('x-powered-by', false);
+	app.use(security);
 
 	// utility middleware
 	app.use(cache);
@@ -67,13 +69,10 @@ const getAppContainer = options => {
 		healthChecks(app, options, meta);
 	}
 
-	app.use((req, res, next) => {
-		res.set('FT-Backend-Timestamp', new Date().toISOString());
-		next();
-	});
-
+	// Debug related headers.
 	app.use((req, res, next) => {
 		res.set('FT-App-Name', meta.name);
+		res.set('FT-Backend-Timestamp', new Date().toISOString());
 		next();
 	});
 
