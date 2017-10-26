@@ -14,7 +14,6 @@ describe('security middleware', function () {
 		};
 
 		subject(req, res, () => {
-			expect(headers['Referrer-Policy']).to.equal('strict-origin-when-cross-origin');
 			expect(headers['X-Content-Type-Options']).to.equal('nosniff');
 			expect(headers['X-Download-Options']).to.equal('noopen');
 			expect(headers['X-Frame-Options']).to.equal('SAMEORIGIN');
