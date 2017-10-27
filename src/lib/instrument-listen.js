@@ -33,10 +33,10 @@ module.exports = (app, meta, initPromises) => {
 
 		// Optional fallthrough error handler
 		app.use((err, req, res, next) => { //eslint-disable-line
-		    // The error id is attached to `res.sentry` to be returned
-		    // and optionally displayed to the user for support.
-		    res.statusCode = 500;
-		    res.end(res.sentry + '\n');
+			// The error id is attached to `res.sentry` to be returned
+			// and optionally displayed to the user for support.
+			res.statusCode = 500;
+			res.end(res.sentry + '\n');
 		});
 
 		const port = args[0];
