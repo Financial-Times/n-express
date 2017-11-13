@@ -106,6 +106,10 @@ const getAppContainer = options => {
 		app.use(flags.middleware);
 	}
 
+	if (options.logVary) {
+		app.use(logVary)
+	}
+
 	return { app, meta, addInitPromise };
 };
 
