@@ -20,6 +20,7 @@ const cache = require('./src/middleware/cache');
 const robots = require('./src/middleware/robots');
 const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
+const logVary = require('./src/middleware/log-vary');
 
 // Health check failure simulation
 const checkFailing = require('./src/lib/check-failing');
@@ -104,6 +105,10 @@ const getAppContainer = options => {
 	if (options.withFlags) {
 		addInitPromise(flags.init());
 		app.use(flags.middleware);
+	}
+
+	if (options.logVary) {
+		app.use(logVary);
 	}
 
 	return { app, meta, addInitPromise };
