@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
 
 	// Throttle sending of events until we know this is the correct implmentation
 	if (Math.random() < sendRate) {
-		res.on("finish", function () {
+		res.on('finish', function () {
 
 			let toLog = {
 				event: 'RESPONSE_VARY',
