@@ -16,7 +16,7 @@ describe('security middleware', function () {
 		subject(req, res, () => {
 			expect(headers['X-Content-Type-Options']).to.equal('nosniff');
 			expect(headers['X-Download-Options']).to.equal('noopen');
-			expect(headers['X-Frame-Options']).to.equal('SAMEORIGIN');
+			expect(headers['X-XSS-Protection']).to.equal('1; mode=block');
 			done();
 		});
 	});
