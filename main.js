@@ -21,15 +21,9 @@ const robots = require('./src/middleware/robots');
 const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
 const logVary = require('./src/middleware/log-vary');
-
-// Health check failure simulation
-const checkFailing = require('./src/lib/check-failing');
-
 const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
 
 const getAppContainer = options => {
-
-	checkFailing.init();
 
 	options = Object.assign({}, {
 		withBackendAuthentication: true,
