@@ -1,4 +1,3 @@
-const checkFailing = require('./check-failing');
 const errorRateCheck = require('./error-rate-check');
 
 module.exports = (app, options, meta) => {
@@ -31,8 +30,6 @@ module.exports = (app, options, meta) => {
 				}
 			});
 		}
-
-		checkFailing.fakeCheckFailuresIfApplicable(options.systemCode, checks, req, res);
 
 		res.set('Content-Type', 'application/json');
 		res.send(JSON.stringify({
