@@ -6,7 +6,7 @@ module.exports = (app, options, meta) => {
 
 	const defaultChecks = [
 		errorRateCheck(meta.name, options.errorRateHealthcheck),
-		unRegisteredServicesHealthCheck
+		unRegisteredServicesHealthCheck.setAppName(meta.name)
 	];
 
 	const healthChecks = options.healthChecks.concat(defaultChecks);

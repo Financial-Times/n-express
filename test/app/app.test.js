@@ -137,28 +137,8 @@ describe('simple app', function () {
 				});
 
 		});
-
-		//fixme - I'm not sure ow this test ever passed but it doesn't now
-		it.skip('should notify sentry of unrecognised services', function (done) {
-
-			sinon.stub(raven, 'captureMessage');
-			getApp();
-
-			fetch('http://notallowed.com', {
-				timeout: 50
-			})
-				.catch(function () {
-					try{
-						sinon.assert.called(raven.captureMessage);
-						raven.captureMessage.restore();
-						done();
-					}catch(e){
-						done(e);
-					}
-				});
-		});
-
 	});
+
 	describe('config', () => {
 		it('should be possible to disable flags', function (done) {
 
