@@ -1,4 +1,5 @@
 const errorRateCheck = require('./error-rate-check');
+const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
@@ -8,6 +9,7 @@ module.exports = (app, options, meta) => {
 	];
 
 	const healthChecks = options.healthChecks.concat(defaultChecks);
+	healthChecks.push(unRegisteredServicesHealthCheck);
 
 	app.get(/\/__health(?:\.([123]))?$/, (req, res) => {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
