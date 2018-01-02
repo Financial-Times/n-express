@@ -5,11 +5,11 @@ module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
 
 	const defaultChecks = [
-		errorRateCheck(meta.name, options.errorRateHealthcheck)
+		errorRateCheck(meta.name, options.errorRateHealthcheck),
+		unRegisteredServicesHealthCheck
 	];
 
 	const healthChecks = options.healthChecks.concat(defaultChecks);
-	healthChecks.push(unRegisteredServicesHealthCheck);
 
 	app.get(/\/__health(?:\.([123]))?$/, (req, res) => {
 		res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
