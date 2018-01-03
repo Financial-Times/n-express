@@ -14,7 +14,7 @@ module.exports = {
 					lastUpdated: lastCheckTime,
 					panicGuide: panicGuide,
 					severity: 3,
-					businessImpact: 'Unregistered service data is not sent to Graphite.',
+					businessImpact: 'We don\'t have any visibility with unregistered services.',
 					technicalSummary: 'Set up services\' metrics in next-metrics/lib/metrics/services.js to send to Graphite.'
 				};
 			}
