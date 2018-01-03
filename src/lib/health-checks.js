@@ -1,10 +1,12 @@
 const errorRateCheck = require('./error-rate-check');
+const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
 
 	const defaultChecks = [
-		errorRateCheck(meta.name, options.errorRateHealthcheck)
+		errorRateCheck(meta.name, options.errorRateHealthcheck),
+		unRegisteredServicesHealthCheck.setAppName(meta.name)
 	];
 
 	const healthChecks = options.healthChecks.concat(defaultChecks);
