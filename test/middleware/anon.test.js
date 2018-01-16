@@ -44,7 +44,6 @@ describe('Anonymous Middleware', function () {
 			.expect(function () {
 				expect(locals.firstClickFreeModel).to.be.an('object');
 				expect(locals.firstClickFreeModel).to.have.property('signInLink');
-				expect(locals.firstClickFreeModel).to.have.property('subscribeNowLink');
 			})
 			.end(done);
 	});
