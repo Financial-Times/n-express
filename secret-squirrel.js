@@ -20,7 +20,8 @@ module.exports = {
 			'wvvSnjBi0lHELEhDDEjdH/IDrumlgykr4aRa4Guw', // key.pem:22
 			'RHWRFPG6rVH1YDP7xIX0q', // key.pem:22
 			'/AoGAEVfE\\+pHlAlbEo\\+DtbRcig4qmf1Ja\\+kX7dwI', // key.pem:24
-			'9S5AYP21OmG2Ed45\\+MCf5PJSGjevnc7aqvg8rGp\\+'
+			'9S5AYP21OmG2Ed45\\+MCf5PJSGjevnc7aqvg8rGp\\+',
+			'676c655f-9b47-27a8-97db-ab3a6a6dbc54' // FCF segId
 		]
 	}
 };
