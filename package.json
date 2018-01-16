@@ -41,5 +41,6 @@
   "engines": {
     "node": ">=6.0.0"
   },
-  "config": {}
+  "config": {},
+  "false": {}
 }
