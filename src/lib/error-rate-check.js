@@ -1,20 +1,25 @@
 const nHealth = require('n-health');
 
 const DEFAULT_SEVERITY = 3;
+const DEFAULT_SAMPLE_PERIOD = '10min';
+const DEFAULT_THRESHOLD = 4;
 
 module.exports = (appName, opts) => {
 	opts = opts || {};
 	const severity = opts.severity || DEFAULT_SEVERITY;
+	const threshold = opts.threshold || DEFAULT_THRESHOLD;
+	const samplePeriod = opts.samplePeriod || DEFAULT_SAMPLE_PERIOD;
+
 	let region = process.env.REGION ? '_' + process.env.REGION : '';
 	return nHealth.runCheck({
-		name: `The error rate for ${appName} is greater than 4% of requests`,
-		type: 'graphiteThreshold',
-		metric: `asPercent(summarize(sumSeries(next.heroku.${appName}.web_*${region}.express.*.res.status.{500,503,504}.count), '10min', 'sum', true), summarize(sumSeries(next.heroku.${appName}.web_*${region}.express.*.res.status.*.count), '10min', 'sum', true))`,
-		threshold: 4,
-		samplePeriod: '10min',
-		severity,
-		businessImpact: 'Users may see application error pages.',
-		technicalSummary: `The proportion of error responses for ${appName} is greater than 4% of all responses. This is a default n-express check.`,
-		panicGuide: 'Consult errors in sentry, application logs in splunk and run the application locally to identify errors'
+			name: `The error rate for ${appName} is greater than ${threshold}% of requests`,
+			type: 'graphiteThreshold',
+			metric: `asPercent(summarize(sumSeries(next.heroku.${appName}.web_*${region}.express.*.res.status.{500,503,504}.count), '${samplePeriod}', 'sum', true), summarize(sumSeries(next.heroku.${appName}.web_*${region}.express.*.res.status.*.count), '${samplePeriod}', 'sum', true))`,
+			threshold,
+			samplePeriod,
+			severity,
+			businessImpact: 'Users may see application error pages.',
+			technicalSummary: `The proportion of error responses for ${appName} is greater than 4% of all responses. This is a default n-express check.`,
+			panicGuide: 'Consult errors in sentry, application logs in splunk and run the application locally to identify errors'
 	});
 };

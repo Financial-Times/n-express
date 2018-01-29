@@ -22,7 +22,7 @@
     "next-metrics": "^1.16.1"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^1.19.1",
+    "@financial-times/n-gage": "^1.19.3",
     "body-parser": "^1.15.0",
     "chai": "^3.0.0",
     "coveralls": "^2.11.16",
