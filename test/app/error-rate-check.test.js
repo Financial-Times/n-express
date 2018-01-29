@@ -32,7 +32,9 @@ describe('Default error rate check', () => {
 
 		subject('app-name');
 		expect(nHealthStub.runCheck).calledWithMatch({
-			metric
+			metric,
+			threshold: 4,
+			samplePeriod: '10min'
 		});
 	});
 
@@ -44,6 +46,23 @@ describe('Default error rate check', () => {
 		subject('app-name');
 		expect(nHealthStub.runCheck).calledWithMatch({
 			metric
+		});
+	});
+
+	it('should allow configurable threshold and sample period', () => {
+		delete process.env.REGION;
+
+		const metric = 'asPercent(summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count), \'20min\', \'sum\', true), summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.*.count), \'20min\', \'sum\', true))';
+
+		subject('app-name', {
+			severity: 3,
+			threshold: 10,
+			samplePeriod: '20min'
+		});
+		expect(nHealthStub.runCheck).calledWithMatch({
+			metric,
+			threshold: 10,
+			samplePeriod: '20min'
 		});
 	});
 
