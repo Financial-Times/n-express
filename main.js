@@ -58,7 +58,6 @@ const getAppContainer = options => {
 	app.use(security);
 
 	// utility middleware
-	app.use(cache);
 	app.use(vary);
 
 	if (!options.demo) {
@@ -101,6 +100,9 @@ const getAppContainer = options => {
 		addInitPromise(flags.init());
 		app.use(flags.middleware);
 	}
+
+	// cache-control constants
+	app.use(cache);
 
 	if (options.logVary) {
 		app.use(logVary);
