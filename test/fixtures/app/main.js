@@ -106,6 +106,7 @@ app.post('/cache', require('body-parser').json(), (req, res) => {
 
 app.get('/cache-constants', (req, res) => {
 	res.set('FT_NO_CACHE', res.FT_NO_CACHE);
+	res.set('FT_NO_CACHE_PRIVATE', res.FT_NO_CACHE_PRIVATE);
 	res.set('FT_SHORT_CACHE', res.FT_SHORT_CACHE);
 	res.set('FT_HOUR_CACHE', res.FT_HOUR_CACHE);
 	res.set('FT_DAY_CACHE', res.FT_DAY_CACHE);
