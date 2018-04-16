@@ -1,5 +1,8 @@
 User-agent: Twitterbot
 Disallow:
+
+User-agent: googleweblight
+Disallow:
  
 User-agent: *
 Disallow: /
