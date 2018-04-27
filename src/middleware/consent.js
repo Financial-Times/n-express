@@ -12,9 +12,11 @@ module.exports = (req, res, next) => {
 		// 	recommendedcontentOnsite: false
 		// }
 		const consentPreferences = consent.split(',');
-		consentPreferences.array.forEach(consentFlag => {
+		consentPreferences.forEach(consentFlag => {
 			const [ key, state ] = consentFlag.split(':');
-			res.locals.consent[key] = state === 'on';
+			if(key && state) {
+				res.locals.consent[key] = state === 'on';
+			}
 		});
 	}
 	next();
