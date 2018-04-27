@@ -3,10 +3,17 @@ require('isomorphic-fetch');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+
+// flags
 const flags = require('@financial-times/n-flags-client');
+
+// backend authentication
 const backendAuthentication = require('./src/middleware/backend-authentication');
 
-// Logging and monitoring
+// consent
+const consentMiddleware = require('./src/middleware/consent');
+
+// logging and monitoring
 const metrics = require('next-metrics');
 const serviceMetrics = require('./src/lib/service-metrics');
 const raven = require('@financial-times/n-raven');
@@ -29,6 +36,7 @@ const getAppContainer = options => {
 	options = Object.assign({}, {
 		withBackendAuthentication: true,
 		withFlags: false,
+		withConsent: false,
 		withServiceMetrics: true,
 		healthChecks: []
 	}, options || {});
@@ -99,6 +107,11 @@ const getAppContainer = options => {
 	if (options.withFlags) {
 		addInitPromise(flags.init());
 		app.use(flags.middleware);
+	}
+
+	// consent preference flags
+	if (options.withConsent) {
+		app.use(consentMiddleware);
 	}
 
 	// cache-control constants
