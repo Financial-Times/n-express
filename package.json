@@ -26,7 +26,7 @@
     "@financial-times/n-gage": "^1.19.7",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
-    "fetch-mock": "^6.3.0",
+    "fetch-mock": "^5.1.2",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
     "npm-prepublish": "^1.2.3",
