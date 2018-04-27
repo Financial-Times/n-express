@@ -38,7 +38,7 @@ describe('Consent middleware', function () {
 	});
 
 	context('Should set the res.locals.consent property based on the FT-Consent header', () => {
-		[ 
+		[
 			{
 				header: 'marketingByemail:on,recommendedcontentOnsite:off',
 				expectedObject: {
