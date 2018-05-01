@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 
 			vary.map(header => {
 				toLog[header] = req.get(header);
-			})
+			});
 			nLogger.warn(toLog);
 		});
 	}
