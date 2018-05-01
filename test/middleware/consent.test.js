@@ -1,4 +1,3 @@
-/*global describe, it, beforeEach*/
 const request = require('supertest');
 const nextExpress = require('../../main');
 const expect = require('chai').expect;
