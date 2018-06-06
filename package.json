@@ -20,7 +20,7 @@
     "ip": "^1.1.5",
     "isomorphic-fetch": "^2.2.1",
     "n-health": "^2.3.2",
-    "next-metrics": "^1.48.36"
+    "next-metrics": "^1.49.3"
   },
   "devDependencies": {
     "@financial-times/n-gage": "^1.19.7",
