@@ -7,7 +7,6 @@ module.exports = {
 		unRegisteredServicesHealthCheck.updateCheck(unregisteredServices);
 		setInterval(() => {
 			unRegisteredServicesHealthCheck.updateCheck(unregisteredServices);
-			unregisteredServices = {};
 		}, 1 * 60 * 1000);
 
 		metrics.fetch.instrument({
