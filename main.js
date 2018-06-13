@@ -131,6 +131,7 @@ const getAppContainer = options => {
 module.exports = options => getAppContainer(options).app;
 
 // expose internals the app may want access to
+module.exports.json = express.json;
 module.exports.Router = express.Router;
 module.exports.static = express.static;
 module.exports.metrics = metrics;
