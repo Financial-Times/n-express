@@ -12,8 +12,7 @@
   "dependencies": {
     "@financial-times/n-flags-client": "^9.1.5",
     "@financial-times/n-logger": "^5.6.4",
-	"@financial-times/n-raven": "^3.0.3",
-	"body-parser": "^1.18.2",
+    "@financial-times/n-raven": "^3.0.3",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.16.3",
@@ -23,7 +22,7 @@
     "next-metrics": "^1.49.5"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^1.19.7",
+    "@financial-times/n-gage": "^1.19.14",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "fetch-mock": "^5.1.2",

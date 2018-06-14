@@ -103,7 +103,7 @@ app.get('/cache', (req, res) => {
 	res.sendStatus(200);
 });
 
-app.post('/cache', require('body-parser').json(), (req, res) => {
+app.post('/cache', express.json(), (req, res) => {
 	res.cache(req.body[0], req.body[1]);
 	res.sendStatus(200);
 });
