@@ -5,7 +5,7 @@ const INTERVAL = 15 * 60 * 1000;
 let inUseExpiredKey = false;
 let notInUserExpiredKey = false;
 
-function checkAwsKeys() {
+function checkAwsKeys () {
 
 	const secretKeyNames = [];
 	Object.keys(process.env).forEach(keyName => {
@@ -101,7 +101,7 @@ function notInUse () {
 module.exports = {
 	init: function () {
 		checkAwsKeys();
-		setInterval(checkAwsKeys, INTERVAL)
+		setInterval(checkAwsKeys, INTERVAL);
 
 	},
 	checks: [
