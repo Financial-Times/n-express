@@ -78,14 +78,14 @@ function checkAwsKeys () {
 function inUse () {
 	return {
 		getStatus: () => ({
-			name: 'All AWS keys in use are active and within the rotation period',
+			name: 'All AWS keys in use by this app are active and within the rotation period',
 			ok: !inUseExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
 			lastUpdated,
-			severity: 2,
-			technicalSummary: 'AWS keys in use are active and within the rotation period',
-			checkOutput: 'AWS keys in use are active and within the rotation period',
-			panicGuide: 'Follow the runbooks, do usual diagnosis and escalate as appropriate'
+			severity: 3,
+			technicalSummary: 'AWS keys should be rotated after 90 days',
+			checkOutput: inUseExpiredKey ? '' : 'Some AWS keys are due to be rotated',
+			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
 		})
 	};
 }
@@ -93,14 +93,14 @@ function inUse () {
 function notInUse () {
 	return {
 		getStatus: () => ({
-			name: 'All AWS keys not in use are active and within the rotation period',
+			name: 'All AWS keys not in use by this app are active and within the rotation period',
 			ok: !notInUserExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
 			lastUpdated,
-			severity: 2,
-			technicalSummary: 'AWS keys not in use are active and within the rotation period',
-			checkOutput: 'AWS keys not in use are active and within the rotation period',
-			panicGuide: 'Follow the runbooks, do usual diagnosis and escalate as appropriate'
+			severity: 3,
+			technicalSummary: 'AWS keys should be rotated after 90 days',
+			checkOutput: notInUserExpiredKey ? '' : 'Some AWS keys are due to be rotated',
+			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
 		})
 	};
 }
