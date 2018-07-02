@@ -4,10 +4,13 @@ const INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
 
 let inUseExpiredKey = false;
 let notInUserExpiredKey = false;
+let lastUpdated = null;
 
 function checkAwsKeys () {
 
 	const secretKeyNames = [];
+	lastUpdated = new Date().toISOString();
+
 	Object.keys(process.env).forEach(keyName => {
 		const keyValue = process.env[keyName];
 
@@ -75,11 +78,13 @@ function checkAwsKeys () {
 function inUse () {
 	return {
 		getStatus: () => ({
-			name: 'In use AWS expired keys',
+			name: 'All AWS keys in use are active and within the rotation period',
 			ok: !inUseExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
+			lastUpdated,
 			severity: 2,
-			technicalSummary: 'AWS expired keys',
+			technicalSummary: 'AWS keys in use are active and within the rotation period',
+			checkOutput: 'AWS keys in use are active and within the rotation period',
 			panicGuide: 'Follow the runbooks, do usual diagnosis and escalate as appropriate'
 		})
 	};
@@ -88,11 +93,13 @@ function inUse () {
 function notInUse () {
 	return {
 		getStatus: () => ({
-			name: 'Not in use AWS expired keys',
+			name: 'All AWS keys not in use are active and within the rotation period',
 			ok: !notInUserExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
+			lastUpdated,
 			severity: 2,
-			technicalSummary: 'AWS expired keys',
+			technicalSummary: 'AWS keys not in use are active and within the rotation period',
+			checkOutput: 'AWS keys not in use are active and within the rotation period',
 			panicGuide: 'Follow the runbooks, do usual diagnosis and escalate as appropriate'
 		})
 	};
