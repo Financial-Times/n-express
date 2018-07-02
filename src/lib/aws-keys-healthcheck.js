@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
 
-const INTERVAL = 15 * 60 * 1000;
+const INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
 
 let inUseExpiredKey = false;
 let notInUserExpiredKey = false;
