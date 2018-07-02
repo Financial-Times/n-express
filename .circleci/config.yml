@@ -148,7 +148,6 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          # TODO: Randomise this time to stop builds queueing up in CircleCI
           cron: "0 0 * * *"
           filters:
             <<: *filters_only_master
