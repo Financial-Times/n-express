@@ -90,7 +90,7 @@ function inUse () {
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
-			checkOutput: inUseExpiredKey ? '' : `IAM users with expired keys: ${inUseExpiredKeyUsers}`,
+			checkOutput: inUseExpiredKey ? '' : `IAM users with expired keys: ${inUseExpiredKeyUsers.join(', ')}`,
 			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
 		})
 	};
@@ -105,7 +105,7 @@ function notInUse () {
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
-			checkOutput: notInUseExpiredKey ? '' : `IAM users with expired keys: ${notInUseExpiredKeyUsers}`,
+			checkOutput: notInUseExpiredKey ? '' : `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
 			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
 		})
 	};
