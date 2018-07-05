@@ -3,7 +3,11 @@ const AWS = require('aws-sdk');
 const INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
 
 let inUseExpiredKey = false;
-let notInUserExpiredKey = false;
+let notInUseExpiredKey = false;
+
+let inUseExpiredKeyUsers = [];
+let notInUseExpiredKeyUsers = [];
+
 let lastUpdated = null;
 
 function checkAwsKeys () {
@@ -63,8 +67,10 @@ function checkAwsKeys () {
 						if (keyMetadata.Status === 'Active'/* maybe remove */ && new Date().getTime() - new Date(keyMetadata.CreateDate).getTime() > 90 * 24 * 60 * 60 * 1000) {
 							if (keyMetadata.AccessKeyId === keyPair.accessKey) {
 								inUseExpiredKey = true;
+								inUseExpiredKeyUsers.push(keyMetadata.UserName);
 							} else {
-								notInUserExpiredKey = true;
+								notInUseExpiredKey = true;
+								notInUseExpiredKeyUsers.push(keyMetadata.UserName);
 							}
 						}
 					});
@@ -84,7 +90,7 @@ function inUse () {
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
-			checkOutput: inUseExpiredKey ? '' : 'Some AWS keys are due to be rotated',
+			checkOutput: inUseExpiredKey ? '' : `IAM users with expired keys: ${inUseExpiredKeyUsers.join(', ')}`,
 			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
 		})
 	};
@@ -94,12 +100,12 @@ function notInUse () {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys not in use by this app are active and within the rotation period',
-			ok: !notInUserExpiredKey,
+			ok: !notInUseExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
-			checkOutput: notInUserExpiredKey ? '' : 'Some AWS keys are due to be rotated',
+			checkOutput: notInUseExpiredKey ? '' : `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
 			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
 		})
 	};
