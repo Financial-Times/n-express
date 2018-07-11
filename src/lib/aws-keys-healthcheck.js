@@ -106,7 +106,7 @@ function notInUse () {
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
 			checkOutput: !notInUseExpiredKey ? '' : `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
-			panicGuide: 'Identify the IAM user based on the AWS keys in the environment variables, check them in AWS and rotate/delete them'
+			panicGuide: 'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
 		})
 	};
 }
