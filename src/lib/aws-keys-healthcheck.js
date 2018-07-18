@@ -32,7 +32,7 @@ function checkAwsKeys () {
 	Object.keys(process.env).forEach(keyName => {
 		const keyValue = process.env[keyName];
 
-		if (/(?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])/.test(keyValue)) {
+		if (/^[A-Z0-9]{20}$/.test(keyValue)) {
 			const prefixMatch = keyName.match(/^([^_]+)[A-Za-z0-9_]+$/);
 			if (prefixMatch) {
 				const namePrefix = prefixMatch[1];
