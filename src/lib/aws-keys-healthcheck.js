@@ -11,11 +11,11 @@ let deletedKeys = [];
 
 let lastUpdated = null;
 
-function findKeyName (value) {
+function findKeyName(value) {
 	return Object.keys(process.env).find(key => process.env[key] === value);
 }
 
-function checkAwsKeys () {
+function checkAwsKeys() {
 	const secretKeyNames = [];
 	lastUpdated = new Date().toISOString();
 
@@ -73,8 +73,8 @@ function checkAwsKeys () {
 				if (data && data.AccessKeyMetadata) {
 					data.AccessKeyMetadata.forEach(keyMetadata => {
 						if (
-							keyMetadata.Status === 'Active' /* maybe remove */ &&
-							new Date().getTime() - new Date(keyMetadata.CreateDate).getTime() > 90 * 24 * 60 * 60 * 1000
+							new Date().getTime() - new Date(keyMetadata.CreateDate).getTime() >
+							90 * 24 * 60 * 60 * 1000
 						) {
 							if (keyMetadata.AccessKeyId === keyPair.accessKey) {
 								inUseExpiredKey = true;
@@ -91,7 +91,7 @@ function checkAwsKeys () {
 	});
 }
 
-function inUse () {
+function inUse() {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys in use by this app are active and within the rotation period',
@@ -107,7 +107,7 @@ function inUse () {
 	};
 }
 
-function notInUse () {
+function notInUse() {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys not in use by this app are active and within the rotation period',
@@ -125,7 +125,7 @@ function notInUse () {
 	};
 }
 
-function deleted () {
+function deleted() {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys are still active',
@@ -134,17 +134,15 @@ function deleted () {
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys deleted from AWS should be removed from application',
-			checkOutput: deletedKeys.length === 0
-				? ''
-				: `The following keys were deleted from AWS: ${deletedKeys.join(', ')}`,
-			panicGuide:
-				'Keys should be removed from vault'
+			checkOutput:
+				deletedKeys.length === 0 ? '' : `The following keys were deleted from AWS: ${deletedKeys.join(', ')}`,
+			panicGuide: 'Keys should be removed from vault'
 		})
 	};
 }
 
 module.exports = {
-	init: function () {
+	init: function() {
 		checkAwsKeys();
 		setInterval(checkAwsKeys, INTERVAL);
 	},
