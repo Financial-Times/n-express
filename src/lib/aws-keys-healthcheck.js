@@ -84,7 +84,7 @@ function checkAwsKeys () {
 function inUse () {
 	return {
 		getStatus: () => ({
-			name: 'All AWS keys in use by this app are active and within the rotation period',
+			name: 'AWS keys (in use): active and within the rotation period',
 			ok: !inUseExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
 			lastUpdated,
@@ -99,7 +99,7 @@ function inUse () {
 function notInUse () {
 	return {
 		getStatus: () => ({
-			name: 'All AWS keys not in use by this app are active and within the rotation period',
+			name: 'AWS keys (not in use): active and within the rotation period',
 			ok: !notInUseExpiredKey,
 			businessImpact: 'Can not authenticate with AWS',
 			lastUpdated,
