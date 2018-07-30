@@ -7,11 +7,15 @@ let notInUseExpiredKey = false;
 
 let inUseExpiredKeyUsers = [];
 let notInUseExpiredKeyUsers = [];
+let deletedKeys = [];
 
 let lastUpdated = null;
 
-function checkAwsKeys () {
+function findKeyName (value) {
+	return Object.keys(process.env).find(key => process.env[key] === value);
+}
 
+function checkAwsKeys () {
 	const secretKeyNames = [];
 	lastUpdated = new Date().toISOString();
 
@@ -28,7 +32,7 @@ function checkAwsKeys () {
 	Object.keys(process.env).forEach(keyName => {
 		const keyValue = process.env[keyName];
 
-		if (/[A-Z0-9]{20}/.test(keyValue)) {
+		if (/^[A-Z0-9]{20}$/.test(keyValue)) {
 			const prefixMatch = keyName.match(/^([^_]+)[A-Za-z0-9_]+$/);
 			if (prefixMatch) {
 				const namePrefix = prefixMatch[1];
@@ -61,10 +65,17 @@ function checkAwsKeys () {
 		});
 
 		iam.listAccessKeys({}, (err, data) => {
+			if (err && err.name === 'InvalidClientTokenId') {
+				const keyName = findKeyName(keyPair.accessKey);
+				deletedKeys = [...deletedKeys, keyName];
+			}
 			if (!err) {
 				if (data && data.AccessKeyMetadata) {
 					data.AccessKeyMetadata.forEach(keyMetadata => {
-						if (keyMetadata.Status === 'Active'/* maybe remove */ && new Date().getTime() - new Date(keyMetadata.CreateDate).getTime() > 90 * 24 * 60 * 60 * 1000) {
+						if (
+							new Date().getTime() - new Date(keyMetadata.CreateDate).getTime() >
+							90 * 24 * 60 * 60 * 1000
+						) {
 							if (keyMetadata.AccessKeyId === keyPair.accessKey) {
 								inUseExpiredKey = true;
 								inUseExpiredKeyUsers.push(keyMetadata.UserName);
@@ -79,7 +90,6 @@ function checkAwsKeys () {
 		});
 	});
 }
-
 
 function inUse () {
 	return {
@@ -105,8 +115,25 @@ function notInUse () {
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
-			checkOutput: !notInUseExpiredKey ? '' : `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
+			checkOutput: !notInUseExpiredKey
+				? ''
+				: `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
 			panicGuide: 'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
+		})
+	};
+}
+
+function deleted () {
+	return {
+		getStatus: () => ({
+			name: 'All AWS keys are still active',
+			ok: deletedKeys.length === 0,
+			businessImpact: 'There are keys deleted from AWS',
+			lastUpdated,
+			severity: 3,
+			technicalSummary: 'AWS keys deleted from AWS should be removed from application',
+			checkOutput: deletedKeys.length === 0 ? '' : `The following keys were deleted from AWS: ${deletedKeys.join(', ')}`,
+			panicGuide: 'Keys should be removed from vault'
 		})
 	};
 }
@@ -115,10 +142,6 @@ module.exports = {
 	init: function () {
 		checkAwsKeys();
 		setInterval(checkAwsKeys, INTERVAL);
-
 	},
-	checks: [
-		inUse(),
-		notInUse()
-	]
+	checks: [inUse(), notInUse(), deleted()]
 };
