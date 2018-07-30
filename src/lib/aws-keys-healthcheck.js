@@ -11,11 +11,11 @@ let deletedKeys = [];
 
 let lastUpdated = null;
 
-function findKeyName(value) {
+function findKeyName (value) {
 	return Object.keys(process.env).find(key => process.env[key] === value);
 }
 
-function checkAwsKeys() {
+function checkAwsKeys () {
 	const secretKeyNames = [];
 	lastUpdated = new Date().toISOString();
 
@@ -91,7 +91,7 @@ function checkAwsKeys() {
 	});
 }
 
-function inUse() {
+function inUse () {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys in use by this app are active and within the rotation period',
@@ -101,13 +101,12 @@ function inUse() {
 			severity: 3,
 			technicalSummary: 'AWS keys should be rotated after 90 days',
 			checkOutput: !inUseExpiredKey ? '' : `IAM users with expired keys: ${inUseExpiredKeyUsers.join(', ')}`,
-			panicGuide:
-				'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
+			panicGuide: 'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
 		})
 	};
 }
 
-function notInUse() {
+function notInUse () {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys not in use by this app are active and within the rotation period',
@@ -119,13 +118,12 @@ function notInUse() {
 			checkOutput: !notInUseExpiredKey
 				? ''
 				: `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
-			panicGuide:
-				'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
+			panicGuide: 'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
 		})
 	};
 }
 
-function deleted() {
+function deleted () {
 	return {
 		getStatus: () => ({
 			name: 'All AWS keys are still active',
@@ -134,15 +132,14 @@ function deleted() {
 			lastUpdated,
 			severity: 3,
 			technicalSummary: 'AWS keys deleted from AWS should be removed from application',
-			checkOutput:
-				deletedKeys.length === 0 ? '' : `The following keys were deleted from AWS: ${deletedKeys.join(', ')}`,
+			checkOutput: deletedKeys.length === 0 ? '' : `The following keys were deleted from AWS: ${deletedKeys.join(', ')}`,
 			panicGuide: 'Keys should be removed from vault'
 		})
 	};
 }
 
 module.exports = {
-	init: function() {
+	init: function () {
 		checkAwsKeys();
 		setInterval(checkAwsKeys, INTERVAL);
 	},
