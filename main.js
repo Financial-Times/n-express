@@ -29,7 +29,10 @@ const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
 const logVary = require('./src/middleware/log-vary');
 const anon = require('./src/middleware/anon');
+const monkeyPatchExpressAsyncSupport = require('./src/lib/patch-express-async-support');
 const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
+
+monkeyPatchExpressAsyncSupport.init();
 
 const getAppContainer = options => {
 
