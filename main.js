@@ -29,10 +29,9 @@ const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
 const logVary = require('./src/middleware/log-vary');
 const anon = require('./src/middleware/anon');
-const monkeyPatchExpressAsyncSupport = require('./src/lib/patch-express-async-support');
 const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
+const {asyncHandler, asyncParamHandler} = require('./src/lib/async-handlers');
 
-monkeyPatchExpressAsyncSupport.init();
 
 const getAppContainer = options => {
 
@@ -140,3 +139,5 @@ module.exports.static = express.static;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
 module.exports.getAppContainer = getAppContainer;
+module.exports.asyncHandler = asyncHandler;
+module.exports.asyncParamHandler = asyncParamHandler;

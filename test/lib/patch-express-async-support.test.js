@@ -1,18 +1,18 @@
 const nExpress = require('../../main');
 const {expect} = require('chai');
 const supertest = require('supertest');
+const {asyncHandler, asyncParamHandler} = nExpress;
 
-
-describe('patch-express-async-support.js', () => {
+	describe('patch-express-async-support.js', () => {
 
 	describe('route handlers', () => {
 		let request;
 		before(() => {
 			const app = nExpress({systemCode: 'async-patch-test'});
-			app.get('/hello', (req, res) => res.sendStatus(200));
-			app.get('/hello/async', async (req, res) => res.sendStatus(200));
-			app.get('/error', () => {throw new Error('foo');});
-			app.get('/error/async', async () => {throw new Error('foo');});
+			app.get('/hello', asyncHandler((req, res) => res.sendStatus(200)));
+			app.get('/hello/async', asyncHandler(async (req, res) => res.sendStatus(200)));
+			app.get('/error', asyncHandler(() => {throw new Error('foo');}));
+			app.get('/error/async', asyncHandler(async () => {throw new Error('foo');}));
 			app.use((err, req, res, next) => res.status(500).send(err.message)); // eslint-disable-line no-unused-vars
 			app.listen();
 			request = supertest(app);
@@ -54,10 +54,10 @@ describe('patch-express-async-support.js', () => {
 		before(() => {
 			const app = nExpress({systemCode: 'async-patch-test'});
 			const routeHandler = (req, res) => res.sendStatus(200);
-			app.get('/hello', (req, res, next) => next(), routeHandler);
-			app.get('/hello/async', async (req, res, next) => next(), routeHandler);
-			app.get('/error', (req, res, next) => {throw new Error('foo');}, routeHandler); // eslint-disable-line no-unused-vars
-			app.get('/error/async', async (req, res, next) => {throw new Error('foo');}, routeHandler); // eslint-disable-line no-unused-vars
+			app.get('/hello', asyncHandler((req, res, next) => next()), routeHandler);
+			app.get('/hello/async', asyncHandler(async (req, res, next) => next()), routeHandler);
+			app.get('/error', asyncHandler((req, res, next) => {throw new Error('foo');}), routeHandler); // eslint-disable-line no-unused-vars
+			app.get('/error/async', asyncHandler(async (req, res, next) => {throw new Error('foo');}), routeHandler); // eslint-disable-line no-unused-vars
 			app.use((err, req, res, next) => res.status(500).send(err.message)); // eslint-disable-line no-unused-vars
 			app.listen();
 			request = supertest(app);
@@ -99,10 +99,10 @@ describe('patch-express-async-support.js', () => {
 		before(() => {
 			const app = nExpress({systemCode: 'async-patch-test'});
 			const thrower = () => {throw new Error('bar');};
-			app.get('/hello', thrower, (err, req, res, next) => res.sendStatus(400)); // eslint-disable-line no-unused-vars
-			app.get('/hello/async', thrower, async (err, req, res, next) => res.sendStatus(400)); // eslint-disable-line no-unused-vars
-			app.get('/error', thrower, (err, req, res, next) => {throw new Error('foo');}); // eslint-disable-line no-unused-vars
-			app.get('/error/async', thrower, async (err, req, res, next) => {throw new Error('foo');}); // eslint-disable-line no-unused-vars
+			app.get('/hello', thrower, asyncHandler((err, req, res, next) => res.sendStatus(400))); // eslint-disable-line no-unused-vars
+			app.get('/hello/async', thrower, asyncHandler(async (err, req, res, next) => res.sendStatus(400))); // eslint-disable-line no-unused-vars
+			app.get('/error', thrower, asyncHandler((err, req, res, next) => {throw new Error('foo');})); // eslint-disable-line no-unused-vars
+			app.get('/error/async', thrower, asyncHandler(async (err, req, res, next) => {throw new Error('foo');})); // eslint-disable-line no-unused-vars
 			app.use((err, req, res, next) => res.status(500).send(err.message)); // eslint-disable-line no-unused-vars
 			app.listen();
 			request = supertest(app);
@@ -146,16 +146,16 @@ describe('patch-express-async-support.js', () => {
 
 			const handler = (req, res) => res.status(200).send(res.locals.id);
 
-			app.param('world', (req, res, next, id) => {
+			app.param('world', asyncParamHandler((req, res, next, id) => {
 				res.locals.id = id;
 				next();
-			});
-			app.param('asyncWorld', async (req, res, next, id) => {
+			}));
+			app.param('asyncWorld', asyncParamHandler(async (req, res, next, id) => {
 				res.locals.id = id;
 				next();
-			});
-			app.param('oops',(req, res, next, id) => {throw new Error(id);});
-			app.param('asyncOops', async (req, res, next, id) => {throw new Error(id);});
+			}));
+			app.param('oops',asyncParamHandler((req, res, next, id) => {throw new Error(id);}));
+			app.param('asyncOops', asyncParamHandler(async (req, res, next, id) => {throw new Error(id);}));
 
 			app.get('/hello/:world', handler);
 			app.get('/asyncHello/:asyncWorld', handler);
