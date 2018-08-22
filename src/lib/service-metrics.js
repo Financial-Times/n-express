@@ -4,7 +4,6 @@ let unregisteredServices = {};
 
 module.exports = {
 	init: () => {
-		unRegisteredServicesHealthCheck.updateCheck(unregisteredServices);
 		setInterval(() => {
 			unRegisteredServicesHealthCheck.updateCheck(unregisteredServices);
 		}, 1 * 60 * 1000);
