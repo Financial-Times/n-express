@@ -1,0 +1,20 @@
+const metrics = require('next-metrics');
+
+module.exports = (appName) => {
+
+	return {
+		getStatus: () => {
+			return {
+				name: `Metrics configured for ${appName}`,
+				ok: metrics.hasValidConfiguration,
+				checkOutput: metrics.hasValidConfiguration ? `next-metrics has been configured for ${appName}` : `next-metrics has NOT been configured for ${appName}`,
+				lastUpdated: new Date(),
+				severity: 2,
+				panicGuide: `Check that ${appName} is configured as described in the next-metrics README: https://github.com/Financial-Times/next-metrics`,
+				businessImpact: `Severely reduced visibility of any ${appName} production issues`,
+				technicalSummary: `The configuration for ${appName} needs to be fixed so that next-metrics can send metrics`,
+			};
+		}
+	};
+
+};
