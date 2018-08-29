@@ -5,9 +5,9 @@ module.exports = (appName) => {
 	return {
 		getStatus: () => {
 			return {
-				name: `Metrics configured for ${appName}`,
+				name: `Metrics: next-metrics configuration valid for ${appName}`,
 				ok: metrics.hasValidConfiguration,
-				checkOutput: metrics.hasValidConfiguration ? `next-metrics has been configured for ${appName}` : `next-metrics has NOT been configured for ${appName}`,
+				checkOutput: metrics.hasValidConfiguration ? `next-metrics configuration is valid for ${appName}` : `next-metrics configuration is NOT valid for ${appName}`,
 				lastUpdated: new Date(),
 				severity: 2,
 				panicGuide: `Check that ${appName} is configured as described in the next-metrics README: https://github.com/Financial-Times/next-metrics`,
