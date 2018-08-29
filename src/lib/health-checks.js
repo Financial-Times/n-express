@@ -1,6 +1,7 @@
 const errorRateCheck = require('./error-rate-check');
 const awsKeysHealthCheck = require('./aws-keys-healthcheck');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
+const metricsHealthCheck = require('./metrics-healthcheck');
 
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
@@ -9,7 +10,8 @@ module.exports = (app, options, meta) => {
 	const defaultChecks = [
 		errorRateCheck(meta.name, options.errorRateHealthcheck),
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
-		...awsKeysHealthCheck.checks
+		...awsKeysHealthCheck.checks,
+		metricsHealthCheck(meta.name),
 	];
 
 	const healthChecks = options.healthChecks.concat(defaultChecks);
