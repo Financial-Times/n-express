@@ -1,6 +1,4 @@
-n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/master)[![Coverage Status](https://coveralls.io/repos/github/Financial-Times/n-express/badge.svg)](https://coveralls.io/github/Financial-Times/n-express)![GitHub release](https://img.shields.io/github/release/Financial-Times/n-express.svg?style=popout)
-
-============
+# n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/master.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/master) [![Coverage Status](https://coveralls.io/repos/github/Financial-Times/n-express/badge.svg)](https://coveralls.io/github/Financial-Times/n-express) ![GitHub release](https://img.shields.io/github/release/Financial-Times/n-express.svg?style=popout)
 
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5InA7UJK9yNBCzidFKI_WNkfbl6of1eRlIACRspGXUcBx8A/viewform?usp=pp_url&entry.78759464=n-express" target="_blank"><img src="https://i.imgur.com/UmScdZ4.png" alt="Yak button" border="0" align="right" width="150" title="Report a yak shaving incident for this repository"></a>
 
