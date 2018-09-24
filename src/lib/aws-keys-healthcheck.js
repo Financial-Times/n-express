@@ -99,7 +99,7 @@ function inUse () {
 			businessImpact: 'Can not authenticate with AWS',
 			lastUpdated,
 			severity: 3,
-			technicalSummary: 'AWS keys should be rotated after 90 days',
+			technicalSummary: 'AWS keys should be rotated after 90 days. The current key(s) are nearing their rotation window.',
 			checkOutput: !inUseExpiredKey ? '' : `IAM users with expired keys: ${inUseExpiredKeyUsers.join(', ')}`,
 			panicGuide: 'Guide about how to rotate AWS keys: https://docs.google.com/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4-aOn9VzmNqc16BcQ/edit'
 		})
@@ -109,12 +109,12 @@ function inUse () {
 function notInUse () {
 	return {
 		getStatus: () => ({
-			name: 'AWS keys (not in use): active and within the rotation period',
+			name: 'Unused AWS keys: active and within the rotation period',
 			ok: !notInUseExpiredKey,
-			businessImpact: 'Can not authenticate with AWS',
+			businessImpact: 'None',
 			lastUpdated,
 			severity: 3,
-			technicalSummary: 'AWS keys should be rotated after 90 days',
+			technicalSummary: 'AWS keys should be rotated after 90 days. There are old keys in AWS that are no longer in use by the app.',
 			checkOutput: !notInUseExpiredKey
 				? ''
 				: `IAM users with expired keys: ${notInUseExpiredKeyUsers.join(', ')}`,
