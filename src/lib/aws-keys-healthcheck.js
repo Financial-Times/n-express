@@ -1,13 +1,14 @@
 const AWS = require('aws-sdk');
+const logger = require('@financial-times/n-logger').default;
 
 const INTERVAL = 24 * 60 * 60 * 1000; // 24 hours
 
-let inUseExpiredKey = false;
-let notInUseExpiredKey = false;
+let inUseExpiredKey;
+let notInUseExpiredKey;
 
-let inUseExpiredKeyUsers = [];
-let notInUseExpiredKeyUsers = [];
-let deletedKeys = [];
+let inUseExpiredKeyUsers;
+let notInUseExpiredKeyUsers;
+let deletedKeys;
 
 let lastUpdated = null;
 
@@ -16,6 +17,14 @@ function findKeyName (value) {
 }
 
 function checkAwsKeys () {
+	inUseExpiredKey = false;
+	notInUseExpiredKey = false;
+
+	inUseExpiredKeyUsers = [];
+	notInUseExpiredKeyUsers = [];
+
+	deletedKeys = [];
+
 	const secretKeyNames = [];
 	lastUpdated = new Date().toISOString();
 
@@ -68,8 +77,7 @@ function checkAwsKeys () {
 			if (err && err.name === 'InvalidClientTokenId') {
 				const keyName = findKeyName(keyPair.accessKey);
 				deletedKeys = [...deletedKeys, keyName];
-			}
-			if (!err) {
+			} else if (!err) {
 				if (data && data.AccessKeyMetadata) {
 					data.AccessKeyMetadata.forEach(keyMetadata => {
 						if (
@@ -86,6 +94,8 @@ function checkAwsKeys () {
 						}
 					});
 				}
+			} else {
+				logger.error({ event: 'AWS_KEYS_HEALTHCHECK_IAM_FAIL', response: err });
 			}
 		});
 	});
