@@ -81,7 +81,6 @@ const getAppContainer = options => {
 
 	// metrics should be one of the first things as needs to be applied before any other middleware executes
 	metrics.init({
-		app: process.env.FT_APP_VARIANT ? `${meta.name}_${process.env.FT_APP_VARIANT}` : meta.name,
 		flushEvery: 40000
 	});
 	app.use((req, res, next) => {

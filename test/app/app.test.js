@@ -91,7 +91,7 @@ describe('simple app', function () {
 		it('should initialise metrics', function () {
 			sinon.stub(metrics, 'init');
 			getApp();
-			expect(metrics.init.calledWith({app: 'demo-app', flushEvery: 40000 })).to.be.true;
+			expect(metrics.init.calledWith({flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 		});
 
@@ -99,7 +99,7 @@ describe('simple app', function () {
 			sinon.stub(metrics, 'init');
 			process.env.FT_APP_VARIANT = 'testing';
 			getApp();
-			expect(metrics.init.calledWith({app: 'demo-app_testing', flushEvery: 40000 })).to.be.true;
+			expect(metrics.init.calledWith({flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 			delete process.env.FT_APP_VARIANT;
 		});
