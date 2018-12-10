@@ -21,7 +21,6 @@ module.exports = {
 			'wvvSnjBi0lHELEhDDEjdH/IDrumlgykr4aRa4Guw', // key.pem:22
 			'RHWRFPG6rVH1YDP7xIX0q', // key.pem:22
 			'/AoGAEVfE\\+pHlAlbEo\\+DtbRcig4qmf1Ja\\+kX7dwI', // key.pem:24
-			'/document/d/1bILX3O37XmhKOtpWvox9BeZ6RW4' // src/lib/aws-keys-healthcheck.js:104|121
 		]
 	}
 };
