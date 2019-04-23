@@ -19,6 +19,7 @@ module.exports = options => {
 	if (!name) throw new Error('Please specify an application name');
 
 	name = name && normalizeName(name);
+	let systemCode = options.systemCode ? options.systemCode : options.name;
 
-	return {name, description, directory};
+	return {name, description, directory, systemCode};
 };

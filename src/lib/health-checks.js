@@ -6,7 +6,7 @@ module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${process.env.REGION || 'unknown region'}`;
 
 	const defaultChecks = [
-		errorRateCheck(meta.name, options.errorRateHealthcheck),
+		errorRateCheck(meta.systemCode, options.errorRateHealthcheck),
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name),
 	];
