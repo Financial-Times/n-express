@@ -1,4 +1,3 @@
-/*global it, describe, beforeEach, before, after*/
 const request = require('supertest');
 const app = require('../fixtures/app/main');
 const expect = require('chai').expect;

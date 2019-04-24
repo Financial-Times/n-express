@@ -1,4 +1,3 @@
-/*global it, describe, beforeEach, before, after*/
 const request = require('supertest');
 
 // stub the setup api calls

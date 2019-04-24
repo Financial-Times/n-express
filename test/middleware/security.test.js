@@ -1,4 +1,3 @@
-/*global it, describe, beforeEach, before, after*/
 const subject = require('../../src/middleware/security');
 const expect = require('chai').expect;
 
