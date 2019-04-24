@@ -1,4 +1,4 @@
-/*global it, describe, beforeEach, before, after*/
+/*global it, GLOBAL, describe, beforeEach, before, after*/
 const path = require('path');
 const request = require('supertest');
 
