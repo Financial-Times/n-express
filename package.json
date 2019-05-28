@@ -7,7 +7,8 @@
     "commit": "commit-wizard",
     "precommit": "node_modules/.bin/secret-squirrel",
     "commitmsg": "node_modules/.bin/secret-squirrel-commitmsg",
-    "prepush": "make verify -j3"
+    "prepush": "make verify -j3",
+    "prepare": "npx snyk protect || npx snyk protect -d || true"
   },
   "dependencies": {
     "@financial-times/n-flags-client": "^9.1.5",
@@ -33,6 +34,7 @@
     "shellpromise": "^1.4.0",
     "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0",
+    "snyk": "^1.167.2",
     "supertest": "^3.0.0"
   },
   "engines": {
