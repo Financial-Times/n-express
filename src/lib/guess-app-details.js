@@ -1,17 +1,16 @@
 const normalizeName = require('./normalize-name');
 
 module.exports = options => {
-	let packageJson = {};
 	let name = options.name;
 	let description = '';
 	let directory = options.directory || process.cwd();
 
 	if (!name) {
 		try {
-			packageJson = require(directory + '/package.json');
+			const packageJson = require(directory + '/package.json');
 			name = packageJson.name;
 			description = packageJson.description || '';
-		} catch(e) {
+		} catch (e) {
 			// Safely ignorable error
 		}
 	}
@@ -19,7 +18,8 @@ module.exports = options => {
 	if (!name) throw new Error('Please specify an application name');
 
 	name = name && normalizeName(name);
-	let systemCode = options.systemCode ? options.systemCode : options.name;
+	const systemCode = options.systemCode || options.name;
+	const graphiteName = options.graphiteName || systemCode;
 
-	return {name, description, directory, systemCode};
+	return { name, description, directory, systemCode, graphiteName };
 };
