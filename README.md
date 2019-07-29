@@ -32,6 +32,7 @@ Passed in to `require('@financial-times/n-express')(options)`, these (Booleans d
 - `withAnonMiddleware`- adds middleware that converts headers related to logged in status in to a `res.locals.anon` model
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
+- `graphiteName` String - the app's name in Graphite, for formatting queries. Defaults to the `systemCode`.
 
 ## Static properties and methods
 - `Router` - `express.Router`
