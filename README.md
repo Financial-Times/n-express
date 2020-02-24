@@ -2,9 +2,7 @@
 
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5InA7UJK9yNBCzidFKI_WNkfbl6of1eRlIACRspGXUcBx8A/viewform?usp=pp_url&entry.78759464=n-express" target="_blank"><img src="https://i.imgur.com/UmScdZ4.png" alt="Yak button" border="0" align="right" width="150" title="Report a yak shaving incident for this repository"></a>
 
-Slightly enhanced Express.
-
-This module is now mainly aimed at APIs. For the full box of features aimed at building a user-facing page use `@financial-times/n-ui` instead
+[Expresss](https://expressjs.com/), slightly enhanced with extra functions and common middleware for FT.com apps.
 
 ```
 npm install -S @financial-times/n-express
@@ -12,12 +10,23 @@ npm install -S @financial-times/n-express
 
 <br clear="right">
 
-# API extensions
+# Usage
+
+Import `n-express`, and initialise it with some [options](#app-init-options):
+
+```js
+const nExpress = require('@financial-times/n-express');
+
+const app = nExpress({
+	// options
+});
+```
+
+The `nExpress` function returns an [Express `app` object](https://expressjs.com/en/4x/api.html#app).
 
 ## App init options
 
-
-Passed in to `require('@financial-times/n-express')(options)`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
+Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise stated) turn on various optional features
 
 ### Mandatory
 
