@@ -13,6 +13,7 @@ module.exports = (appName, opts) => {
 	let region = process.env.REGION ? '_' + process.env.REGION : '';
 
 	return nHealth.runCheck({
+		id: 'error-rate',
 		name: `Error rate: greater than ${threshold}% of requests for ${appName}`,
 		type: 'graphiteThreshold',
 		metric: `asPercent(summarize(sumSeries(next.heroku.${appName}.web_*${region}.express.*.res.status.{500,503,504}.count), '${samplePeriod}', 'sum', true), summarize(sumSeries(next.heroku.${appName}.web_*${region}.express.*.res.status.*.count), '${samplePeriod}', 'sum', true))`,

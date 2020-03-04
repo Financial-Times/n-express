@@ -8,6 +8,7 @@ module.exports = {
 		return {
 			getStatus: () => {
 				return {
+					id: 'all-services-registered',
 					name: `Metrics: All services for ${appName} registered in next-metrics`,
 					ok: lastCheckOk,
 					checkOutput: lastCheckOutput,
