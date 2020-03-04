@@ -5,6 +5,7 @@ module.exports = (appName) => {
 	return {
 		getStatus: () => {
 			return {
+				id: 'next-metrics-configuration-valid',
 				name: `Metrics: next-metrics configuration valid for ${appName}`,
 				ok: metrics.hasValidConfiguration,
 				checkOutput: metrics.hasValidConfiguration ? `next-metrics configuration is valid for ${appName}` : `next-metrics configuration is NOT valid for ${appName}`,
