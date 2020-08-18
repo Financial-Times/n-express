@@ -12,10 +12,16 @@ module.exports = (app, appName) => {
 	}
 
 	if (!backendKeys.length) {
+		const missingEnvVarsMessage = [
+			'Backend authentication is disabled due to missing environment variables -',
+			'If backend authentication isn\'t required then disable this middleware by setting the n-express \'withBackendAuthentication\' option to false.',
+			'To enable backend authentication add the missing environment variables.',
+			'For more info on backend authentication see https://github.com/Financial-Times/n-express#optional',
+		];
 
 		nLogger.warn({
-			event: 'BACKEND_AUTHENTICATION_DISABLED',
-			message: 'Backend authentication is disabled, this app is exposed directly to the internet. To enable, add keys in config-vars'
+			event: 'BACKEND_AUTHENTICATION_MISSING_ENV_VARS',
+			message: missingEnvVarsMessage.join(' ')
 		});
 
 		return;
