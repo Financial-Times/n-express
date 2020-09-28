@@ -166,7 +166,7 @@ describe('simple app', function () {
 				name: 'nosystem',
 				directory: __dirname,
 				withFlags: false
-			})).to.throw('All applications must specify a CMDB `systemCode` to the express() function. See the README for more details.');
+			})).to.throw('All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.');
 		});
 	});
 

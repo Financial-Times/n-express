@@ -43,7 +43,7 @@ const getAppContainer = options => {
 	}, options || {});
 
 	if (!options.systemCode) {
-		throw new Error('All applications must specify a CMDB `systemCode` to the express() function. See the README for more details.');
+		throw new Error('All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.');
 	}
 
 	const meta = guessAppDetails(options);
