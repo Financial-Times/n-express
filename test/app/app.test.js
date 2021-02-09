@@ -153,7 +153,7 @@ describe('simple app', function () {
 				res.end('', 200);
 			});
 			expect(flags.init.called).to.be.false;
-				request(app)
+			request(app)
 				.get('/')
 				.expect(200, function () {
 					flags.init.restore();
