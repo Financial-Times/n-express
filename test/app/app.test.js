@@ -104,17 +104,17 @@ describe('simple app', function () {
 			delete process.env.FT_APP_VARIANT;
 		});
 
-		it('should count application starts', function (done) {
+		it('should count application starts', async function () {
 			sinon.stub(metrics, 'count');
+
 			const app = getApp();
-			app.listen().then(function () {
-				expect(metrics.count.calledWith('express.start')).to.be.true;
-				metrics.count.restore();
-				done();
-			});
+			await app.listen()
+
+			expect(metrics.count.calledWith('express.start')).to.be.true;
+			metrics.count.restore();
 		});
 
-		it('should instrument fetch for recognised services', function (done) {
+		it('should instrument fetch for recognised services', async function () {
 			const realFetch = GLOBAL.fetch;
 
 			sinon.stub(raven, 'captureMessage');
@@ -122,20 +122,17 @@ describe('simple app', function () {
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
 
-			Promise.all([
+			await Promise.all([
 				fetch('http://ft-next-api-user-prefs-v002.herokuapp.com/', {
 					timeout: 50
-				}).catch(function () {}),
+				}).catch(() => {}),
 				fetch('http://bertha.ig.ft.com/ghjgjh', {
 					timeout: 50
-				}).catch(function () {})
+				}).catch(() => {})
 			])
-				.then(function () {
-					expect(raven.captureMessage.called).to.be.false;
-					raven.captureMessage.restore();
-					done();
-				});
 
+			expect(raven.captureMessage.called).to.be.false;
+			raven.captureMessage.restore();
 		});
 	});
 
