@@ -37,7 +37,7 @@ module.exports = (app, meta, initPromises) => {
 		app.use(raven.errorHandler());
 
 		// Optional fallthrough error handler
-		app.use((err, req, res, next) => { //eslint-disable-line
+		app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 			// The error id is attached to `res.sentry` to be returned
 			// and optionally displayed to the user for support.
 			res.statusCode = 500;
