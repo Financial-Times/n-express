@@ -25,8 +25,9 @@ module.exports = (app, meta, initPromises) => {
 		return serverPromise.then(server => server.listen.apply(server, arguments));
 	};
 
-	app.listen = function () {
-		const args = [].slice.apply(arguments);
+	app.listen = async function (port, callback) {
+		// these middleware are attached in .listen so they're
+		// definitely after any middleware added by the app itself
 
 		// The error handler must be before any other error middleware
 		app.use(raven.errorHandler());
@@ -39,18 +40,19 @@ module.exports = (app, meta, initPromises) => {
 			res.end(res.sentry + '\n');
 		});
 
-		const port = args[0];
-		const cb = args[1];
-		args[1] = function () {
+		function wrappedCallback() {
 			// HACK: Use warn so that it gets into Splunk logs
 			nLogger.warn({ event: 'EXPRESS_START', app: meta.name, port: port, nodeVersion: process.version });
-			return cb && cb.apply(this, arguments);
+
+			if(callback) {
+				return cb.apply(this, arguments);
+			}
 		};
 
 		return Promise.all(initPromises)
 			.then(() => {
 				metrics.count('express.start');
-				return actualAppListen.apply(app, args);
+				return actualAppListen.apply(app, port, wrappedCallback);
 			})
 			// Crash app if initPromises fail
 			.catch(err => setTimeout(() => {
