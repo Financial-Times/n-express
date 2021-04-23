@@ -39,8 +39,7 @@ const getAppContainer = options => {
 		withAb: false,
 		withConsent: false,
 		withServiceMetrics: true,
-		healthChecks: [],
-		https: false
+		healthChecks: []
 	}, options || {});
 
 	if (!options.systemCode) {
