@@ -49,7 +49,7 @@ const getAppContainer = options => {
 
 	const meta = guessAppDetails(options);
 	const initPromises = [];
-	const app = instrumentListen(express(), initPromises);
+	const app = instrumentListen(express(), meta, initPromises);
 	const addInitPromise = initPromises.push.bind(initPromises);
 
 	// must be the first middleware

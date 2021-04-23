@@ -9,7 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const readFile = denodeify(fs.readFile);
 
-module.exports = (app, initPromises) => {
+module.exports = (app, meta, initPromises) => {
 	async function createServer(app) {
 		if (process.argv.includes('--https')) {
 			const [key, cert] = await Promise.all([
