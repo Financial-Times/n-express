@@ -55,7 +55,11 @@ module.exports = (app, meta, initPromises) => {
 
 		try {
 			await Promise.all(initPromises)
-		} catch(err) {
+
+			metrics.count('express.start');
+			const server = await createServer(app)
+			return server.listen(port, wrappedCallback);
+		} catch (err) {
 			// crash app if initPromises fail by throwing an error asynchronously outside of the promise
 			// TODO: better error handling
 			setTimeout(() => {
