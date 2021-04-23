@@ -49,7 +49,7 @@ module.exports = (app, meta, initPromises) => {
 			nLogger.warn({ event: 'EXPRESS_START', app: meta.name, port: port, nodeVersion: process.version });
 
 			if(callback) {
-				return cb.apply(this, arguments);
+				return callback.apply(this, arguments);
 			}
 		};
 
