@@ -37,7 +37,7 @@
     "supertest": "^3.0.0"
   },
   "bin": {
-    "n-express-generate-certificate": "bin/n-express-generate-certificate"
+    "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
     "node": "12.x"
