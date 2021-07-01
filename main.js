@@ -1,3 +1,7 @@
+/**
+ * @typedef {import("@typings/n-express")} NExpress
+ */
+
 require('isomorphic-fetch');
 
 const fs = require('fs');
@@ -31,6 +35,11 @@ const logVary = require('./src/middleware/log-vary');
 const anon = require('./src/middleware/anon');
 const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
 
+
+/**
+ * @param {NExpress.AppOptions} options
+ * @returns {NExpress.AppContainer}
+ */
 const getAppContainer = options => {
 
 	options = Object.assign({}, {
@@ -47,6 +56,8 @@ const getAppContainer = options => {
 	}
 
 	const meta = guessAppDetails(options);
+
+	/** @type {Promise<any>[]} */
 	const initPromises = [];
 	const app = instrumentListen(express(), meta, initPromises);
 	const addInitPromise = initPromises.push.bind(initPromises);
@@ -55,8 +66,9 @@ const getAppContainer = options => {
 	app.use(raven.requestHandler());
 
 	app.get('/robots.txt', robots);
+
 	/*istanbul ignore next */
-	app.get('/__brew-coffee', (req, res) => {
+	app.get('/__brew-coffee', /** @type {NExpress.Callback} */ (req, res) => {
 		res.status(418);
 		res.send(teapot);
 		res.end();
@@ -74,7 +86,7 @@ const getAppContainer = options => {
 	}
 
 	// Debug related headers.
-	app.use((req, res, next) => {
+	app.use(/** @type {NExpress.Callback} */ (req, res, next) => {
 		res.set('FT-App-Name', meta.name);
 		res.set('FT-Backend-Timestamp', new Date().toISOString());
 		next();
@@ -84,7 +96,7 @@ const getAppContainer = options => {
 	metrics.init({
 		flushEvery: 40000
 	});
-	app.use((req, res, next) => {
+	app.use(/** @type {NExpress.Callback} */ (req, res, next) => {
 		metrics.instrument(req, { as: 'express.http.req' });
 		metrics.instrument(res, { as: 'express.http.res' });
 		next();
@@ -94,7 +106,7 @@ const getAppContainer = options => {
 		serviceMetrics.init();
 	}
 
-	app.get('/__about', (req, res) => {
+	app.get('/__about', /** @type {NExpress.Callback} */ (req, res) => {
 		res.set({ 'Cache-Control': 'no-cache' });
 		res.sendFile(meta.directory + '/public/__about.json');
 	});
@@ -128,6 +140,10 @@ const getAppContainer = options => {
 	return { app, meta, addInitPromise };
 };
 
+/**
+ * @param {NExpress.AppOptions} options
+ * @returns {any}
+ */
 module.exports = options => getAppContainer(options).app;
 
 // expose internals the app may want access to
