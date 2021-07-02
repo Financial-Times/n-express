@@ -28,7 +28,7 @@ const healthChecks = require('./src/lib/health-checks');
 const instrumentListen = require('./src/lib/instrument-listen');
 const guessAppDetails = require('./src/lib/guess-app-details');
 
-const cache = require('./src/middleware/cache');
+const { cache } = require('./src/middleware/cache');
 const robots = require('./src/middleware/robots');
 const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
