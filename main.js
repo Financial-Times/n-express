@@ -1,4 +1,5 @@
 /**
+ * @typedef {import("express")} Express
  * @typedef {import("@typings/n-express")} NExpress
  */
 
@@ -142,7 +143,7 @@ const getAppContainer = options => {
 
 /**
  * @param {NExpress.AppOptions} options
- * @returns {any}
+ * @returns {Express.Application}
  */
 module.exports = options => getAppContainer(options).app;
 

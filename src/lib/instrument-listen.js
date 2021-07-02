@@ -18,7 +18,7 @@ module.exports = (app, meta, initPromises) => {
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-certificate.pem'))
 			]).catch(() => {
-				throw Error('n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one')
+				throw Error('n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one');
 			});
 
 			return https.createServer({ key, cert }, app);
