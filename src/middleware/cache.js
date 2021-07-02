@@ -3,7 +3,7 @@
  * @typedef {[key: keyof NExpress.CacheHeaders, val: string]} CacheHeader
  */
 
-export const cacheHeaders = {
+const cacheHeaders = {
 	FT_NO_CACHE: 'max-age=0, no-cache, must-revalidate',
 	FT_NO_CACHE_PRIVATE: 'max-age=0, no-cache, no-store, must-revalidate, private',
 	FT_SHORT_CACHE: 'max-age=600, stale-while-revalidate=60, stale-if-error=86400',
@@ -16,10 +16,15 @@ export const cacheHeaders = {
 /**
  * @type {NExpress.Callback}
  */
-module.exports = (_req, res, next) => {
+const cache = (_req, res, next) => {
 	for (const header of Object.entries(cacheHeaders)) {
 		const [key, val] = /** @type {CacheHeader} */ (header);
 		res[key] = val;
 	}
 	next();
+};
+
+module.exports = {
+	cache,
+	cacheHeaders
 };
