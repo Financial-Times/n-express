@@ -119,16 +119,6 @@ describe('simple app', function () {
 		});
 	});
 
-
-    
-          
-            
-    
-
-          
-    
-    
-  
 	describe('config', () => {
 		it('should be possible to disable flags', function (done) {
 			sinon.stub(flags, 'init').returns(Promise.resolve(null));
