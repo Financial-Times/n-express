@@ -11,15 +11,15 @@
     "prepare": "npx snyk protect || npx snyk protect -d || true"
   },
   "dependencies": {
-    "@financial-times/n-flags-client": "^9.1.5",
-    "@financial-times/n-logger": "^6.0.0",
-    "@financial-times/n-raven": "^3.0.3",
+    "@financial-times/n-flags-client": "^10.0.0",
+    "@financial-times/n-logger": "^8.0.0",
+    "@financial-times/n-raven": "^5.0.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.16.3",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-fetch": "^3.0.0",
     "n-health": "^5.0.1",
-    "next-metrics": "^5.0.20"
+    "next-metrics": "^5.0.23"
   },
   "devDependencies": {
     "@financial-times/n-gage": "^3.12.0",
