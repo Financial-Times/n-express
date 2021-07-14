@@ -5,63 +5,57 @@ const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
 const path = require('path');
-
 const fs = require('fs');
-const readFile = denodeify(fs.readFile);
 
 module.exports = (app, meta, initPromises) => {
-	async function createServer(app) {
-		if (process.argv.includes('--https')) {
-			const [key, cert] = await Promise.all([
-				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
-				readFile(path.resolve(process.cwd(), 'self-signed-ssl-certificate.pem'))
-			]).catch(() => {
-				throw Error('n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one')
-			});
 
-			return https.createServer({ key, cert }, app);
+	const actualAppListen = function () {
+		let serverPromise;
+		if (process.argv.indexOf('--https') > -1) {
+			const readFile = denodeify(fs.readFile);
+			serverPromise = Promise.all([
+				readFile(path.resolve(__dirname, '../../key.pem')),
+				readFile(path.resolve(__dirname, '../../cert.pem'))
+			])
+				.then(results => https.createServer({ key: results[0], cert: results[1] }, this));
 		} else {
-			return http.createServer(app);
+			serverPromise = Promise.resolve(http.createServer(this));
 		}
-	}
 
-	app.listen = async function (port, callback) {
-		// these middleware are attached in .listen so they're
-		// definitely after any middleware added by the app itself
+		return serverPromise.then(server => server.listen.apply(server, arguments));
+	};
+
+	app.listen = function () {
+		const args = [].slice.apply(arguments);
 
 		// The error handler must be before any other error middleware
 		app.use(raven.errorHandler());
 
 		// Optional fallthrough error handler
-		app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+		app.use((err, req, res, next) => { //eslint-disable-line
 			// The error id is attached to `res.sentry` to be returned
 			// and optionally displayed to the user for support.
 			res.statusCode = 500;
 			res.end(res.sentry + '\n');
 		});
 
-		function wrappedCallback() {
+		const port = args[0];
+		const cb = args[1];
+		args[1] = function () {
 			// HACK: Use warn so that it gets into Splunk logs
 			nLogger.warn({ event: 'EXPRESS_START', app: meta.name, port: port, nodeVersion: process.version });
-
-			if(callback) {
-				return callback.apply(this, arguments);
-			}
+			return cb && cb.apply(this, arguments);
 		};
 
-		try {
-			await Promise.all(initPromises)
-
-			metrics.count('express.start');
-			const server = await createServer(app)
-			return server.listen(port, wrappedCallback);
-		} catch (err) {
-			// crash app if initPromises fail by throwing an error asynchronously outside of the promise
-			// TODO: better error handling
-			setTimeout(() => {
+		return Promise.all(initPromises)
+			.then(() => {
+				metrics.count('express.start');
+				return actualAppListen.apply(app, args);
+			})
+			// Crash app if initPromises fail
+			.catch(err => setTimeout(() => {
 				throw err;
-			});
-		}
+			}));
 	};
 
 	return app;
