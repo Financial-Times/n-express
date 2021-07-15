@@ -12,7 +12,7 @@ const extendVary = (val, set) => {
 };
 
 /**
- * @type {import("@typings/n-express").Callback}
+ * @type {import("../../typings/n-express").Callback}
  */
 module.exports = (_req, res, next) => {
 	const resSet = res.set;

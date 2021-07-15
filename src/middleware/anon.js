@@ -1,11 +1,11 @@
 /**
- * @typedef {import("@typings/n-express")} NExpress
+ * @typedef {import("../../typings/n-express").Callback} Callback
  */
 
 /**
- * @type {NExpress.Callback}
+ * @type {Callback}
  */
-function AnonymousModel (req) {
+function AnonymousModel(req) {
 	if (req.get('FT-Anonymous-User') === 'true') {
 		this.userIsLoggedIn = false;
 		this.userIsAnonymous = true;
@@ -15,39 +15,40 @@ function AnonymousModel (req) {
 	}
 }
 
-function FirstClickFreeModel () {
+function FirstClickFreeModel() {
 	this.signInLink = '/login';
 }
 
 const anonModels = {
-	AnonymousModel : AnonymousModel,
-	FirstClickFreeModel : FirstClickFreeModel
+	AnonymousModel: AnonymousModel,
+	FirstClickFreeModel: FirstClickFreeModel,
 };
 
 /**
- * @param {NExpress.Request} req
- * @param {NExpress.Response} res
+ * @param {import("../../typings/n-express").Request} req
+ * @param {import("../../typings/n-express").Response} res
  */
-function showFirstClickFree (req, res) {
-	return res.locals.flags.firstClickFree &&
-			req.get('FT-Access-Decision') === 'GRANTED' &&
-			req.get('FT-Access-Decision-Policy') === 'PRIVILEGED_REFERER_POLICY';
+function showFirstClickFree(req, res) {
+	return (
+		res.locals.flags.firstClickFree &&
+		req.get('FT-Access-Decision') === 'GRANTED' &&
+		req.get('FT-Access-Decision-Policy') === 'PRIVILEGED_REFERER_POLICY'
+	);
 }
 
 /**
- * @type {NExpress.Callback}
+ * @type {Callback}
  */
-function anonymousMiddleware (req, res, next) {
+function anonymousMiddleware(req, res, next) {
 	res.locals.anon = new anonModels.AnonymousModel(req);
-	res.locals.firstClickFreeModel =
-		showFirstClickFree(req, res) ?
-			new anonModels.FirstClickFreeModel() :
-			null;
+	res.locals.firstClickFreeModel = showFirstClickFree(req, res)
+		? new anonModels.FirstClickFreeModel()
+		: null;
 
 	res.vary('FT-Anonymous-User');
 	next();
 }
 
 module.exports = {
-	middleware : anonymousMiddleware
+	middleware: anonymousMiddleware,
 };

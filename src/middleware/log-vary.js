@@ -2,7 +2,7 @@ const nLogger = require('@financial-times/n-logger').default;
 const sendRate = 0.05;
 
 /**
- * @type {import("@typings/n-express").Callback}
+ * @type {import("../../typings/n-express").Callback}
  */
 module.exports = (req, res, next) => {
 

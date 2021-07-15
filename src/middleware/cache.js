@@ -1,6 +1,5 @@
 /**
- * @typedef {import("@typings/n-express")} NExpress
- * @typedef {[key: keyof NExpress.CacheHeaders, val: string]} CacheHeader
+ * @typedef {[key: keyof import("../../typings/n-express").CacheHeaders, val: string]} CacheHeader
  */
 
 const cacheHeaders = {
@@ -14,7 +13,7 @@ const cacheHeaders = {
 };
 
 /**
- * @type {NExpress.Callback}
+ * @type {import("../../typings/n-express").Callback}
  */
 const cache = (_req, res, next) => {
 	for (const header of Object.entries(cacheHeaders)) {

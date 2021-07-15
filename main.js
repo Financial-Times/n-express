@@ -1,6 +1,6 @@
 /**
- * @typedef {import("express")} Express
- * @typedef {import("@typings/n-express")} NExpress
+ * @typedef {import("./typings/n-express").Callback} Callback
+ * @typedef {import("./typings/n-express").AppOptions} AppOptions
  */
 
 require('isomorphic-fetch');
@@ -34,26 +34,33 @@ const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
 const logVary = require('./src/middleware/log-vary');
 const anon = require('./src/middleware/anon');
-const teapot = fs.readFileSync(path.join(__dirname, 'src/assets/teapot.ascii'), 'utf8');
-
+const teapot = fs.readFileSync(
+	path.join(__dirname, 'src/assets/teapot.ascii'),
+	'utf8'
+);
 
 /**
- * @param {NExpress.AppOptions} options
- * @returns {NExpress.AppContainer}
+ * @param {AppOptions} options
+ * @returns {import("./typings/n-express").AppContainer}
  */
-const getAppContainer = options => {
-
-	options = Object.assign({}, {
-		withBackendAuthentication: true,
-		withFlags: false,
-		withAb: false,
-		withConsent: false,
-		withServiceMetrics: true,
-		healthChecks: []
-	}, options || {});
+const getAppContainer = (options) => {
+	options = Object.assign(
+		{},
+		{
+			withBackendAuthentication: true,
+			withFlags: false,
+			withAb: false,
+			withConsent: false,
+			withServiceMetrics: true,
+			healthChecks: [],
+		},
+		options || {}
+	);
 
 	if (!options.systemCode) {
-		throw new Error('All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.');
+		throw new Error(
+			'All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.'
+		);
 	}
 
 	const meta = guessAppDetails(options);
@@ -69,11 +76,14 @@ const getAppContainer = options => {
 	app.get('/robots.txt', robots);
 
 	/*istanbul ignore next */
-	app.get('/__brew-coffee', /** @type {NExpress.Callback} */ (req, res) => {
-		res.status(418);
-		res.send(teapot);
-		res.end();
-	});
+	app.get(
+		'/__brew-coffee',
+		/** @type {Callback} */ (req, res) => {
+			res.status(418);
+			res.send(teapot);
+			res.end();
+		}
+	);
 
 	// Security related headers, see https://securityheaders.io/?q=https%3A%2F%2Fwww.ft.com&hide=on.
 	app.set('x-powered-by', false);
@@ -87,30 +97,37 @@ const getAppContainer = options => {
 	}
 
 	// Debug related headers.
-	app.use(/** @type {NExpress.Callback} */ (req, res, next) => {
-		res.set('FT-App-Name', meta.name);
-		res.set('FT-Backend-Timestamp', new Date().toISOString());
-		next();
-	});
+	app.use(
+		/** @type {Callback} */ (req, res, next) => {
+			res.set('FT-App-Name', meta.name);
+			res.set('FT-Backend-Timestamp', new Date().toISOString());
+			next();
+		}
+	);
 
 	// metrics should be one of the first things as needs to be applied before any other middleware executes
 	metrics.init({
-		flushEvery: 40000
+		flushEvery: 40000,
 	});
-	app.use(/** @type {NExpress.Callback} */ (req, res, next) => {
-		metrics.instrument(req, { as: 'express.http.req' });
-		metrics.instrument(res, { as: 'express.http.res' });
-		next();
-	});
+	app.use(
+		/** @type {Callback} */ (req, res, next) => {
+			metrics.instrument(req, { as: 'express.http.req' });
+			metrics.instrument(res, { as: 'express.http.res' });
+			next();
+		}
+	);
 
 	if (options.withServiceMetrics) {
 		serviceMetrics.init();
 	}
 
-	app.get('/__about', /** @type {NExpress.Callback} */ (req, res) => {
-		res.set({ 'Cache-Control': 'no-cache' });
-		res.sendFile(meta.directory + '/public/__about.json');
-	});
+	app.get(
+		'/__about',
+		/** @type {Callback} */ (req, res) => {
+			res.set({ 'Cache-Control': 'no-cache' });
+			res.sendFile(meta.directory + '/public/__about.json');
+		}
+	);
 
 	if (options.withBackendAuthentication) {
 		backendAuthentication(app, meta.name);
@@ -118,7 +135,7 @@ const getAppContainer = options => {
 
 	// feature flags
 	if (options.withFlags) {
-		addInitPromise(flags.init({withAb: options.withAb}));
+		addInitPromise(flags.init({ withAb: options.withAb }));
 		app.use(flags.middleware);
 	}
 
@@ -142,10 +159,10 @@ const getAppContainer = options => {
 };
 
 /**
- * @param {NExpress.AppOptions} options
- * @returns {Express.Application}
+ * @param {AppOptions} options
+ * @returns {import("express").Application}
  */
-module.exports = options => getAppContainer(options).app;
+module.exports = (options) => getAppContainer(options).app;
 
 // expose internals the app may want access to
 module.exports.json = express.json;

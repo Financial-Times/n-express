@@ -1,5 +1,5 @@
 /**
- * @type {import("@typings/n-express").Callback}
+ * @type {import("../../typings/n-express").Callback}
  */
 module.exports = (req, res, next) => {
 	res.locals = res.locals || {};

@@ -1,11 +1,15 @@
-import Express, { Application, NextFunction } from 'express';
+import Metrics from '@financial-times/n-metrics';
+import Express from 'express';
+import http from 'http';
+import https from 'https';
 import { cacheHeaders } from '../src/middleware/cache';
+export * from './metrics';
 
 export type CacheHeaders = typeof cacheHeaders;
 
-interface Request extends Express.Request {}
+export interface Request extends Express.Request {}
 
-interface Response extends Express.Response, CacheHeaders {
+export interface Response extends Express.Response, CacheHeaders {
 	unvary: (...args: string[]) => void;
 	unvaryAll: () => void;
 
@@ -14,7 +18,7 @@ interface Response extends Express.Response, CacheHeaders {
 	unVaryAll: unvaryAll;
 }
 
-interface NextFunction extends NextFunction {}
+export interface NextFunction extends Express.NextFunction {}
 
 export type Callback = (
 	req: Request,
@@ -29,17 +33,17 @@ export interface AppMeta {
 	graphiteName: string;
 }
 export interface AppOptions extends AppMeta {
-	healthChecksAppName: string;
+	healthChecksAppName?: string;
 	healthChecks: Metrics.Healthcheck[];
-	errorRateHealthcheck: AppError;
+	errorRateHealthcheck?: AppError;
 	demo?: boolean;
 	logVary?: boolean;
-	withAb?: boolean;
+	withAb: boolean;
 	withAnonMiddleware?: boolean;
-	withConsent?: boolean;
-	withBackendAuthentication?: boolean;
-	withFlags?: boolean;
-	withServiceMetrics?: boolean;
+	withConsent: boolean;
+	withBackendAuthentication: boolean;
+	withFlags: boolean;
+	withServiceMetrics: boolean;
 }
 
 export interface AppError {
@@ -56,4 +60,21 @@ export interface AppContainer {
 	addInitPromise: (...items: Promise<any>[]) => number;
 }
 
-export as namespace NExpress;
+// TODO Overload Express.Application methods to use NextApplication
+export interface NextApplication extends Express.Application {
+	listen(
+		port?: number,
+		callback?: () => void
+	): Promise<https.Server | http.Server>;
+}
+
+declare function express(options?: Partial<AppOptions>): NextApplication;
+declare namespace express {
+	declare const json: Express.json;
+	declare const Router = Express.Router;
+	declare const static: Express.static;
+	declare const metrics: Metrics;
+	declare const flags: flags;
+	declare const getAppContainer: getAppContainer;
+}
+export = express;

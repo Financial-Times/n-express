@@ -1,5 +1,5 @@
 /**
- * @type {import("@typings/n-express").Callback}
+ * @type {import("../../typings/n-express").Callback}
  */
 module.exports = (_req, res, next) => {
 	res.set('X-Content-Type-Options', 'nosniff');

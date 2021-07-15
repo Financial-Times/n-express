@@ -1,8 +1,3 @@
-/**
- * @typedef {import("@typings/n-express")} NExpress
- * @typedef {import("@typings/metrics")} Metrics
- */
-
 const nHealth = require('n-health');
 
 const DEFAULT_SEVERITY = 3;
@@ -11,8 +6,8 @@ const DEFAULT_THRESHOLD = 4;
 
 /**
  * @param {string} appName
- * @param {NExpress.AppError} opts
- * @returns {Metrics.Healthcheck}
+ * @param {import("../../typings/n-express").AppError?} [opts]
+ * @returns {import("../../typings/metrics").Healthcheck}
  */
 module.exports = (appName, opts) => {
 	opts = opts || {};

@@ -2,6 +2,7 @@
   "name": "@financial-times/n-express",
   "version": "0.0.0",
   "main": "main.js",
+  "types": "typings/n-express.d.ts",
   "scripts": {
     "test": "make test",
     "test:types": "tsc",

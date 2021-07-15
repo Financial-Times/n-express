@@ -18,5 +18,3 @@ export interface InitHealthCheck {
 	setAppName: (appName: string) => Metrics.Healthcheck;
 	updateCheck: (unregisteredServices: Record<string, any>) => void;
 }
-
-export as namespace Metrics;
