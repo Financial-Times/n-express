@@ -51,11 +51,19 @@ module.exports = (app, appName) => {
 				req.path.indexOf('/__') === 0
 			) {
 				next();
-			} else if (backendKeys.find(() => req.get('FT-Next-Backend-Key'))) {
+			} else if (
+				backendKeys.includes(
+					/** @type {string} */ (req.get('FT-Next-Backend-Key'))
+				)
+			) {
 				metrics.count('express.backend_authentication.backend_key');
 				res.set('FT-Backend-Authentication', 'true');
 				next();
-			} else if (backendKeys.find(() => req.get('FT-Next-Backend-Key-Old'))) {
+			} else if (
+				backendKeys.includes(
+					/** @type {string} */ (req.get('FT-Next-Backend-Key-Old'))
+				)
+			) {
 				metrics.count('express.backend_authentication.old_backend_key');
 				res.set('FT-Backend-Authentication', 'true');
 				next();
