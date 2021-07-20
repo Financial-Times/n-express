@@ -35,7 +35,7 @@ export interface AppMeta {
 export interface AppOptions extends AppMeta {
 	healthChecksAppName?: string;
 	healthChecks: Metrics.Healthcheck[];
-	errorRateHealthcheck?: AppError;
+	errorRateHealthcheck?: ErrorRateHealthcheckOptions;
 	demo?: boolean;
 	logVary?: boolean;
 	withAb: boolean;
@@ -46,7 +46,7 @@ export interface AppOptions extends AppMeta {
 	withServiceMetrics: boolean;
 }
 
-export interface AppError {
+export interface ErrorRateHealthcheckOptions {
 	severity?: number;
 	threshold?: number;
 	samplePeriod?: string;
