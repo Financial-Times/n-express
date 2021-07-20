@@ -1,6 +1,8 @@
 /**
+ * @typedef {import("express").Application} Application
  * @typedef {import("./typings/n-express").Callback} Callback
  * @typedef {import("./typings/n-express").AppOptions} AppOptions
+ * @typedef {import("./typings/n-express").AppContainer} AppContainer
  */
 
 require('isomorphic-fetch');
@@ -41,7 +43,7 @@ const teapot = fs.readFileSync(
 
 /**
  * @param {AppOptions} options
- * @returns {import("./typings/n-express").AppContainer}
+ * @returns {AppContainer}
  */
 const getAppContainer = (options) => {
 	options = Object.assign(
@@ -160,7 +162,7 @@ const getAppContainer = (options) => {
 
 /**
  * @param {AppOptions} options
- * @returns {import("express").Application}
+ * @returns {Application}
  */
 module.exports = (options) => getAppContainer(options).app;
 

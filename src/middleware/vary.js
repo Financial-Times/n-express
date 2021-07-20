@@ -1,18 +1,22 @@
 /**
+ * @typedef {import("../../typings/n-express").Callback} Callback
+ */
+
+/**
  * @param {string|string[]} val
  * @param {Set<string>} set
  * @returns {string}
  */
 const extendVary = (val, set) => {
 	val = Array.isArray(val) ? val : val.split(',');
-	val.forEach(header => {
+	val.forEach((header) => {
 		set.add(header.trim().toLowerCase());
 	});
 	return Array.from(set).join(', ');
 };
 
 /**
- * @type {import("../../typings/n-express").Callback}
+ * @type {Callback}
  */
 module.exports = (_req, res, next) => {
 	const resSet = res.set;
@@ -27,14 +31,13 @@ module.exports = (_req, res, next) => {
 	};
 
 	res.set = function (name, val) {
-
 		if (arguments.length === 2 && typeof name === 'string') {
 			if (name.toLowerCase() === 'vary' && val) {
 				val = extendVary(val, varyOn);
 			}
 			return resSet.call(res, name, val);
 		} else if (typeof name === 'object') {
-			Object.keys(name).forEach(key => {
+			Object.keys(name).forEach((key) => {
 				if (key.toLowerCase() === 'vary') {
 					name[key] === extendVary(name[key], varyOn);
 				}
@@ -45,7 +48,7 @@ module.exports = (_req, res, next) => {
 	};
 
 	res.unvary = function () {
-		Array.from(arguments).forEach(name => varyOn.delete(name.toLowerCase()));
+		Array.from(arguments).forEach((name) => varyOn.delete(name.toLowerCase()));
 		const list = Array.from(varyOn);
 		if (list.length) {
 			res.set('vary', list.join(', '));

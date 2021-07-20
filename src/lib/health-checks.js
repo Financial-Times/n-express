@@ -1,6 +1,7 @@
 /**
  * @typedef {import("express").Application} ExpressApp
  * @typedef {import("../../typings/metrics").Healthcheck} Healthcheck
+ * @typedef {import("../../typings/n-express").AppOptions} AppOptions
  */
 
 const errorRateCheck = require('./error-rate-check');
@@ -9,7 +10,7 @@ const metricsHealthCheck = require('./metrics-healthcheck');
 
 /**
  * @param {ExpressApp} app
- * @param {import("../../typings/n-express").AppOptions} options
+ * @param {AppOptions} options
  * @param {{name: string, graphiteName: string, description: string}} meta
  */
 module.exports = (app, options, meta) => {

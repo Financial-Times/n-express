@@ -1,5 +1,7 @@
 /**
  * @typedef {import("../../typings/n-express").Callback} Callback
+ * @typedef {import("../../typings/n-express").Request} Request
+ * @typedef {import("../../typings/n-express").Response} Response
  */
 
 /**
@@ -25,8 +27,8 @@ const anonModels = {
 };
 
 /**
- * @param {import("../../typings/n-express").Request} req
- * @param {import("../../typings/n-express").Response} res
+ * @param {Request} req
+ * @param {Response} res
  */
 function showFirstClickFree(req, res) {
 	return (

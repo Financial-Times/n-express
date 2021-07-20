@@ -1,3 +1,7 @@
+/**
+ * @typedef {import("../../typings/n-express").ErrorRateHealthcheckOptions} ErrorRateHealthcheckOptions
+ * @typedef {import("../../typings/metrics").Healthcheck} Healthcheck
+ */
 const nHealth = require('n-health');
 
 const DEFAULT_SEVERITY = 3;
@@ -6,8 +10,8 @@ const DEFAULT_THRESHOLD = 4;
 
 /**
  * @param {string} appName
- * @param {import("../../typings/n-express").AppError?} [opts]
- * @returns {import("../../typings/metrics").Healthcheck}
+ * @param {ErrorRateHealthcheckOptions?} [opts]
+ * @returns {Healthcheck}
  */
 module.exports = (appName, opts) => {
 	opts = opts || {};
@@ -27,6 +31,7 @@ module.exports = (appName, opts) => {
 		severity,
 		businessImpact: 'Users may see application error pages.',
 		technicalSummary: `The proportion of error responses for ${appName} is greater than ${threshold}% of all responses. This is a default n-express check.`,
-		panicGuide: 'Consult errors in sentry, application logs in splunk and run the application locally to identify errors'
+		panicGuide:
+			'Consult errors in sentry, application logs in splunk and run the application locally to identify errors',
 	});
 };

@@ -1,19 +1,21 @@
+/**
+ * @typedef {import("../../typings/n-express").Callback} Callback
+ */
+
 const nLogger = require('@financial-times/n-logger').default;
 const sendRate = 0.05;
 
 /**
- * @type {import("../../typings/n-express").Callback}
+ * @type {Callback}
  */
 module.exports = (req, res, next) => {
-
 	// Throttle sending of events until we know this is the correct implmentation
 	if (Math.random() < sendRate) {
 		res.on('finish', function () {
-
 			/** @type {Record<string, string | undefined>} */
 			let toLog = {
 				event: 'RESPONSE_VARY',
-				path: req.path
+				path: req.path,
 			};
 			const vary = res.get('vary').replace(/ /g, '').split(',');
 
@@ -21,7 +23,7 @@ module.exports = (req, res, next) => {
 				return;
 			}
 
-			vary.map(header => {
+			vary.map((header) => {
 				toLog[header] = req.get(header);
 			});
 			nLogger.warn(toLog);

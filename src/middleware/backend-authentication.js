@@ -1,5 +1,6 @@
 /**
  * @typedef {import("express")} Express
+ * @typedef {import("../../typings/n-express").Callback} Callback
  */
 
 const nLogger = require('@financial-times/n-logger').default;
@@ -39,11 +40,7 @@ module.exports = (app, appName) => {
 
 	// @ts-ignore
 	app.use(
-		/** @type { import("../../typings/n-express").Callback } */ (
-			req,
-			res,
-			next
-		) => {
+		/** @type {Callback} */ (req, res, next) => {
 			// TODO - change how all this works in order to use __assets/app/{appname}
 			// allow static assets, healthchecks, etc., through
 			if (
