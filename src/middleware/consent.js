@@ -1,9 +1,16 @@
+/**
+ * @typedef {import("../../typings/n-express").Callback} Callback
+ */
+
+/**
+ * @type {Callback}
+ */
 module.exports = (req, res, next) => {
 	res.locals = res.locals || {};
 	res.locals.consent = res.locals.consent || {};
 
 	const consent = req.get('ft-consent');
-	if(consent && consent !== '-') {
+	if (consent && consent !== '-') {
 		// parse consent preferences from preflight header:
 		// ft-consent=marketingByemail:on,recommendedcontentOnsite:off
 		// becomes
@@ -12,9 +19,9 @@ module.exports = (req, res, next) => {
 		// 	recommendedcontentOnsite: false
 		// }
 		const consentPreferences = consent.split(',');
-		consentPreferences.forEach(consentFlag => {
-			const [ key, state ] = consentFlag.split(':');
-			if(key && state) {
+		consentPreferences.forEach((consentFlag) => {
+			const [key, state] = consentFlag.split(':');
+			if (key && state) {
 				res.locals.consent[key] = state === 'on';
 			}
 		});

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 const raven = require('@financial-times/n-raven');
 const metrics = require('next-metrics');
 const nLogger = require('@financial-times/n-logger').default;
@@ -16,7 +18,9 @@ module.exports = (app, meta, initPromises) => {
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-certificate.pem'))
 			]).catch(() => {
-				throw Error('n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one')
+				throw Error(
+					"n-express was started with --https, but there's no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one"
+				);
 			});
 
 			return https.createServer({ key, cert }, app);
@@ -33,7 +37,8 @@ module.exports = (app, meta, initPromises) => {
 		app.use(raven.errorHandler());
 
 		// Optional fallthrough error handler
-		app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+		// eslint-disable-next-line no-unused-vars
+		app.use((err, req, res, next) => {
 			// The error id is attached to `res.sentry` to be returned
 			// and optionally displayed to the user for support.
 			res.statusCode = 500;
@@ -42,18 +47,23 @@ module.exports = (app, meta, initPromises) => {
 
 		function wrappedCallback() {
 			// HACK: Use warn so that it gets into Splunk logs
-			nLogger.warn({ event: 'EXPRESS_START', app: meta.name, port: port, nodeVersion: process.version });
+			nLogger.warn({
+				event: 'EXPRESS_START',
+				app: meta.name,
+				port: port,
+				nodeVersion: process.version
+			});
 
-			if(callback) {
+			if (callback) {
 				return callback.apply(this, arguments);
 			}
-		};
+		}
 
 		try {
-			await Promise.all(initPromises)
+			await Promise.all(initPromises);
 
 			metrics.count('express.start');
-			const server = await createServer(app)
+			const server = await createServer(app);
 			return server.listen(port, wrappedCallback);
 		} catch (err) {
 			// crash app if initPromises fail by throwing an error asynchronously outside of the promise

@@ -2,11 +2,11 @@
 const PORT = process.env.PORT || 3000;
 const express = require('../../..');
 
-const app = module.exports = express({
+const app = (module.exports = express({
 	directory: __dirname,
 	withFlags: !process.env.DISABLE_FLAGS,
 	systemCode: 'test-app'
-});
+}));
 
 app.get('/', function (req, res) {
 	res.send('Hello world');
@@ -55,7 +55,6 @@ app.get('/duplicate-vary', function (req, res) {
 	res.sendStatus(200);
 });
 
-
 app.get('/array-vary', function (req, res) {
 	// NOTE testing out tricky capitalisation
 	res.set('Vary', ['Test-Vary1', 'Test-Vary2']);
@@ -65,7 +64,7 @@ app.get('/array-vary', function (req, res) {
 app.get('/multiple-vary', function (req, res) {
 	res.set({
 		'test-header': 'is-set',
-		'Vary': 'Test-Vary'
+		Vary: 'Test-Vary'
 	});
 	res.sendStatus(200);
 });
@@ -90,7 +89,7 @@ app.get('/no-empty-vary', function (req, res) {
 app.get('/mixed-vary', function (req, res) {
 	res.unVary('Country-code');
 	res.set('Vary', 'test-vary');
-	res.set({'test-header': 'is-set'});
+	res.set({ 'test-header': 'is-set' });
 	res.sendStatus(200);
 });
 

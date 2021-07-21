@@ -1,0 +1,13 @@
+{
+  "useTabs": true,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "overrides": [
+    {
+      "files": [".prettierrc", "*.json"],
+      "options": {
+        "useTabs": false
+      }
+    }
+  ]
+}

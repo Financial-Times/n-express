@@ -2,7 +2,6 @@ const subject = require('../../src/middleware/security');
 const expect = require('chai').expect;
 
 describe('security middleware', function () {
-
 	it('set security headers', function (done) {
 		const headers = {};
 		const req = {};
@@ -19,5 +18,4 @@ describe('security middleware', function () {
 			done();
 		});
 	});
-
 });

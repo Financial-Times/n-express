@@ -1,5 +1,13 @@
+/**
+ * @typedef {import("../../typings/n-express").Callback} Callback
+ * @typedef {import("../../typings/n-express").Request} Request
+ * @typedef {import("../../typings/n-express").Response} Response
+ */
 
-function AnonymousModel (req) {
+/**
+ * @type {Callback}
+ */
+function AnonymousModel(req) {
 	if (req.get('FT-Anonymous-User') === 'true') {
 		this.userIsLoggedIn = false;
 		this.userIsAnonymous = true;
@@ -9,32 +17,40 @@ function AnonymousModel (req) {
 	}
 }
 
-function FirstClickFreeModel () {
+function FirstClickFreeModel() {
 	this.signInLink = '/login';
 }
 
 const anonModels = {
-	AnonymousModel : AnonymousModel,
-	FirstClickFreeModel : FirstClickFreeModel
+	AnonymousModel: AnonymousModel,
+	FirstClickFreeModel: FirstClickFreeModel
 };
 
-function showFirstClickFree (req, res) {
-	return res.locals.flags.firstClickFree &&
-			req.get('FT-Access-Decision') === 'GRANTED' &&
-			req.get('FT-Access-Decision-Policy') === 'PRIVILEGED_REFERER_POLICY';
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
+function showFirstClickFree(req, res) {
+	return (
+		res.locals.flags.firstClickFree &&
+		req.get('FT-Access-Decision') === 'GRANTED' &&
+		req.get('FT-Access-Decision-Policy') === 'PRIVILEGED_REFERER_POLICY'
+	);
 }
 
-function anonymousMiddleware (req, res, next) {
+/**
+ * @type {Callback}
+ */
+function anonymousMiddleware(req, res, next) {
 	res.locals.anon = new anonModels.AnonymousModel(req);
-	res.locals.firstClickFreeModel =
-		showFirstClickFree(req, res) ?
-			new anonModels.FirstClickFreeModel() :
-			null;
+	res.locals.firstClickFreeModel = showFirstClickFree(req, res)
+		? new anonModels.FirstClickFreeModel()
+		: null;
 
 	res.vary('FT-Anonymous-User');
 	next();
 }
 
 module.exports = {
-	middleware : anonymousMiddleware
+	middleware: anonymousMiddleware
 };

@@ -1,6 +1,14 @@
+/**
+ * @typedef {import("../../typings/n-express").AppMeta} AppMeta
+ */
+
 const normalizeName = require('./normalize-name');
 
-module.exports = options => {
+/**
+ * @param {AppMeta} options
+ * @returns {AppMeta & {description: string}}
+ */
+module.exports = (options) => {
 	let name = options.name;
 	let description = '';
 	let directory = options.directory || process.cwd();
