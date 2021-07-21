@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const robots = fs.readFileSync(path.join(__dirname, '../assets/robots.txt'), {
-	encoding: 'utf8',
+	encoding: 'utf8'
 });
 
 /**
@@ -14,7 +14,7 @@ const robots = fs.readFileSync(path.join(__dirname, '../assets/robots.txt'), {
 module.exports = (_req, res) => {
 	res.set({
 		'Content-Type': 'text/plain',
-		'Cache-Control': 'max-age:3600, public',
+		'Cache-Control': 'max-age:3600, public'
 	});
 	res.send(robots);
 };

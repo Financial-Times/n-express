@@ -3,7 +3,6 @@ const normalize = require('../../src/lib/normalize-name');
 const assert = require('assert');
 
 describe('normalize', function () {
-
 	it('should normalize ft-next-engels to engels', function () {
 		assert.equal(normalize('ft-next-engels'), 'engels');
 	});
@@ -23,5 +22,4 @@ describe('normalize', function () {
 	it('should normalize ft-engels-v002 to engels', function () {
 		assert.equal(normalize('ft-engels-v002'), 'engels');
 	});
-
 });

@@ -12,13 +12,15 @@ const fs = require('fs');
 const readFile = denodeify(fs.readFile);
 
 module.exports = (app, meta, initPromises) => {
-	async function createServer (app) {
+	async function createServer(app) {
 		if (process.argv.includes('--https')) {
 			const [key, cert] = await Promise.all([
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-certificate.pem'))
 			]).catch(() => {
-				throw Error('n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one');
+				throw Error(
+					"n-express was started with --https, but there's no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one"
+				);
 			});
 
 			return https.createServer({ key, cert }, app);
@@ -35,21 +37,27 @@ module.exports = (app, meta, initPromises) => {
 		app.use(raven.errorHandler());
 
 		// Optional fallthrough error handler
-		app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+		// eslint-disable-next-line no-unused-vars
+		app.use((err, req, res, next) => {
 			// The error id is attached to `res.sentry` to be returned
 			// and optionally displayed to the user for support.
 			res.statusCode = 500;
 			res.end(res.sentry + '\n');
 		});
 
-		function wrappedCallback () {
+		function wrappedCallback() {
 			// HACK: Use warn so that it gets into Splunk logs
-			nLogger.warn({ event: 'EXPRESS_START', app: meta.name, port: port, nodeVersion: process.version });
+			nLogger.warn({
+				event: 'EXPRESS_START',
+				app: meta.name,
+				port: port,
+				nodeVersion: process.version
+			});
 
-			if(callback) {
+			if (callback) {
 				return callback.apply(this, arguments);
 			}
-		};
+		}
 
 		try {
 			await Promise.all(initPromises);

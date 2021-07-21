@@ -54,7 +54,7 @@ const getAppContainer = (options) => {
 			withAb: false,
 			withConsent: false,
 			withServiceMetrics: true,
-			healthChecks: [],
+			healthChecks: []
 		},
 		options || {}
 	);
@@ -109,7 +109,7 @@ const getAppContainer = (options) => {
 
 	// metrics should be one of the first things as needs to be applied before any other middleware executes
 	metrics.init({
-		flushEvery: 40000,
+		flushEvery: 40000
 	});
 	app.use(
 		/** @type {Callback} */ (req, res, next) => {

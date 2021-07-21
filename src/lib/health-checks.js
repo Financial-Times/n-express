@@ -22,7 +22,7 @@ module.exports = (app, options, meta) => {
 	const defaultChecks = [
 		errorRateCheck(meta.graphiteName, options.errorRateHealthcheck),
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
-		metricsHealthCheck(meta.name),
+		metricsHealthCheck(meta.name)
 	];
 
 	/** @type {Healthcheck[]} */
@@ -50,7 +50,7 @@ module.exports = (app, options, meta) => {
 						name: options.healthChecksAppName || defaultAppName,
 						systemCode: options.systemCode,
 						description: meta.description,
-						checks: checks,
+						checks: checks
 					},
 					undefined,
 					2

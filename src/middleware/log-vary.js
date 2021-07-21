@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
 			/** @type {Record<string, string | undefined>} */
 			let toLog = {
 				event: 'RESPONSE_VARY',
-				path: req.path,
+				path: req.path
 			};
 			const vary = res.get('vary').replace(/ /g, '').split(',');
 

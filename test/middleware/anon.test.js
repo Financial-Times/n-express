@@ -7,9 +7,14 @@ describe('Anonymous Middleware', function () {
 	let locals;
 
 	before(function () {
-		app = nextExpress({ withFlags:true, withHandlebars:false, withAssets: false, withAnonMiddleware: true, systemCode: 'anon' });
+		app = nextExpress({
+			withFlags: true,
+			withHandlebars: false,
+			withAssets: false,
+			withAnonMiddleware: true,
+			systemCode: 'anon'
+		});
 		app.get('/', function (req, res) {
-
 			locals = res.locals;
 			res.sendStatus(200).end();
 		});

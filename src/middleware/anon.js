@@ -23,7 +23,7 @@ function FirstClickFreeModel() {
 
 const anonModels = {
 	AnonymousModel: AnonymousModel,
-	FirstClickFreeModel: FirstClickFreeModel,
+	FirstClickFreeModel: FirstClickFreeModel
 };
 
 /**
@@ -52,5 +52,5 @@ function anonymousMiddleware(req, res, next) {
 }
 
 module.exports = {
-	middleware: anonymousMiddleware,
+	middleware: anonymousMiddleware
 };

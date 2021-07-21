@@ -15,7 +15,7 @@ module.exports = {
 				if (typeof url === 'string') {
 					unregisteredServices[url.split('?')[0]] = true;
 				}
-			},
+			}
 		});
-	},
+	}
 };

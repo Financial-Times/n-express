@@ -18,8 +18,8 @@ module.exports = (appName) => {
 				severity: 2,
 				panicGuide: `Check ${appName} application logs and that ${appName} is configured as described in the next-metrics README: https://github.com/Financial-Times/next-metrics`,
 				businessImpact: `Severely reduced visibility of any ${appName} production issues`,
-				technicalSummary: `The configuration for ${appName} needs to be fixed so that next-metrics can send metrics`,
+				technicalSummary: `The configuration for ${appName} needs to be fixed so that next-metrics can send metrics`
 			};
-		},
+		}
 	};
 };

@@ -14,12 +14,13 @@ const flags = require('@financial-times/n-flags-client');
 let app;
 
 describe('simple app', function () {
-
 	before(() => {
-
 		fetchMock
 			.mock(/next-flags-api\.ft\.com/, [])
-			.mock('http://ft-next-health-eu.herokuapp.com/failure-simulation-config', {failures: []})
+			.mock(
+				'http://ft-next-health-eu.herokuapp.com/failure-simulation-config',
+				{ failures: [] }
+			)
 			.catch(200);
 
 		app = require('../fixtures/app/main');
@@ -42,15 +43,11 @@ describe('simple app', function () {
 	});
 
 	it('should have a robots.txt', function (done) {
-		request(app)
-			.get('/robots.txt')
-			.expect(200, done);
+		request(app).get('/robots.txt').expect(200, done);
 	});
 
 	it('should have an about json', function (done) {
-		request(app)
-			.get('/__about')
-			.expect(200, done);
+		request(app).get('/__about').expect(200, done);
 	});
 
 	describe('backend access', function () {
@@ -69,11 +66,9 @@ describe('simple app', function () {
 					done();
 				});
 		});
-
 	});
 
 	describe('metrics', function () {
-
 		beforeEach(function () {
 			delete flags.url;
 			GLOBAL.fetch.restore();
@@ -81,7 +76,7 @@ describe('simple app', function () {
 			delete metrics.graphite;
 		});
 
-		function getApp (conf) {
+		function getApp(conf) {
 			conf = conf || {};
 			conf.directory = path.resolve(__dirname, '../fixtures/app/');
 			conf.systemCode = 'test-app';
@@ -91,7 +86,7 @@ describe('simple app', function () {
 		it('should initialise metrics', function () {
 			sinon.stub(metrics, 'init');
 			getApp();
-			expect(metrics.init.calledWith({flushEvery: 40000 })).to.be.true;
+			expect(metrics.init.calledWith({ flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 		});
 
@@ -99,7 +94,7 @@ describe('simple app', function () {
 			sinon.stub(metrics, 'init');
 			process.env.FT_APP_VARIANT = 'testing';
 			getApp();
-			expect(metrics.init.calledWith({flushEvery: 40000 })).to.be.true;
+			expect(metrics.init.calledWith({ flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 			delete process.env.FT_APP_VARIANT;
 		});
@@ -138,7 +133,6 @@ describe('simple app', function () {
 
 	describe('config', () => {
 		it('should be possible to disable flags', function (done) {
-
 			sinon.stub(flags, 'init').returns(Promise.resolve(null));
 			const app = nextExpress({
 				name: 'noflags',
@@ -159,12 +153,15 @@ describe('simple app', function () {
 		});
 
 		it('should expect a system code', () => {
-			expect(() => nextExpress({
-				name: 'nosystem',
-				directory: __dirname,
-				withFlags: false
-			})).to.throw('All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.');
+			expect(() =>
+				nextExpress({
+					name: 'nosystem',
+					directory: __dirname,
+					withFlags: false
+				})
+			).to.throw(
+				'All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.'
+			);
 		});
 	});
-
 });

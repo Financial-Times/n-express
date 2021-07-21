@@ -16,7 +16,7 @@ const cacheHeaders = {
 	FT_WEEK_CACHE:
 		'max-age=604800, stale-while-revalidate=60, stale-if-error=259200',
 	FT_LONG_CACHE:
-		'max-age=86400, stale-while-revalidate=60, stale-if-error=259200',
+		'max-age=86400, stale-while-revalidate=60, stale-if-error=259200'
 };
 
 /**
@@ -32,5 +32,5 @@ const cache = (_req, res, next) => {
 
 module.exports = {
 	cache,
-	cacheHeaders,
+	cacheHeaders
 };

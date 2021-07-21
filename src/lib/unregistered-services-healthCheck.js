@@ -23,9 +23,9 @@ module.exports = {
 					businessImpact:
 						"We don't have any visibility with unregistered services.",
 					technicalSummary:
-						"Set up services' metrics in next-metrics/lib/metrics/services.js to send to Graphite.",
+						"Set up services' metrics in next-metrics/lib/metrics/services.js to send to Graphite."
 				};
-			},
+			}
 		};
 	},
 	updateCheck: (unregisteredServices) => {
@@ -43,5 +43,5 @@ module.exports = {
 			panicGuide = "Don't panic";
 			lastCheckOk = true;
 		}
-	},
+	}
 };

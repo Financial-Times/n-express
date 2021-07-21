@@ -36,37 +36,38 @@ describe('Consent middleware', function () {
 			.end(done);
 	});
 
-	context('Should set the res.locals.consent property based on the FT-Consent header', () => {
-		[
-			{
-				header: 'marketingByemail:on,recommendedcontentOnsite:off',
-				expectedObject: {
-					marketingByemail: true,
-					recommendedcontentOnsite: false
+	context(
+		'Should set the res.locals.consent property based on the FT-Consent header',
+		() => {
+			[
+				{
+					header: 'marketingByemail:on,recommendedcontentOnsite:off',
+					expectedObject: {
+						marketingByemail: true,
+						recommendedcontentOnsite: false
+					}
+				},
+				{
+					header: 'marketingByemail:notOn,not-a-valid-consent',
+					expectedObject: {
+						marketingByemail: false
+					}
+				},
+				{
+					header: ':',
+					expectedObject: {}
 				}
-			},
-			{
-				header: 'marketingByemail:notOn,not-a-valid-consent',
-				expectedObject: {
-					marketingByemail: false
-				}
-			},
-			{
-				header: ':',
-				expectedObject: {}
-			}
-		].forEach(({ header, expectedObject }) => {
-
-			it(`ft-consent="${header}`, function (done) {
-				request(app)
-					.get('/')
-					.set('FT-Consent', header)
-					.expect(function () {
-						expect(locals.consent).to.deep.equal(expectedObject);
-					})
-					.end(done);
+			].forEach(({ header, expectedObject }) => {
+				it(`ft-consent="${header}`, function (done) {
+					request(app)
+						.get('/')
+						.set('FT-Consent', header)
+						.expect(function () {
+							expect(locals.consent).to.deep.equal(expectedObject);
+						})
+						.end(done);
+				});
 			});
-
-		});
-	});
+		}
+	);
 });

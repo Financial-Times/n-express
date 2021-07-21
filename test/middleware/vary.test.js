@@ -3,7 +3,6 @@ const app = require('../fixtures/app/main');
 const expect = require('chai').expect;
 
 describe('vary middleware', function () {
-
 	it('set single headers', function (done) {
 		request(app)
 			.get('/single-header')
@@ -24,7 +23,6 @@ describe('vary middleware', function () {
 			.get('/default-vary')
 			.expect('vary', 'ft-flags')
 			.expect(200, done);
-
 	});
 
 	it('extend vary header using single value', function (done) {
@@ -48,7 +46,7 @@ describe('vary middleware', function () {
 			.expect(200, done);
 	});
 
-	it('won\'t duplicate vary headers', function (done) {
+	it("won't duplicate vary headers", function (done) {
 		request(app)
 			.get('/duplicate-vary')
 			.expect('vary', 'ft-flags')
@@ -97,7 +95,6 @@ describe('vary middleware', function () {
 			});
 	});
 
-
 	it('co-mingle extending and unsetting vary headers', function (done) {
 		request(app)
 			.get('/mixed-vary')
@@ -105,5 +102,4 @@ describe('vary middleware', function () {
 			.expect('vary', 'ft-flags, test-vary')
 			.expect(200, done);
 	});
-
 });
