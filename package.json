@@ -24,7 +24,7 @@
     "next-metrics": "^5.0.23"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "3.12.0",
+    "@financial-times/n-gage": "8.3.2",
     "@tsconfig/node12": "1.0.9",
     "@types/express": "4.17.12",
     "@types/isomorphic-fetch": "0.0.35",
