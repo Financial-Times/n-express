@@ -36,7 +36,6 @@ Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise st
 
 - `withBackendAuthentication` - Boolean, defaults to `true` - if there is a `FT_NEXT_BACKEND_KEY[_OLD]` env variable, the app will expect requests to have an equivalent `FT-Next-Backend-Key[-Old]` header; this turns off that functionality. Backend authentication is required for applications serving traffic that should only come via the Fastly -> Preflight -> Router request routing. An example of why is the Next Article application, if this didn't have backend authentication enabled you would be able to view articles via the heroku application url as it wouldn't be protected by barriers which are handled within Fastly and Preflight.
 - `withFlags` - decorates each request with [flags](https://github.com/Financial-Times/n-flags-client) as `res.locals.flags`
-- `withAb` - if `withFlags` is true, `withAb` will set `res.locals.flags` values based on the variant/control to which a user is assigned for flags with an ammitSetup. Without this all Ammit flags will be set to false in `res.locals.flags`.
 - `withConsent` - decorates each request with the user's consent preferences as `res.locals.consent`
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
 - `withAnonMiddleware`- adds middleware that converts headers related to logged in status in to a `res.locals.anon` model

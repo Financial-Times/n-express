@@ -38,7 +38,6 @@ export interface AppOptions extends AppMeta {
 	errorRateHealthcheck?: ErrorRateHealthcheckOptions;
 	demo?: boolean;
 	logVary?: boolean;
-	withAb: boolean;
 	withAnonMiddleware?: boolean;
 	withConsent: boolean;
 	withBackendAuthentication: boolean;
