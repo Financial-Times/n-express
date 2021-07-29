@@ -51,7 +51,6 @@ const getAppContainer = (options) => {
 		{
 			withBackendAuthentication: true,
 			withFlags: false,
-			withAb: false,
 			withConsent: false,
 			withServiceMetrics: true,
 			healthChecks: []
@@ -137,7 +136,7 @@ const getAppContainer = (options) => {
 
 	// feature flags
 	if (options.withFlags) {
-		addInitPromise(flags.init({ withAb: options.withAb }));
+		addInitPromise(flags.init());
 		app.use(flags.middleware);
 	}
 
