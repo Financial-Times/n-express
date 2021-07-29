@@ -24,6 +24,7 @@ const consentMiddleware = require('./src/middleware/consent');
 const metrics = require('next-metrics');
 const serviceMetrics = require('./src/lib/service-metrics');
 const raven = require('@financial-times/n-raven');
+const nLogger = require('@financial-times/n-logger').default;
 
 // utils
 const healthChecks = require('./src/lib/health-checks');
@@ -62,6 +63,13 @@ const getAppContainer = (options) => {
 		throw new Error(
 			'All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.'
 		);
+	}
+
+	if (options.withAb) {
+		nLogger.warn({
+			event: 'WITHAB_OPTION_DEPRECATED',
+			message: 'The \'withAb\' option is deprecated and no longer supported by n-express or n-flags-client'
+		});
 	}
 
 	const meta = guessAppDetails(options);
