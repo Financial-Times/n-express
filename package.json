@@ -7,7 +7,8 @@
     "test": "make test",
     "test:types": "tsc",
     "commit": "commit-wizard",
-    "prepare": "npx snyk protect || npx snyk protect -d || true"
+    "prepare": "npx snyk protect || npx snyk protect -d || true",
+    "preinstall": "npm_config_yes=true npx check-engine"
   },
   "dependencies": {
     "@financial-times/n-flags-client": "^10.0.0",
@@ -27,6 +28,7 @@
     "@types/isomorphic-fetch": "0.0.35",
     "@types/node": "12.20.15",
     "chai": "^4.1.2",
+    "check-engines": "^1.5.0",
     "coveralls": "^3.0.0",
     "fetch-mock": "^5.1.2",
     "istanbul": "^0.4.5",
@@ -44,12 +46,14 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "12.x"
+    "node": "12.x",
+    "npm": "7.x"
   },
   "config": {},
   "false": {},
   "volta": {
-    "node": "12.22.1"
+    "node": "12.22.5",
+    "npm": "7.20.2"
   },
   "husky": {
     "hooks": {
