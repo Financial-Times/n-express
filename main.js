@@ -72,6 +72,9 @@ const getAppContainer = (options) => {
 		});
 	}
 
+	// set the system code for the logger to use for the Splunk transport
+	nLogger.setSystemCode(options.systemCode)
+
 	const meta = guessAppDetails(options);
 
 	/** @type {Promise<any>[]} */
