@@ -75,6 +75,9 @@ const getAppContainer = (options) => {
 	// set the system code for the logger to use for the Splunk transport
 	nLogger.setSystemCode(options.systemCode)
 
+	// set SYSTEM_CODE env var for legacy n-logger versions that are almost certainly lurking in the dependency ttree
+	process.env.SYSTEM_CODE = options.systemCode
+
 	const meta = guessAppDetails(options);
 
 	/** @type {Promise<any>[]} */
