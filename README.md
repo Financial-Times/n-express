@@ -30,7 +30,7 @@ Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise st
 
 ### Mandatory
 
-- `systemCode` - allows the application to communicate its [CMDB](https://cmdb.ft.com) to other services.
+- `systemCode` - allows the application to communicate its [Biz Ops](https://biz-ops.in.ft.com/) code to other services.
 
 ### Optional
 
