@@ -76,7 +76,7 @@ describe('simple app', function () {
 			delete metrics.graphite;
 		});
 
-		function getApp(conf) {
+		function getApp (conf) {
 			conf = conf || {};
 			conf.directory = path.resolve(__dirname, '../fixtures/app/');
 			conf.systemCode = 'test-app';

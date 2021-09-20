@@ -12,14 +12,14 @@ const fs = require('fs');
 const readFile = denodeify(fs.readFile);
 
 module.exports = (app, meta, initPromises) => {
-	async function createServer(app) {
+	async function createServer (app) {
 		if (process.argv.includes('--https')) {
 			const [key, cert] = await Promise.all([
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-certificate.pem'))
 			]).catch(() => {
 				throw Error(
-					"n-express was started with --https, but there's no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one"
+					'n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one'
 				);
 			});
 
@@ -45,7 +45,7 @@ module.exports = (app, meta, initPromises) => {
 			res.end(res.sentry + '\n');
 		});
 
-		function wrappedCallback() {
+		function wrappedCallback () {
 			// HACK: Use warn so that it gets into Splunk logs
 			nLogger.warn({
 				event: 'EXPRESS_START',

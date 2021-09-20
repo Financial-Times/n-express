@@ -28,7 +28,7 @@ describe('Default error rate check', () => {
 		process.env.REGION = 'US';
 
 		const metric =
-			"asPercent(summarize(sumSeries(next.heroku.app-name.web_*_US.express.*.res.status.{500,503,504}.count), '10min', 'sum', true), summarize(sumSeries(next.heroku.app-name.web_*_US.express.*.res.status.*.count), '10min', 'sum', true))";
+			'asPercent(summarize(sumSeries(next.heroku.app-name.web_*_US.express.*.res.status.{500,503,504}.count), \'10min\', \'sum\', true), summarize(sumSeries(next.heroku.app-name.web_*_US.express.*.res.status.*.count), \'10min\', \'sum\', true))';
 
 		subject('app-name');
 		expect(nHealthStub.runCheck).calledWithMatch({
@@ -42,7 +42,7 @@ describe('Default error rate check', () => {
 		delete process.env.REGION;
 
 		const metric =
-			"asPercent(summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count), '10min', 'sum', true), summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.*.count), '10min', 'sum', true))";
+			'asPercent(summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count), \'10min\', \'sum\', true), summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.*.count), \'10min\', \'sum\', true))';
 
 		subject('app-name');
 		expect(nHealthStub.runCheck).calledWithMatch({
@@ -54,7 +54,7 @@ describe('Default error rate check', () => {
 		delete process.env.REGION;
 
 		const metric =
-			"asPercent(summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count), '20min', 'sum', true), summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.*.count), '20min', 'sum', true))";
+			'asPercent(summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.{500,503,504}.count), \'20min\', \'sum\', true), summarize(sumSeries(next.heroku.app-name.web_*.express.*.res.status.*.count), \'20min\', \'sum\', true))';
 
 		subject('app-name', {
 			severity: 3,

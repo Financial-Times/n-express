@@ -102,7 +102,7 @@ describe('simple app', function () {
 				.expect(200, done);
 		});
 
-		it("should accept any request with backend access key in 'old' header", function (done) {
+		it('should accept any request with backend access key in \'old\' header', function (done) {
 			request(app)
 				.get('/')
 				.set('FT-Next-Backend-Key-Old', 'test-backend-key')
@@ -110,7 +110,7 @@ describe('simple app', function () {
 				.expect(200, done);
 		});
 
-		it("accepts any request with an older access key in 'old' header (1 older)", function (done) {
+		it('accepts any request with an older access key in \'old\' header (1 older)', function (done) {
 			request(app)
 				.get('/')
 				.set('FT-Next-Backend-Key-Old', 'test-backend-key-old')
