@@ -8,7 +8,7 @@
     "test:types": "tsc",
     "commit": "commit-wizard",
     "prepare": "npx snyk protect || npx snyk protect -d || true",
-    "preinstall": "[[ \"$INIT_CWD\" != \"$PWD\" ]] || npm_config_yes=true npx check-engine"
+    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   },
   "dependencies": {
     "@financial-times/n-flags-client": "^10.0.0",
@@ -47,7 +47,7 @@
   },
   "engines": {
     "node": "12.x",
-    "npm": "7.x"
+    "npm": "7.x || 8.x"
   },
   "config": {},
   "false": {},
