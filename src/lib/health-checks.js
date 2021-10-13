@@ -34,6 +34,8 @@ module.exports = (app, options, meta) => {
 			res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
 			const checks = healthChecks.map((check) => check.getStatus());
 
+			checks.forEach(check => {if(!check.id){check.severity = 2, check.ok = false, check.panicGuide = 'Your check needs an ID, per the Health check Standard: https://docs.google.com/document/d/18hefJjImF5IFp9WvPAm9Iq5_GmWzI9ahlKSzShpQl1s/edit?usp=sharing otherwise it is of limited use. ID is an identifier for this check, unique for the given check System Code, or overall System Code.  Must only consist of lowercase alphanumeric characters and hyphens.'}})
+
 			if (req.params[0]) {
 				checks.forEach((check) => {
 					if (check.severity <= Number(req.params[0]) && check.ok === false) {
