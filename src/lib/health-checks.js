@@ -44,6 +44,14 @@ module.exports = (app, options, meta) => {
 				});
 			}})
 
+			checks.forEach(check => {if(!check.ok){
+				nLogger.debug({
+					event: 'HEALTHCHECK_IS_FAILING',
+					systemCode: options.systemCode,
+					checkOutput: check.checkOutput
+				})
+			}})
+
 			if (req.params[0]) {
 				checks.forEach((check) => {
 					if (check.severity <= Number(req.params[0]) && check.ok === false) {
