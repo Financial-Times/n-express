@@ -7,6 +7,7 @@
 const errorRateCheck = require('./error-rate-check');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 const metricsHealthCheck = require('./metrics-healthcheck');
+const nLogger = require('@financial-times/n-logger').default;
 
 /**
  * @param {ExpressApp} app
@@ -33,6 +34,15 @@ module.exports = (app, options, meta) => {
 		/** @type {ExpressApp} */ (req, res) => {
 			res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
 			const checks = healthChecks.map((check) => check.getStatus());
+
+			checks.forEach(check => {if(!check.id){
+				nLogger.warn({
+					event: 'HEALTHCHECK_IS_MISSING_ID',
+					systemName: options.healthChecksAppName || defaultAppName,
+					systemCode: options.systemCode,
+					checkName: check.name
+				});
+			}})
 
 			if (req.params[0]) {
 				checks.forEach((check) => {
