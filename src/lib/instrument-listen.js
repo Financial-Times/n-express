@@ -1,3 +1,6 @@
+/**
+ * @typedef {import("../../typings/metrics").TickingMetric} TickingMetric
+ */
 // @ts-nocheck
 
 const raven = require('@financial-times/n-raven');
@@ -11,8 +14,16 @@ const path = require('path');
 const fs = require('fs');
 const readFile = denodeify(fs.readFile);
 
-module.exports = (app, meta, initPromises) => {
-	async function createServer(app) {
+module.exports = class InstrumentListen {
+	constructor(app, meta, initPromises) {
+		this.app = app;
+		/** @type {TickingMetric[]} */
+		this.tickingMetrics = [];
+		this.server = null;
+		this.initApp(meta, initPromises);
+	}
+
+	async createServer(app) {
 		if (process.argv.includes('--https')) {
 			const [key, cert] = await Promise.all([
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
@@ -29,50 +40,67 @@ module.exports = (app, meta, initPromises) => {
 		}
 	}
 
-	app.listen = async function (port, callback) {
-		// these middleware are attached in .listen so they're
-		// definitely after any middleware added by the app itself
-
-		// The error handler must be before any other error middleware
-		app.use(raven.errorHandler());
-
-		// Optional fallthrough error handler
-		// eslint-disable-next-line no-unused-vars
-		app.use((err, req, res, next) => {
-			// The error id is attached to `res.sentry` to be returned
-			// and optionally displayed to the user for support.
-			res.statusCode = 500;
-			res.end(res.sentry + '\n');
-		});
-
-		function wrappedCallback() {
-			// HACK: Use warn so that it gets into Splunk logs
-			nLogger.warn({
-				event: 'EXPRESS_START',
-				app: meta.name,
-				port: port,
-				nodeVersion: process.version
+	initApp(meta, initPromises) {
+		this.app.listen = async (port, callback) => {
+			// these middleware are attached in .listen so they're
+			// definitely after any middleware added by the app itself
+	
+			// The error handler must be before any other error middleware
+			this.app.use(raven.errorHandler());
+	
+			// Optional fallthrough error handler
+			// eslint-disable-next-line no-unused-vars
+			this.app.use((err, req, res, next) => {
+				// The error id is attached to `res.sentry` to be returned
+				// and optionally displayed to the user for support.
+				res.statusCode = 500;
+				res.end(res.sentry + '\n');
 			});
+	
+			function wrappedCallback() {
+				// HACK: Use warn so that it gets into Splunk logs
+				nLogger.warn({
+					event: 'EXPRESS_START',
+					app: meta.name,
+					port: port,
+					nodeVersion: process.version
+				});
+	
+				if (callback) {
+					return callback.apply(this, arguments);
+				}
+			}
+	
+			try {
+				console.log('!!!initPromisesStart')
+				await Promise.all(initPromises);
+				console.log('!!!initPromisesEnd')
+				metrics.count('express.start');
+				const server = await this.createServer(this.app);
+				this.server = server;
+				return server.listen(port, wrappedCallback);
+			} catch (err) {
+				// crash app if initPromises fail by throwing an error asynchronously outside of the promise
+				// TODO: better error handling
+				console.log('ERROR-INSTURMENT-LISTEN', err)
+	
+				setTimeout(() => {
+					throw err;
+				});
+			}
+		};
 
-			if (callback) {
-				return callback.apply(this, arguments);
+		this.app.close = (callback) => {
+			console.log('calling closing!')
+			const server = this.server;
+			this.tickingMetrics.forEach(check => check.stop())
+			if(server) {
+				server.close(() => callback && callback())
 			}
 		}
+	}
 
-		try {
-			await Promise.all(initPromises);
-
-			metrics.count('express.start');
-			const server = await createServer(app);
-			return server.listen(port, wrappedCallback);
-		} catch (err) {
-			// crash app if initPromises fail by throwing an error asynchronously outside of the promise
-			// TODO: better error handling
-			setTimeout(() => {
-				throw err;
-			});
-		}
-	};
-
-	return app;
-};
+	addMetrics(item) {
+		this.tickingMetrics.push(item)
+	}
+}

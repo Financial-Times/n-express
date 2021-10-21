@@ -3,6 +3,7 @@
  * @typedef {import("./typings/n-express").Callback} Callback
  * @typedef {import("./typings/n-express").AppOptions} AppOptions
  * @typedef {import("./typings/n-express").AppContainer} AppContainer
+ * @typedef {import("./typings/metrics").TickingMetric} TickingMetric
  */
 
 require('isomorphic-fetch');
@@ -28,7 +29,7 @@ const nLogger = require('@financial-times/n-logger').default;
 
 // utils
 const healthChecks = require('./src/lib/health-checks');
-const instrumentListen = require('./src/lib/instrument-listen');
+const InstrumentListen = require('./src/lib/instrument-listen');
 const guessAppDetails = require('./src/lib/guess-app-details');
 
 const { cache } = require('./src/middleware/cache');
@@ -76,7 +77,10 @@ const getAppContainer = (options) => {
 
 	/** @type {Promise<any>[]} */
 	const initPromises = [];
-	const app = instrumentListen(express(), meta, initPromises);
+
+	const instrumentListen = new InstrumentListen(express(), meta, initPromises);
+	const app = instrumentListen.app;
+
 	const addInitPromise = initPromises.push.bind(initPromises);
 
 	// must be the first middleware
@@ -102,7 +106,7 @@ const getAppContainer = (options) => {
 	app.use(vary);
 
 	if (!options.demo) {
-		healthChecks(app, options, meta);
+		instrumentListen.addMetrics(healthChecks(app, options, meta));
 	}
 
 	// Debug related headers.
@@ -127,7 +131,7 @@ const getAppContainer = (options) => {
 	);
 
 	if (options.withServiceMetrics) {
-		serviceMetrics.init();
+		instrumentListen.addMetrics(serviceMetrics.init());
 	}
 
 	app.get(

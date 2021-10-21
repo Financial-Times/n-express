@@ -1,6 +1,7 @@
 /**
  * @typedef {import("express").Application} ExpressApp
  * @typedef {import("../../typings/metrics").Healthcheck} Healthcheck
+ * @typedef {import("../../typings/metrics").TickingMetric} TickingMetric
  * @typedef {import("../../typings/n-express").AppOptions} AppOptions
  */
 
@@ -8,20 +9,23 @@ const errorRateCheck = require('./error-rate-check');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 const metricsHealthCheck = require('./metrics-healthcheck');
 const nLogger = require('@financial-times/n-logger').default;
-
 /**
  * @param {ExpressApp} app
  * @param {AppOptions} options
  * @param {{name: string, graphiteName: string, description: string}} meta
+ * @returns {Healthcheck & TickingMetric}
  */
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${
 		process.env.REGION || 'unknown region'
 	}`;
+	
+	/** @type {Healthcheck & TickingMetric} */
+	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck)
 
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
-		errorRateCheck(meta.graphiteName, options.errorRateHealthcheck),
+		errorCheck, 
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name)
 	];
@@ -68,4 +72,6 @@ module.exports = (app, options, meta) => {
 			);
 		}
 	);
+
+	return errorCheck;
 };

@@ -135,3 +135,14 @@ before(function() {
 ```
 
 This’ll make sure your tests wait for flags to be ready.
+
+## Writing tests with n-express in other apps 
+If you're including n-express in your integration tests, you can add this:
+
+```
+after(() => {
+  app.close()
+})
+```
+
+to stop the tests from hanging from scheduled healthchecks 
