@@ -44,10 +44,10 @@ module.exports = class InstrumentListen {
 		this.app.listen = async (port, callback) => {
 			// these middleware are attached in .listen so they're
 			// definitely after any middleware added by the app itself
-	
+
 			// The error handler must be before any other error middleware
 			this.app.use(raven.errorHandler());
-	
+
 			// Optional fallthrough error handler
 			// eslint-disable-next-line no-unused-vars
 			this.app.use((err, req, res, next) => {
@@ -56,7 +56,7 @@ module.exports = class InstrumentListen {
 				res.statusCode = 500;
 				res.end(res.sentry + '\n');
 			});
-	
+
 			function wrappedCallback() {
 				// HACK: Use warn so that it gets into Splunk logs
 				nLogger.warn({
@@ -65,16 +65,14 @@ module.exports = class InstrumentListen {
 					port: port,
 					nodeVersion: process.version
 				});
-	
+
 				if (callback) {
 					return callback.apply(this, arguments);
 				}
 			}
-	
+
 			try {
-				console.log('!!!initPromisesStart')
 				await Promise.all(initPromises);
-				console.log('!!!initPromisesEnd')
 				metrics.count('express.start');
 				const server = await this.createServer(this.app);
 				this.server = server;
@@ -82,20 +80,21 @@ module.exports = class InstrumentListen {
 			} catch (err) {
 				// crash app if initPromises fail by throwing an error asynchronously outside of the promise
 				// TODO: better error handling
-				console.log('ERROR-INSTURMENT-LISTEN', err)
-	
 				setTimeout(() => {
 					throw err;
 				});
 			}
 		};
 
+		/**
+		 * Attempts to clean up the ticking checks and close the server
+		 */
 		this.app.close = (callback) => {
-			console.log('calling closing!')
-			const server = this.server;
-			this.tickingMetrics.forEach(check => check.stop())
-			if(server) {
-				server.close(() => callback && callback())
+			if (this.tickingMetrics.length > 0) {
+				this.tickingMetrics.forEach(check => check.stop())
+			}
+			if (this.server) {
+				this.server.close(() => callback && callback())
 			}
 		}
 	}

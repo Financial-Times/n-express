@@ -24,7 +24,7 @@ module.exports = {
 				}
 			}
 		});
-		
+
 		const stop = () => {
 			clearInterval(id);
 		}

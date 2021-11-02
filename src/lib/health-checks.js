@@ -19,13 +19,13 @@ module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${
 		process.env.REGION || 'unknown region'
 	}`;
-	
+
 	/** @type {Healthcheck & TickingMetric} */
 	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck)
 
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
-		errorCheck, 
+		errorCheck,
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name)
 	];

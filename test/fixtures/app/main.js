@@ -4,7 +4,7 @@ const express = require('../../..');
 
 const app = (module.exports = express({
 	directory: __dirname,
-	withFlags: false,
+	withFlags: !process.env.DISABLE_FLAGS,
 	systemCode: 'test-app'
 }));
 

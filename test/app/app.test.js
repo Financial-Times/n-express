@@ -31,12 +31,14 @@ describe('simple app', function () {
 	it('should have its own route', function (done) {
 		request(app)
 			.get('/')
+			.expect('Vary', /FT-Flags/i)
 			.expect(200, 'Hello world', done);
 	});
 
 	it('should be possible to add routers', function (done) {
 		request(app)
 			.get('/router/')
+			.expect('Vary', /FT-Flags/i)
 			.expect(200, 'Hello router', done);
 	});
 
@@ -69,7 +71,7 @@ describe('simple app', function () {
 	describe('metrics', function () {
 		beforeEach(function () {
 			delete flags.url;
-			fetchMock.restore();
+			GLOBAL.fetch.restore();
 			// fake metrics has not been initialised
 			delete metrics.graphite;
 		});
@@ -83,7 +85,7 @@ describe('simple app', function () {
 
 		it('should initialise metrics', function () {
 			sinon.stub(metrics, 'init');
-			app = getApp();
+			getApp();
 			expect(metrics.init.calledWith({ flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 		});
@@ -91,7 +93,7 @@ describe('simple app', function () {
 		it('should initialise metrics for variant apps', function () {
 			sinon.stub(metrics, 'init');
 			process.env.FT_APP_VARIANT = 'testing';
-			app = getApp();
+			getApp();
 			expect(metrics.init.calledWith({ flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 			delete process.env.FT_APP_VARIANT;
@@ -100,7 +102,7 @@ describe('simple app', function () {
 		it('should count application starts', async function () {
 			sinon.stub(metrics, 'count');
 
-			app = getApp();
+			const app = getApp();
 			await app.listen();
 
 			expect(metrics.count.calledWith('express.start')).to.be.true;
@@ -108,8 +110,12 @@ describe('simple app', function () {
 		});
 
 		it('should instrument fetch for recognised services', async function () {
+			const realFetch = GLOBAL.fetch;
+
 			sinon.stub(raven, 'captureMessage');
-			app = getApp();
+			getApp();
+
+			expect(GLOBAL.fetch).to.not.equal(realFetch);
 
 			await Promise.all([
 				fetch('http://ft-next-api-user-prefs-v002.herokuapp.com/', {
@@ -128,7 +134,7 @@ describe('simple app', function () {
 	describe('config', () => {
 		it('should be possible to disable flags', function (done) {
 			sinon.stub(flags, 'init').returns(Promise.resolve(null));
-			app = nextExpress({
+			const app = nextExpress({
 				name: 'noflags',
 				directory: __dirname,
 				systemCode: 'test-app',
@@ -148,7 +154,7 @@ describe('simple app', function () {
 
 		it('should expect a system code', () => {
 			expect(() =>
-				app = nextExpress({
+				nextExpress({
 					name: 'nosystem',
 					directory: __dirname,
 					withFlags: false
@@ -157,9 +163,5 @@ describe('simple app', function () {
 				'All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.'
 			);
 		});
-	});
-
-	afterEach(() => {
-		app.close();
 	});
 });

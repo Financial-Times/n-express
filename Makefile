@@ -21,7 +21,6 @@ coverage-report: ## coverage-report: Run the unit tests with code coverage enabl
 
 ## configure unit test to run app.test.js with --no-exit, to demonstrate the tests stop hanging by calling app.close()
 unit-test:
-	unset FT_NEXT_BACKEND_KEY && export FT_GRAPHITE_KEY=foobar && mocha --no-exit test/app/app.test.js && mocha --exit test/**/*.test.js --exclude test/app/app.test.js
-
+	unset FT_NEXT_BACKEND_KEY && export FT_GRAPHITE_KEY=foobar && mocha --no-exit test/app/clear-interval.test.js && mocha test/**/*.test.js --exclude test/app/clear-interval.test.js
 run:
 	node test/fixtures/app/main.js
