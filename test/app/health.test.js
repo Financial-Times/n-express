@@ -31,4 +31,9 @@ describe('health', function () {
 			request(errorRateCheckDisabledApp).get('/__health.3').expect(500, done);
 		});
 	});
+
+	after(() => {
+		errorRateCheckDisabledApp.close();
+		defaultApp.close();
+	});
 });

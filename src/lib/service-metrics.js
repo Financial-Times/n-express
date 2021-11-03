@@ -1,12 +1,19 @@
+/**
+* @typedef {import("../../typings/metrics").Healthcheck} Healthcheck
+*/
+
 const metrics = require('next-metrics');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 
 /** @type {Record<string, any>} */
 let unregisteredServices = {};
 
+/**
+* @returns {TickingMetric}
+*/
 module.exports = {
 	init: () => {
-		setInterval(() => {
+		const id = setInterval(() => {
 			unRegisteredServicesHealthCheck.updateCheck(unregisteredServices);
 		}, 1 * 60 * 1000);
 
@@ -17,5 +24,11 @@ module.exports = {
 				}
 			}
 		});
+
+		const stop = () => {
+			clearInterval(id);
+		};
+
+		return { stop };
 	}
 };

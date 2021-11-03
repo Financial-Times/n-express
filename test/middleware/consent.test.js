@@ -70,4 +70,8 @@ describe('Consent middleware', function () {
 			});
 		}
 	);
+
+	after(() => {
+		app.close();
+	});
 });

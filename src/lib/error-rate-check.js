@@ -1,6 +1,7 @@
 /**
  * @typedef {import("../../typings/n-express").ErrorRateHealthcheckOptions} ErrorRateHealthcheckOptions
  * @typedef {import("../../typings/metrics").Healthcheck} Healthcheck
+ * @typedef {import("../../typings/metrics").TickingMetric} TickingMetric
  */
 const nHealth = require('n-health');
 
@@ -11,7 +12,7 @@ const DEFAULT_THRESHOLD = 4;
 /**
  * @param {string} appName
  * @param {ErrorRateHealthcheckOptions?} [opts]
- * @returns {Healthcheck}
+ * @returns {Healthcheck & TickingMetric}
  */
 module.exports = (appName, opts) => {
 	opts = opts || {};
