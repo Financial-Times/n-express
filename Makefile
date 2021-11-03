@@ -19,8 +19,7 @@ endif
 coverage-report: ## coverage-report: Run the unit tests with code coverage enabled.
 	unset FT_NEXT_BACKEND_KEY && FT_GRAPHITE_KEY=foobar istanbul cover node_modules/.bin/_mocha --report=$(if $(CIRCLECI),lcovonly,lcov) 'test/**/*.test.js'
 
-## configure unit test to run app.test.js with --no-exit, to demonstrate the tests stop hanging by calling app.close()
 unit-test:
-	unset FT_NEXT_BACKEND_KEY && export FT_GRAPHITE_KEY=foobar && mocha --no-exit test/app/clear-interval.test.js && mocha test/**/*.test.js --exclude test/app/clear-interval.test.js
+	unset FT_NEXT_BACKEND_KEY && export FT_GRAPHITE_KEY=foobar && mocha --no-exit test/**/*.test.js
 run:
 	node test/fixtures/app/main.js

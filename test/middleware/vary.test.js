@@ -46,7 +46,7 @@ describe('vary middleware', function () {
 			.expect(200, done);
 	});
 
-	it("won't duplicate vary headers", function (done) {
+	it('won\'t duplicate vary headers', function (done) {
 		request(app)
 			.get('/duplicate-vary')
 			.expect('vary', 'ft-flags')
@@ -101,5 +101,9 @@ describe('vary middleware', function () {
 			.expect('test-header', 'is-set')
 			.expect('vary', 'ft-flags, test-vary')
 			.expect(200, done);
+	});
+
+	after(() => {
+		app.close();
 	});
 });

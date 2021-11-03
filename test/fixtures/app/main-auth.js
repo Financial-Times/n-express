@@ -5,7 +5,7 @@ const express = require('../../..');
 const app = (module.exports = express({
 	name: 'test-auth',
 	directory: __dirname,
-	withFlags: !process.env.DISABLE_FLAGS,
+	withFlags: false,
 	systemCode: 'test-auth-app'
 }));
 

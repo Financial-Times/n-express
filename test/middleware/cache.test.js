@@ -32,4 +32,8 @@ describe('cache constants', function () {
 			)
 			.expect(200, done);
 	});
+
+	after(() => {
+		app.close();
+	});
 });

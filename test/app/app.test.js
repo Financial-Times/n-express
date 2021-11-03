@@ -69,6 +69,8 @@ describe('simple app', function () {
 	});
 
 	describe('metrics', function () {
+		let metricsApp;
+
 		beforeEach(function () {
 			delete flags.url;
 			GLOBAL.fetch.restore();
@@ -76,7 +78,11 @@ describe('simple app', function () {
 			delete metrics.graphite;
 		});
 
-		function getApp(conf) {
+		afterEach(function () {
+			metricsApp.close();
+		});
+
+		function getApp (conf) {
 			conf = conf || {};
 			conf.directory = path.resolve(__dirname, '../fixtures/app/');
 			conf.systemCode = 'test-app';
@@ -85,7 +91,7 @@ describe('simple app', function () {
 
 		it('should initialise metrics', function () {
 			sinon.stub(metrics, 'init');
-			getApp();
+			metricsApp = getApp();
 			expect(metrics.init.calledWith({ flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 		});
@@ -93,7 +99,7 @@ describe('simple app', function () {
 		it('should initialise metrics for variant apps', function () {
 			sinon.stub(metrics, 'init');
 			process.env.FT_APP_VARIANT = 'testing';
-			getApp();
+			metricsApp = getApp();
 			expect(metrics.init.calledWith({ flushEvery: 40000 })).to.be.true;
 			metrics.init.restore();
 			delete process.env.FT_APP_VARIANT;
@@ -102,8 +108,8 @@ describe('simple app', function () {
 		it('should count application starts', async function () {
 			sinon.stub(metrics, 'count');
 
-			const app = getApp();
-			await app.listen();
+			metricsApp = getApp();
+			await metricsApp.listen();
 
 			expect(metrics.count.calledWith('express.start')).to.be.true;
 			metrics.count.restore();
@@ -113,7 +119,7 @@ describe('simple app', function () {
 			const realFetch = GLOBAL.fetch;
 
 			sinon.stub(raven, 'captureMessage');
-			getApp();
+			metricsApp = getApp();
 
 			expect(GLOBAL.fetch).to.not.equal(realFetch);
 
@@ -150,18 +156,24 @@ describe('simple app', function () {
 					flags.init.restore();
 					done();
 				});
+			setTimeout(() => app.close(), 0);
 		});
 
 		it('should expect a system code', () => {
-			expect(() =>
-				nextExpress({
+			expect(() => {
+				const app = nextExpress({
 					name: 'nosystem',
 					directory: __dirname,
 					withFlags: false
-				})
-			).to.throw(
+				});
+				setTimeout(() => app.close(), 0);
+			}).to.throw(
 				'All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.'
 			);
 		});
+	});
+
+	after(() => {
+		app.close();
 	});
 });

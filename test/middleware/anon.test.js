@@ -51,4 +51,9 @@ describe('Anonymous Middleware', function () {
 			})
 			.end(done);
 	});
+
+	after(() => {
+		nextExpress.flags.flags.stop();
+		app.close();
+	});
 });
