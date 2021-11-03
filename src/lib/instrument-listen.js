@@ -15,7 +15,7 @@ const fs = require('fs');
 const readFile = denodeify(fs.readFile);
 
 module.exports = class InstrumentListen {
-	constructor(app, meta, initPromises) {
+	constructor (app, meta, initPromises) {
 		this.app = app;
 		/** @type {TickingMetric[]} */
 		this.tickingMetrics = [];
@@ -23,24 +23,24 @@ module.exports = class InstrumentListen {
 		this.initApp(meta, initPromises);
 	}
 
-	async createServer(app) {
+	async createServer () {
 		if (process.argv.includes('--https')) {
 			const [key, cert] = await Promise.all([
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-key.pem')),
 				readFile(path.resolve(process.cwd(), 'self-signed-ssl-certificate.pem'))
 			]).catch(() => {
 				throw Error(
-					"n-express was started with --https, but there's no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one"
+					'n-express was started with --https, but there\'s no self-signed certificate or key in your app directory. run `npx n-express-generate-certificate` to create one'
 				);
 			});
 
-			return https.createServer({ key, cert }, app);
+			return https.createServer({ key, cert }, this.app);
 		} else {
-			return http.createServer(app);
+			return http.createServer(this.app);
 		}
 	}
 
-	initApp(meta, initPromises) {
+	initApp (meta, initPromises) {
 		this.app.listen = async (port, callback) => {
 			// these middleware are attached in .listen so they're
 			// definitely after any middleware added by the app itself
@@ -57,7 +57,7 @@ module.exports = class InstrumentListen {
 				res.end(res.sentry + '\n');
 			});
 
-			function wrappedCallback() {
+			function wrappedCallback () {
 				// HACK: Use warn so that it gets into Splunk logs
 				nLogger.warn({
 					event: 'EXPRESS_START',
@@ -73,8 +73,9 @@ module.exports = class InstrumentListen {
 
 			try {
 				await Promise.all(initPromises);
+
 				metrics.count('express.start');
-				const server = await this.createServer(this.app);
+				const server = await this.createServer();
 				this.server = server;
 				return server.listen(port, wrappedCallback);
 			} catch (err) {
@@ -90,16 +91,14 @@ module.exports = class InstrumentListen {
 		 * Attempts to clean up the ticking checks and close the server
 		 */
 		this.app.close = (callback) => {
-			if (this.tickingMetrics.length > 0) {
-				this.tickingMetrics.forEach(check => check.stop())
-			}
+			this.tickingMetrics.forEach(check => check.stop());
 			if (this.server) {
-				this.server.close(() => callback && callback())
+				this.server.close(() => callback && callback());
 			}
-		}
+		};
 	}
 
-	addMetrics(item) {
-		this.tickingMetrics.push(item)
+	addMetrics (item) {
+		this.tickingMetrics.push(item);
 	}
-}
+};

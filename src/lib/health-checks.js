@@ -21,7 +21,7 @@ module.exports = (app, options, meta) => {
 	}`;
 
 	/** @type {Healthcheck & TickingMetric} */
-	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck)
+	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck);
 
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
@@ -46,7 +46,7 @@ module.exports = (app, options, meta) => {
 					systemCode: options.systemCode,
 					checkName: check.name
 				});
-			}})
+			}});
 
 			if (req.params[0]) {
 				checks.forEach((check) => {

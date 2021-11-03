@@ -27,7 +27,7 @@ module.exports = {
 
 		const stop = () => {
 			clearInterval(id);
-		}
+		};
 
 		return { stop };
 	}
