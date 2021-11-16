@@ -12,9 +12,11 @@ module.exports = {
 	setAppName: (appName) => {
 		return {
 			getStatus: () => {
+				const region = process.env.REGION ? '_' + process.env.REGION : '';
+
 				return {
-					id: 'all-services-registered',
-					name: `Metrics: All services for ${appName} registered in next-metrics`,
+					id: `all-services-registered-${region}`,
+					name: `Metrics: All services for ${appName} registered in next-metrics in ${region}`,
 					ok: lastCheckOk,
 					checkOutput: lastCheckOutput,
 					lastUpdated: lastCheckTime,
