@@ -7,7 +7,7 @@ const metrics = require('next-metrics');
 module.exports = (appName) => {
 	return {
 		getStatus: () => {
-			const region = process.env.REGION ? '_' + process.env.REGION : '';
+			const region = process.env.REGION === 'US' ? 'us' : 'eu';
 
 			return {
 				id: `next-metrics-${region}-configuration-valid`,

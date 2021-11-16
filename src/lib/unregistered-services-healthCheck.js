@@ -11,8 +11,8 @@ let lastCheckTime;
 module.exports = {
 	setAppName: (appName) => {
 		return {
-			getStatus: () => {
-				const region = process.env.REGION ? '_' + process.env.REGION : '';
+			getStatus: () => {	
+			const region = process.env.REGION === 'US' ? 'us' : 'eu';
 
 				return {
 					id: `all-services-registered-${region}`,
