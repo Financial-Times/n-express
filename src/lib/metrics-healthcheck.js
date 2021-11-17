@@ -7,9 +7,11 @@ const metrics = require('next-metrics');
 module.exports = (appName) => {
 	return {
 		getStatus: () => {
+			const region = process.env.REGION === 'US' ? 'us' : 'eu';
+
 			return {
-				id: 'next-metrics-configuration-valid',
-				name: `Metrics: next-metrics configuration valid for ${appName}`,
+				id: `next-metrics-${region}-configuration-valid`,
+				name: `Metrics: next-metrics configuration valid for ${appName} in ${region}`,
 				ok: metrics.hasValidConfiguration,
 				checkOutput: metrics.hasValidConfiguration
 					? `next-metrics configuration is valid for ${appName}`
