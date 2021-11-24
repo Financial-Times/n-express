@@ -18,7 +18,7 @@
     "denodeify": "^1.2.1",
     "express": "^4.16.3",
     "isomorphic-fetch": "^3.0.0",
-    "n-health": "^5.0.1",
+    "n-health": "^5.0.5",
     "next-metrics": "^5.0.33"
   },
   "devDependencies": {
