@@ -6,6 +6,7 @@
  */
 
 const errorRateCheck = require('./error-rate-check');
+const appRestartCheck = require('./app-restart-check');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 const metricsHealthCheck = require('./metrics-healthcheck');
 const nLogger = require('@financial-times/n-logger').default;
@@ -22,10 +23,12 @@ module.exports = (app, options, meta) => {
 
 	/** @type {Healthcheck & TickingMetric} */
 	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck);
+	const restartCheck = appRestartCheck(meta.graphiteName);
 
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
 		errorCheck,
+		restartCheck,
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name)
 	];
@@ -53,8 +56,8 @@ module.exports = (app, options, meta) => {
 					event: 'HEALTHCHECK_IS_FAILING',
 					systemCode: options.systemCode,
 					checkOutput: check.checkOutput
-				})
-			}})
+				});
+			}});
 
 			if (req.params[0]) {
 				checks.forEach((check) => {
