@@ -13,16 +13,19 @@ describe('clears intervals', () => {
 		result.stop();
 	});
 
-	it('should return object with stop function in health-checks', () => {
+	it('should return an array of objects with stop functions in health-checks', () => {
 		const app = express();
 
-		const result = healthChecks(app, {healthChecks: []}, {});
-		expect(result.stop).to.not.be.undefined;
+		const checks = healthChecks(app, {healthChecks: []}, {});
+		expect(checks).to.be.an('array');
+		for (const check of checks) {
+			expect(check.stop).to.be.a('function');
+		}
 
 		//ensure the start() function is called before the stop(),
 		//because healthChecks(...) eventually calls n-health runCheck(), but runCheck() doesn't await on start()
 		setTimeout(() => {
-			result.stop();
+			checks.forEach(check => check.stop());
 		}, 0);
 	});
 

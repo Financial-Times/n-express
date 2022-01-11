@@ -14,7 +14,7 @@ const nLogger = require('@financial-times/n-logger').default;
  * @param {ExpressApp} app
  * @param {AppOptions} options
  * @param {{name: string, graphiteName: string, description: string}} meta
- * @returns {Healthcheck & TickingMetric}
+ * @returns {(Healthcheck & TickingMetric)[]}
  */
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${
@@ -23,12 +23,25 @@ module.exports = (app, options, meta) => {
 
 	/** @type {Healthcheck & TickingMetric} */
 	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck);
+
+	/** @type {Healthcheck & TickingMetric} */
 	const restartCheck = appRestartCheck(meta.graphiteName);
+
+	/**
+	 * Add checks to this array if they use an interval or similar
+	 * to poll for data. This allows them to be properly stopped
+	 * alongside the n-express app.
+	 *
+	 * @type {(Healthcheck & TickingMetric)[]}
+	 */
+	const tickingMetricChecks = [
+		errorCheck,
+		restartCheck
+	];
 
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
-		errorCheck,
-		restartCheck,
+		...tickingMetricChecks,
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name)
 	];
@@ -84,5 +97,5 @@ module.exports = (app, options, meta) => {
 		}
 	);
 
-	return errorCheck;
+	return tickingMetricChecks;
 };
