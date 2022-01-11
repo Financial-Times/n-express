@@ -99,6 +99,7 @@ module.exports = class InstrumentListen {
 	}
 
 	addMetrics (item) {
-		this.tickingMetrics.push(item);
+		const items = (Array.isArray(item) ? item : [item]);
+		this.tickingMetrics.push(...items);
 	}
 };
