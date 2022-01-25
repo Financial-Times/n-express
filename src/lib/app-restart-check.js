@@ -18,15 +18,25 @@ module.exports = (appName, opts) => {
 	const severity = opts.severity || DEFAULT_SEVERITY;
 	const threshold = opts.threshold || DEFAULT_THRESHOLD;
 
+	let region_name, dyno_matcher;
+
+	if (process.env.REGION) {
+		region_name = process.env.REGION.toUpperCase();
+		dyno_matcher = `*_${region_name}`;
+	} else {
+		region_name = 'unknown region';
+		dyno_matcher = '*';
+	}
+
 	return nHealth.runCheck(
 		{
 			id: `${appName}-restarts`,
-			name: `${appName} restart rate is normal`,
+			name: `${appName} restart rate is normal (${region_name})`,
 			type: 'graphiteSpike',
 			threshold: threshold,
 			baselinePeriod: '14d',
 			samplePeriod: '1hour',
-			numerator: `next.heroku.${appName}.*.express.start`,
+			numerator: `next.heroku.${appName}.${dyno_matcher}.express.start`,
 			severity: severity,
 			businessImpact: 'Some part of the next platform has become severly unstable; impact can vary',
 			technicalSummary: `This alert going off means that there has been a noticeable (${threshold} times) spike in app restart rate. The reason can be innocent - merging many PRs in one day, but it also may be caused by an app stuck in a crash-restart loop.`,
