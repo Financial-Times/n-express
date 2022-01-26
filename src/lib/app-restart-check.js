@@ -16,22 +16,22 @@ module.exports = (appName, opts) => {
 	opts = opts || {};
 	const severity = opts.severity || DEFAULT_SEVERITY;
 
-	let region_name, dyno_matcher;
+	let regionName, dynoMatcher;
 
 	if (process.env.REGION) {
-		region_name = process.env.REGION.toUpperCase();
-		dyno_matcher = `*_${region_name}`;
+		regionName = process.env.REGION.toUpperCase();
+		dynoMatcher = `*_${regionName}`;
 	} else {
-		region_name = 'unknown region';
-		dyno_matcher = '*';
+		regionName = 'unknown region';
+		dynoMatcher = '*';
 	}
 
-	const applicationStartMetric = `next.heroku.${appName}.${dyno_matcher}.express.start`;
+	const applicationStartMetric = `next.heroku.${appName}.${dynoMatcher}.express.start`;
 
 	return nHealth.runCheck(
 		{
 			id: `${appName}-restarts`,
-			name: `${appName} restart rate is normal (${region_name})`,
+			name: `${appName} restart rate is normal (${regionName})`,
 			type: 'graphiteThreshold',
 			threshold: 2,
 			samplePeriod: '6hours',
