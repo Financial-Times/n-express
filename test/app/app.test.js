@@ -1,4 +1,4 @@
-/*global it, GLOBAL, describe, beforeEach, before, after*/
+/*global it, global, describe, beforeEach, before, after*/
 const path = require('path');
 const request = require('supertest');
 
@@ -73,7 +73,7 @@ describe('simple app', function () {
 
 		beforeEach(function () {
 			delete flags.url;
-			GLOBAL.fetch.restore();
+			global.fetch.restore();
 			// fake metrics has not been initialised
 			delete metrics.graphite;
 		});
@@ -116,12 +116,12 @@ describe('simple app', function () {
 		});
 
 		it('should instrument fetch for recognised services', async function () {
-			const realFetch = GLOBAL.fetch;
+			const realFetch = global.fetch;
 
 			sinon.stub(raven, 'captureMessage');
 			metricsApp = getApp();
 
-			expect(GLOBAL.fetch).to.not.equal(realFetch);
+			expect(global.fetch).to.not.equal(realFetch);
 
 			await Promise.all([
 				fetch('http://ft-next-api-user-prefs-v002.herokuapp.com/', {
