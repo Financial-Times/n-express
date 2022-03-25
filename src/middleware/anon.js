@@ -7,17 +7,20 @@
 /**
  * @type {Callback}
  */
-function AnonymousModel(req) {
+function AnonymousModel (req) {
 	if (req.get('FT-Anonymous-User') === 'true') {
 		this.userIsLoggedIn = false;
 		this.userIsAnonymous = true;
+		this.userIsSubscribed = false;
 	} else {
 		this.userIsLoggedIn = true;
 		this.userIsAnonymous = false;
+		// set by ammit task in preflight
+		this.userIsSubscribed = req.get('ft-user-subscription-status') === 'subscribed';
 	}
 }
 
-function FirstClickFreeModel() {
+function FirstClickFreeModel () {
 	this.signInLink = '/login';
 }
 
@@ -30,7 +33,7 @@ const anonModels = {
  * @param {Request} req
  * @param {Response} res
  */
-function showFirstClickFree(req, res) {
+function showFirstClickFree (req, res) {
 	return (
 		res.locals.flags.firstClickFree &&
 		req.get('FT-Access-Decision') === 'GRANTED' &&
@@ -41,7 +44,7 @@ function showFirstClickFree(req, res) {
 /**
  * @type {Callback}
  */
-function anonymousMiddleware(req, res, next) {
+function anonymousMiddleware (req, res, next) {
 	res.locals.anon = new anonModels.AnonymousModel(req);
 	res.locals.firstClickFreeModel = showFirstClickFree(req, res)
 		? new anonModels.FirstClickFreeModel()

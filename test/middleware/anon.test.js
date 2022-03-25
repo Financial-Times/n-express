@@ -35,6 +35,21 @@ describe('Anonymous Middleware', function () {
 			.set('FT-Anonymous-User', 'true')
 			.expect(function () {
 				expect(locals.anon.userIsAnonymous).to.be.true;
+				expect(locals.anon.userIsLoggedIn).to.be.false;
+				expect(locals.anon.userIsSubscribed).to.be.false;
+			})
+			.end(done);
+	});
+
+	it('Should set the res.locals.userIsSubscribed property based on the ft-user-subscription-status header', function (done) {
+		request(app)
+			.get('/')
+			.set('FT-Anonymous-User', 'false')
+			.set('ft-user-subscription-status', 'subscribed')
+			.expect(function () {
+				expect(locals.anon.userIsAnonymous).to.be.false;
+				expect(locals.anon.userIsLoggedIn).to.be.true;
+				expect(locals.anon.userIsSubscribed).to.be.true;
 			})
 			.end(done);
 	});
