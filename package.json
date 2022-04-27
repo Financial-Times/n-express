@@ -11,7 +11,7 @@
     "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   },
   "dependencies": {
-    "@financial-times/n-flags-client": "^10.0.0",
+    "@financial-times/n-flags-client": "^11.0.0",
     "@financial-times/n-logger": "^8.0.0",
     "@financial-times/n-raven": "^5.0.0",
     "debounce": "^1.1.0",
