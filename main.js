@@ -172,6 +172,16 @@ const getAppContainer = (options) => {
 };
 
 /**
+ * This method replace global.fetch variable with node-fetch instance .
+ * It must to be call before init the server in order to behave well
+ */
+const useNodeFetch = () => {
+	const nodeFetch = require('node-fetch');
+	global.fetch = nodeFetch;
+	global.fetch.isNodeFetch = true;
+};
+
+/**
  * @param {AppOptions} options
  * @returns {Application}
  */
@@ -185,3 +195,4 @@ module.exports.static = express.static;
 module.exports.metrics = metrics;
 module.exports.flags = flags;
 module.exports.getAppContainer = getAppContainer;
+module.exports.useNodeFetch = useNodeFetch;
