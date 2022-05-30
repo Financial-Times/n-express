@@ -180,6 +180,7 @@ module.exports = (options) => getAppContainer(options).app;
 
 // expose internals the app may want access to
 module.exports.json = express.json;
+module.exports.text = express.text;
 module.exports.urlencoded = express.urlencoded;
 module.exports.Router = express.Router;
 module.exports.static = express.static;
