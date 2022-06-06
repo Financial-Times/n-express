@@ -16,7 +16,7 @@
     "@financial-times/n-raven": "^6.1.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
     "n-health": "^5.0.5",
     "next-metrics": "^6.0.3"
