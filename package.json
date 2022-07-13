@@ -19,7 +19,7 @@
     "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
     "n-health": "^6.1.2",
-    "next-metrics": "^6.1.3"
+    "next-metrics": "^7.0.0"
   },
   "devDependencies": {
     "@financial-times/n-gage": "^8.3.2",
