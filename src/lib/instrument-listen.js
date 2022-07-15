@@ -61,6 +61,7 @@ module.exports = class InstrumentListen {
 				// HACK: Use warn so that it gets into Splunk logs
 				nLogger.warn({
 					event: 'EXPRESS_START',
+					message: `Express application ${meta.name} started`,
 					app: meta.name,
 					port: port,
 					nodeVersion: process.version
