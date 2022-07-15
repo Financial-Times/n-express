@@ -6,7 +6,6 @@
  */
 
 const errorRateCheck = require('./error-rate-check');
-const appRestartCheck = require('./app-restart-check');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 const metricsHealthCheck = require('./metrics-healthcheck');
 const nLogger = require('@financial-times/n-logger').default;
@@ -24,9 +23,6 @@ module.exports = (app, options, meta) => {
 	/** @type {Healthcheck & TickingMetric} */
 	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck);
 
-	/** @type {Healthcheck & TickingMetric} */
-	const restartCheck = appRestartCheck(meta.graphiteName);
-
 	/**
 	 * Add checks to this array if they use an interval or similar
 	 * to poll for data. This allows them to be properly stopped
@@ -35,8 +31,7 @@ module.exports = (app, options, meta) => {
 	 * @type {(Healthcheck & TickingMetric)[]}
 	 */
 	const tickingMetricChecks = [
-		errorCheck,
-		restartCheck
+		errorCheck
 	];
 
 	/** @type {Healthcheck[]} */
