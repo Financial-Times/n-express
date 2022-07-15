@@ -53,6 +53,7 @@ module.exports = (app, options, meta) => {
 			checks.forEach(check => {if(!check.id){
 				nLogger.warn({
 					event: 'HEALTHCHECK_IS_MISSING_ID',
+					message: `The ${check.name} healthcheck is missing an ID`,
 					systemName: options.healthChecksAppName || defaultAppName,
 					systemCode: options.systemCode,
 					checkName: check.name
@@ -62,6 +63,7 @@ module.exports = (app, options, meta) => {
 			checks.forEach(check => {if(!check.ok){
 				nLogger.debug({
 					event: 'HEALTHCHECK_IS_FAILING',
+					message: `The ${check.name} healthcheck is failing`,
 					systemCode: options.systemCode,
 					checkOutput: check.checkOutput
 				});
