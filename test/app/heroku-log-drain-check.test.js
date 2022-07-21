@@ -30,7 +30,7 @@ describe('Heroku log drain check', () => {
 		expect(nHealth.runCheck.firstCall.args.length).to.equal(1);
 		expect(nHealth.runCheck.firstCall.args[0]).to.deep.equal({
 			id: 'heroku-log-drain-eu',
-			name: 'Heroku log drain configured',
+			name: 'Heroku log drain configured (EU)',
 			type: 'herokuLogDrain',
 			severity: 'mock-severity'
 		});
@@ -48,6 +48,10 @@ describe('Heroku log drain check', () => {
 
 		it('suffixes the check ID with "us"', () => {
 			expect(nHealth.runCheck.firstCall.args[0].id).to.equal('heroku-log-drain-us');
+		});
+
+		it('suffixes the check name with "(US)"', () => {
+			expect(nHealth.runCheck.firstCall.args[0].name).to.equal('Heroku log drain configured (US)');
 		});
 
 	});

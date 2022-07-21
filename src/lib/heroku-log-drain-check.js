@@ -16,7 +16,7 @@ module.exports = (opts) => {
 
 	return nHealth.runCheck({
 		id: `heroku-log-drain-${region}`,
-		name: 'Heroku log drain configured',
+		name: `Heroku log drain configured (${region.toUpperCase()})`,
 		type: 'herokuLogDrain',
 		severity: opts.severity
 	});
