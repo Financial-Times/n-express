@@ -8,6 +8,7 @@
 const errorRateCheck = require('./error-rate-check');
 const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 const metricsHealthCheck = require('./metrics-healthcheck');
+const herokuLogDrainCheck = require('./heroku-log-drain-check');
 const nLogger = require('@financial-times/n-logger').default;
 /**
  * @param {ExpressApp} app
@@ -40,6 +41,15 @@ module.exports = (app, options, meta) => {
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name)
 	];
+
+	// See https://github.com/Financial-Times/n-logger#loggers for information on
+	// the log drain migration. We only want to introduce the log drain check if
+	// the app is set up to use log drains. This conditional will be removed once
+	// the log drain migration is complete but it's required for now to reduce
+	// alert spam (see https://financialtimes.atlassian.net/browse/FTDCS-233)
+	if (process.env.MIGRATE_TO_HEROKU_LOG_DRAINS) {
+		defaultChecks.push(herokuLogDrainCheck());
+	}
 
 	/** @type {Healthcheck[]} */
 	const healthChecks = options.healthChecks.concat(defaultChecks);
