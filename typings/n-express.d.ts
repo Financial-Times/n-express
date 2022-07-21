@@ -51,6 +51,12 @@ export interface ErrorRateHealthcheckOptions {
 	samplePeriod?: string;
 }
 
+export interface HerokuLogDrainHealthcheckOptions {
+	severity?: number;
+	herokuAuthToken?: string;
+	herokuAppId?: string;
+}
+
 export interface AppContainer {
 	app: Express.Application;
 	meta: guessAppDetails.Options & {
