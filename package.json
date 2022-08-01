@@ -13,12 +13,12 @@
   "dependencies": {
     "@financial-times/n-flags-client": "^11.1.0",
     "@financial-times/n-logger": "^10.2.0",
-    "@financial-times/n-raven": "^6.2.0",
+    "@financial-times/n-raven": "^6.3.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
-    "n-health": "^6.3.0",
+    "n-health": "^7.0.0",
     "next-metrics": "^7.1.0"
   },
   "devDependencies": {
