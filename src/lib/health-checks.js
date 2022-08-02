@@ -5,11 +5,14 @@
  * @typedef {import("../../typings/n-express").AppOptions} AppOptions
  */
 
-const errorRateCheck = require('./error-rate-check');
-const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
-const metricsHealthCheck = require('./metrics-healthcheck');
-const herokuLogDrainCheck = require('./heroku-log-drain-check');
 const nLogger = require('@financial-times/n-logger').default;
+
+const errorRateCheck = require('./error-rate-check');
+const herokuLogDrainCheck = require('./heroku-log-drain-check');
+const metricsHealthCheck = require('./metrics-healthcheck');
+const supportedNodeJsVersionCheck = require('./supported-node-js-version-check');
+const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
+
 /**
  * @param {ExpressApp} app
  * @param {AppOptions} options
@@ -39,7 +42,8 @@ module.exports = (app, options, meta) => {
 	const defaultChecks = [
 		...tickingMetricChecks,
 		unRegisteredServicesHealthCheck.setAppName(meta.name),
-		metricsHealthCheck(meta.name)
+		metricsHealthCheck(meta.name),
+		supportedNodeJsVersionCheck(meta.name)
 	];
 
 	// See https://github.com/Financial-Times/n-logger#loggers for information on
