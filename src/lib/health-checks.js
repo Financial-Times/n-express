@@ -48,10 +48,15 @@ module.exports = (app, options, meta) => {
 
 	// See https://github.com/Financial-Times/n-logger#loggers for information on
 	// the log drain migration. We only want to introduce the log drain check if
-	// the app is set up to use log drains. This conditional will be removed once
-	// the log drain migration is complete but it's required for now to reduce
-	// alert spam (see https://financialtimes.atlassian.net/browse/FTDCS-233)
-	if (process.env.MIGRATE_TO_HEROKU_LOG_DRAINS) {
+	// the app is set up to use log drains. The `MIGRATE_TO_HEROKU_LOG_DRAINS`
+	// part of this condition will be removed once the log drain migration is
+	// complete but it's required for now to reduce alert spam
+	// (see https://financialtimes.atlassian.net/browse/FTDCS-233).
+	//
+	// We also only add this check if we're running in production. This is
+	// because we don't want apps running in local development to use up the rate
+	// limit for our shared Heroku API key.
+	if (process.env.NODE_ENV === 'production' && process.env.MIGRATE_TO_HEROKU_LOG_DRAINS) {
 		defaultChecks.push(herokuLogDrainCheck());
 	}
 
