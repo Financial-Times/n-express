@@ -11,14 +11,14 @@
     "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
   },
   "dependencies": {
-    "@financial-times/n-flags-client": "^11.1.0",
+    "@financial-times/n-flags-client": "^12.0.0",
     "@financial-times/n-logger": "^10.2.0",
     "@financial-times/n-raven": "^6.3.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
-    "n-health": "^7.0.2",
+    "n-health": "^8.0.0",
     "next-metrics": "^7.3.0",
     "semver": "^7.3.7"
   },
