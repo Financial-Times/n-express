@@ -51,9 +51,19 @@ module.exports = class InstrumentListen {
 			// Optional fallthrough error handler
 			// eslint-disable-next-line no-unused-vars
 			this.app.use((err, req, res, next) => {
+				let statusCode = err.statusCode || err.status || 500;
+
+				// There's clearly an error, so if the error has a status
+				// code of less than `400` we should default to `500` to
+				// ensure bad error handling doesn't send false positive
+				// status codes
+				if (statusCode < 400) {
+					statusCode = 500;
+				}
+
 				// The error id is attached to `res.sentry` to be returned
 				// and optionally displayed to the user for support.
-				res.statusCode = 500;
+				res.statusCode = statusCode;
 				res.end(res.sentry + '\n');
 			});
 
