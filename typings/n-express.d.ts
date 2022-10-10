@@ -42,6 +42,7 @@ export interface AppOptions extends AppMeta {
 	withConsent: boolean;
 	withBackendAuthentication: boolean;
 	withFlags: boolean;
+	withSentry?: boolean;
 	withServiceMetrics: boolean;
 }
 
