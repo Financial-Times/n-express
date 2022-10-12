@@ -24,7 +24,6 @@ const consentMiddleware = require('./src/middleware/consent');
 // logging and monitoring
 const metrics = require('next-metrics');
 const serviceMetrics = require('./src/lib/service-metrics');
-const raven = require('@financial-times/n-raven');
 const nLogger = require('@financial-times/n-logger').default;
 
 // utils
@@ -54,6 +53,7 @@ const getAppContainer = (options) => {
 			withBackendAuthentication: true,
 			withFlags: false,
 			withConsent: false,
+			withSentry: true,
 			withServiceMetrics: true,
 			healthChecks: []
 		},
@@ -78,13 +78,29 @@ const getAppContainer = (options) => {
 	/** @type {Promise<any>[]} */
 	const initPromises = [];
 
-	const instrumentListen = new InstrumentListen(express(), meta, initPromises);
+	const instrumentListen = new InstrumentListen(express(), meta, initPromises, options);
 	const app = instrumentListen.app;
 
 	const addInitPromise = initPromises.push.bind(initPromises);
 
-	// must be the first middleware
-	app.use(raven.requestHandler());
+	// Raven must be the first middleware if it's loaded
+	if (options.withSentry) {
+		// Note: we require n-raven here because importing n-raven introduces
+		// a lot of side effects. If we don't import it inside this conditional
+		// then it'll always set up unhandled rejection errors. This has a
+		// negligible impact on startup speed – the module has to be loaded
+		// synchronously regardless of whether it's in this conditional or not,
+		// we're just deferring it until later on, when the main `express`
+		// function is called
+		const raven = require('@financial-times/n-raven');
+		app.use(raven.requestHandler());
+	} else {
+		nLogger.warn({
+			event: 'EXPERIMENTAL_OPTION',
+			message: `The 'withSentry' option is experimental and should only be set to 'false' in non-critical applications for now. This may impact our ability to debug issues with this app.`,
+			optionName: 'withSentry'
+		});
+	}
 
 	app.get('/robots.txt', robots);
 
