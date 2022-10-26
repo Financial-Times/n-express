@@ -94,12 +94,6 @@ const getAppContainer = (options) => {
 		// function is called
 		const raven = require('@financial-times/n-raven');
 		app.use(raven.requestHandler());
-	} else {
-		nLogger.warn({
-			event: 'EXPERIMENTAL_OPTION',
-			message: `The 'withSentry' option is experimental and should only be set to 'false' in non-critical applications for now. This may impact our ability to debug issues with this app.`,
-			optionName: 'withSentry'
-		});
 	}
 
 	app.get('/robots.txt', robots);
