@@ -2,7 +2,7 @@
 
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf5InA7UJK9yNBCzidFKI_WNkfbl6of1eRlIACRspGXUcBx8A/viewform?usp=pp_url&entry.78759464=n-express" target="_blank"><img src="https://i.imgur.com/UmScdZ4.png" alt="Yak button" border="0" align="right" width="150" title="Report a yak shaving incident for this repository"></a>
 
-[Expresss](https://expressjs.com/), slightly enhanced with extra functions and common middleware for FT.com apps.
+[Express](https://expressjs.com/), slightly enhanced with extra functions and common middleware for FT.com apps.
 
 ```
 npm install -S @financial-times/n-express
