@@ -29,7 +29,10 @@
   "devDependencies": {
     "@dotcom-tool-kit/component": "^2.0.0",
     "@dotcom-tool-kit/eslint": "^2.2.2",
+    "@dotcom-tool-kit/husky-npm": "^2.2.1",
+    "@dotcom-tool-kit/lint-staged-npm": "^2.0.10",
     "@dotcom-tool-kit/mocha": "^2.1.6",
+    "@dotcom-tool-kit/secret-squirrel": "^1.0.8",
     "@financial-times/eslint-config-next": "^6.0.0",
     "@tsconfig/node12": "1.0.9",
     "@types/express": "4.17.12",
@@ -66,9 +69,11 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "node_modules/.bin/secret-squirrel-commitmsg",
-      "pre-commit": "node_modules/.bin/secret-squirrel",
-      "pre-push": "make verify -j3"
+      "commit-msg": "dotcom-tool-kit git:commitmsg",
+      "pre-commit": "dotcom-tool-kit git:precommit"
     }
+  },
+  "lint-staged": {
+    "**/*.js": "dotcom-tool-kit format:staged test:staged --"
   }
 }

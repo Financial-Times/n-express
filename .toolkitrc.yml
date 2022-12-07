@@ -2,6 +2,9 @@ plugins:
   - '@dotcom-tool-kit/component'
   - '@dotcom-tool-kit/mocha'
   - '@dotcom-tool-kit/eslint'
+  - '@dotcom-tool-kit/husky-npm'
+  - '@dotcom-tool-kit/secret-squirrel'
+  - '@dotcom-tool-kit/lint-staged-npm'
 hooks:
   test:local:
     - Eslint
@@ -9,6 +12,9 @@ hooks:
   test:ci:
     - Eslint
     - Mocha
+  git:precommit:
+    - SecretSquirrel
+    - LintStaged
 options:
-  '@dotcom-tool-kit/mocha':
+  "@dotcom-tool-kit/mocha":
     files: "test/**/*.test.js"
