@@ -1,0 +1,14 @@
+plugins:
+  - '@dotcom-tool-kit/component'
+  - '@dotcom-tool-kit/mocha'
+  - '@dotcom-tool-kit/eslint'
+hooks:
+  test:local:
+    - Eslint
+    - Mocha
+  test:ci:
+    - Eslint
+    - Mocha
+options:
+  '@dotcom-tool-kit/mocha':
+    files: "test/**/*.test.js"

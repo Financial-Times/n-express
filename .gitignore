@@ -2,8 +2,6 @@
 /node_modules/
 /bower_components/
 /.idea/
-.editorconfig
-.eslintrc.js
 /test/fixtures/bad-assets/public/
 /test/fixtures/bad-assets/.gitignore
 /coverage

@@ -2,6 +2,8 @@
 const PORT = process.env.PORT || 3000;
 const express = require('../../..');
 
+process.env.FT_GRAPHITE_KEY = 'FT_GRAPHITE_KEY';
+
 const app = (module.exports = express({
 	directory: __dirname,
 	withFlags: !process.env.DISABLE_FLAGS,
