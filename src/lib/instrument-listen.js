@@ -10,6 +10,8 @@ const https = require('https');
 const denodeify = require('denodeify');
 const path = require('path');
 const {STATUS_CODES} = http;
+const serializeError = require('@dotcom-reliability-kit/serialize-error');
+const serializeRequest = require('@dotcom-reliability-kit/serialize-request');
 
 const fs = require('fs');
 const readFile = denodeify(fs.readFile);
@@ -76,6 +78,21 @@ module.exports = class InstrumentListen {
 
 				res.statusCode = isValidErrorStatus ? statusCode : 500;
 				const statusMessage = STATUS_CODES[res.statusCode] || STATUS_CODES[500];
+
+				// If headers have been sent already then we need to hand off to
+				// the final Express error handler as documented here:
+				// https://expressjs.com/en/guide/error-handling.html#the-default-error-handler
+				//
+				// This ensures that the app doesn't crash with `ERR_STREAM_WRITE_AFTER_END`
+				if (res.headersSent) {
+					nLogger.error({
+						event: 'EXPRESS_ERROR_HANDLER_FAILURE',
+						message: 'The default n-express error handler could not output because the response has already been sent',
+						error: serializeError(err),
+						request: serializeRequest(req)
+					});
+					return next(err);
+				}
 
 				// If Sentry is in use, the error id is attached to `res.sentry`
 				// to be returned and optionally displayed to the user for support.
