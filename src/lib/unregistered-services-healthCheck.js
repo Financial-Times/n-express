@@ -1,6 +1,6 @@
 let lastCheckOk = true;
-let lastCheckOutput = "All services' metrics are set up in Next-metrics";
-let panicGuide = "Don't panic";
+let lastCheckOutput = 'All services\' metrics are set up in Next-metrics';
+let panicGuide = 'Don\'t panic';
 
 /** @type {Date} */
 let lastCheckTime;
@@ -23,9 +23,9 @@ module.exports = {
 					panicGuide: panicGuide,
 					severity: 3,
 					businessImpact:
-						"We don't have any visibility with unregistered services.",
+						'We don\'t have any visibility with unregistered services.',
 					technicalSummary:
-						"Set up services' metrics in next-metrics/lib/metrics/services.js to send to Graphite."
+						'Set up services\' metrics in next-metrics/lib/metrics/services.js to send to Graphite.'
 				};
 			}
 		};
@@ -41,8 +41,8 @@ module.exports = {
 				'See next-metrics/lib/metrics/services.js and set metrics for the service, then release next-metrics and rebuild this app.';
 			lastCheckOk = false;
 		} else {
-			lastCheckOutput = "All services' metrics are set up in Next-metrics";
-			panicGuide = "Don't panic";
+			lastCheckOutput = 'All services\' metrics are set up in Next-metrics';
+			panicGuide = 'Don\'t panic';
 			lastCheckOk = true;
 		}
 	}
