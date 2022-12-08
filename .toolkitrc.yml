@@ -5,6 +5,7 @@ plugins:
   - '@dotcom-tool-kit/husky-npm'
   - '@dotcom-tool-kit/secret-squirrel'
   - '@dotcom-tool-kit/lint-staged-npm'
+  - '@dotcom-tool-kit/node'
 hooks:
   test:local:
     - Eslint
@@ -18,3 +19,6 @@ hooks:
 options:
   "@dotcom-tool-kit/mocha":
     files: "test/**/*.test.js"
+  "@dotcom-tool-kit/node":
+    entry: "test/fixtures/app/main.js"
+    useVault: false

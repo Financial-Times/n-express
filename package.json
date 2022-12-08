@@ -32,6 +32,7 @@
     "@dotcom-tool-kit/husky-npm": "^2.2.1",
     "@dotcom-tool-kit/lint-staged-npm": "^2.0.10",
     "@dotcom-tool-kit/mocha": "^2.1.6",
+    "@dotcom-tool-kit/node": "^2.2.2",
     "@dotcom-tool-kit/secret-squirrel": "^1.0.8",
     "@financial-times/eslint-config-next": "^6.0.0",
     "@tsconfig/node12": "1.0.9",
