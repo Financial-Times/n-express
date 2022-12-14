@@ -3,7 +3,6 @@ plugins:
   - '@dotcom-tool-kit/mocha'
   - '@dotcom-tool-kit/eslint'
   - '@dotcom-tool-kit/husky-npm'
-  - '@dotcom-tool-kit/secret-squirrel'
   - '@dotcom-tool-kit/lint-staged-npm'
   - '@dotcom-tool-kit/node'
 hooks:
