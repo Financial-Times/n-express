@@ -40,7 +40,6 @@
     "@types/node": "12.20.15",
     "chai": "^4.1.2",
     "check-engines": "^1.5.0",
-    "coveralls": "^3.0.0",
     "dotcom-tool-kit": "^2.4.1",
     "fetch-mock": "^5.1.2",
     "istanbul": "^0.4.5",
