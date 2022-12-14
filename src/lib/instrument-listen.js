@@ -85,7 +85,7 @@ module.exports = class InstrumentListen {
 				//
 				// This ensures that the app doesn't crash with `ERR_STREAM_WRITE_AFTER_END`
 				if (res.headersSent) {
-					nLogger.error({
+					nLogger.warn({
 						event: 'EXPRESS_ERROR_HANDLER_FAILURE',
 						message: 'The default n-express error handler could not output because the response has already been sent',
 						error: serializeError(err),
