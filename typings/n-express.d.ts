@@ -53,9 +53,17 @@ export interface ErrorRateHealthcheckOptions {
 }
 
 export interface HerokuLogDrainHealthcheckOptions {
-	severity?: number;
-	herokuAuthToken?: string;
 	herokuAppId?: string;
+}
+
+interface NextHealthLogDrainStatus {
+	ok: boolean;
+	description: String;
+}
+
+export interface NextHealthLogDrainResponse {
+	herokuAppId: string;
+	status: NextHealthLogDrainStatus;
 }
 
 export interface AppContainer {
