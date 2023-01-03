@@ -1,0 +1,23 @@
+plugins:
+  - '@dotcom-tool-kit/component'
+  - '@dotcom-tool-kit/mocha'
+  - '@dotcom-tool-kit/eslint'
+  - '@dotcom-tool-kit/husky-npm'
+  - '@dotcom-tool-kit/lint-staged-npm'
+  - '@dotcom-tool-kit/node'
+hooks:
+  test:local:
+    - Eslint
+    - Mocha
+  test:ci:
+    - Eslint
+    - Mocha
+  git:precommit:
+    - SecretSquirrel
+    - LintStaged
+options:
+  "@dotcom-tool-kit/mocha":
+    files: "test/**/*.test.js"
+  "@dotcom-tool-kit/node":
+    entry: "test/fixtures/app/main.js"
+    useVault: false

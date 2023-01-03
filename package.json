@@ -4,11 +4,13 @@
   "main": "main.js",
   "types": "typings/n-express.d.ts",
   "scripts": {
-    "test": "make test",
+    "test": "dotcom-tool-kit test:local",
     "test:types": "tsc",
     "commit": "commit-wizard",
     "prepare": "npx snyk protect || npx snyk protect -d || true",
-    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine"
+    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine",
+    "build": "dotcom-tool-kit build:local",
+    "start": "dotcom-tool-kit run:local"
   },
   "dependencies": {
     "@dotcom-reliability-kit/serialize-error": "^1.1.4",
@@ -25,17 +27,23 @@
     "semver": "^7.3.7"
   },
   "devDependencies": {
-    "@financial-times/n-gage": "^8.3.2",
+    "@dotcom-tool-kit/component": "^2.1.0",
+    "@dotcom-tool-kit/eslint": "^2.2.4",
+    "@dotcom-tool-kit/husky-npm": "^3.0.0",
+    "@dotcom-tool-kit/lint-staged-npm": "^2.0.12",
+    "@dotcom-tool-kit/mocha": "^2.2.0",
+    "@dotcom-tool-kit/node": "^2.2.4",
+    "@financial-times/eslint-config-next": "^6.0.0",
     "@tsconfig/node12": "1.0.9",
     "@types/express": "4.17.12",
     "@types/isomorphic-fetch": "0.0.35",
     "@types/node": "12.20.15",
     "chai": "^4.1.2",
     "check-engines": "^1.5.0",
-    "coveralls": "^3.0.0",
+    "dotcom-tool-kit": "^2.4.1",
     "fetch-mock": "^5.1.2",
     "istanbul": "^0.4.5",
-    "mocha": "^3.5.3",
+    "mocha": "^10.1.0",
     "npm-prepublish": "^1.2.3",
     "proxyquire": "^2.0.1",
     "shellpromise": "^1.4.0",
@@ -60,9 +68,11 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "node_modules/.bin/secret-squirrel-commitmsg",
-      "pre-commit": "node_modules/.bin/secret-squirrel",
-      "pre-push": "make verify -j3"
+      "commit-msg": "dotcom-tool-kit git:commitmsg",
+      "pre-commit": "dotcom-tool-kit git:precommit"
     }
+  },
+  "lint-staged": {
+    "**/*.js": "dotcom-tool-kit format:staged test:staged --"
   }
 }
