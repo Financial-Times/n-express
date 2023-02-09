@@ -62,7 +62,6 @@ workflows:
           context: npm-publish-token
           requires:
             - tool-kit/test-v16.14
-            - tool-kit/test-v14.19
           filters:
             branches:
               ignore: /.*/
