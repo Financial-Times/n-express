@@ -53,7 +53,7 @@ const getAppContainer = (options) => {
 			withBackendAuthentication: true,
 			withFlags: false,
 			withConsent: false,
-			withSentry: true,
+			withSentry: false,
 			withServiceMetrics: true,
 			healthChecks: []
 		},
@@ -85,6 +85,11 @@ const getAppContainer = (options) => {
 
 	// Raven must be the first middleware if it's loaded
 	if (options.withSentry) {
+		nLogger.warn({
+			event: 'WITHSENTRY_OPTION_DEPRECATED',
+			message: 'The \'withSentry\' option is deprecated and will be removed from n-express in a future major version'
+		});
+
 		// Note: we require n-raven here because importing n-raven introduces
 		// a lot of side effects. If we don't import it inside this conditional
 		// then it'll always set up unhandled rejection errors. This has a
