@@ -34,7 +34,7 @@
     "@dotcom-tool-kit/lint-staged-npm": "^2.0.12",
     "@dotcom-tool-kit/mocha": "^2.2.0",
     "@dotcom-tool-kit/node": "^2.2.4",
-    "@financial-times/eslint-config-next": "^6.0.0",
+    "@financial-times/eslint-config-next": "^7.0.0",
     "@tsconfig/node12": "1.0.9",
     "@types/express": "4.17.12",
     "@types/isomorphic-fetch": "0.0.35",
