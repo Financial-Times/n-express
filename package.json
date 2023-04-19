@@ -13,9 +13,9 @@
     "start": "dotcom-tool-kit run:local"
   },
   "dependencies": {
-    "@dotcom-reliability-kit/errors": "^1.2.7",
-    "@dotcom-reliability-kit/serialize-error": "^1.1.4",
-    "@dotcom-reliability-kit/serialize-request": "^1.1.0",
+    "@dotcom-reliability-kit/errors": "^2.0.0",
+    "@dotcom-reliability-kit/serialize-error": "^2.0.0",
+    "@dotcom-reliability-kit/serialize-request": "^2.0.0",
     "@financial-times/n-flags-client": "^13.0.0",
     "@financial-times/n-logger": "^10.2.0",
     "@financial-times/n-raven": "^6.3.0",
@@ -34,7 +34,7 @@
     "@dotcom-tool-kit/lint-staged-npm": "^2.0.12",
     "@dotcom-tool-kit/mocha": "^2.2.0",
     "@dotcom-tool-kit/node": "^2.2.4",
-    "@financial-times/eslint-config-next": "^6.0.0",
+    "@financial-times/eslint-config-next": "^7.0.0",
     "@tsconfig/node12": "1.0.9",
     "@types/express": "4.17.12",
     "@types/isomorphic-fetch": "0.0.35",
@@ -58,7 +58,7 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "14.x || 16.x",
+    "node": "16.x",
     "npm": "7.x || 8.x"
   },
   "config": {},
