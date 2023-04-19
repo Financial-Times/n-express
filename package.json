@@ -58,7 +58,7 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "14.x || 16.x",
+    "node": "16.x",
     "npm": "7.x || 8.x"
   },
   "config": {},
