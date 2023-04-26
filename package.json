@@ -8,7 +8,6 @@
     "test:types": "tsc",
     "commit": "commit-wizard",
     "prepare": "npx snyk protect || npx snyk protect -d || true",
-    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine",
     "build": "dotcom-tool-kit build:local",
     "start": "dotcom-tool-kit run:local"
   },
