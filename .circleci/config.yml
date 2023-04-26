@@ -43,7 +43,7 @@ workflows:
           name: tool-kit/build-v<< matrix.node-version >>
           matrix:
             parameters:
-              node-version: [ "16.14" ]
+              node-version: [ "16.14", "18.16" ]
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+(-.+)?/
@@ -53,7 +53,7 @@ workflows:
           name: tool-kit/test-v<< matrix.node-version >>
           matrix:
             parameters:
-              node-version: [ "16.14" ]
+              node-version: [ "16.14", "18.16" ]
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+(-.+)?/
@@ -87,11 +87,11 @@ workflows:
           name: tool-kit/build-v<< matrix.node-version >>
           matrix:
             parameters:
-              node-version: [ "16.14" ]
+              node-version: [ "16.14", "18.16" ]
       - tool-kit/test:
           requires:
             - tool-kit/build-v<< matrix.node-version >>
           name: tool-kit/test-v<< matrix.node-version >>
           matrix:
             parameters:
-              node-version: [ "16.14" ]
+              node-version: [ "16.14", "18.16" ]
