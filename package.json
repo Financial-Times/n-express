@@ -8,7 +8,6 @@
     "test:types": "tsc",
     "commit": "commit-wizard",
     "prepare": "npx snyk protect || npx snyk protect -d || true",
-    "preinstall": "[ \"$INIT_CWD\" != \"$PWD\" ] || npm_config_yes=true npx check-engine",
     "build": "dotcom-tool-kit build:local",
     "start": "dotcom-tool-kit run:local"
   },
@@ -58,14 +57,13 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "16.x",
-    "npm": "7.x || 8.x"
+    "node": "16.x || 18.x",
+    "npm": "7.x || 8.x || 9.x"
   },
   "config": {},
   "false": {},
   "volta": {
-    "node": "16.14.1",
-    "npm": "7.20.2"
+    "node": "18.16.0"
   },
   "husky": {
     "hooks": {
