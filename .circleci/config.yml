@@ -29,7 +29,7 @@ workflows:
             branches:
               only: /(^renovate-.*|^nori/.*)/
             tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?/
+              ignore: /.*/
       - tool-kit/setup:
           requires:
             - checkout
