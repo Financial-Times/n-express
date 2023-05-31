@@ -21,3 +21,7 @@ options:
   "@dotcom-tool-kit/node":
     entry: "test/fixtures/app/main.js"
     useVault: false
+  '@dotcom-tool-kit/circleci':
+    nodeVersion:
+      - '18.16'
+      - '16.20'
