@@ -27,7 +27,7 @@
     "semver": "^7.3.7"
   },
   "devDependencies": {
-    "@dotcom-tool-kit/component": "^3.1.5",
+    "@dotcom-tool-kit/component": "^3.1.6",
     "@dotcom-tool-kit/eslint": "^3.1.1",
     "@dotcom-tool-kit/husky-npm": "^4.1.0",
     "@dotcom-tool-kit/lint-staged-npm": "^3.1.1",
@@ -40,7 +40,7 @@
     "@types/node": "12.20.15",
     "chai": "^4.1.2",
     "check-engines": "^1.5.0",
-    "dotcom-tool-kit": "^3.1.6",
+    "dotcom-tool-kit": "^3.1.7",
     "fetch-mock": "^5.1.2",
     "istanbul": "^0.4.5",
     "mocha": "^10.1.0",
