@@ -17,7 +17,6 @@
     "@dotcom-reliability-kit/serialize-request": "^2.0.0",
     "@financial-times/n-flags-client": "^13.0.0",
     "@financial-times/n-logger": "^10.2.0",
-    "@financial-times/n-raven": "^6.3.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.17.3",

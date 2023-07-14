@@ -34,6 +34,6 @@ module.exports = (appName, opts) => {
 		businessImpact: 'Users may see application error pages.',
 		technicalSummary: `The proportion of error responses for ${appName} is greater than ${threshold}% of all responses. This is a default n-express check.`,
 		panicGuide:
-			'Consult errors in sentry, application logs in splunk and run the application locally to identify errors'
+			'Consult application logs in splunk and run the application locally to identify errors'
 	});
 };

@@ -17,12 +17,12 @@ const fs = require('fs');
 const readFile = denodeify(fs.readFile);
 
 module.exports = class InstrumentListen {
-	constructor (app, meta, initPromises, appOptions) {
+	constructor (app, meta, initPromises) {
 		this.app = app;
 		/** @type {TickingMetric[]} */
 		this.tickingMetrics = [];
 		this.server = null;
-		this.initApp(meta, initPromises, appOptions);
+		this.initApp(meta, initPromises);
 	}
 
 	async createServer () {
@@ -42,23 +42,10 @@ module.exports = class InstrumentListen {
 		}
 	}
 
-	initApp (meta, initPromises, appOptions) {
+	initApp (meta, initPromises) {
 		this.app.listen = async (port, callback) => {
 			// these middleware are attached in .listen so they're
 			// definitely after any middleware added by the app itself
-
-			// The Raven error handler must be the first error middleware if it's loaded
-			if (appOptions.withSentry) {
-				// Note: we require n-raven here because importing n-raven introduces
-				// a lot of side effects. If we don't import it inside this conditional
-				// then it'll always set up unhandled rejection errors. This has a
-				// negligible impact on startup speed – the module has to be loaded
-				// synchronously regardless of whether it's in this conditional or not,
-				// we're just deferring it until later on, when the main `express`
-				// function is called
-				const raven = require('@financial-times/n-raven');
-				this.app.use(raven.errorHandler());
-			}
 
 			// Optional fallthrough error handler
 			// eslint-disable-next-line no-unused-vars
@@ -94,12 +81,7 @@ module.exports = class InstrumentListen {
 					return next(err);
 				}
 
-				// If Sentry is in use, the error id is attached to `res.sentry`
-				// to be returned and optionally displayed to the user for support.
-				// If Sentry is disabled we fall back to the relevant HTTP status
-				// code and message
-				const nonSentryOutput = `${res.statusCode} ${statusMessage}`;
-				const output = `${appOptions.withSentry ? res.sentry : nonSentryOutput}\n`;
+				const output = `${res.statusCode} ${statusMessage}\n`;
 				res.end(output);
 			});
 
