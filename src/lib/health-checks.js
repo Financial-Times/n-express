@@ -5,7 +5,7 @@
  * @typedef {import("../../typings/n-express").AppOptions} AppOptions
  */
 
-const nLogger = require('@financial-times/n-logger').default;
+const logger = require('@dotcom-reliability-kit/logger');
 
 const errorRateCheck = require('./error-rate-check');
 const herokuLogDrainCheck = require('./heroku-log-drain-check');
@@ -51,7 +51,7 @@ module.exports = (app, options, meta) => {
 			herokuAppId: process.env.HEROKU_APP_ID
 		}));
 	} else {
-		nLogger.warn({
+		logger.warn({
 			event: 'N_EXPRESS_APP_MISSING_HEROKU_APP_ID',
 			message: `The ${options.systemCode} app is missing a HEROKU_APP_ID env var`,
 			systemName: options.healthChecksAppName || defaultAppName,
@@ -69,7 +69,7 @@ module.exports = (app, options, meta) => {
 			const checks = healthChecks.map((check) => check.getStatus());
 
 			checks.forEach(check => {if(!check.id){
-				nLogger.warn({
+				logger.warn({
 					event: 'HEALTHCHECK_IS_MISSING_ID',
 					message: `The ${check.name} healthcheck is missing an ID`,
 					systemName: options.healthChecksAppName || defaultAppName,
@@ -79,7 +79,7 @@ module.exports = (app, options, meta) => {
 			}});
 
 			checks.forEach(check => {if(!check.ok){
-				nLogger.debug({
+				logger.debug({
 					event: 'HEALTHCHECK_IS_FAILING',
 					message: `The ${check.name} healthcheck is failing`,
 					systemCode: options.systemCode,

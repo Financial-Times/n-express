@@ -4,13 +4,12 @@
 // @ts-nocheck
 
 const metrics = require('next-metrics');
-const nLogger = require('@financial-times/n-logger').default;
+const logger = require('@dotcom-reliability-kit/logger');
 const http = require('http');
 const https = require('https');
 const denodeify = require('denodeify');
 const path = require('path');
 const {STATUS_CODES} = http;
-const serializeError = require('@dotcom-reliability-kit/serialize-error');
 const serializeRequest = require('@dotcom-reliability-kit/serialize-request');
 
 const fs = require('fs');
@@ -72,12 +71,11 @@ module.exports = class InstrumentListen {
 				//
 				// This ensures that the app doesn't crash with `ERR_STREAM_WRITE_AFTER_END`
 				if (res.headersSent) {
-					nLogger.warn({
+					logger.warn({
 						event: 'EXPRESS_ERROR_HANDLER_FAILURE',
 						message: 'The default n-express error handler could not output because the response has already been sent',
-						error: serializeError(err),
 						request: serializeRequest(req)
-					});
+					}, err);
 					return next(err);
 				}
 
@@ -87,7 +85,7 @@ module.exports = class InstrumentListen {
 
 			function wrappedCallback () {
 				// HACK: Use warn so that it gets into Splunk logs
-				nLogger.warn({
+				logger.warn({
 					event: 'EXPRESS_START',
 					message: `Express application ${meta.name} started`,
 					app: meta.name,

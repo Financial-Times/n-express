@@ -24,7 +24,7 @@ const consentMiddleware = require('./src/middleware/consent');
 // logging and monitoring
 const metrics = require('next-metrics');
 const serviceMetrics = require('./src/lib/service-metrics');
-const nLogger = require('@financial-times/n-logger').default;
+const logger = require('@dotcom-reliability-kit/logger');
 
 // utils
 const healthChecks = require('./src/lib/health-checks');
@@ -66,7 +66,7 @@ const getAppContainer = (options) => {
 	}
 
 	if (options.withAb) {
-		nLogger.warn({
+		logger.warn({
 			event: 'WITHAB_OPTION_DEPRECATED',
 			message: 'The \'withAb\' option is deprecated and no longer supported by n-express or n-flags-client'
 		});

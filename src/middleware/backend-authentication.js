@@ -3,7 +3,7 @@
  * @typedef {import("../../typings/n-express").Callback} Callback
  */
 
-const nLogger = require('@financial-times/n-logger').default;
+const logger = require('@dotcom-reliability-kit/logger');
 const metrics = require('next-metrics');
 
 /**
@@ -30,7 +30,7 @@ module.exports = (app, appName) => {
 			'For more info on backend authentication see https://github.com/Financial-Times/n-express#optional'
 		];
 
-		nLogger.warn({
+		logger.warn({
 			event: 'BACKEND_AUTHENTICATION_MISSING_ENV_VARS',
 			message: missingEnvVarsMessage.join(' ')
 		});
