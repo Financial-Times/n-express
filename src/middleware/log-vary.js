@@ -2,7 +2,7 @@
  * @typedef {import("../../typings/n-express").Callback} Callback
  */
 
-const nLogger = require('@financial-times/n-logger').default;
+const logger = require('@dotcom-reliability-kit/logger');
 const sendRate = 0.05;
 
 /**
@@ -26,7 +26,7 @@ module.exports = (req, res, next) => {
 			vary.map((header) => {
 				toLog[header] = req.get(header);
 			});
-			nLogger.warn(toLog);
+			logger.warn(toLog);
 		});
 	}
 	next();

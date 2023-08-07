@@ -13,16 +13,15 @@
   },
   "dependencies": {
     "@dotcom-reliability-kit/errors": "^2.0.0",
-    "@dotcom-reliability-kit/serialize-error": "^2.0.0",
+    "@dotcom-reliability-kit/logger": "^2.2.6",
     "@dotcom-reliability-kit/serialize-request": "^2.0.0",
-    "@financial-times/n-flags-client": "^13.0.0",
-    "@financial-times/n-logger": "^10.2.0",
+    "@financial-times/n-flags-client": "^14.0.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
-    "n-health": "^10.0.0",
-    "next-metrics": "^9.7.0",
+    "n-health": "^11.0.0",
+    "next-metrics": "^10.0.0",
     "semver": "^7.3.7"
   },
   "devDependencies": {
