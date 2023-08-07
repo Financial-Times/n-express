@@ -53,7 +53,6 @@ const getAppContainer = (options) => {
 			withBackendAuthentication: true,
 			withFlags: false,
 			withConsent: false,
-			withSentry: false,
 			withServiceMetrics: true,
 			healthChecks: []
 		},
@@ -78,28 +77,10 @@ const getAppContainer = (options) => {
 	/** @type {Promise<any>[]} */
 	const initPromises = [];
 
-	const instrumentListen = new InstrumentListen(express(), meta, initPromises, options);
+	const instrumentListen = new InstrumentListen(express(), meta, initPromises);
 	const app = instrumentListen.app;
 
 	const addInitPromise = initPromises.push.bind(initPromises);
-
-	// Raven must be the first middleware if it's loaded
-	if (options.withSentry) {
-		nLogger.warn({
-			event: 'WITHSENTRY_OPTION_DEPRECATED',
-			message: 'The \'withSentry\' option is deprecated and will be removed from n-express in a future major version'
-		});
-
-		// Note: we require n-raven here because importing n-raven introduces
-		// a lot of side effects. If we don't import it inside this conditional
-		// then it'll always set up unhandled rejection errors. This has a
-		// negligible impact on startup speed – the module has to be loaded
-		// synchronously regardless of whether it's in this conditional or not,
-		// we're just deferring it until later on, when the main `express`
-		// function is called
-		const raven = require('@financial-times/n-raven');
-		app.use(raven.requestHandler());
-	}
 
 	app.get('/robots.txt', robots);
 

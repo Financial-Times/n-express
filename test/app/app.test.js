@@ -8,7 +8,6 @@ const metrics = require('next-metrics');
 const sinon = require('sinon');
 const nextExpress = require('../../main');
 const expect = require('chai').expect;
-const raven = require('@financial-times/n-raven');
 const flags = require('@financial-times/n-flags-client');
 
 let app;
@@ -118,7 +117,6 @@ describe('simple app', function () {
 		it('should instrument fetch for recognised services', async function () {
 			const realFetch = global.fetch;
 
-			sinon.stub(raven, 'captureMessage');
 			metricsApp = getApp();
 
 			expect(global.fetch).to.not.equal(realFetch);
@@ -131,9 +129,6 @@ describe('simple app', function () {
 					timeout: 50
 				}).catch(() => {})
 			]);
-
-			expect(raven.captureMessage.called).to.be.false;
-			raven.captureMessage.restore();
 		});
 	});
 
