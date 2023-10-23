@@ -69,9 +69,14 @@ module.exports = (app, appName) => {
 				res.set('FT-Backend-Authentication', 'false');
 				/* istanbul ignore else */
 				if (process.env.NODE_ENV === 'production') {
-					// NOTE - setting the status text is very important as it's used by the CDN
-					// to trigger stale-if-error if we mess up the key synchronisation again
-					res.status(401).send('Invalid Backend Key');
+					// Setting the WWW-Authenticate header tells ft.com-cdn
+					// to serve stale content instead of 401s if there's a key error.
+					res.set('WWW-Authenticate', 'FT-Backend-Key');
+					res.status(401).json({
+						status: 'Error',
+						reason: 'Invalid backend key',
+						source: 'n-express'
+					});
 				} else {
 					next();
 				}

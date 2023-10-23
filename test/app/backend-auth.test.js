@@ -45,7 +45,7 @@ describe('simple app', function () {
 				.end((err, res) => {
 					// console.log(res);
 					expect(res.status).to.equal(401);
-					expect(res.text).to.equal('Invalid Backend Key');
+					expect(res.get('WWW-Authenticate')).to.equal('FT-Backend-Key');
 					done();
 				});
 		});
@@ -57,7 +57,7 @@ describe('simple app', function () {
 				.expect('ft-backend-authentication', /false/)
 				.end((err, res) => {
 					expect(res.status).to.equal(401);
-					expect(res.text).to.equal('Invalid Backend Key');
+					expect(res.get('WWW-Authenticate')).to.equal('FT-Backend-Key');
 					done();
 				});
 		});
@@ -69,7 +69,7 @@ describe('simple app', function () {
 				.expect('ft-backend-authentication', /false/)
 				.end((err, res) => {
 					expect(res.status).to.equal(401);
-					expect(res.text).to.equal('Invalid Backend Key');
+					expect(res.get('WWW-Authenticate')).to.equal('FT-Backend-Key');
 					done();
 				});
 		});
