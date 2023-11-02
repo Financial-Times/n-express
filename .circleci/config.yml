@@ -34,6 +34,8 @@ workflows:
           filters:
             branches:
               only: /(^renovate-.*|^nori/.*)/
+            tags:
+              only: /^v\d+\.\d+\.\d+(-.+)?/
       - tool-kit/setup:
           name: tool-kit/setup-<< matrix.executor >>
           requires:
