@@ -13,7 +13,6 @@ hooks:
     - Eslint
     - Mocha
   git:precommit:
-    - SecretSquirrel
     - LintStaged
 options:
   "@dotcom-tool-kit/mocha":
