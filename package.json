@@ -25,7 +25,7 @@
     "semver": "^7.3.7"
   },
   "devDependencies": {
-    "@dotcom-tool-kit/component": "^4.0.3",
+    "@dotcom-tool-kit/component": "^4.0.4",
     "@dotcom-tool-kit/eslint": "^3.1.1",
     "@dotcom-tool-kit/husky-npm": "^4.1.0",
     "@dotcom-tool-kit/lint-staged-npm": "^3.1.1",
