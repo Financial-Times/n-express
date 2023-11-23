@@ -41,6 +41,7 @@ const teapot = fs.readFileSync(
 	path.join(__dirname, 'src/assets/teapot.ascii'),
 	'utf8'
 );
+const generateViaMiddleware = require('./src/middleware/via');
 
 /**
  * @param {AppOptions} options
@@ -97,6 +98,9 @@ const getAppContainer = (options) => {
 	// Security related headers, see https://securityheaders.io/?q=https%3A%2F%2Fwww.ft.com&hide=on.
 	app.set('x-powered-by', false);
 	app.use(security);
+
+	// Add the application system code to the Via HTTP header
+	app.use(generateViaMiddleware(meta.systemCode));
 
 	// utility middleware
 	app.use(vary);
