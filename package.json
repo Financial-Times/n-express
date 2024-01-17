@@ -15,13 +15,13 @@
     "@dotcom-reliability-kit/errors": "^2.0.0",
     "@dotcom-reliability-kit/logger": "^2.2.6",
     "@dotcom-reliability-kit/serialize-request": "^2.0.0",
-    "@financial-times/n-flags-client": "^14.0.1",
+    "@financial-times/n-flags-client": "^14.1.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
-    "n-health": "^11.0.0",
-    "next-metrics": "^10.0.10",
+    "n-health": "^11.1.0",
+    "next-metrics": "^10.1.0",
     "semver": "^7.3.7"
   },
   "devDependencies": {
@@ -55,13 +55,13 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "16.x || 18.x",
-    "npm": "7.x || 8.x || 9.x"
+    "node": "16.x || 18.x || 20.x",
+    "npm": "7.x || 8.x || 9.x || 10.x"
   },
   "config": {},
   "false": {},
   "volta": {
-    "node": "18.16.0"
+    "node": "20.11.0"
   },
   "husky": {
     "hooks": {
