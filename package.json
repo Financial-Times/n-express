@@ -15,7 +15,7 @@
     "@dotcom-reliability-kit/errors": "^2.0.0",
     "@dotcom-reliability-kit/logger": "^2.2.6",
     "@dotcom-reliability-kit/serialize-request": "^2.0.0",
-    "@financial-times/n-flags-client": "^14.1.0",
+    "@financial-times/n-flags-client": "^15.0.0",
     "debounce": "^1.1.0",
     "denodeify": "^1.2.1",
     "express": "^4.17.3",
