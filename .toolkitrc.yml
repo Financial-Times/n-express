@@ -24,3 +24,5 @@ options:
     nodeVersion:
       - '20.11'
       - '18.16'
+  '@dotcom-tool-kit/doppler':
+    project: repo_n-express
