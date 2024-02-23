@@ -8,10 +8,9 @@ const metrics = require('next-metrics');
 
 /**
  * @param {Express.Application} app
- * @param {string} appName
  * @returns {void}
  */
-module.exports = (app, appName) => {
+module.exports = (app) => {
 	/** @type {string[]} */
 	const backendKeys = [];
 
@@ -41,12 +40,8 @@ module.exports = (app, appName) => {
 	// @ts-ignore
 	app.use(
 		/** @type {Callback} */ (req, res, next) => {
-			// TODO - change how all this works in order to use __assets/app/{appname}
 			// allow static assets, healthchecks, etc., through
-			if (
-				req.path.indexOf('/' + appName) === 0 ||
-				req.path.indexOf('/__') === 0
-			) {
+			if (req.path.indexOf('/__') === 0) {
 				next();
 			} else if (
 				backendKeys.includes(
