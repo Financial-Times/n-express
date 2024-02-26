@@ -75,7 +75,7 @@ describe('simple app', function () {
 		});
 
 		it('should allow double-underscorey routes through without backend access key', function (done) {
-			request(app).get('/__about').expect(200, done);
+			request(app).get('/__health').expect(200, done);
 		});
 
 		it('should accept any request with backend access key', function (done) {

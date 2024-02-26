@@ -135,14 +135,6 @@ const getAppContainer = (options) => {
 		instrumentListen.addMetrics(serviceMetrics.init());
 	}
 
-	app.get(
-		'/__about',
-		/** @type {Callback} */ (req, res) => {
-			res.set({ 'Cache-Control': 'no-cache' });
-			res.sendFile(meta.directory + '/public/__about.json');
-		}
-	);
-
 	if (options.withBackendAuthentication) {
 		backendAuthentication(app);
 	}

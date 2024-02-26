@@ -80,7 +80,6 @@ As next-metrics must be a singleton to ensure reliable reporting, it is exported
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
 - Instrumentation of system and http (incoming and outgoing) performance using [Next Metrics](https://github.com/Financial-Times/next-metrics)
 - Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
-- Exposes various bits of metadata about the app (e.g. name, version, env, isProduction) to templates (via `res.locals`) and the outside world (via `{appname}/__about.json`)
 
 
 
