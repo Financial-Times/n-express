@@ -144,7 +144,7 @@ const getAppContainer = (options) => {
 	);
 
 	if (options.withBackendAuthentication) {
-		backendAuthentication(app, meta.name);
+		backendAuthentication(app);
 	}
 
 	// feature flags

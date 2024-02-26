@@ -78,13 +78,6 @@ describe('simple app', function () {
 			request(app).get('/__about').expect(200, done);
 		});
 
-		it('should allow routes named after app through without backend access key', function (done) {
-			request(app)
-				.get('/test-auth/main.css')
-				// it's a 404 as not set up for static assets, but main thing is it isn't a 403
-				.expect(404, done);
-		});
-
 		it('should accept any request with backend access key', function (done) {
 			request(app)
 				.get('/')

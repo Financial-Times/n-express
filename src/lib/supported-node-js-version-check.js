@@ -1,6 +1,10 @@
 const semver = require('semver');
 
 // Ref. https://nodejs.org/en/about/releases
+
+/**
+ * @type {Object.<string, Date>}
+ */
 const nodeVersionToEndOfLifeDateMap = {
 	'12': new Date('2022-04-30'),
 	'14': new Date('2023-04-30'),
