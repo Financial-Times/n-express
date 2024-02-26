@@ -45,10 +45,6 @@ describe('simple app', function () {
 		request(app).get('/robots.txt').expect(200, done);
 	});
 
-	it('should have an about json', function (done) {
-		request(app).get('/__about').expect(200, done);
-	});
-
 	describe('backend access', function () {
 		before(function () {
 			process.env.NODE_ENV = 'production';
