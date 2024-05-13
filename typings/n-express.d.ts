@@ -30,7 +30,6 @@ export interface AppMeta {
 	name: string;
 	directory: string;
 	systemCode: string;
-	graphiteName: string;
 }
 export interface AppOptions extends AppMeta {
 	healthChecksAppName?: string;
