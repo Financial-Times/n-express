@@ -27,7 +27,6 @@ module.exports = (options) => {
 
 	name = name && normalizeName(name);
 	const systemCode = options.systemCode || options.name;
-	const graphiteName = options.graphiteName || systemCode;
 
-	return { name, description, directory, systemCode, graphiteName };
+	return { name, description, directory, systemCode };
 };

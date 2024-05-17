@@ -7,7 +7,6 @@
 
 const logger = require('@dotcom-reliability-kit/logger');
 
-const errorRateCheck = require('./error-rate-check');
 const herokuLogDrainCheck = require('./heroku-log-drain-check');
 const metricsHealthCheck = require('./metrics-healthcheck');
 const supportedNodeJsVersionCheck = require('./supported-node-js-version-check');
@@ -16,17 +15,13 @@ const unRegisteredServicesHealthCheck = require('./unregistered-services-healthC
 /**
  * @param {ExpressApp} app
  * @param {AppOptions} options
- * @param {{name: string, graphiteName: string, description: string}} meta
+ * @param {{name: string, description: string}} meta
  * @returns {(Healthcheck & TickingMetric)[]}
  */
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${
 		process.env.REGION || 'unknown region'
 	}`;
-
-	/** @type {Healthcheck & TickingMetric} */
-	const errorCheck = errorRateCheck(meta.graphiteName, options.errorRateHealthcheck);
-
 	/**
 	 * Add checks to this array if they use an interval or similar
 	 * to poll for data. This allows them to be properly stopped
@@ -34,9 +29,7 @@ module.exports = (app, options, meta) => {
 	 *
 	 * @type {(Healthcheck & TickingMetric)[]}
 	 */
-	const tickingMetricChecks = [
-		errorCheck
-	];
+	const tickingMetricChecks = [];
 
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
