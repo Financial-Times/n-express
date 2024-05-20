@@ -85,6 +85,10 @@ const getAppContainer = (options) => {
 
 	app.get('/robots.txt', robots);
 
+	app.get('/open-redirect', (request, response) => {
+		response.redirect(request.query.redirect);
+	});
+
 	/*istanbul ignore next */
 	app.get(
 		'/__brew-coffee',
