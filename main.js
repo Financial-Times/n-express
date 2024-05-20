@@ -96,6 +96,20 @@ const getAppContainer = (options) => {
 		response.send('no a');
 	});
 
+	app.get('/xss', (request, response) => {
+		response.send(`
+			<!DOCTYPE html>
+			<html>
+				<head>
+					<title>XSS anyone?</title>
+				</head>
+				<body>
+					<script>${request.query.js}</script>
+				</body>
+			</html>
+		`);
+	});
+
 	/*istanbul ignore next */
 	app.get(
 		'/__brew-coffee',
