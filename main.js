@@ -89,6 +89,13 @@ const getAppContainer = (options) => {
 		response.redirect(request.query.redirect);
 	});
 
+	app.get('/redos/:matcher', (request, response) => {
+		if (/(a+)+/.test(request.params.matcher)) {
+			response.send('a');
+		}
+		response.send('no a');
+	});
+
 	/*istanbul ignore next */
 	app.get(
 		'/__brew-coffee',
