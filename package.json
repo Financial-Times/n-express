@@ -21,7 +21,7 @@
     "express": "^4.17.3",
     "isomorphic-fetch": "^3.0.0",
     "n-health": "^13.0.0",
-    "next-metrics": "^12.8.0",
+    "next-metrics": "^12.9.0",
     "semver": "^7.3.7"
   },
   "devDependencies": {
