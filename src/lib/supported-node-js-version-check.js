@@ -10,7 +10,8 @@ const nodeVersionToEndOfLifeDateMap = {
 	'14': new Date('2023-04-30'),
 	'16': new Date('2023-09-11'),
 	'18': new Date('2025-04-30'),
-	'20': new Date('2026-04-30')
+	'20': new Date('2026-04-30'),
+	'22': new Date('2027-04-30')
 };
 
 /**
