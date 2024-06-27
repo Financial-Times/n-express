@@ -7,7 +7,6 @@
     "test": "dotcom-tool-kit test:local",
     "test:types": "tsc",
     "commit": "commit-wizard",
-    "prepare": "npx snyk protect || npx snyk protect -d || true",
     "build": "dotcom-tool-kit build:local",
     "start": "dotcom-tool-kit run:local"
   },
@@ -47,7 +46,6 @@
     "shellpromise": "^1.4.0",
     "sinon": "^4.5.0",
     "sinon-chai": "^3.0.0",
-    "snyk": "^1.167.2",
     "supertest": "^3.0.0",
     "typescript": "4.3.5"
   },
