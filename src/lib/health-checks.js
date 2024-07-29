@@ -10,7 +10,6 @@ const logger = require('@dotcom-reliability-kit/logger');
 const herokuLogDrainCheck = require('./heroku-log-drain-check');
 const metricsHealthCheck = require('./metrics-healthcheck');
 const supportedNodeJsVersionCheck = require('./supported-node-js-version-check');
-const unRegisteredServicesHealthCheck = require('./unregistered-services-healthCheck');
 
 /**
  * @param {ExpressApp} app
@@ -34,7 +33,6 @@ module.exports = (app, options, meta) => {
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
 		...tickingMetricChecks,
-		unRegisteredServicesHealthCheck.setAppName(meta.name),
 		metricsHealthCheck(meta.name),
 		supportedNodeJsVersionCheck(meta.name)
 	];
