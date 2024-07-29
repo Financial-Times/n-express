@@ -23,7 +23,6 @@ const consentMiddleware = require('./src/middleware/consent');
 
 // logging and monitoring
 const metrics = require('next-metrics');
-const serviceMetrics = require('./src/lib/service-metrics');
 const logger = require('@dotcom-reliability-kit/logger');
 
 // utils
@@ -132,7 +131,7 @@ const getAppContainer = (options) => {
 	);
 
 	if (options.withServiceMetrics) {
-		instrumentListen.addMetrics(serviceMetrics.init());
+		metrics.fetch.instrument();
 	}
 
 	if (options.withBackendAuthentication) {

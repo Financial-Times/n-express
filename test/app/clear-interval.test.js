@@ -3,16 +3,9 @@ const nextExpress = require('../../main');
 const InstrumentListen = require('../../src/lib/instrument-listen');
 const expect = require('chai').expect;
 const healthChecks = require('../../src/lib/health-checks');
-const serviceMetrics = require('../../src/lib/service-metrics');
 const sinon = require('sinon');
 
 describe('clears intervals', () => {
-	it('should return object with stop function in service-metrics', () => {
-		const result = serviceMetrics.init();
-		expect(result.stop).to.not.be.undefined;
-		result.stop();
-	});
-
 	it('should return an array of objects with stop functions in health-checks', () => {
 		const app = express();
 
@@ -27,21 +20,6 @@ describe('clears intervals', () => {
 		setTimeout(() => {
 			checks.forEach(check => check.stop());
 		}, 0);
-	});
-
-	it('should call stop() which clears all intervals if a metric is added to instrumentListen', () => {
-		const app = express();
-		const instrumentListen = new InstrumentListen(app, {}, []);
-		const spy = sinon.spy();
-		const stub = sinon.stub(serviceMetrics, 'init');
-		stub.returns({
-			stop: spy
-		});
-		instrumentListen.addMetrics(serviceMetrics.init());
-
-		app.close();
-
-		expect(spy.called).to.be.true;
 	});
 
 	it('should close server in app.close if there is a live server', () => {
