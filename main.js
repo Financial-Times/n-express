@@ -6,7 +6,13 @@
  * @typedef {import("./typings/metrics").TickingMetric} TickingMetric
  */
 
-require('isomorphic-fetch');
+// only include isomorphic-fetch if the application has explicitly disabled native fetch
+if (
+	process.allowedNodeEnvironmentFlags.has('--no-experimental-fetch') &&
+	process.execArgv.includes('--no-experimental-fetch')
+) {
+	require('isomorphic-fetch');
+}
 
 const fs = require('fs');
 const path = require('path');
@@ -68,7 +74,8 @@ const getAppContainer = (options) => {
 	if (options.withAb) {
 		logger.warn({
 			event: 'WITHAB_OPTION_DEPRECATED',
-			message: 'The \'withAb\' option is deprecated and no longer supported by n-express or n-flags-client'
+			message:
+				"The 'withAb' option is deprecated and no longer supported by n-express or n-flags-client"
 		});
 	}
 
