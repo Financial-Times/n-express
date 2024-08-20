@@ -50,20 +50,6 @@ export interface ErrorRateHealthcheckOptions {
 	samplePeriod?: string;
 }
 
-export interface HerokuLogDrainHealthcheckOptions {
-	herokuAppId?: string;
-}
-
-interface NextHealthLogDrainStatus {
-	ok: boolean;
-	description: String;
-}
-
-export interface NextHealthLogDrainResponse {
-	herokuAppId: string;
-	status: NextHealthLogDrainStatus;
-}
-
 export interface AppContainer {
 	app: Express.Application;
 	meta: guessAppDetails.Options & {

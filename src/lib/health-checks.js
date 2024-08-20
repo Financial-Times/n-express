@@ -7,7 +7,6 @@
 
 const logger = require('@dotcom-reliability-kit/logger');
 
-const herokuLogDrainCheck = require('./heroku-log-drain-check');
 const metricsHealthCheck = require('./metrics-healthcheck');
 const supportedNodeJsVersionCheck = require('./supported-node-js-version-check');
 
@@ -36,19 +35,6 @@ module.exports = (app, options, meta) => {
 		metricsHealthCheck(meta.name),
 		supportedNodeJsVersionCheck(meta.name)
 	];
-
-	if (process.env.HEROKU_APP_ID) {
-		defaultChecks.push(herokuLogDrainCheck({
-			herokuAppId: process.env.HEROKU_APP_ID
-		}));
-	} else {
-		logger.warn({
-			event: 'N_EXPRESS_APP_MISSING_HEROKU_APP_ID',
-			message: `The ${options.systemCode} app is missing a HEROKU_APP_ID env var`,
-			systemName: options.healthChecksAppName || defaultAppName,
-			systemCode: options.systemCode
-		});
-	}
 
 	/** @type {Healthcheck[]} */
 	const healthChecks = options.healthChecks.concat(defaultChecks);
