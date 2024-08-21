@@ -8,7 +8,6 @@
 const logger = require('@dotcom-reliability-kit/logger');
 
 const metricsHealthCheck = require('./metrics-healthcheck');
-const supportedNodeJsVersionCheck = require('./supported-node-js-version-check');
 
 /**
  * @param {ExpressApp} app
@@ -32,8 +31,7 @@ module.exports = (app, options, meta) => {
 	/** @type {Healthcheck[]} */
 	const defaultChecks = [
 		...tickingMetricChecks,
-		metricsHealthCheck(meta.name),
-		supportedNodeJsVersionCheck(meta.name)
+		metricsHealthCheck(meta.name)
 	];
 
 	/** @type {Healthcheck[]} */
