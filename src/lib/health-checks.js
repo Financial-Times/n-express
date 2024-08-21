@@ -1,47 +1,26 @@
 /**
  * @typedef {import("express").Application} ExpressApp
- * @typedef {import("../../typings/metrics").Healthcheck} Healthcheck
- * @typedef {import("../../typings/metrics").TickingMetric} TickingMetric
  * @typedef {import("../../typings/n-express").AppOptions} AppOptions
  */
 
 const logger = require('@dotcom-reliability-kit/logger');
 
-const metricsHealthCheck = require('./metrics-healthcheck');
-
 /**
  * @param {ExpressApp} app
  * @param {AppOptions} options
  * @param {{name: string, description: string}} meta
- * @returns {(Healthcheck & TickingMetric)[]}
+ * @returns {void}
  */
 module.exports = (app, options, meta) => {
 	const defaultAppName = `Next FT.com ${meta.name} in ${
 		process.env.REGION || 'unknown region'
 	}`;
-	/**
-	 * Add checks to this array if they use an interval or similar
-	 * to poll for data. This allows them to be properly stopped
-	 * alongside the n-express app.
-	 *
-	 * @type {(Healthcheck & TickingMetric)[]}
-	 */
-	const tickingMetricChecks = [];
-
-	/** @type {Healthcheck[]} */
-	const defaultChecks = [
-		...tickingMetricChecks,
-		metricsHealthCheck(meta.name)
-	];
-
-	/** @type {Healthcheck[]} */
-	const healthChecks = options.healthChecks.concat(defaultChecks);
 
 	app.get(
 		/\/__health(?:\.([123]))?$/,
 		/** @type {ExpressApp} */ (req, res) => {
 			res.set({ 'Cache-Control': 'private, no-cache, max-age=0' });
-			const checks = healthChecks.map((check) => check.getStatus());
+			const checks = options.healthChecks.map((check) => check.getStatus());
 
 			checks.forEach(check => {if(!check.id){
 				logger.warn({
@@ -86,6 +65,4 @@ module.exports = (app, options, meta) => {
 			);
 		}
 	);
-
-	return tickingMetricChecks;
 };

@@ -1,6 +1,3 @@
-/**
- * @typedef {import("../../typings/metrics").TickingMetric} TickingMetric
- */
 // @ts-nocheck
 
 const metrics = require('next-metrics');
@@ -18,8 +15,6 @@ const readFile = denodeify(fs.readFile);
 module.exports = class InstrumentListen {
 	constructor (app, meta, initPromises) {
 		this.app = app;
-		/** @type {TickingMetric[]} */
-		this.tickingMetrics = [];
 		this.server = null;
 		this.initApp(meta, initPromises);
 	}
@@ -118,15 +113,9 @@ module.exports = class InstrumentListen {
 		 * Attempts to clean up the ticking checks and close the server
 		 */
 		this.app.close = (callback) => {
-			this.tickingMetrics.forEach(check => check.stop());
 			if (this.server) {
 				this.server.close(() => callback && callback());
 			}
 		};
-	}
-
-	addMetrics (item) {
-		const items = (Array.isArray(item) ? item : [item]);
-		this.tickingMetrics.push(...items);
 	}
 };
