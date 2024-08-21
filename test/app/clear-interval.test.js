@@ -2,26 +2,9 @@ const express = require('express');
 const nextExpress = require('../../main');
 const InstrumentListen = require('../../src/lib/instrument-listen');
 const expect = require('chai').expect;
-const healthChecks = require('../../src/lib/health-checks');
 const sinon = require('sinon');
 
 describe('clears intervals', () => {
-	it('should return an array of objects with stop functions in health-checks', () => {
-		const app = express();
-
-		const checks = healthChecks(app, {healthChecks: []}, {});
-		expect(checks).to.be.an('array');
-		for (const check of checks) {
-			expect(check.stop).to.be.a('function');
-		}
-
-		//ensure the start() function is called before the stop(),
-		//because healthChecks(...) eventually calls n-health runCheck(), but runCheck() doesn't await on start()
-		setTimeout(() => {
-			checks.forEach(check => check.stop());
-		}, 0);
-	});
-
 	it('should close server in app.close if there is a live server', () => {
 		const app = express();
 		const instrumentListen = new InstrumentListen(app, {}, [Promise.resolve()]);

@@ -10,10 +10,6 @@ export interface HealthcheckStatus {
 	technicalSummary: string;
 }
 
-export type TickingMetric = {
-	stop: () => void;
-}
-
 export type Healthcheck = {
 	getStatus: () => HealthcheckStatus;
 };
