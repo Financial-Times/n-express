@@ -6,6 +6,5 @@
 .prettierrc
 .toolkit*
 CODEOWNERS
-renovate.json
 test
 tsconfig.json
