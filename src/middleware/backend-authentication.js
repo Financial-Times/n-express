@@ -62,7 +62,6 @@ module.exports = (app) => {
 			} else {
 				metrics.count('express.backend_authentication.fail');
 				res.set('FT-Backend-Authentication', 'false');
-				/* istanbul ignore else */
 				if (process.env.NODE_ENV === 'production') {
 					// Setting the WWW-Authenticate header tells ft.com-cdn
 					// to serve stale content instead of 401s if there's a key error.

@@ -83,7 +83,6 @@ const getAppContainer = (options) => {
 
 	app.get('/robots.txt', robots);
 
-	/*istanbul ignore next */
 	app.get(
 		'/__brew-coffee',
 		/** @type {Callback} */ (req, res) => {
