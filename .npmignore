@@ -7,6 +7,5 @@
 .toolkit*
 CODEOWNERS
 renovate.json
-secret-squirrel.js
 test
 tsconfig.json
