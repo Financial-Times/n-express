@@ -4,13 +4,10 @@ const metrics = require('next-metrics');
 const logger = require('@dotcom-reliability-kit/logger');
 const http = require('http');
 const https = require('https');
-const denodeify = require('denodeify');
 const path = require('path');
+const {readFile} = require('fs/promises');
 const {STATUS_CODES} = http;
 const serializeRequest = require('@dotcom-reliability-kit/serialize-request');
-
-const fs = require('fs');
-const readFile = denodeify(fs.readFile);
 
 module.exports = class InstrumentListen {
 	constructor (app, meta, initPromises) {
