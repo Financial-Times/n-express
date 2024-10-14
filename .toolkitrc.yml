@@ -5,7 +5,7 @@ plugins:
   - '@dotcom-tool-kit/husky-npm'
   - '@dotcom-tool-kit/lint-staged-npm'
   - '@dotcom-tool-kit/node'
-hooks:
+commands:
   test:local:
     - Eslint
     - Mocha
@@ -15,14 +15,16 @@ hooks:
   git:precommit:
     - LintStaged
 options:
-  "@dotcom-tool-kit/mocha":
-    files: "test/**/*.test.js"
-  "@dotcom-tool-kit/node":
-    entry: "test/fixtures/app/main.js"
-    useVault: false
-  '@dotcom-tool-kit/circleci':
-    nodeVersion:
-      - '20.11'
-      - '18.16'
-  '@dotcom-tool-kit/doppler':
-    project: repo_n-express
+  plugins:
+    '@dotcom-tool-kit/circleci':
+      cimgNodeVersions:
+        - '20.18'
+        - '18.20'
+    '@dotcom-tool-kit/doppler':
+      project: repo_n-express
+  tasks:
+    Mocha:
+      files: "test/**/*.test.js"
+    Node:
+      entry: "test/fixtures/app/main.js"
+      useDoppler: false
