@@ -13,7 +13,7 @@
   "dependencies": {
     "@dotcom-reliability-kit/logger": "^3.0.3",
     "@dotcom-reliability-kit/serialize-request": "^3.0.1",
-    "@financial-times/n-flags-client": "^15.0.0",
+    "@financial-times/n-flags-client": "^15.0.1",
     "express": "^4.21.1",
     "isomorphic-fetch": "^3.0.0",
     "n-health": "^13.1.0",
