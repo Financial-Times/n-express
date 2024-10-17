@@ -1,5 +1,5 @@
 /**
- * @typedef {import("../../typings/n-express").Callback} Callback
+ * @import {Callback} from '../../typings/n-express'
  */
 
 /**

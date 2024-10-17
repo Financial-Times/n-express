@@ -1,8 +1,6 @@
 /**
- * @typedef {import("express").Application} Application
- * @typedef {import("./typings/n-express").Callback} Callback
- * @typedef {import("./typings/n-express").AppOptions} AppOptions
- * @typedef {import("./typings/n-express").AppContainer} AppContainer
+ * @import {Application} from 'express'
+ * @import {AppContainer, AppOptions, Callback} from './typings/n-express'
  */
 
 require('isomorphic-fetch');

@@ -1,6 +1,9 @@
 /**
- * @typedef {import("../../typings/n-express").Callback} Callback
- * @typedef {[key: keyof import("../../typings/n-express").CacheHeaders, val: string]} CacheHeader
+ * @import {Callback, CacheHeaders} from '../../typings/n-express'
+ */
+
+/**
+ * @typedef {[key: keyof CacheHeaders, val: string]} CacheHeader
  */
 
 const cacheHeaders = {
