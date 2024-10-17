@@ -26,6 +26,7 @@
     "@dotcom-tool-kit/lint-staged-npm": "^4.0.2",
     "@dotcom-tool-kit/mocha": "^4.0.2",
     "@dotcom-tool-kit/node": "^4.0.2",
+    "@dotcom-tool-kit/typescript": "^3.0.2",
     "@financial-times/eslint-config-next": "^7.1.0",
     "@tsconfig/node18": "^18.2.4",
     "@types/express": "4.17.21",

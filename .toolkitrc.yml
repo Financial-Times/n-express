@@ -5,15 +5,20 @@ plugins:
   - '@dotcom-tool-kit/husky-npm'
   - '@dotcom-tool-kit/lint-staged-npm'
   - '@dotcom-tool-kit/node'
+  - '@dotcom-tool-kit/typescript'
 commands:
   test:local:
     - Eslint
+    - TypeScript
     - Mocha
   test:ci:
     - Eslint
+    - TypeScript
     - Mocha
   git:precommit:
     - LintStaged
+  run:local:
+    - Node
 options:
   plugins:
     '@dotcom-tool-kit/circleci':
