@@ -1,5 +1,5 @@
 /**
- * @typedef {import("../../typings/n-express").AppMeta} AppMeta
+ * @import {AppMeta} from '../../typings/n-express'
  */
 
 const normalizeName = require('./normalize-name');

@@ -1,6 +1,6 @@
 /**
- * @typedef {import("express").Application} ExpressApp
- * @typedef {import("../../typings/n-express").AppOptions} AppOptions
+ * @import {Application as ExpressApp} from 'express'
+ * @import {AppOptions} from '../../typings/n-express'
  */
 
 const logger = require('@dotcom-reliability-kit/logger');

@@ -1,6 +1,5 @@
 /**
- * @typedef {import("express")} Express
- * @typedef {import("../../typings/n-express").Callback} Callback
+ * @import Express from 'express'
  */
 
 const logger = require('@dotcom-reliability-kit/logger');
@@ -39,7 +38,7 @@ module.exports = (app) => {
 
 	// @ts-ignore
 	app.use(
-		/** @type {Callback} */ (req, res, next) => {
+		/** @type {Express.Handler} */ (req, res, next) => {
 			// allow static assets, healthchecks, etc., through
 			if (req.path.indexOf('/__') === 0) {
 				next();
