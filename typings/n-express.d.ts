@@ -32,6 +32,8 @@ export interface AppMeta {
 	systemCode: string;
 }
 export interface AppOptions extends AppMeta {
+	/** @deprecated */
+	withAb?: boolean;
 	healthChecksAppName?: string;
 	healthChecks: Metrics.Healthcheck[];
 	errorRateHealthcheck?: ErrorRateHealthcheckOptions;
