@@ -5,7 +5,7 @@
  */
 
 /**
- * @type {Callback}
+ * @param {Request} req
  */
 function AnonymousModel (req) {
 	if (req.get('FT-Anonymous-User') === 'true') {

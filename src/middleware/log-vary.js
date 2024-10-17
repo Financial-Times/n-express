@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
 				event: 'RESPONSE_VARY',
 				path: req.path
 			};
-			const vary = res.get('vary').replace(/ /g, '').split(',');
+			const vary = res.get('vary')?.replace(/ /g, '').split(',');
 
 			if (!vary) {
 				return;
