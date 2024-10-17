@@ -6,6 +6,7 @@
     "noEmit": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
+    "strict": true,
     "esModuleInterop": true
   },
   "include": ["./main.js", "./typings", "./src"]
