@@ -16,7 +16,7 @@
     "@financial-times/n-flags-client": "^15.0.1",
     "express": "^4.21.1",
     "isomorphic-fetch": "^3.0.0",
-    "n-health": "^13.1.0",
+    "n-health": "^13.1.1",
     "next-metrics": "^12.15.1"
   },
   "devDependencies": {
