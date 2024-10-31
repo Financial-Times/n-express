@@ -31,7 +31,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/express": "5.0.0",
     "@types/isomorphic-fetch": "0.0.39",
-    "@types/node": "22.7.9",
+    "@types/node": "22.8.6",
     "chai": "^4.5.0",
     "dotcom-tool-kit": "^4.0.5",
     "fetch-mock": "^5.1.2",
