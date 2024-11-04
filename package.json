@@ -17,7 +17,7 @@
     "express": "^4.21.2",
     "isomorphic-fetch": "^3.0.0",
     "n-health": "^13.1.4",
-    "next-metrics": "^12.15.2"
+    "next-metrics": "^13.0.0"
   },
   "devDependencies": {
     "@dotcom-tool-kit/component": "^5.1.12",
