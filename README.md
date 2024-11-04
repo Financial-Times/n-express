@@ -37,7 +37,6 @@ Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise st
 - `withBackendAuthentication` - Boolean, defaults to `true` - if there is a `FT_NEXT_BACKEND_KEY[_OLD]` env variable, the app will expect requests to have an equivalent `FT-Next-Backend-Key[-Old]` header; this turns off that functionality. Backend authentication is required for applications serving traffic that should only come via the Fastly -> Preflight -> Router request routing. An example of why is the Next Article application, if this didn't have backend authentication enabled you would be able to view articles via the heroku application url as it wouldn't be protected by barriers which are handled within Fastly and Preflight.
 - `withFlags` - decorates each request with [flags](https://github.com/Financial-Times/n-flags-client) as `res.locals.flags`
 - `withConsent` - decorates each request with the user's consent preferences as `res.locals.consent`
-- `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
 - `withAnonMiddleware`- adds middleware that converts headers related to logged in status in to a `res.locals.anon` model
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
@@ -45,7 +44,6 @@ Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise st
 ## Static properties and methods
 - `Router` - `express.Router`
 - `static` - `express.static` middleware
-- `metrics` - `next-metrics` instance
 - `flags` - `n-flags-client` instance
 - `getAppContainer()` - returns an object:
 	- `app`: the express app instance
@@ -72,13 +70,8 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 - `res.unvaryAll()` - remove all vary headers. *Do not use lightly!!!*
 - `res.vary('My-Header')` - add to the list of vary headers
 
-## next-metrics
-As next-metrics must be a singleton to ensure reliable reporting, it is exported at `require('@financial-times/n-express').metrics`. To send metrics under a variant app name (e.g. a canary app) set the environment variable `FT_APP_VARIANT`.
-
 # Other enhancements
 - `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
-- Instrumentation of system and http (incoming and outgoing) performance using [Next Metrics](https://github.com/Financial-Times/next-metrics)
-- Anti-search engine `GET /robots.txt` (possibly might need to change in the future)
 
 
 
