@@ -25,7 +25,6 @@ describe('clears intervals', () => {
 			systemCode: 'test-app',
 			withFlags: false,
 			demo: false, // adds health check that sets interval
-			withServiceMetrics: true // adds service check that sets interval
 		});
 
 

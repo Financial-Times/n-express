@@ -1,6 +1,5 @@
 // @ts-nocheck
 
-const metrics = require('next-metrics');
 const logger = require('@dotcom-reliability-kit/logger');
 const http = require('http');
 const https = require('https');
@@ -93,7 +92,6 @@ module.exports = class InstrumentListen {
 			try {
 				await Promise.all(initPromises);
 
-				metrics.count('express.start');
 				const server = await this.createServer();
 				this.server = server;
 				return server.listen(port, wrappedCallback);
