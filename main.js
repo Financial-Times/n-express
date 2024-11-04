@@ -50,7 +50,6 @@ const getAppContainer = (options) => {
 			withBackendAuthentication: true,
 			withFlags: false,
 			withConsent: false,
-			withServiceMetrics: true,
 			healthChecks: []
 		},
 		options || {}
@@ -113,22 +112,6 @@ const getAppContainer = (options) => {
 			next();
 		}
 	);
-
-	// metrics should be one of the first things as needs to be applied before any other middleware executes
-	metrics.init({
-		flushEvery: 40000
-	});
-	app.use(
-		/** @type {Callback} */ (req, res, next) => {
-			metrics.instrument(req, { as: 'express.http.req' });
-			metrics.instrument(res, { as: 'express.http.res' });
-			next();
-		}
-	);
-
-	if (options.withServiceMetrics) {
-		metrics.fetch.instrument();
-	}
 
 	if (options.withBackendAuthentication) {
 		backendAuthentication(app);
