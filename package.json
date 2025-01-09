@@ -20,25 +20,25 @@
     "next-metrics": "^12.15.2"
   },
   "devDependencies": {
-    "@dotcom-tool-kit/component": "^5.0.5",
-    "@dotcom-tool-kit/eslint": "^4.1.1",
-    "@dotcom-tool-kit/husky-npm": "^5.0.4",
-    "@dotcom-tool-kit/lint-staged-npm": "^4.0.4",
-    "@dotcom-tool-kit/mocha": "^4.1.1",
-    "@dotcom-tool-kit/node": "^4.1.1",
-    "@dotcom-tool-kit/typescript": "^3.1.1",
+    "@dotcom-tool-kit/component": "^5.1.2",
+    "@dotcom-tool-kit/eslint": "^4.2.2",
+    "@dotcom-tool-kit/husky-npm": "^5.1.2",
+    "@dotcom-tool-kit/lint-staged-npm": "^4.1.2",
+    "@dotcom-tool-kit/mocha": "^4.2.2",
+    "@dotcom-tool-kit/node": "^4.2.2",
+    "@dotcom-tool-kit/typescript": "^3.2.2",
     "@financial-times/eslint-config-next": "^7.1.0",
     "@tsconfig/node18": "^18.2.4",
     "@types/express": "5.0.0",
     "@types/isomorphic-fetch": "0.0.39",
-    "@types/node": "22.10.4",
+    "@types/node": "22.10.5",
     "chai": "^4.5.0",
-    "dotcom-tool-kit": "^4.2.0",
+    "dotcom-tool-kit": "^4.3.5",
     "fetch-mock": "^5.1.2",
     "sinon": "^19.0.2",
     "sinon-chai": "^3.0.0",
     "supertest": "^7.0.0",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   },
   "bin": {
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
