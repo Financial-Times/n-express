@@ -15,8 +15,10 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - tool-kit/persist-workspace:
-          path: .
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 workflows:
   tool-kit:
     when:
@@ -50,9 +52,6 @@ workflows:
                 - node18_20
           requires:
             - tool-kit/setup-<< matrix.executor >>
-          filters:
-            tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?/
       - tool-kit/test:
           name: tool-kit/test-<< matrix.executor >>
           matrix:
@@ -62,19 +61,14 @@ workflows:
                 - node18_20
           requires:
             - tool-kit/build-<< matrix.executor >>
-          filters:
-            tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?/
       - tool-kit/publish-tag:
           executor: node
           requires:
             - tool-kit/test-node
+          context: npm-publish-token
           filters:
-            tags:
-              only: /^v\d+\.\d+\.\d+(-.+)?/
             branches:
               ignore: /.*/
-          context: npm-publish-token
   nightly:
     when:
       and:
