@@ -9,9 +9,6 @@ executors:
   node20_18:
     docker:
       - image: cimg/node:20.18
-  node18_20:
-    docker:
-      - image: cimg/node:18.20
 jobs:
   checkout:
     docker:
@@ -41,7 +38,6 @@ workflows:
               executor:
                 - node
                 - node20_18
-                - node18_20
           requires:
             - checkout
           filters:
@@ -54,7 +50,6 @@ workflows:
               executor:
                 - node
                 - node20_18
-                - node18_20
           requires:
             - tool-kit/setup-<< matrix.executor >>
           filters:
@@ -67,7 +62,6 @@ workflows:
               executor:
                 - node
                 - node20_18
-                - node18_20
           requires:
             - tool-kit/build-<< matrix.executor >>
           filters:
@@ -101,7 +95,6 @@ workflows:
               executor:
                 - node
                 - node20_18
-                - node18_20
           requires:
             - checkout
       - tool-kit/build:
@@ -111,7 +104,6 @@ workflows:
               executor:
                 - node
                 - node20_18
-                - node18_20
           requires:
             - tool-kit/setup-<< matrix.executor >>
       - tool-kit/test:
@@ -121,6 +113,5 @@ workflows:
               executor:
                 - node
                 - node20_18
-                - node18_20
           requires:
             - tool-kit/build-<< matrix.executor >>
