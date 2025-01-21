@@ -28,8 +28,8 @@
     "@dotcom-tool-kit/node": "^4.3.1",
     "@dotcom-tool-kit/typescript": "^3.3.1",
     "@financial-times/eslint-config-next": "^7.1.0",
-    "@tsconfig/node18": "^18.2.4",
-    "@types/express": "5.0.1",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/express": "5.0.0",
     "@types/isomorphic-fetch": "0.0.39",
     "@types/node": "22.13.10",
     "chai": "^4.5.0",
@@ -44,7 +44,7 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "18.x || 20.x || 22.x"
+    "node": "20.x || 22.x"
   },
   "config": {},
   "false": {},
