@@ -23,6 +23,7 @@ options:
   plugins:
     '@dotcom-tool-kit/circleci':
       cimgNodeVersions:
+        - '22.13'
         - '20.18'
         - '18.20'
     '@dotcom-tool-kit/doppler':
