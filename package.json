@@ -32,7 +32,7 @@
     "@types/express": "5.0.0",
     "@types/isomorphic-fetch": "0.0.39",
     "@types/node": "22.10.10",
-    "chai": "^4.5.0",
+    "chai": "^5.1.2",
     "dotcom-tool-kit": "^4.3.7",
     "fetch-mock": "^5.1.2",
     "sinon": "^19.0.2",
