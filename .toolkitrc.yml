@@ -25,7 +25,6 @@ options:
       cimgNodeVersions:
         - '22.13'
         - '20.18'
-        - '18.20'
     '@dotcom-tool-kit/doppler':
       project: repo_n-express
   tasks:

@@ -17,7 +17,7 @@
     "express": "^4.21.2",
     "isomorphic-fetch": "^3.0.0",
     "n-health": "^13.1.4",
-    "next-metrics": "^12.15.2"
+    "next-metrics": "^13.0.0"
   },
   "devDependencies": {
     "@dotcom-tool-kit/component": "^5.1.12",
@@ -28,7 +28,7 @@
     "@dotcom-tool-kit/node": "^4.3.1",
     "@dotcom-tool-kit/typescript": "^3.3.1",
     "@financial-times/eslint-config-next": "^7.1.0",
-    "@tsconfig/node18": "^18.2.4",
+    "@tsconfig/node20": "^20.1.4",
     "@types/express": "5.0.0",
     "@types/isomorphic-fetch": "0.0.39",
     "@types/node": "22.13.9",
@@ -44,7 +44,7 @@
     "n-express-generate-certificate": "bin/n-express-generate-certificate.sh"
   },
   "engines": {
-    "node": "18.x || 20.x || 22.x"
+    "node": "20.x || 22.x"
   },
   "config": {},
   "false": {},
