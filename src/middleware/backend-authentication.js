@@ -3,7 +3,6 @@
  */
 
 const logger = require('@dotcom-reliability-kit/logger');
-const metrics = require('next-metrics');
 
 /**
  * @param {Express.Application} app
@@ -47,7 +46,6 @@ module.exports = (app) => {
 					/** @type {string} */ (req.get('FT-Next-Backend-Key'))
 				)
 			) {
-				metrics.count('express.backend_authentication.backend_key');
 				res.set('FT-Backend-Authentication', 'true');
 				next();
 			} else if (
@@ -55,11 +53,9 @@ module.exports = (app) => {
 					/** @type {string} */ (req.get('FT-Next-Backend-Key-Old'))
 				)
 			) {
-				metrics.count('express.backend_authentication.old_backend_key');
 				res.set('FT-Backend-Authentication', 'true');
 				next();
 			} else {
-				metrics.count('express.backend_authentication.fail');
 				res.set('FT-Backend-Authentication', 'false');
 				if (process.env.NODE_ENV === 'production') {
 					// Setting the WWW-Authenticate header tells ft.com-cdn
