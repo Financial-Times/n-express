@@ -44,6 +44,7 @@ export interface AppOptions extends AppMeta {
 	withBackendAuthentication: boolean;
 	withFlags: boolean;
 	withServiceMetrics: boolean;
+	withSubscriptionDetails: boolean;
 }
 
 export interface ErrorRateHealthcheckOptions {

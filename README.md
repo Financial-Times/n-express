@@ -38,6 +38,7 @@ Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise st
 - `withFlags` - decorates each request with [flags](https://github.com/Financial-Times/n-flags-client) as `res.locals.flags`
 - `withConsent` - decorates each request with the user's consent preferences as `res.locals.consent`
 - `withServiceMetrics` - instruments `fetch` to record metrics on services that the application uses. Defaults to `true`
+- `withSubscriptionDetails`- adds middleware that extracts subscription details from headers and sets the `res.locals.subscription` model
 - `withAnonMiddleware`- adds middleware that converts headers related to logged in status in to a `res.locals.anon` model
 - `healthChecks` Array - an array of healthchecks to serve on the `/__health` path (see 'Healthchecks' section below)
 - `healthChecksAppName` String - the name of the application, output in the `/__health` JSON. This defaults to `Next FT.com <appname> in <region>`.
