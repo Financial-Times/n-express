@@ -3,8 +3,6 @@
  * @import {AppContainer, AppOptions, Callback} from './typings/n-express'
  */
 
-require('isomorphic-fetch');
-
 const fs = require('fs');
 const path = require('path');
 const express = require('express');

@@ -70,9 +70,6 @@ Various vary headers are set by default (ft-flags, ft-anonymous-user, ft-edition
 - `res.unvaryAll()` - remove all vary headers. *Do not use lightly!!!*
 - `res.vary('My-Header')` - add to the list of vary headers
 
-# Other enhancements
-- `fetch` is added as a global using [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch)
-
 
 
 # Health checks
