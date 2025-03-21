@@ -1,3 +1,5 @@
+const logger = require('@dotcom-reliability-kit/logger');
+
 /**
  * @import {Callback, Request, Response} from '../../typings/n-express'
  */
@@ -13,9 +15,52 @@ function AnonymousModel (req) {
 	} else {
 		this.userIsLoggedIn = true;
 		this.userIsAnonymous = false;
-		// set by ammit task in preflight
-		this.userIsSubscribed = req.get('ft-user-subscription-status') === 'subscribed';
+		// set by subscription task in preflight
+		this.userIsSubscribed = getSubscriptionStatus(req) === 'subscribed';
 	}
+}
+
+/**
+ * @param {Request} req
+ */
+function getSubscriptionStatus (req) {
+	// e.g.: status=subscribed;productCodes=P2,MPR;licenceIds=00000000-0000-0000-0000-000000000000;access=isB2c,isStaff
+	const userSubscriptionHeader = req.get('ft-user-subscription');
+	// e.g.: subscribed
+	const userSubscriptionStatusHeader = req.get('ft-user-subscription-status');
+
+	// We expect this header to always be set,
+	// since the CDN adds a default value if not present
+	// https://github.com/Financial-Times/ft.com-cdn/blob/3ef5c860e390fe882e51a2a63134566cf53b4112/src/vcl/next-preflight.vcl#L67
+	if (!userSubscriptionHeader) {
+		logger.warn({
+			event: 'SUBSCRIPTION_HEADER_MISSING',
+			message: 'The ft-user-subscription header was not received'
+		});
+
+		return userSubscriptionStatusHeader;
+	}
+
+	const userSubscriptionProperties = userSubscriptionHeader.split(';');
+
+	const userSubscriptionStatus = userSubscriptionProperties
+		.map(property => property.split('='))
+		.find(([key, value]) => key === 'status' && value)?.[1];
+
+	// A mismatch here suggests an issue with the Preflight subscription task.
+	// This can happen if:
+	// - The task is disabled
+	// - One or more of its downstream services failed
+	if ((userSubscriptionStatusHeader === 'subscribed' || userSubscriptionStatusHeader === 'registered') && userSubscriptionStatus === 'anonymous') {
+		logger.warn({
+			event: 'SUBSCRIPTION_HEADER_STATUS_MISMATCH',
+			message: `The value of the ft-user-subscription header status ${userSubscriptionStatus} does not match the value of the ft-user-subscription-status header ${userSubscriptionStatusHeader}`
+		});
+
+		return userSubscriptionStatusHeader;
+	}
+
+	return userSubscriptionStatus;
 }
 
 function FirstClickFreeModel () {
