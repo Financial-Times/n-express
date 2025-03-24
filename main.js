@@ -19,6 +19,19 @@ const consentMiddleware = require('./src/middleware/consent');
 // logging and monitoring
 const metrics = require('next-metrics');
 const logger = require('@dotcom-reliability-kit/logger');
+const { logUnhandledError } = require('@dotcom-reliability-kit/log-error');
+
+if (!global.fetch) {
+	logUnhandledError({
+		error: Object.assign(
+			new Error(
+				'No global fetch method is defined, this may cause unexpected errors. Either remove the --no-experimental-fetch flag and migrate to native fetch, or install isomorphic-fetch explicitly'
+			),
+			{ code: 'MISSING_GLOBAL_FETCH' }
+		)
+	});
+	process.exit(1);
+}
 
 // utils
 const setupHealthEndpoint = require('./src/lib/health-checks');
