@@ -11,7 +11,7 @@
     "start": "dotcom-tool-kit run:local"
   },
   "dependencies": {
-    "@dotcom-reliability-kit/log-error": "^5.0.0",
+    "@dotcom-reliability-kit/log-error": "^5.0.1",
     "@dotcom-reliability-kit/logger": "^4.0.1",
     "@dotcom-reliability-kit/serialize-request": "^4.0.0",
     "@financial-times/n-flags-client": "^16.0.0",
