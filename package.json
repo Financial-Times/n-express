@@ -16,7 +16,7 @@
     "@dotcom-reliability-kit/serialize-request": "^4.0.0",
     "@financial-times/n-flags-client": "^16.0.0",
     "express": "^4.21.2",
-    "n-health": "^14.0.2",
+    "n-health": "^14.0.3",
     "next-metrics": "^13.0.0"
   },
   "devDependencies": {
