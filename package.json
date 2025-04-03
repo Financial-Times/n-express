@@ -19,7 +19,7 @@
     "next-metrics": "^13.0.0"
   },
   "peerDependencies": {
-    "express": "^4.21.2"
+    "express": ">=4.21.2 <5.0.0 || 5.x"
   },
   "devDependencies": {
     "@dotcom-tool-kit/component": "^5.1.12",
