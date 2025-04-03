@@ -150,7 +150,7 @@ const getAppContainer = (options) => {
 		app.use(anon.middleware);
 	}
 
-	return { app, meta, addInitPromise };
+	return { app, meta };
 };
 
 /**
