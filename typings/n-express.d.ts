@@ -36,7 +36,6 @@ export interface AppOptions extends AppMeta {
 	healthChecks: Metrics.Healthcheck[];
 	errorRateHealthcheck?: ErrorRateHealthcheckOptions;
 	demo?: boolean;
-	logVary?: boolean;
 	withAnonMiddleware?: boolean;
 	withConsent: boolean;
 	withBackendAuthentication: boolean;
