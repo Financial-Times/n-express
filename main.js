@@ -41,7 +41,6 @@ const { cache } = require('./src/middleware/cache');
 const robots = require('./src/middleware/robots');
 const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
-const logVary = require('./src/middleware/log-vary');
 const anon = require('./src/middleware/anon');
 const teapot = fs.readFileSync(
 	path.join(__dirname, 'src/assets/teapot.ascii'),
@@ -133,10 +132,6 @@ const getAppContainer = (options) => {
 
 	// cache-control constants
 	app.use(cache);
-
-	if (options.logVary) {
-		app.use(logVary);
-	}
 
 	if (options.withAnonMiddleware) {
 		app.use(anon.middleware);
