@@ -14,7 +14,7 @@
     "@dotcom-reliability-kit/log-error": "^5.0.2",
     "@dotcom-reliability-kit/logger": "^4.0.1",
     "@financial-times/n-flags-client": "^16.0.0",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "n-health": "^14.0.5",
     "next-metrics": "^13.0.0"
   },
