@@ -1,4 +1,4 @@
-# n-express [![Circle CI](https://circleci.com/gh/Financial-Times/n-express/tree/main.svg?style=svg)](https://circleci.com/gh/Financial-Times/n-express/tree/main) [![Coverage Status](https://coveralls.io/repos/github/Financial-Times/n-express/badge.svg)](https://coveralls.io/github/Financial-Times/n-express) ![GitHub release](https://img.shields.io/github/release/Financial-Times/n-express.svg?style=popout)
+# n-express
 
 [Express](https://expressjs.com/), slightly enhanced with extra functions and common middleware for FT.com apps.
 
