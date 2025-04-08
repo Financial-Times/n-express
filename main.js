@@ -18,7 +18,6 @@ const consentMiddleware = require('./src/middleware/consent');
 
 // logging and monitoring
 const metrics = require('next-metrics');
-const logger = require('@dotcom-reliability-kit/logger');
 const { logUnhandledError } = require('@dotcom-reliability-kit/log-error');
 
 if (!global.fetch) {
@@ -70,13 +69,6 @@ const getAppContainer = (options) => {
 		throw new Error(
 			'All applications must specify a Biz Ops `systemCode` to the express() function. See the README for more details.'
 		);
-	}
-
-	if (options.withAb) {
-		logger.warn({
-			event: 'WITHAB_OPTION_DEPRECATED',
-			message: 'The \'withAb\' option is deprecated and no longer supported by n-express or n-flags-client'
-		});
 	}
 
 	const meta = guessAppDetails(options);
