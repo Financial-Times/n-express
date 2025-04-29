@@ -14,7 +14,7 @@
     "@dotcom-reliability-kit/log-error": "^5.0.3",
     "@dotcom-reliability-kit/logger": "^4.0.1",
     "@financial-times/n-flags-client": "^16.0.0",
-    "n-health": "^14.0.5",
+    "n-health": "^14.0.6",
     "next-metrics": "^13.0.0"
   },
   "peerDependencies": {
