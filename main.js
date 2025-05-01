@@ -40,7 +40,6 @@ const robots = require('./src/middleware/robots');
 const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
 const anon = require('./src/middleware/anon');
-const generateViaMiddleware = require('./src/middleware/via');
 
 /**
  * @param {AppOptions} options
@@ -79,9 +78,6 @@ const getAppContainer = (options) => {
 	// Security related headers, see https://securityheaders.io/?q=https%3A%2F%2Fwww.ft.com&hide=on.
 	app.set('x-powered-by', false);
 	app.use(security);
-
-	// Add the application system code to the Via HTTP header
-	app.use(generateViaMiddleware(meta.systemCode));
 
 	// utility middleware
 	app.use(vary);
