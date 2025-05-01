@@ -3,8 +3,6 @@
  * @import {AppContainer, AppOptions, Callback} from './typings/n-express'
  */
 
-const fs = require('fs');
-const path = require('path');
 const express = require('express');
 
 // flags
@@ -42,10 +40,6 @@ const robots = require('./src/middleware/robots');
 const security = require('./src/middleware/security');
 const vary = require('./src/middleware/vary');
 const anon = require('./src/middleware/anon');
-const teapot = fs.readFileSync(
-	path.join(__dirname, 'src/assets/teapot.ascii'),
-	'utf8'
-);
 const generateViaMiddleware = require('./src/middleware/via');
 
 /**
@@ -81,15 +75,6 @@ const getAppContainer = (options) => {
 	const addInitPromise = initPromises.push.bind(initPromises);
 
 	app.get('/robots.txt', robots);
-
-	app.get(
-		'/__brew-coffee',
-		/** @type {Callback} */ (req, res) => {
-			res.status(418);
-			res.send(teapot);
-			res.end();
-		}
-	);
 
 	// Security related headers, see https://securityheaders.io/?q=https%3A%2F%2Fwww.ft.com&hide=on.
 	app.set('x-powered-by', false);
