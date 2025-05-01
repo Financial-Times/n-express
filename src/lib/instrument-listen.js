@@ -1,6 +1,5 @@
 // @ts-nocheck
 
-const logger = require('@dotcom-reliability-kit/logger');
 const http = require('http');
 const https = require('https');
 const path = require('path');
@@ -32,27 +31,11 @@ module.exports = class InstrumentListen {
 
 	initApp (meta, initPromises) {
 		this.app.listen = async (port, callback) => {
-			function wrappedCallback () {
-				// HACK: Use warn so that it gets into Splunk logs
-				logger.warn({
-					event: 'EXPRESS_START',
-					message: `Express application ${meta.name} started`,
-					app: meta.name,
-					port: port,
-					nodeVersion: process.version
-				});
-
-				if (callback) {
-					return callback.apply(this, arguments);
-				}
-			}
-
 			try {
 				await Promise.all(initPromises);
-
 				const server = await this.createServer();
 				this.server = server;
-				return server.listen(port, wrappedCallback);
+				return server.listen(port, callback);
 			} catch (err) {
 				// crash app if initPromises fail by throwing an error asynchronously outside of the promise
 				// TODO: better error handling
