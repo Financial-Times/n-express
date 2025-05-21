@@ -21,7 +21,7 @@
     "express": "^4.21.2"
   },
   "devDependencies": {
-    "@dotcom-tool-kit/component": "^5.1.16",
+    "@dotcom-tool-kit/component": "^5.1.17",
     "@dotcom-tool-kit/eslint": "^4.3.4",
     "@dotcom-tool-kit/husky-npm": "^5.1.12",
     "@dotcom-tool-kit/lint-staged-npm": "^4.2.4",
@@ -33,7 +33,7 @@
     "@types/express": "5.0.2",
     "@types/node": "22.15.21",
     "chai": "^4.5.0",
-    "dotcom-tool-kit": "^4.8.0",
+    "dotcom-tool-kit": "^4.8.1",
     "fetch-mock": "^5.1.2",
     "sinon": "^20.0.0",
     "sinon-chai": "^3.0.0",
