@@ -88,6 +88,14 @@ function showFirstClickFree (req, res) {
  * @type {Callback}
  */
 function anonymousMiddleware (req, res, next) {
+	// In local development, double underscores requests are handled by the local app.
+	// These requests aren't enriched with Preflight headers:
+	// https://github.com/Financial-Times/next-router/blob/main/server/middleware/preflight.js#L22-L24
+	// and should not need the anon or firstClickFree properties
+	if (/^\/__/.test(req.url)) {
+		return next();
+	}
+
 	res.locals.anon = new anonModels.AnonymousModel(req);
 	res.locals.firstClickFreeModel = showFirstClickFree(req, res)
 		? new anonModels.FirstClickFreeModel()
