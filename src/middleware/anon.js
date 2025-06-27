@@ -88,6 +88,19 @@ function showFirstClickFree (req, res) {
  * @type {Callback}
  */
 function anonymousMiddleware (req, res, next) {
+	// Skip for static assets, healthchecks, etc.
+	// These routes shouldn't need the anonymous status
+	if (req.path.indexOf('/__') === 0) {
+		return next();
+	}
+
+	// Skip for POST, PUT requests
+	// These routes skip preflight
+	// https://github.com/Financial-Times/ft.com-cdn/blob/327f373f99c88490d54f8fc7e899e03a2fbc7c10/src/vcl/next-preflight.vcl#L99-L102
+	if (req.method === 'POST' || req.method === 'PUT') {
+		return next();
+	}
+
 	res.locals.anon = new anonModels.AnonymousModel(req);
 	res.locals.firstClickFreeModel = showFirstClickFree(req, res)
 		? new anonModels.FirstClickFreeModel()
