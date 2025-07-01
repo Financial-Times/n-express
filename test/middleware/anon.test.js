@@ -18,6 +18,45 @@ describe('Anonymous Middleware', function () {
 			locals = res.locals;
 			res.sendStatus(200).end();
 		});
+		app.get('/__gtg', function (req, res) {
+			locals = res.locals;
+			res.sendStatus(200).end();
+		});
+		app.post('/', function (req, res) {
+			locals = res.locals;
+			res.sendStatus(200).end();
+		});
+		app.put('/', function (req, res) {
+			locals = res.locals;
+			res.sendStatus(200).end();
+		});
+	});
+
+	it('Should not set the properties for requests with __ prefix', function (done) {
+		request(app)
+			.get('/__gtg')
+			.expect(function () {
+				expect(locals).not.to.have.property('anon');
+			})
+			.end(done);
+	});
+
+	it('Should not set the properties for POST requests', function (done) {
+		request(app)
+			.post('/')
+			.expect(function () {
+				expect(locals).not.to.have.property('anon');
+			})
+			.end(done);
+	});
+
+	it('Should not set the properties for PUT requests', function (done) {
+		request(app)
+			.put('/')
+			.expect(function () {
+				expect(locals).not.to.have.property('anon');
+			})
+			.end(done);
 	});
 
 	it('Should set the res.locals.anon property', function (done) {
