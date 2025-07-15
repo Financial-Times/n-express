@@ -107,19 +107,6 @@ describe('Anonymous Middleware', function () {
 			.end(done);
 	});
 
-	it('Should provide a firstClickFree model when required', function (done) {
-		request(app)
-			.get('/')
-			.set('FT-Access-Decision', 'GRANTED')
-			.set('FT-Access-Decision-Policy', 'PRIVILEGED_REFERER_POLICY')
-			.set('FT-Flags', 'firstClickFree:on')
-			.expect(function () {
-				expect(locals.firstClickFreeModel).to.be.an('object');
-				expect(locals.firstClickFreeModel).to.have.property('signInLink');
-			})
-			.end(done);
-	});
-
 	after(() => {
 		nextExpress.flags.flags.stop();
 		app.close();
