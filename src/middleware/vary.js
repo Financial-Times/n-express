@@ -18,7 +18,7 @@ const extendVary = (val, set) => {
 /**
  * @type {Callback}
  */
-module.exports = (_req, res, next) => {
+const vary = (_req, res, next) => {
 	const resSet = res.set;
 
 	/** @type {Set<string>} */
@@ -74,3 +74,5 @@ module.exports = (_req, res, next) => {
 
 	next();
 };
+
+module.exports = vary;

@@ -5,7 +5,7 @@
 /**
  * @type {Callback}
  */
-module.exports = (req, res, next) => {
+const consent = (req, res, next) => {
 	res.locals = res.locals || {};
 	res.locals.consent = res.locals.consent || {};
 
@@ -28,3 +28,5 @@ module.exports = (req, res, next) => {
 	}
 	next();
 };
+
+module.exports = consent;
