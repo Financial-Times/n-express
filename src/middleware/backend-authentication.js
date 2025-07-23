@@ -35,41 +35,40 @@ module.exports = (app) => {
 		return;
 	}
 
-	// @ts-ignore
-	app.use(
-		/** @type {Express.Handler} */ (req, res, next) => {
-			// allow static assets, healthchecks, etc., through
-			if (req.path.indexOf('/__') === 0) {
-				next();
-			} else if (
-				backendKeys.includes(
-					/** @type {string} */ (req.get('FT-Next-Backend-Key'))
-				)
-			) {
-				res.set('FT-Backend-Authentication', 'true');
-				next();
-			} else if (
-				backendKeys.includes(
-					/** @type {string} */ (req.get('FT-Next-Backend-Key-Old'))
-				)
-			) {
-				res.set('FT-Backend-Authentication', 'true');
-				next();
+	/** @type {Express.Handler} */
+	const backendAuthentication = (req, res, next) => {
+		// allow static assets, healthchecks, etc., through
+		if (req.path.indexOf('/__') === 0) {
+			next();
+		} else if (
+			backendKeys.includes(
+				/** @type {string} */ (req.get('FT-Next-Backend-Key'))
+			)
+		) {
+			res.set('FT-Backend-Authentication', 'true');
+			next();
+		} else if (
+			backendKeys.includes(
+				/** @type {string} */ (req.get('FT-Next-Backend-Key-Old'))
+			)
+		) {
+			res.set('FT-Backend-Authentication', 'true');
+			next();
+		} else {
+			res.set('FT-Backend-Authentication', 'false');
+			if (process.env.NODE_ENV === 'production') {
+				// Setting the WWW-Authenticate header tells ft.com-cdn
+				// to serve stale content instead of 401s if there's a key error.
+				res.set('WWW-Authenticate', 'FT-Backend-Key');
+				res.status(401).json({
+					status: 'Error',
+					reason: 'Invalid backend key',
+					source: 'n-express'
+				});
 			} else {
-				res.set('FT-Backend-Authentication', 'false');
-				if (process.env.NODE_ENV === 'production') {
-					// Setting the WWW-Authenticate header tells ft.com-cdn
-					// to serve stale content instead of 401s if there's a key error.
-					res.set('WWW-Authenticate', 'FT-Backend-Key');
-					res.status(401).json({
-						status: 'Error',
-						reason: 'Invalid backend key',
-						source: 'n-express'
-					});
-				} else {
-					next();
-				}
+				next();
 			}
 		}
-	);
+	};
+	app.use(backendAuthentication);
 };

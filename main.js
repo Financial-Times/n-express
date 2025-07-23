@@ -88,7 +88,7 @@ const getAppContainer = (options) => {
 
 	// Debug related headers.
 	app.use(
-		/** @type {Callback} */ (req, res, next) => {
+		/** @type {Callback} */ function setDebugHeaders (req, res, next) {
 			res.set('FT-App-Name', meta.name);
 			res.set('FT-Backend-Timestamp', new Date().toISOString());
 			res.set('FT-System-Code', meta.systemCode);
