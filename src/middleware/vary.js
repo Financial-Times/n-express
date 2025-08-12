@@ -57,7 +57,7 @@ const vary = (_req, res, next) => {
 		}
 	};
 
-	res.unvaryAll = function (/** @type {string} */ preset) {
+	res.unvaryAll = function (preset) {
 		if (preset === 'wrapper') {
 			// TODO need to port this to n-ui ,and rename as n-ui.
 			// Not sure if it's ever used

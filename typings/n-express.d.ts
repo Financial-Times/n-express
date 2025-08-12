@@ -10,8 +10,10 @@ export type CacheHeaders = typeof cacheHeaders;
 export interface Request extends Express.Request {}
 
 export interface Response extends Express.Response, CacheHeaders {
+	set(field: any, value?: string | string[]): this;
+
 	unvary: (...args: string[]) => void;
-	unvaryAll: () => void;
+	unvaryAll: (preset?: string) => void;
 
 	// Backwards-compatible uber-camel-cased names
 	unVary: unvary;
