@@ -13,7 +13,7 @@
   "dependencies": {
     "@dotcom-reliability-kit/log-error": "^5.1.2",
     "@dotcom-reliability-kit/logger": "^4.0.1",
-    "@financial-times/n-flags-client": "^16.0.0",
+    "@financial-times/n-flags-client": "^17.0.0",
     "n-health": "^14.1.2",
     "next-metrics": "^13.0.0"
   },
