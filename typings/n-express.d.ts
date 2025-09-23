@@ -56,7 +56,6 @@ export interface AppContainer {
 	meta: guessAppDetails.Options & {
 		description: string;
 	};
-	addInitPromise: (...items: Promise<any>[]) => number;
 }
 
 // TODO Overload Express.Application methods to use NextApplication
