@@ -30,7 +30,7 @@
     "@dotcom-tool-kit/typescript": "^3.3.6",
     "@financial-times/eslint-config-next": "^7.1.0",
     "@tsconfig/node20": "^20.1.6",
-    "@types/express": "5.0.3",
+    "@types/express": "5.0.4",
     "@types/node": "24.9.1",
     "chai": "^4.5.0",
     "dotcom-tool-kit": "^4.10.1",
