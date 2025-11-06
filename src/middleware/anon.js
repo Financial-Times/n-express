@@ -33,11 +33,6 @@ function getSubscriptionStatus (req) {
 	// since the CDN adds a default value if not present
 	// https://github.com/Financial-Times/ft.com-cdn/blob/3ef5c860e390fe882e51a2a63134566cf53b4112/src/vcl/next-preflight.vcl#L67
 	if (!userSubscriptionHeader) {
-		logger.warn({
-			event: 'SUBSCRIPTION_HEADER_MISSING',
-			message: 'The ft-user-subscription header was not received'
-		});
-
 		return userSubscriptionStatusHeader;
 	}
 
