@@ -31,7 +31,7 @@
     "@financial-times/eslint-config-next": "^7.1.0",
     "@tsconfig/node20": "^20.1.8",
     "@types/express": "5.0.6",
-    "@types/node": "24.10.2",
+    "@types/node": "25.0.3",
     "chai": "^4.5.0",
     "dotcom-tool-kit": "^4.10.1",
     "fetch-mock": "^5.1.2",
