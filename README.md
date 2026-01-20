@@ -44,7 +44,6 @@ Passed in to `nExpress`, these (Booleans defaulting to false unless otherwise st
 - `getAppContainer()` - returns an object:
 	- `app`: the express app instance
 	- `meta`: object containing the name, description and directory of the app
-	- `addInitPromise()`: function for adding additional promises to wait for before allowing the app to accept traffic
 
 
 ## Cache control
