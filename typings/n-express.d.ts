@@ -1,9 +1,8 @@
-import Metrics from '@financial-times/n-metrics';
 import Express from 'express';
 import http from 'http';
 import https from 'https';
 import { cacheHeaders } from '../src/middleware/cache';
-export * from './metrics';
+import type { Healthcheck } from './metrics';
 
 export type CacheHeaders = typeof cacheHeaders;
 
@@ -35,7 +34,7 @@ export interface AppMeta {
 }
 export interface AppOptions extends AppMeta {
 	healthChecksAppName?: string;
-	healthChecks: Metrics.Healthcheck[];
+	healthChecks: Healthcheck[];
 	demo?: boolean;
 	withAnonMiddleware?: boolean;
 	withConsent: boolean;
@@ -46,7 +45,7 @@ export interface AppOptions extends AppMeta {
 
 export interface AppContainer {
 	app: Express.Application;
-	meta: guessAppDetails.Options & {
+	meta: AppMeta & {
 		description: string;
 	};
 	addInitPromise: (...items: Promise<any>[]) => number;
@@ -65,7 +64,7 @@ declare namespace express {
 	declare const json: Express.json;
 	declare const Router = Express.Router;
 	declare const static: Express.static;
-	declare const metrics: Metrics;
+	declare const metrics: unknown;
 	declare const flags: flags;
 	declare const getAppContainer: getAppContainer;
 }
