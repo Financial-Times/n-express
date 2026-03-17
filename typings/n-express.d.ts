@@ -36,7 +36,6 @@ export interface AppMeta {
 export interface AppOptions extends AppMeta {
 	healthChecksAppName?: string;
 	healthChecks: Metrics.Healthcheck[];
-	errorRateHealthcheck?: ErrorRateHealthcheckOptions;
 	demo?: boolean;
 	withAnonMiddleware?: boolean;
 	withConsent: boolean;
@@ -44,11 +43,6 @@ export interface AppOptions extends AppMeta {
 	withFlags: boolean;
 }
 
-export interface ErrorRateHealthcheckOptions {
-	severity?: number;
-	threshold?: number;
-	samplePeriod?: string;
-}
 
 export interface AppContainer {
 	app: Express.Application;
