@@ -42,7 +42,6 @@ export interface AppOptions extends AppMeta {
 	withConsent: boolean;
 	withBackendAuthentication: boolean;
 	withFlags: boolean;
-	withServiceMetrics: boolean;
 }
 
 export interface ErrorRateHealthcheckOptions {
